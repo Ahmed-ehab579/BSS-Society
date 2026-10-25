@@ -1,0 +1,439 @@
+/* Reset, typography and shared components (buttons, container). */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-page-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
+  font-size: var(--body-m-size);
+  line-height: var(--body-m-line);
+  font-weight: var(--body-weight);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, p {
+  margin: 0;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.container {
+  width: 100%;
+  max-width: calc(var(--container-max) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* Type styles */
+.text-h1 {
+  font-size: var(--h1-size);
+  line-height: var(--h1-line);
+  font-weight: var(--h1-weight);
+  text-transform: uppercase;
+}
+
+.text-h2 {
+  font-size: var(--h2-size);
+  line-height: var(--h2-line);
+  font-weight: var(--h2-weight);
+  letter-spacing: var(--h2-tracking);
+}
+
+.text-h4 {
+  font-size: var(--h4-size);
+  line-height: var(--h4-line);
+  font-weight: var(--h4-weight);
+}
+
+.text-h5 {
+  font-size: var(--h5-size);
+  line-height: var(--h5-line);
+  font-weight: var(--h5-weight);
+}
+
+.text-body-s {
+  font-size: var(--body-s-size);
+  line-height: var(--body-s-line);
+  font-weight: var(--body-weight);
+}
+
+.text-body-xxl {
+  font-size: var(--body-xxl-size);
+  line-height: var(--body-xxl-line);
+  font-weight: var(--body-xxl-weight);
+}
+
+.text-body-l {
+  font-size: var(--body-l-size);
+  line-height: var(--body-l-line);
+  font-weight: var(--body-weight);
+}
+
+.text-body-xl {
+  font-size: var(--body-xl-size);
+  line-height: var(--body-xl-line);
+  font-weight: var(--body-weight);
+}
+
+.text-body-m {
+  font-size: var(--body-m-size);
+  line-height: var(--body-m-line);
+  font-weight: var(--body-weight);
+}
+
+.text-label-l {
+  font-size: var(--label-l-size);
+  line-height: var(--label-l-line);
+  font-weight: var(--label-weight);
+}
+
+.text-label-m {
+  font-size: var(--label-m-size);
+  line-height: var(--label-m-line);
+  font-weight: var(--label-weight);
+}
+
+/* Buttons (Actions / Button) */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--scale-200);
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: var(--scale-1000);
+  font-family: inherit;
+  font-weight: var(--label-weight);
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--motion-duration) var(--motion-ease),
+    color var(--motion-duration) var(--motion-ease),
+    border-color var(--motion-duration) var(--motion-ease);
+}
+
+.btn--large {
+  height: 56px;
+  padding: var(--scale-400) var(--scale-600);
+  font-size: var(--label-l-size);
+  line-height: var(--label-l-line);
+}
+
+.btn--regular {
+  height: 48px;
+  padding: var(--scale-300) var(--scale-600);
+  font-size: var(--label-l-size);
+  line-height: var(--label-l-line);
+  transition-duration: var(--motion-duration-hover);
+}
+
+.btn__icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.btn--small {
+  height: 40px;
+  padding: var(--scale-200) var(--scale-400);
+  font-size: var(--label-m-size);
+  line-height: var(--label-m-line);
+}
+
+.btn--primary {
+  background: var(--surface-action-primary);
+  color: var(--color-text-on-dark);
+  border: 0;
+}
+
+.btn--secondary {
+  background: transparent;
+  color: var(--color-text-on-light);
+  border: var(--border-md) solid var(--border-color-on-light);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--border-color-on-light);
+  outline-offset: 3px;
+}
+
+/* Arrow slide on hover — large primary button only (per Figma note) */
+.btn__arrow-clip {
+  width: 24px;
+  height: 24px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.btn__arrow-track {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  transition: transform 300ms ease;
+}
+
+.btn__arrow-track img {
+  width: 24px;
+  height: 24px;
+}
+
+/* Hover states: pointer devices only, so taps don't leave them stuck on.
+   :active gives the same look as temporary pressed feedback on touch. */
+@media (hover: hover) {
+  .btn--secondary:hover {
+    background: var(--surface-action-outline-hovered);
+  }
+
+  .btn--primary.btn--large:hover .btn__arrow-track {
+    transform: translateY(-35px);
+  }
+
+  .btn--primary.btn--regular:hover {
+    background: var(--surface-action-primary-hovered);
+  }
+}
+
+.btn--secondary:active {
+  background: var(--surface-action-outline-hovered);
+}
+
+.btn--primary.btn--regular:active {
+  background: var(--surface-action-primary-hovered);
+}
+
+.btn--primary.btn--large:active .btn__arrow-track {
+  transform: translateY(-35px);
+}
+
+/* Actions / Icon Button (40 × 40) */
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--scale-200);
+  background: var(--surface-cards);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--motion-duration-hover) var(--motion-ease);
+}
+
+.icon-btn img {
+  width: 28px;
+  height: 28px;
+}
+
+.icon-btn:focus-visible {
+  outline: 2px solid var(--border-color-on-light);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) {
+  .icon-btn:hover {
+    background: var(--surface-cards-hovered);
+  }
+}
+
+.icon-btn:active {
+  background: var(--surface-cards-hovered);
+}
+
+/* Section panel (gradient background used by Start Here, Library, New Muslim) */
+.section-panel {
+  max-width: 1305px;
+  margin-inline: auto;
+  padding: var(--scale-1000);
+  border-radius: 30px;
+  background: linear-gradient(to bottom, var(--surface-cards), rgba(255, 255, 255, 0));
+}
+
+/* Content / Section Intro (Sm): heading left, supporting text + CTA right */
+.section-intro {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--scale-900);
+}
+
+.section-intro__heading-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--scale-400);
+  flex: 0 1 499px;
+  min-width: 0;
+}
+
+.section-intro__heading {
+  color: var(--color-text);
+}
+
+.section-intro__supporting {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 43.042px;
+  width: 452px;
+  flex-shrink: 0;
+  padding-top: var(--scale-900);
+}
+
+.section-intro__text {
+  color: var(--color-text-body);
+}
+
+@media (max-width: 1023px) {
+  .section-intro {
+    flex-direction: column;
+    gap: var(--scale-600);
+  }
+
+  .section-intro__heading-group {
+    flex: none;
+  }
+
+  .section-intro__supporting {
+    width: auto;
+    gap: var(--scale-800);
+    padding-top: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .section-panel {
+    padding: var(--scale-600);
+    border-radius: 16px;
+  }
+
+  .section-intro__heading {
+    font-size: 32px;
+    line-height: 40px;
+    letter-spacing: -0.64px;
+  }
+
+  .section-intro__text {
+    font-size: var(--body-m-size);
+    line-height: var(--body-m-line);
+  }
+
+  .section-intro__supporting,
+  .section-intro__supporting .btn {
+    width: 100%;
+  }
+}
+
+/* Section label (dot + uppercase label) */
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: var(--scale-200);
+  height: 17.044px;
+  color: var(--color-section-label);
+  font-size: var(--label-m-size);
+  line-height: var(--label-m-line);
+  font-weight: var(--label-weight);
+  letter-spacing: var(--label-uppercase-tracking);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.section-label::before {
+  content: "";
+  width: 8.965px;
+  height: 8.965px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--color-section-dot);
+}
+
+/* Cards / Guide Card — hover changes the surface colour only */
+.guide-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 315px;
+  overflow: hidden;
+  border-radius: 29.235px;
+  background: var(--surface-cards);
+  color: var(--color-card-heading);
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--motion-duration-hover) var(--motion-ease);
+}
+
+/* Inside stroke drawn above the image, as in Figma */
+.guide-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: var(--scale-12) solid var(--border-color-on-light);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.guide-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--scale-400);
+  min-height: 322px;
+  padding: 38.98px 27px;
+}
+
+.guide-card__text {
+  max-width: 254px;
+  color: var(--color-card-text);
+}
+
+.guide-card__media {
+  height: 288px;
+  overflow: hidden;
+}
+
+.guide-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.guide-card:focus-visible {
+  outline: 2px solid var(--border-color-on-light);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) {
+  .guide-card:hover {
+    background: var(--surface-cards-hovered);
+  }
+}
+
+.guide-card:active {
+  background: var(--surface-cards-hovered);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .btn__arrow-track,
+  .guide-card,
+  .icon-btn {
+    transition: none;
+  }
+}

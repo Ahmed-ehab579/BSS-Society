@@ -1,0 +1,631 @@
+/* Homepage sections. */
+.page {
+  padding-top: calc(var(--header-height) + 60px);
+}
+
+/* Hero */
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: 84px;
+}
+
+.hero__content {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--scale-900);
+}
+
+.hero__heading {
+  width: 576px;
+  max-width: 100%;
+  color: var(--color-heading);
+}
+
+.hero__intro {
+  display: flex;
+  flex-direction: column;
+  gap: 74px;
+  width: 537px;
+  flex-shrink: 0;
+  padding-top: 14px;
+}
+
+.hero__text {
+  max-width: 482px;
+  color: var(--color-brand-500);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18.429px;
+}
+
+.hero__media {
+  position: relative;
+  height: 656px;
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.21);
+}
+
+.hero__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.21) 0%,
+    rgba(0, 0, 0, 0.08) 41.875%,
+    rgba(255, 255, 255, 0) 73.194%
+  );
+  pointer-events: none;
+}
+
+/* Stack hero text on narrower screens */
+@media (max-width: 1023px) {
+  .hero__content {
+    flex-direction: column;
+    gap: var(--scale-600);
+  }
+
+  .hero__intro {
+    width: auto;
+    gap: var(--scale-800);
+    padding-top: 0;
+  }
+
+  .hero__media {
+    height: auto;
+    aspect-ratio: 1361 / 656;
+  }
+}
+
+@media (max-width: 767px) {
+  .page {
+    padding-top: calc(var(--header-height) + 32px);
+  }
+
+  .hero {
+    gap: var(--scale-900);
+  }
+
+  .hero__heading {
+    font-size: 36px;
+    line-height: 44px;
+  }
+
+  .hero__text {
+    font-size: var(--body-m-size);
+    line-height: var(--body-m-line);
+  }
+
+  .hero__actions {
+    flex-direction: column;
+  }
+
+  .hero__actions .btn {
+    width: 100%;
+  }
+
+  .hero__media {
+    height: 360px;
+    aspect-ratio: auto;
+    border-radius: 16px;
+  }
+
+  .hero__media img {
+    object-position: 65% center;
+  }
+}
+
+/* Homepage Sections: 124px between sections, 60px after the last one */
+.page {
+  padding-bottom: 60px;
+}
+
+.section {
+  margin-top: 124px;
+}
+
+/* About Us */
+.about__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  max-width: 1209px;
+  margin-inline: auto;
+}
+
+.about__content {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--scale-900);
+}
+
+.about__heading {
+  width: 371.191px;
+  flex-shrink: 0;
+  color: var(--color-text);
+}
+
+.about__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 47.346px;
+  flex: 0 1 780px;
+  min-width: 0;
+}
+
+.about__text {
+  color: var(--color-text-muted);
+}
+
+.about__em {
+  color: var(--tone);
+}
+
+/* Start Here (panel styles: .section-panel) */
+.start__content {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 50px;
+  max-width: 1209px;
+  margin-inline: auto;
+}
+
+.start__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--scale-800);
+  min-height: 240px;
+  flex: 0 1 499px;
+  min-width: 0;
+}
+
+.start__heading-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--scale-400);
+}
+
+.start__heading {
+  color: var(--color-text);
+}
+
+.start__cards {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  flex-shrink: 0;
+}
+
+/* Start Here needs ~1200px for intro + two cards side by side */
+@media (max-width: 1199px) {
+  .start__content {
+    flex-direction: column;
+    gap: var(--scale-800);
+  }
+
+  .start__intro {
+    flex: none;
+    min-height: 0;
+  }
+
+  .start__cards {
+    align-self: stretch;
+    flex-shrink: 1;
+  }
+
+  .start__cards .guide-card {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: 315px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .about__content {
+    flex-direction: column;
+    gap: var(--scale-800);
+  }
+
+  .about__heading {
+    width: auto;
+    max-width: 371.191px;
+  }
+
+  .about__intro {
+    flex: none;
+    gap: var(--scale-800);
+  }
+}
+
+@media (max-width: 767px) {
+  .section {
+    margin-top: 80px;
+  }
+
+  .about__heading,
+  .start__heading {
+    font-size: 32px;
+    line-height: 40px;
+    letter-spacing: -0.64px;
+  }
+
+  .about__text {
+    font-size: var(--body-xl-size);
+    line-height: var(--body-xl-line);
+  }
+
+  .about__intro .btn,
+  .start__intro .btn {
+    width: 100%;
+  }
+
+  .start__cards {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--scale-600);
+  }
+
+  .start__cards .guide-card {
+    flex: none;
+    width: auto;
+    max-width: none;
+    border-radius: 16px;
+  }
+
+  .start__cards .guide-card__text {
+    max-width: none;
+  }
+}
+
+/* Library */
+.library__content,
+.new-muslim__content {
+  display: flex;
+  flex-direction: column;
+  max-width: 1209px;
+  margin-inline: auto;
+}
+
+.library__content {
+  gap: 55px;
+}
+
+.carousel {
+  display: flex;
+  flex-direction: column;
+  gap: 43px;
+}
+
+.carousel__controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--scale-400);
+}
+
+.carousel__toggle [data-icon="play"],
+.carousel__toggle[data-state="paused"] [data-icon="pause"] {
+  display: none;
+}
+
+.carousel__toggle[data-state="paused"] [data-icon="play"] {
+  display: block;
+}
+
+.icon-btn--prev img {
+  transform: scaleX(-1);
+}
+
+.carousel__viewport {
+  overflow: hidden;
+  touch-action: pan-y;
+  cursor: grab;
+}
+
+.carousel.is-dragging .carousel__viewport {
+  cursor: grabbing;
+}
+
+.carousel__track {
+  display: flex;
+  gap: var(--scale-600);
+  will-change: transform;
+}
+
+/* Cards / Topic Card */
+.topic-card {
+  position: relative;
+  flex: 0 0 332px;
+  height: 461px;
+  overflow: hidden;
+  border-radius: 26.957px;
+  color: var(--color-text-on-dark);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.topic-card__bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 139%;
+  overflow: hidden;
+}
+
+.topic-card__bg img {
+  position: absolute;
+  max-width: none;
+  pointer-events: none;
+}
+
+/* Photo crops from Figma */
+.topic-card--belief .topic-card__bg img { left: -20.2%; top: 0.02%; width: 140.4%; height: 99.98%; }
+.topic-card--quran .topic-card__bg img { left: -4.55%; top: 0.02%; width: 109.09%; height: 100.08%; }
+.topic-card--prophet .topic-card__bg img { left: -4.55%; top: -5.73%; width: 109.09%; height: 100.08%; }
+.topic-card--women .topic-card__bg img,
+.topic-card--life .topic-card__bg img { inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+.topic-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.66) 42.191%, rgba(124, 124, 124, 0.09));
+}
+
+.topic-card__text {
+  position: absolute;
+  top: 48.87px;
+  left: 24.9px;
+  display: flex;
+  flex-direction: column;
+  gap: 18.442px;
+  width: 254.494px;
+  max-width: calc(100% - 49.8px);
+}
+
+.topic-card__desc {
+  color: var(--color-topic-text);
+}
+
+/* New Muslim path */
+.new-muslim__content {
+  gap: 82px;
+}
+
+.new-muslim__heading {
+  color: var(--color-heading-strong);
+}
+
+.new-muslim__benefits {
+  display: grid;
+  grid-template-columns: minmax(0, 276px) minmax(0, 572px) minmax(0, 276px);
+  grid-template-rows: 351px 351px;
+  justify-content: center;
+  column-gap: 40px;
+  row-gap: 40px;
+}
+
+.new-muslim__photo {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  overflow: hidden;
+  border-radius: 28.895px;
+}
+
+.new-muslim__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.benefit-card--essentials { grid-column: 1; grid-row: 1; }
+.benefit-card--path { grid-column: 1; grid-row: 2; }
+.benefit-card--pace { grid-column: 3; grid-row: 1; }
+.benefit-card--help { grid-column: 3; grid-row: 2; }
+
+/* Cards / Benefit Card — informational, not interactive.
+   Default: title near the bottom, description clipped below the card.
+   Hover (desktop): green surface, content slides up to reveal the description. */
+.benefit-card {
+  position: relative;
+  height: 351px;
+  overflow: hidden;
+  padding: 25.583px 22.434px 21.995px;
+  border: 0.478px solid var(--color-benefit-border);
+  border-radius: 22.952px;
+  background: var(--surface-cards);
+  color: var(--color-card-text);
+  transition: background-color var(--motion-duration-hover) var(--motion-ease);
+}
+
+.benefit-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 69.096px;
+  height: 69.096px;
+}
+
+.benefit-card__icon img {
+  width: 100%;
+  height: auto;
+}
+
+/* The book artwork is inset within its 69px icon frame */
+.benefit-card__icon .is-inset {
+  width: 85.28%;
+}
+
+.benefit-card__content {
+  position: absolute;
+  top: 142.7px;
+  left: 22.434px;
+  right: 22.434px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--scale-800);
+  padding-left: 4.782px;
+  transform: translateY(116.2px);
+  transition: transform var(--motion-duration-hover) var(--motion-ease);
+}
+
+.benefit-card__title,
+.benefit-card__text {
+  max-width: 209.082px;
+}
+
+@media (min-width: 1200px) and (hover: hover) {
+  .benefit-card:hover {
+    background: var(--surface-cards-hovered);
+  }
+
+  .benefit-card:hover .benefit-card__content {
+    transform: none;
+  }
+}
+
+/* Keyboard users moving through the section see every description */
+@media (min-width: 1200px) {
+  .new-muslim:focus-within .benefit-card__content {
+    transform: none;
+  }
+}
+
+/* Below 1200px: photo on top, compact cards with everything visible */
+@media (max-width: 1199px) {
+  .new-muslim__content {
+    gap: var(--scale-1000);
+  }
+
+  .new-muslim__benefits {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: none;
+    gap: var(--scale-600);
+  }
+
+  .new-muslim__photo {
+    grid-column: 1 / -1;
+    grid-row: auto;
+    width: 100%;
+    aspect-ratio: 572 / 741.7;
+    max-height: 640px;
+  }
+
+  .new-muslim__photo img {
+    object-position: 50% 70%;
+  }
+
+  .benefit-card--essentials,
+  .benefit-card--path,
+  .benefit-card--pace,
+  .benefit-card--help {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .benefit-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--scale-600);
+    height: auto;
+    padding: var(--scale-600);
+  }
+
+  .benefit-card__icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .benefit-card__content {
+    position: static;
+    gap: var(--scale-200);
+    padding-left: 0;
+    transform: none;
+    transition: none;
+  }
+
+  .benefit-card__title {
+    font-size: var(--body-xl-size);
+    line-height: 28px;
+  }
+
+  .benefit-card__title,
+  .benefit-card__text {
+    max-width: none;
+  }
+}
+
+@media (max-width: 1023px) {
+  .topic-card {
+    flex-basis: 300px;
+    height: auto;
+    aspect-ratio: 332 / 461;
+  }
+}
+
+@media (max-width: 767px) {
+  .library__content {
+    gap: var(--scale-800);
+  }
+
+  .carousel {
+    gap: var(--scale-600);
+  }
+
+  .carousel__track {
+    gap: var(--scale-400);
+  }
+
+  /* One main card plus a preview of the next */
+  .topic-card {
+    flex-basis: calc(100% - 56px);
+    border-radius: 16px;
+  }
+
+  .topic-card__text {
+    top: 32px;
+    left: 20px;
+    gap: var(--scale-300);
+    max-width: calc(100% - 40px);
+  }
+
+  .topic-card__title {
+    font-size: var(--h5-size);
+    line-height: var(--h5-line);
+  }
+
+  .new-muslim__photo,
+  .benefit-card {
+    border-radius: 16px;
+  }
+}
+
+/* Two benefit columns get cramped on small phones */
+@media (max-width: 559px) {
+  .new-muslim__benefits {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .benefit-card,
+  .benefit-card__content {
+    transition: none;
+  }
+}

@@ -1,0 +1,103 @@
+/* Design tokens from the Figma variables (BS Society Agent). Shared by all pages. */
+:root {
+  /* Colors */
+  --color-page-bg: #f5f2eb;
+  --color-text: #000000;               /* Color Scheme 1/Text */
+  --color-heading: #272727;
+  --color-text-on-light: #3b3b3b;      /* Text/0n-Light/Daefult */
+  --color-text-on-dark: #ffffff;       /* Text/on-Dark/Default */
+  --color-brand-500: #3b3b3b;          /* Brand color/primery/500 (d) */
+  --color-wordmark: #282828;
+  --surface-action-primary: #3b3b3b;   /* Surface/Action/Primery/Default */
+  --surface-action-primary-hovered: #232323; /* Surface/Action/Primery/Hovered */
+  --surface-cards: #e8e5dc;            /* Surface/Cards/Default, Brand color/Dominent/550 (sh) */
+  --surface-cards-hovered: #d5e3ca;    /* Surface/Cards/Hovered */
+  --color-section-label: #555953;
+  --color-section-dot: #95b97b;
+  --color-text-muted: #909090;
+  --color-card-heading: #252525;
+  --color-card-text: rgba(37, 37, 37, 0.8);
+  --color-text-body: #626262;          /* Text/0n-light/body */
+  --color-heading-strong: #111111;
+  --color-topic-text: #d0d0d0;
+  --color-benefit-border: #333333;
+  --surface-action-outline: #f7f5ef;   /* Surface/Action/Outline/Default */
+  --surface-action-outline-hovered: #aac795; /* Surface/Action/Outline/Hovered */
+  --backdrop: rgba(0, 0, 0, 0.4);
+  --border-color-on-light: #3b3b3b;    /* Border/Color/On-light */
+
+  /* Border widths */
+  --border-md: 1px;
+  --border-lg: 2px;
+
+  /* Spacing scale */
+  --scale-0: 0;
+  --scale-100: 4px;
+  --scale-12: 0.5px;
+  --scale-200: 8px;
+  --scale-300: 12px;
+  --scale-400: 16px;
+  --scale-500: 20px;
+  --scale-600: 24px;
+  --scale-800: 32px;
+  --scale-900: 40px;
+  --scale-1000: 48px;
+
+  /* Typography */
+  --font-family: "Manrope", system-ui, sans-serif;
+
+  --h1-size: 61px;
+  --h1-line: 88px;
+  --h1-weight: 500;
+
+  --h2-size: 49px;
+  --h2-line: 59px;
+  --h2-weight: 400;
+  --h2-tracking: -0.98px;
+
+  --h4-size: 31px;
+  --h4-line: 45px;
+  --h4-weight: 500;
+
+  --h5-size: 26px;
+  --h5-line: 34px;
+  --h5-weight: 500;
+
+  --body-xxl-size: 27px;
+  --body-xxl-line: 42px;
+  --body-xxl-weight: 500;
+
+  --body-l-size: 18px;
+  --body-l-line: 29px;
+
+  --body-xl-size: 20px;
+  --body-xl-line: 32px;
+  --body-m-size: 16px;
+  --body-m-line: 26px;
+  --body-s-size: 14px;
+  --body-s-line: 22px;
+  --body-weight: 400;
+
+  --label-l-size: 16px;
+  --label-l-line: 24px;
+  --label-m-size: 14px;
+  --label-m-line: 20px;
+  --label-weight: 600;
+  --label-uppercase-tracking: 1px;
+
+  /* Layout */
+  --container-max: 1360px;
+  --gutter: var(--scale-900);
+  --header-height: 98px;
+
+  /* Motion */
+  --motion-duration: 220ms;
+  --motion-duration-hover: 360ms;      /* Figma smart animate 300ms, slightly slower */
+  --motion-ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+@media (max-width: 767px) {
+  :root {
+    --gutter: var(--scale-400);
+  }
+}
