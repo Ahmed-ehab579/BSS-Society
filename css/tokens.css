@@ -25,6 +25,18 @@
   --surface-action-outline-hovered: #aac795; /* Surface/Action/Outline/Hovered */
   --backdrop: rgba(0, 0, 0, 0.4);
   --border-color-on-light: #3b3b3b;    /* Border/Color/On-light */
+  --border-color-on-dark: #fdfcfb;     /* Border/Color/On-dark */
+  --color-footer-bg: #2e2e2e;
+  --color-footer-heading: #959595;
+  --color-field-label: #353535;
+  --color-field-bg: #f9f7f1;
+  --color-field-border: #bbbbbb;
+  --color-field-placeholder: #8a8a8a;
+  --surface-form-panel: rgba(243, 240, 231, 0.9);
+  --border-color-form-panel: #848484;
+  /* Validation colours: not defined in Figma (pending approval) */
+  --color-error: #b3261e;
+  --color-error-on-dark: #ffb4ab;
 
   /* Border widths */
   --border-md: 1px;
@@ -76,12 +88,17 @@
   --body-m-line: 26px;
   --body-s-size: 14px;
   --body-s-line: 22px;
+  --body-xs-size: 12px;
+  --body-xs-line: 18px;
   --body-weight: 400;
 
   --label-l-size: 16px;
   --label-l-line: 24px;
   --label-m-size: 14px;
   --label-m-line: 20px;
+  --label-s-size: 12px;
+  --label-s-line: 18px;
+  --label-s-tracking: 0.5px;
   --label-weight: 600;
   --label-uppercase-tracking: 1px;
 
@@ -94,6 +111,7 @@
   --motion-duration: 220ms;
   --motion-duration-hover: 360ms;      /* Figma smart animate 300ms, slightly slower */
   --motion-ease: cubic-bezier(0.2, 0, 0, 1);
+  --motion-duration-link: 150ms;       /* Footer Link note: underline fades in over 150ms */
 }
 
 @media (max-width: 767px) {

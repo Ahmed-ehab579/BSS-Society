@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/header.css">
   <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/footer.css">
 </head>
 <body>
   <header class="site-header">
@@ -34,12 +35,12 @@
       <nav class="site-nav" id="site-nav" aria-label="Main">
         <ul class="site-nav__links">
           <li><a class="site-nav__link" href="index.html" aria-current="page">Home</a></li>
-          <li><a class="site-nav__link" href="#">About Us</a></li>
-          <li><a class="site-nav__link" href="#">Start here</a></li>
-          <li><a class="site-nav__link" href="#">Library</a></li>
-          <li><a class="site-nav__link" href="#">New muslim</a></li>
+          <li><a class="site-nav__link" href="#about">About Us</a></li>
+          <li><a class="site-nav__link" href="#start-here">Start here</a></li>
+          <li><a class="site-nav__link" href="#library">Library</a></li>
+          <li><a class="site-nav__link" href="#new-muslim">New muslim</a></li>
         </ul>
-        <a class="btn btn--small btn--secondary site-nav__cta" href="#">Contact Us</a>
+        <a class="btn btn--small btn--secondary site-nav__cta" href="#contact">Contact Us</a>
       </nav>
     </div>
   </header>
@@ -70,7 +71,7 @@
       </div>
     </section>
 
-    <section class="container section about" aria-labelledby="about-heading">
+    <section class="container section about" id="about" aria-labelledby="about-heading">
       <div class="about__inner">
         <p class="section-label">About us</p>
         <div class="about__content">
@@ -86,7 +87,7 @@
       </div>
     </section>
 
-    <section class="container section start" aria-labelledby="start-heading">
+    <section class="container section start" id="start-here" aria-labelledby="start-heading">
       <div class="section-panel">
         <div class="start__content">
           <div class="start__intro">
@@ -124,7 +125,7 @@
       </div>
     </section>
 
-    <section class="container section library" aria-labelledby="library-heading">
+    <section class="container section library" id="library" aria-labelledby="library-heading">
       <div class="section-panel">
         <div class="library__content">
           <div class="section-intro">
@@ -214,7 +215,7 @@
       </div>
     </section>
 
-    <section class="container section new-muslim" aria-labelledby="new-muslim-heading">
+    <section class="container section new-muslim" id="new-muslim" aria-labelledby="new-muslim-heading">
       <div class="section-panel">
         <div class="new-muslim__content">
           <div class="section-intro">
@@ -267,10 +268,118 @@
         </div>
       </div>
     </section>
+
+    <section class="container section contact" id="contact" aria-labelledby="contact-heading">
+      <div class="contact__panel">
+        <div class="contact__bg" aria-hidden="true">
+          <img src="assets/images/contact.png" width="1695" height="1067" alt="" loading="lazy">
+        </div>
+        <div class="contact__content">
+          <div class="contact__intro">
+            <p class="section-label section-label--on-dark">Contact us</p>
+            <div class="contact__heading-group">
+              <h2 class="text-h2 contact__heading" id="contact-heading">We’re here to help.</h2>
+              <p class="text-body-xl contact__text">Whether you are learning about Islam for the first time or taking your next step as a new Muslim, we are here to help.</p>
+            </div>
+          </div>
+
+          <!-- Not connected to a service yet: validation only, nothing is sent. -->
+          <form class="contact-form" data-validate novalidate>
+            <div class="contact-form__row">
+              <div class="field">
+                <label class="field__label" for="contact-name">Name</label>
+                <input class="field__input" id="contact-name" name="name" type="text" autocomplete="name" placeholder="Your name" required>
+              </div>
+              <div class="field">
+                <label class="field__label" for="contact-email">Email address</label>
+                <input class="field__input" id="contact-email" name="email" type="email" autocomplete="email" spellcheck="false" placeholder="email@example.com" required>
+              </div>
+            </div>
+            <div class="field">
+              <label class="field__label" for="contact-subject">Subject</label>
+              <input class="field__input" id="contact-subject" name="subject" type="text" placeholder="How can we help?">
+            </div>
+            <div class="field">
+              <label class="field__label" for="contact-message">Message</label>
+              <textarea class="field__input" id="contact-message" name="message" placeholder="Your message..." required></textarea>
+            </div>
+            <div class="contact-form__actions">
+              <button class="btn btn--regular btn--primary contact-form__submit" type="submit">
+                Send message
+                <img class="btn__icon" src="assets/icons/arrow-up-right.svg" width="24" height="24" alt="">
+              </button>
+              <p class="form-status text-body-xs" role="status"></p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
   </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div class="site-footer__content">
+        <div class="site-footer__newsletter">
+          <p class="footer-brand">
+            <img class="footer-brand__symbol" src="assets/icons/brand-symbol-footer.svg" width="73.9037" height="91.314" alt="">
+            <span class="footer-brand__line footer-brand__line--1">The Best</span>
+            <span class="footer-brand__line footer-brand__line--2">Speech society</span>
+          </p>
+
+          <!-- Not connected to a service yet: validation only, nothing is sent. -->
+          <form class="newsletter" data-validate novalidate aria-label="Newsletter">
+            <p class="text-body-m newsletter__text" id="newsletter-text">Receive updates on new books and resources from Ahsan al-Qawl.</p>
+            <div class="newsletter__actions">
+              <div class="newsletter__row">
+                <label class="visually-hidden" for="newsletter-email">Email address</label>
+                <input class="newsletter__input" id="newsletter-email" name="email" type="email" autocomplete="email" spellcheck="false" placeholder="Your email" aria-describedby="newsletter-text" required>
+                <button class="btn btn--secondary-on-dark" type="submit">Subscribe</button>
+              </div>
+              <p class="newsletter__error" id="newsletter-email-error" hidden></p>
+              <p class="form-status form-status--on-dark text-body-xs" role="status"></p>
+              <p class="text-body-xs newsletter__consent">By subscribing you agree to our Privacy Policy and consent to receive updates from The Best Speech Society.</p>
+            </div>
+          </form>
+        </div>
+
+        <nav class="site-footer__links" aria-label="Footer">
+          <div class="footer-col footer-col--explore">
+            <h2 class="footer-col__title">Explore</h2>
+            <ul class="footer-col__list">
+              <li><a class="footer-link" href="#start-here"><span class="footer-link__label">Start here</span></a></li>
+              <li><a class="footer-link" href="#library"><span class="footer-link__label">Library</span></a></li>
+              <li><a class="footer-link" href="#new-muslim"><span class="footer-link__label">New muslim path</span></a></li>
+              <li><a class="footer-link" href="#about"><span class="footer-link__label">About us</span></a></li>
+              <li><a class="footer-link" href="index.html"><span class="footer-link__label">Home</span></a></li>
+            </ul>
+          </div>
+          <!-- Legal and social destinations not provided yet: shown without a link. -->
+          <div class="footer-col footer-col--legal">
+            <h2 class="footer-col__title">Legal</h2>
+            <ul class="footer-col__list">
+              <li><a class="footer-link"><span class="footer-link__label">Terms</span></a></li>
+              <li><a class="footer-link"><span class="footer-link__label">Privacy</span></a></li>
+            </ul>
+          </div>
+          <div class="footer-col footer-col--social">
+            <h2 class="footer-col__title">Follow us</h2>
+            <ul class="footer-col__list">
+              <li><a class="footer-link"><img class="footer-link__icon" src="assets/icons/facebook.svg" width="24" height="24" alt=""><span class="footer-link__label">Facebook</span></a></li>
+              <li><a class="footer-link"><img class="footer-link__icon" src="assets/icons/youtube.svg" width="24" height="24" alt=""><span class="footer-link__label">Youtube</span></a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+
+      <div class="site-footer__credits">
+        <p class="text-body-xs" dir="auto">© 2026 Ahsan al-Qawl. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
 
   <script src="js/base.js"></script>
   <script src="js/header.js"></script>
   <script src="js/carousel.js"></script>
+  <script src="js/forms.js"></script>
 </body>
 </html>
