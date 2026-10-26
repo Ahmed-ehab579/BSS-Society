@@ -418,6 +418,79 @@
   color: var(--color-topic-text);
 }
 
+/* Explore pill (Button: Default circle / expand). Only the width changes:
+   content is right-aligned, so the right edge and arrow stay fixed and the
+   label is uncovered from behind the arrow without scaling. */
+.topic-card__cta {
+  --cta-expanded: 137.93px; /* 20.27 + label 70 + gap 10.19 + arrow 26.94 + 10.53 */
+  position: absolute;
+  right: 34px;
+  bottom: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10.188px;
+  width: 47.995px;
+  height: 46.649px;
+  padding-inline: 8.902px;
+  overflow: hidden;
+  border: 1.624px solid var(--color-text-on-dark);
+  border-radius: 35.771px;
+  background: rgba(59, 59, 59, 0);
+  color: var(--color-text-on-dark);
+  transition: width var(--motion-duration-hover) var(--motion-ease),
+    background-color var(--motion-duration-hover) var(--motion-ease);
+}
+
+.topic-card__cta-label {
+  flex: none;
+  width: 70px;
+  font-size: 19.702px;
+  line-height: 22.496px;
+  font-weight: var(--h5-weight);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity var(--motion-duration-hover) var(--motion-ease);
+}
+
+.topic-card__cta img {
+  flex: none;
+  width: 26.944px;
+  height: 26.944px;
+}
+
+.topic-card:focus-within .topic-card__cta {
+  width: var(--cta-expanded);
+  background: rgba(59, 59, 59, 0.26);
+}
+
+.topic-card:focus-within .topic-card__cta-label {
+  opacity: 1;
+}
+
+@media (hover: hover) {
+  .topic-card:hover .topic-card__cta {
+    width: var(--cta-expanded);
+    background: rgba(59, 59, 59, 0.26);
+  }
+
+  .topic-card:hover .topic-card__cta-label {
+    opacity: 1;
+  }
+}
+
+/* Touch and other non-hover input: expanded by default */
+@media (hover: none) {
+  .topic-card__cta {
+    width: var(--cta-expanded);
+    background: rgba(59, 59, 59, 0.26);
+  }
+
+  .topic-card__cta-label {
+    opacity: 1;
+  }
+}
+
 /* New Muslim path */
 .new-muslim__content {
   gap: 82px;
@@ -489,14 +562,14 @@
 
 .benefit-card__content {
   position: absolute;
-  top: 142.7px;
+  top: 151.679px;
   left: 22.434px;
   right: 22.434px;
   display: flex;
   flex-direction: column;
-  gap: var(--scale-800);
+  gap: var(--scale-600);
   padding-left: 4.782px;
-  transform: translateY(116.2px);
+  transform: translateY(107.215px);
   transition: transform var(--motion-duration-hover) var(--motion-ease);
 }
 
@@ -569,7 +642,7 @@
 
   .benefit-card__content {
     position: static;
-    gap: var(--scale-200);
+    gap: var(--scale-600);
     padding-left: 0;
     transform: none;
     transition: none;
@@ -613,6 +686,11 @@
     border-radius: 16px;
   }
 
+  .topic-card__cta {
+    right: 20px;
+    bottom: 20px;
+  }
+
   .topic-card__text {
     top: 32px;
     left: 20px;
@@ -640,7 +718,9 @@
 
 @media (prefers-reduced-motion: reduce) {
   .benefit-card,
-  .benefit-card__content {
+  .benefit-card__content,
+  .topic-card__cta,
+  .topic-card__cta-label {
     transition: none;
   }
 }

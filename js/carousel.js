@@ -36,6 +36,7 @@
   let inView = true;
   let anim = null;
   let drag = null;
+  let suppressClick = false;
   let raf = null;
   let lastTime = null;
 
@@ -133,6 +134,7 @@
   // Swipe / drag: pauses autoplay until Play is pressed, then snaps to a card.
   viewport.addEventListener("pointerdown", (e) => {
     if (e.button !== 0) return;
+    suppressClick = false;
     drag = { id: e.pointerId, x: e.clientX, y: e.clientY, start: offset, active: false };
   });
 
@@ -166,6 +168,8 @@
       else index = Math.round(index);
       root.classList.remove("is-dragging");
       drag = null;
+      suppressClick = true;
+      setTimeout(() => { suppressClick = false; }, 400);
       animateTo(index * step);
     } else {
       drag = null;
@@ -174,6 +178,14 @@
 
   viewport.addEventListener("pointerup", endDrag);
   viewport.addEventListener("pointercancel", endDrag);
+
+  // A swipe must not also activate a card link under the pointer.
+  viewport.addEventListener("click", (e) => {
+    if (!suppressClick) return;
+    e.preventDefault();
+    e.stopPropagation();
+    suppressClick = false;
+  }, true);
 
   // Only animate while visible.
   new IntersectionObserver((entries) => {
