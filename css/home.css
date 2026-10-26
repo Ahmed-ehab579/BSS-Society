@@ -122,7 +122,11 @@
     border-radius: 16px;
   }
 
+  /* Taller crop: hide the light strips at the image's top and bottom edges */
   .hero__media img {
+    position: relative;
+    top: -0.7%;
+    height: 102.1%;
     object-position: 65% center;
   }
 }
@@ -275,6 +279,16 @@
   .about__intro .btn,
   .start__intro .btn {
     width: 100%;
+  }
+
+  /* Section CTAs keep the regular mobile size and pressed feedback */
+  .section-cta {
+    height: 48px;
+    padding: var(--scale-300) var(--scale-600);
+  }
+
+  .section-cta:active .btn__arrow-track {
+    transform: none;
   }
 
   .start__cards {

@@ -68,6 +68,13 @@ a {
   letter-spacing: var(--h2-tracking);
 }
 
+.text-h3 {
+  font-size: var(--h3-size);
+  line-height: var(--h3-line);
+  font-weight: var(--h3-weight);
+  letter-spacing: var(--h3-tracking);
+}
+
 .text-h4 {
   font-size: var(--h4-size);
   line-height: var(--h4-line);
@@ -185,6 +192,11 @@ a {
   background: transparent;
   color: var(--color-text-on-light);
   border: var(--border-md) solid var(--border-color-on-light);
+  transition-duration: var(--motion-duration-hover);
+}
+
+.btn--primary.btn--large {
+  transition-duration: var(--motion-duration-hover);
 }
 
 /* Secondary on dark (Regular): 16px side padding, Label M, stroke inside */
@@ -233,6 +245,12 @@ a {
 @media (hover: hover) {
   .btn--secondary:hover {
     background: var(--surface-action-outline-hovered);
+    border-color: var(--border-color-on-light);
+    color: var(--color-text-on-light);
+  }
+
+  .btn--primary.btn--large:hover {
+    background: var(--surface-action-primary-hovered);
   }
 
   .btn--primary.btn--large:hover .btn__arrow-track {
@@ -252,6 +270,12 @@ a {
 
 .btn--secondary:active {
   background: var(--surface-action-outline-hovered);
+  border-color: var(--border-color-on-light);
+  color: var(--color-text-on-light);
+}
+
+.btn--primary.btn--large:active {
+  background: var(--surface-action-primary-hovered);
 }
 
 .btn--secondary-on-dark:active {

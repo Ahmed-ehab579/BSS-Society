@@ -62,10 +62,15 @@
   --h1-line: 88px;
   --h1-weight: 500;
 
-  --h2-size: 49px;
+  --h2-size: 45px;
   --h2-line: 59px;
   --h2-weight: 400;
   --h2-tracking: -0.98px;
+
+  --h3-size: 35px;
+  --h3-line: 49px;
+  --h3-weight: 500;
+  --h3-tracking: -0.39px;
 
   --h4-size: 31px;
   --h4-line: 45px;
@@ -75,7 +80,7 @@
   --h5-line: 34px;
   --h5-weight: 500;
 
-  --body-xxl-size: 27px;
+  --body-xxl-size: 24px;
   --body-xxl-line: 42px;
   --body-xxl-weight: 500;
 
