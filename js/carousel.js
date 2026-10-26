@@ -16,6 +16,8 @@
   const STEP_DURATION = 600;  // arrow / snap transition, ms
   const DRAG_THRESHOLD = 6;   // px before a pointer move counts as a swipe
 
+  // Clones copy attributes in markup order, so slide images list loading="lazy"
+  // before src; otherwise each clone starts an eager download.
   const slides = [...track.children];
   slides.forEach((slide) => {
     const clone = slide.cloneNode(true);
