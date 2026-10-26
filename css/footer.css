@@ -1,7 +1,7 @@
 /* Navigation / Site Footer — shared by all pages. */
 .site-footer {
   margin-top: 107.7px; /* with .page padding: 167.7px after the last section */
-  padding: 60px 47px 30px 27px;
+  padding: 64px 64px 12px;
   background: var(--color-footer-bg);
   color: var(--color-text-on-dark);
 }
@@ -9,8 +9,8 @@
 .site-footer__inner {
   display: flex;
   flex-direction: column;
-  gap: 80px;
-  max-width: 1288px;
+  gap: 95px;
+  max-width: 1312px;
   margin-inline: auto;
 }
 
@@ -211,14 +211,12 @@
   text-align: center;
 }
 
-@media (max-width: 1365px) {
+/* Newsletter above the link columns */
+@media (max-width: 1199px) {
   .site-footer {
     padding-inline: var(--gutter);
   }
-}
 
-/* Newsletter above the link columns */
-@media (max-width: 1199px) {
   .site-footer__content {
     flex-direction: column;
     gap: var(--scale-1000);
@@ -229,6 +227,7 @@
   .site-footer {
     margin-top: var(--scale-1000);
     padding-top: var(--scale-1000);
+    padding-bottom: 30px;
   }
 
   .site-footer__inner {

@@ -744,14 +744,13 @@
   transform: scaleX(-1);
 }
 
-/* Figma crop: full width, 104.6% height, anchored to the top */
 .contact__bg img {
   position: absolute;
-  top: 0.05%;
-  left: 0;
+  inset: 0;
   width: 100%;
-  height: 104.6%;
+  height: 100%;
   max-width: none;
+  object-fit: cover;
 }
 
 .contact__bg::after {
@@ -759,7 +758,7 @@
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(179.95deg, rgba(0, 0, 0, 0.296) 42.315%, rgba(255, 255, 255, 0) 99.934%),
+    linear-gradient(179.95deg, rgba(0, 0, 0, 0.439) 58.335%, rgba(255, 255, 255, 0) 99.934%),
     linear-gradient(-90deg, rgba(31, 31, 31, 0) 1.606%, rgba(0, 0, 0, 0.48) 47.783%);
 }
 
@@ -781,29 +780,22 @@
 }
 
 .section-label--on-dark {
-  gap: 9.468px;
-  height: auto;
-  margin-bottom: var(--scale-100);
-  color: var(--color-text-on-dark);
-}
-
-.section-label--on-dark::before {
-  width: 9.468px;
-  height: 9.468px;
+  color: var(--color-neutral-100);
 }
 
 .contact__heading-group {
   display: flex;
   flex-direction: column;
-  gap: 9px;
+  gap: var(--scale-400);
 }
 
 .contact__heading {
-  white-space: nowrap;
+  max-width: 418px;
 }
 
 .contact__text {
   max-width: 459px;
+  color: var(--color-neutral-100);
 }
 
 .contact-form {
@@ -854,9 +846,6 @@
   }
 
   .contact__bg img {
-    top: 0;
-    height: 100%;
-    object-fit: cover;
     object-position: 85% 70%; /* keeps the seated figure in view (mirrored) */
   }
 
@@ -896,7 +885,6 @@
     font-size: 32px;
     line-height: 40px;
     letter-spacing: -0.64px;
-    white-space: normal;
   }
 
   .contact__text {
