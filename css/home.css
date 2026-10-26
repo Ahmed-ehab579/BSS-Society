@@ -138,7 +138,7 @@
 
 .section {
   margin-top: 124px;
-  scroll-margin-top: var(--header-height);
+  scroll-margin-top: calc(var(--header-height) + var(--scale-600));
 }
 
 /* About Us */

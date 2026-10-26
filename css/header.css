@@ -84,9 +84,15 @@
   list-style: none;
 }
 
+/* States: default regular; hover bold; active (current section) bold with
+   a thin underline. The weight switches instantly; ::before reserves the
+   bold width so nothing shifts. */
 .site-nav__link {
+  position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
   height: 24px;
   color: var(--color-text);
   font-size: var(--body-m-size);
@@ -95,10 +101,43 @@
   white-space: nowrap;
 }
 
-.site-nav__link[aria-current="page"] {
-  font-size: var(--label-l-size);
-  line-height: var(--label-l-line);
+.site-nav__link::before {
+  content: attr(data-label);
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
   font-weight: var(--label-weight);
+}
+
+.site-nav__link::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -2px;
+  left: 0;
+  height: var(--border-md);
+  background: currentColor;
+  opacity: 0;
+  transform: scaleX(0.6);
+  transition: opacity var(--motion-duration-hover) var(--motion-ease),
+    transform var(--motion-duration-hover) var(--motion-ease);
+}
+
+.site-nav__link.is-active {
+  font-weight: var(--label-weight);
+}
+
+@media (hover: hover) {
+  .site-nav__link:hover {
+    font-weight: var(--label-weight);
+  }
+}
+
+@media (min-width: 900px) {
+  .site-nav__link.is-active::after {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .site-nav__link:focus-visible,
@@ -230,6 +269,7 @@
 @media (prefers-reduced-motion: reduce) {
   .site-header,
   .site-nav,
+  .site-nav__link::after,
   .menu-icon__bar,
   .menu-backdrop {
     transition: none !important;
