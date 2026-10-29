@@ -134,7 +134,62 @@
 }
 .field__error:not(:empty) { opacity: 1; transform: none; }
 
+/* ---------- Lesson cards (status, mark done, save) ---------- */
+.lessons { display: flex; gap: 20px; overflow-x: auto; padding: 4px 0; margin: 0; list-style: none; scroll-snap-type: x mandatory; scrollbar-width: none; scroll-behavior: smooth; }
+.lessons::-webkit-scrollbar { display: none; }
+
+.lesson {
+  flex: none; display: flex; flex-direction: column; width: 262.93px; height: 432.02px; overflow: hidden; scroll-snap-align: start;
+  border: 0.372px solid #6a6a6a; border-radius: 22.24px; background: #f1eee4; box-shadow: 0 1.01px 2.02px rgba(0, 0, 0, 0.05);
+  transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+.lesson:hover { transform: translateY(-6px); box-shadow: 0 22px 36px -24px rgba(0, 0, 0, 0.4); }
+.lesson__media { position: relative; flex: 1 0 0; min-height: 0; overflow: hidden; background: #f0efe8; }
+.lesson__media > img:first-child {
+  position: absolute; left: 0; top: var(--t, -32.6%); width: 100%; height: var(--h, 165.19%); max-width: none;
+  transition: transform 1.2s var(--ease-out);
+}
+.lesson__media::after { content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, 0.2); pointer-events: none; }
+.lesson:hover .lesson__media > img:first-child { transform: scale(1.06); }
+.lesson__play { position: absolute; left: 50%; top: 50%; z-index: 1; width: 86.55px; height: 86.55px; max-width: none; margin: -30.55px 0 0 -43.27px; pointer-events: none; transition: transform var(--dur) var(--ease-out); }
+.lesson:hover .lesson__play { transform: scale(1.1); }
+.lesson__status {
+  position: absolute; right: 12px; top: 12.13px; z-index: 2; display: flex; align-items: center; gap: 4px; padding: 2px 10px;
+  border-radius: 999px; border: 0.3px solid #919191; background: #d1d1d1;
+  font-weight: 500; font-size: 10px; line-height: 15px; color: #2c2c2c;
+  transition: background-color var(--dur) ease;
+}
+.lesson.is-done .lesson__status { background: #cde5bc; }
+.lesson__status--plain { background: rgba(251, 250, 246, 0.9); color: #202124; }
+.lesson__status img { width: 11px; height: 11px; }
+
+/* Mark done / save: slide in from the left on hover */
+.lesson__tools { position: absolute; left: 15px; top: 13.43px; z-index: 2; display: flex; flex-direction: column; gap: 8.57px; }
+.lesson__tool {
+  width: 34px; height: 34px; border-radius: 50%; transform: translateX(-60px); opacity: 0;
+  transition: transform 0.5s var(--ease-out), opacity 0.3s ease, box-shadow var(--dur-fast) ease, background-color var(--dur-fast) ease;
+}
+.lesson__tool + .lesson__tool { transition-delay: 0.06s; }
+.lesson__tool img { width: 34px; height: 34px; transition: transform var(--dur-fast) var(--ease-out); }
+.lesson:hover .lesson__tool, .lesson:focus-within .lesson__tool, .lesson__tool[aria-pressed="true"] { transform: none; opacity: 1; }
+.lesson__tool:hover img { transform: scale(1.1); }
+.lesson__tool[aria-pressed="true"] { box-shadow: 0 0 0 2.5px var(--c-accent); }
+
+.lesson__body { display: flex; flex-direction: column; gap: 34.38px; padding: 20.21px; flex: none; }
+.lesson__text { display: flex; flex-direction: column; gap: 8.09px; align-items: flex-start; }
+.lesson__type { display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 999px; background: rgba(251, 250, 246, 0.9); border: 0.3px solid #919191; font-weight: 500; font-size: 10px; line-height: 15px; color: #202124; }
+.lesson__type img { width: 11px; height: 11px; }
+.lesson h4 { width: 190px; padding-top: 2.53px; font-weight: 500; font-size: 17.18px; line-height: 23.63px; color: #202124; }
+.lesson p { font-size: 13.14px; line-height: 21.36px; color: #575956; }
+.lesson__cta { display: flex; justify-content: center; padding: 11.04px 16.17px; border-radius: 999px; background: #454545; color: #fff; font-weight: 600; font-size: 13px; line-height: 18.19px; transition: background-color var(--dur-fast) ease; }
+.lesson__cta span { padding-left: 8.09px; }
+.lesson__cta:hover { background: #2c2c2c; }
+.lessons.is-refreshing .lesson { animation: lessonIn 0.6s var(--ease-out) both; animation-delay: calc(var(--n, 0) * 60ms); }
+@keyframes lessonIn { from { opacity: 0; transform: translateX(24px); } }
+
 @media (max-width: 767px) {
+  .lesson { width: 240px; }
+  .lesson__tool { transform: none; opacity: 1; }
   .benefit__inner { gap: 32px; transform: none !important; }
   .benefit__text { gap: 16px; }
   .benefit__icon { opacity: 1 !important; transform: none !important; }
