@@ -1,0 +1,17 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="42.0001" height="28.0001" viewBox="0 0 42.0001 28.0001" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Clip path group">
+<mask id="mask0_0_23" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="42" height="29">
+<path id="Vector" d="M5.23371e-05 0.000108243H42.0001V0.000108243V28.0001V28.0001H5.23371e-05V28.0001V0.000108243V0.000108243V0.000108243" fill="white"/>
+</mask>
+<g mask="url(#mask0_0_23)">
+<g id="Group">
+<path id="Vector_2" d="M0.000104674 0.00119305H42.0001V0.00119305V28.0012V28.0012H0.000104674V28.0012V0.00119305V0.00119305V0.00119305" fill="#012169"/>
+<path id="Vector_3" d="M0.000104674 0.00119305L42.0001 28.0012L0.000104674 0.00119305M42.0001 0.00119305L0.000104674 28.0012L42.0001 0.00119305" fill="black" stroke-width="4.44726" stroke="white"/>
+<path id="Vector_4" d="M0.000104674 0.00119305L42.0001 28.0012L0.000104674 0.00119305" fill="black" stroke-width="1.66772" stroke="#C8102E"/>
+<path id="Vector_5" d="M42.0001 0.00119305L0.000104674 28.0012L42.0001 0.00119305" fill="black" stroke-width="1.66772" stroke="#C8102E"/>
+<path id="Vector_6" d="M21.0001 0.00119305V28.0012V0.00119305M0.000104674 14.0012H42.0001H0.000104674" fill="black" stroke-width="6.67089" stroke="white"/>
+<path id="Vector_7" d="M21.0001 0.00119305V28.0012V0.00119305M0.000104674 14.0012H42.0001H0.000104674" fill="black" stroke-width="3.89135" stroke="#C8102E"/>
+</g>
+</g>
+</g>
+</svg>
