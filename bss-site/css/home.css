@@ -104,35 +104,6 @@ html:not(.js) .about__body strong { color: var(--ink, #454545); }
   transform: scale(var(--zoom, 1.12)); transition: transform 0.2s linear;
 }
 
-.benefit {
-  position: relative; height: 350.86px; overflow: hidden;
-  background: var(--c-surface); border: 0.478px solid var(--c-line); border-radius: 22.95px;
-  transition: background-color var(--dur) ease, box-shadow var(--dur) var(--ease-out);
-}
-.benefit:hover, .benefit:focus-within, .benefit.is-open { background: #e2ded2; box-shadow: 0 20px 36px -28px rgba(0, 0, 0, 0.45); }
-.benefit__inner {
-  display: flex; flex-direction: column; gap: 164.21px;
-  padding: 25.58px 22.43px 22px;
-  transition: transform 0.7s var(--ease-out);
-}
-.benefit__icon { position: relative; width: 69.1px; height: 69.1px; flex: none; transition: opacity 0.5s ease, transform 0.7s var(--ease-out); }
-.benefit__icon img { position: absolute; }
-.benefit__icon--book img { left: 8.33%; top: 8.42%; width: 58.93px; height: 58.81px; }
-.benefit__icon:not(.benefit__icon--book) img { inset: 0; width: 69.1px; height: 69.1px; }
-.benefit__text { display: flex; flex-direction: column; gap: 52.99px; padding-left: 4.78px; font-weight: 500; color: var(--c-card-text); }
-.benefit h3 { width: 209.08px; font-size: 26.92px; line-height: 1.3; font-weight: 500; }
-.benefit p { width: 209.08px; font-size: 14.36px; line-height: 1.7; opacity: 0; transition: opacity 0.5s ease 0.1s; }
-
-/* Reveal the description: slide the content up by its own measured height */
-.benefit:hover .benefit__inner,
-.benefit:focus-within .benefit__inner,
-.benefit.is-open .benefit__inner { transform: translateY(calc(var(--shift, 126px) * -1)); }
-.benefit:hover .benefit__icon,
-.benefit:focus-within .benefit__icon,
-.benefit.is-open .benefit__icon { opacity: 0; transform: scale(0.8); }
-.benefit:hover p,
-.benefit:focus-within p,
-.benefit.is-open p { opacity: 1; }
 
 /* ---------- Contact ---------- */
 .contact {
@@ -228,11 +199,6 @@ html:not(.js) .about__body strong { color: var(--ink, #454545); }
   .benefits__col { display: contents; }
   .benefits__media { order: -1; flex: 0 0 260px; width: 260px; min-height: 0; scroll-snap-align: start; }
   .benefit { flex: 0 0 260px; height: auto; scroll-snap-align: start; }
-  .benefit__inner { gap: 32px; transform: none !important; }
-  .benefit__text { gap: 16px; }
-  .benefit__icon { opacity: 1 !important; transform: none !important; }
-  .benefit p { opacity: 1; }
-  .benefit h3, .benefit p { width: auto; }
   .contact { padding: 32px 20px; gap: 32px; min-height: 0; }
   .contact h2 { white-space: normal; line-height: 1.2; }
   .contact__intro { gap: 12px; }

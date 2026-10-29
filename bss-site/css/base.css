@@ -109,6 +109,8 @@ button { cursor: pointer; background: none; border: 0; padding: 0; }
 }
 .js [data-reveal="fade"] { transform: none; }
 .js [data-reveal="scale"] { transform: scale(0.96); }
+.js [data-reveal="left"] { transform: translateX(-48px); }
+.js [data-reveal="right"] { transform: translateX(48px); }
 .js [data-reveal].is-visible { opacity: 1; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {

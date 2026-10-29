@@ -40,6 +40,42 @@
     revealEls.forEach((el) => el.classList.add('is-visible'));
   }
 
+  /* ---------- Count-up numbers and "reached" steps ---------- */
+  const counters = document.querySelectorAll('[data-count]');
+  const flowRows = document.querySelectorAll('[data-flow]');
+  if ('IntersectionObserver' in window && !reduceMotion) {
+    const countIO = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const target = Number(el.dataset.count);
+        const start = performance.now();
+        const tick = (now) => {
+          const t = Math.min((now - start) / 1600, 1);
+          el.textContent = Math.round(target * (1 - Math.pow(1 - t, 3)));
+          if (t < 1) requestAnimationFrame(tick);
+        };
+        el.textContent = '0';
+        requestAnimationFrame(tick);
+        countIO.unobserve(el);
+      });
+    }, { threshold: 0.6 });
+    counters.forEach((el) => countIO.observe(el));
+
+    // A step turns green once it reaches the middle of the screen
+    const flowIO = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting || entry.boundingClientRect.top < 0) {
+          entry.target.classList.add('is-done');
+          flowIO.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -50% 0px' });
+    flowRows.forEach((el) => flowIO.observe(el));
+  } else {
+    flowRows.forEach((el) => el.classList.add('is-done'));
+  }
+
   /* ---------- Header: shadow, hide on scroll down, mobile menu ---------- */
   const header = document.querySelector('[data-header]');
   const nav = document.querySelector('[data-nav]');
@@ -85,7 +121,7 @@
       // Draw the path top to bottom as it passes the lower part of the screen
       drawEls.forEach((el) => {
         const r = el.getBoundingClientRect();
-        const p = Math.min(Math.max((vh * 0.8 - r.top) / (r.height * 0.85), 0), 1);
+        const p = Math.min(Math.max((vh * 0.8 - r.top) / Math.max(r.height * 0.85, vh * 0.35), 0), 1);
         el.style.setProperty('--draw', p.toFixed(4));
       });
     } else {
