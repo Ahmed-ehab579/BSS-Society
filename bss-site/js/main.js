@@ -200,6 +200,43 @@
     update();
   });
 
+  /* ---------- Card rows with prev/next and mark done / save (book, article) ---------- */
+  document.querySelectorAll('[data-lessons-auto]').forEach((list) => {
+    const root = list.closest('section') || document;
+    const prev = root.querySelector('[data-lessons-prev]');
+    const next = root.querySelector('[data-lessons-next]');
+    if (prev && next) {
+      const gap = () => parseFloat(getComputedStyle(list).columnGap) || 0;
+      const step = () => list.firstElementChild.getBoundingClientRect().width + gap();
+      const update = () => {
+        prev.disabled = list.scrollLeft <= 2;
+        next.disabled = list.scrollLeft >= list.scrollWidth - list.clientWidth - 2;
+      };
+      prev.addEventListener('click', () => list.scrollBy({ left: -step() }));
+      next.addEventListener('click', () => list.scrollBy({ left: step() }));
+      list.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+      update();
+    }
+    list.querySelectorAll('[data-lesson]').forEach((lesson) => {
+      const done = lesson.querySelector('[data-done]');
+      const keep = lesson.querySelector('[data-save]');
+      const status = lesson.querySelector('[data-status] span:last-child');
+      done?.addEventListener('click', () => {
+        const on = !lesson.classList.contains('is-done');
+        lesson.classList.toggle('is-done', on);
+        done.setAttribute('aria-pressed', String(on));
+        done.setAttribute('aria-label', on ? 'Mark as not done' : 'Mark as done');
+        if (status) status.textContent = on ? 'Completed' : 'Not started';
+      });
+      keep?.addEventListener('click', () => {
+        const on = keep.getAttribute('aria-pressed') !== 'true';
+        keep.setAttribute('aria-pressed', String(on));
+        keep.setAttribute('aria-label', on ? 'Remove from saved' : 'Save for later');
+      });
+    });
+  });
+
   /* ---------- Benefit cards: measure how far to slide to show the text ---------- */
   const benefits = document.querySelectorAll('[data-benefit]');
   const measureBenefits = () => benefits.forEach((card) => {
