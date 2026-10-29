@@ -1,0 +1,64 @@
+/* Design tokens — shared by every page */
+:root {
+  /* Colour */
+  --c-bg: #f5f2eb;
+  --c-surface: #e8e5dc;
+  --c-surface-soft: #f2efe5;
+  --c-input: #f9f7f1;
+  --c-ink: #000;
+  --c-ink-900: #111;
+  --c-ink-800: #202020;
+  --c-ink-700: #252525;
+  --c-ink-600: #272727;
+  --c-ink-500: #353535;
+  --c-btn: #3b3b3b;
+  --c-muted: #909090;
+  --c-body: #444748;
+  --c-eyebrow: #555953;
+  --c-card-text: rgba(37, 37, 37, 0.8);
+  --c-placeholder: #8a8a8a;
+  --c-line: #333;
+  --c-input-line: #bbb;
+  --c-accent: #95b97b;
+  --c-accent-dark: #768c65;
+  --c-footer: #2e2e2e;
+  --c-footer-line: #535353;
+  --c-footer-muted: #959595;
+  --c-error: #b3261e;
+
+  /* Type */
+  --f-sans: "Manrope", system-ui, sans-serif;
+  --f-satoshi: "Satoshi", "Manrope", system-ui, sans-serif;
+  --f-roboto: "Roboto", system-ui, sans-serif;
+  --f-logo: "Cormorant Garamond", Georgia, serif;
+  --f-logo-footer: "Abhaya Libre", Georgia, serif;
+
+  --fs-display: clamp(40px, 4.22vw, 60.81px);
+  --fs-h2: clamp(34px, 3.4vw, 48.91px);
+  --fs-h2-sm: clamp(32px, 3.16vw, 45.45px);
+  --fs-h3: clamp(26px, 2.2vw, 31.67px);
+  --fs-lead: clamp(20px, 1.84vw, 26.51px);
+
+  /* Layout */
+  --page-max: 1361px;
+  --page-gutter: 40px;
+  --section-gap: 124px;
+  --radius-panel: 30px;
+  --radius-card: 29.235px;
+  --radius-pill: 47.49px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 0.25s;
+  --dur: 0.5s;
+  --dur-slow: 0.9s;
+}
+
+@media (max-width: 767px) {
+  :root {
+    --page-gutter: 16px;
+    --section-gap: 72px;
+    --radius-panel: 22px;
+  }
+}
