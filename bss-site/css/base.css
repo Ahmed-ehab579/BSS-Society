@@ -78,6 +78,11 @@ button { cursor: pointer; background: none; border: 0; padding: 0; }
 
 .btn--block { width: 100%; }
 
+.btn--sm { height: 48.41px; font-size: 15.56px; }
+.btn--sm.btn--primary { gap: 7.78px; padding: 0 19.57px 0 23.9px; }
+.btn--sm.btn--secondary { height: 48.1px; gap: 7.97px; padding: 0 23.9px; border-width: 0.605px; }
+.btn--sm .btn__arrow { width: 29.39px; height: 29.39px; }
+
 /* Arrow that flies out and is replaced on hover */
 .btn__arrow {
   position: relative; width: 34px; height: 34px; overflow: hidden; flex: none;

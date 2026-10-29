@@ -147,10 +147,6 @@ html:not(.js) .who__body strong { color: var(--ink); }
 .reach p:not(.eyebrow) { width: 584px; max-width: 100%; padding-top: 20px; font-size: 18px; line-height: 27.75px; color: rgba(86, 86, 86, 0.72); }
 .reach__actions { display: flex; gap: 15.93px; padding-top: 48px; flex-wrap: wrap; justify-content: center; }
 
-.btn--sm { height: 48.41px; font-size: 15.56px; }
-.btn--sm.btn--primary { gap: 7.78px; padding: 0 19.57px 0 23.9px; }
-.btn--sm.btn--secondary { height: 48.1px; padding: 0 23.9px; border-width: 0.605px; }
-.btn--sm .btn__arrow { width: 29.39px; height: 29.39px; }
 
 /* ---------- Smaller screens (proposal: no mobile design yet) ---------- */
 @media (max-width: 1340px) {

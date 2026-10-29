@@ -135,26 +135,6 @@ html:not(.js) .about__body strong { color: var(--ink, #454545); }
   -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
   display: flex; flex-direction: column; gap: 52.87px; color: var(--c-ink-500);
 }
-.contact-form__row { display: flex; gap: 23.5px; }
-.field { flex: 1 0 0; min-width: 0; display: flex; flex-direction: column; gap: 7.83px; position: relative; }
-.field label { font-weight: 600; font-size: 11.75px; line-height: 14.69px; letter-spacing: 0.49px; text-transform: uppercase; }
-.field input, .field textarea {
-  width: 100%; padding: 12.73px 16.64px 13.71px; border-radius: 7.83px;
-  background: var(--c-input); border: 0.979px solid var(--c-input-line);
-  font-size: 13.71px; line-height: normal; color: var(--c-ink-700);
-  transition: border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease, background-color var(--dur-fast) ease;
-}
-.field textarea { height: 103.9px; resize: vertical; line-height: 19.58px; padding-bottom: 12.73px; }
-.field input::placeholder, .field textarea::placeholder { color: var(--c-placeholder); }
-.field input:hover, .field textarea:hover { border-color: #999; }
-.field input:focus, .field textarea:focus { outline: none; background: #fff; border-color: var(--c-accent-dark); box-shadow: 0 0 0 3px rgba(149, 185, 123, 0.25); }
-.field [aria-invalid="true"] { border-color: var(--c-error); }
-.field__error {
-  position: absolute; top: 100%; left: 0; margin-top: 4px;
-  font-size: 12px; line-height: 1.3; color: var(--c-error);
-  opacity: 0; transform: translateY(-4px); transition: opacity var(--dur-fast) ease, transform var(--dur-fast) ease;
-}
-.field__error:not(:empty) { opacity: 1; transform: none; }
 
 /* ---------- Smaller screens (proposal: no mobile design yet) ---------- */
 @media (max-width: 1360px) {
