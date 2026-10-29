@@ -1,0 +1,804 @@
+/* Start Here page: intro, learning path and its states. Shared styles live in tokens/base/header. */
+.page {
+  padding-top: calc(var(--header-height) + 60px);
+  padding-bottom: 120px;
+}
+
+.section {
+  scroll-margin-top: calc(var(--header-height) + var(--scale-600));
+}
+
+/* Introduction */
+/* Outer boundaries match the section panel below (.section-panel, max 1305px) at every width */
+.intro {
+  max-width: calc(1305px + 2 * var(--gutter));
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--scale-900);
+}
+
+.intro__heading {
+  max-width: 800px;
+  color: var(--color-heading);
+}
+
+/* Desktop hero heading: 53/81, wrapper 558px (shrinks with the container) */
+@media (min-width: 1100px) {
+  .intro__heading {
+    flex: 0 1 558px;
+    min-width: 0;
+    max-width: 558px;
+    font-size: 53px;
+    line-height: 81px;
+  }
+}
+
+.intro__text {
+  width: 485px;
+  flex-shrink: 0;
+  padding-bottom: var(--scale-300);
+  color: var(--color-text-body);
+}
+
+.journey-section {
+  margin-top: 138px;
+}
+
+/* Shown only when progress cannot be saved in this browser */
+.journey-notice {
+  max-width: 1153px;
+  margin: var(--scale-600) auto 0;
+  padding: var(--scale-300) var(--scale-500);
+  border: var(--border-md) solid var(--color-neutral-300);
+  border-radius: var(--scale-300);
+  background: var(--surface-action-outline);
+  font-size: var(--body-s-size);
+  line-height: var(--body-s-line);
+  color: var(--color-text-on-light);
+}
+
+.journey-notice[hidden] {
+  display: none;
+}
+
+/* Journey */
+.journey {
+  --line-muted: #b8b8b8;               /* dashed connector between locked cards */
+  --line-active: #5c5c5c;              /* connector once both cards are available */
+  --pin-active-ring: #c5d5b2;          /* Figma pin, State=Grren */
+  --pin-active-dot: #6e8e49;
+  --card-stroke-active: #7d7d7d;       /* available card stroke */
+  --card-stroke-locked: #929292;       /* locked card stroke */
+  --card-width: 275.56px;
+  position: relative;
+  max-width: 1153px;
+  height: 1345.29px;
+  margin: 171px auto 0;
+}
+
+.journey__start-label {
+  position: absolute;
+  top: -66px;
+  left: 12.38%;
+  width: 120px;
+  transform: translateX(-50%);
+  text-align: center;
+  font-size: var(--body-l-size);
+  line-height: 1.37;
+  font-weight: 600;
+  color: var(--color-card-text);
+}
+
+.journey__lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.journey__lines--step {
+  display: none;
+}
+
+.journey__segment {
+  fill: none;
+  stroke: var(--line-muted);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 10 9;
+  vector-effect: non-scaling-stroke;
+  shape-rendering: geometricPrecision;  /* even anti-aliasing, so near-vertical runs don't snap to darker pixels */
+  transition: stroke var(--card-duration, 600ms) var(--card-ease, ease),
+    stroke-width var(--card-duration, 600ms) var(--card-ease, ease);
+}
+
+.journey__segment.is-active {
+  stroke: var(--line-active);
+  stroke-width: 2.5;
+}
+
+.journey__steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.journey__step {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--card-width);
+  transform: translateX(-50%);
+}
+
+.journey__step:nth-child(1) { --x: 12.38%; --y: 0; }
+.journey__step:nth-child(2) { --x: 48.03%; --y: 125.1px; }
+.journey__step:nth-child(3) { --x: 84.2%; --y: 68.3px; }
+.journey__step:nth-child(4) { --x: 84.2%; --y: 841.5px; }
+.journey__step:nth-child(5) { --x: 48.03%; --y: 776.7px; }
+.journey__step:nth-child(6) { --x: 11.95%; --y: 841.5px; }
+
+.journey__item {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.journey__slot {
+  width: 100%;
+}
+
+/* Pin: Figma "Not started" node (circle, inner dot, stem) */
+.journey__pin {
+  position: relative;
+  width: 52.61px;
+  height: 52.61px;
+  margin-bottom: 23.5px;
+  border-radius: 50%;
+  background: #dbdbdb;
+  transition: background-color var(--motion-duration-hover) var(--motion-ease);
+}
+
+.journey__pin::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 23.31px;
+  height: 23.31px;
+  border-radius: 50%;
+  background: #9f9f9f;
+  transition: background-color var(--motion-duration-hover) var(--motion-ease);
+}
+
+.journey__pin::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 1px;
+  height: 23.5px;
+  background: var(--border-color-on-light);
+}
+
+/* Pin above an available card: green state */
+.journey__step[data-state="active"] .journey__pin {
+  background: var(--pin-active-ring);
+}
+
+.journey__step[data-state="active"] .journey__pin::before {
+  background: var(--pin-active-dot);
+}
+
+/* Card */
+.journey-card {
+  --body-gap: 11.544px;
+  --card-duration: 600ms;              /* hover in/out, slower than shared hover for a calm reveal */
+  --card-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 48.114px;
+  width: 100%;
+  min-height: 428.65px;
+  overflow: hidden;
+  border: 0.5px solid var(--color-benefit-border);
+  border-radius: 21.312px;
+  background: var(--surface-cards);
+  color: var(--color-card-text);
+  transition: background-color var(--card-duration) var(--card-ease),
+    gap var(--card-duration) var(--card-ease);
+}
+
+.journey-card__body {
+  display: flex;
+  flex-direction: column;
+  padding: 28.416px 20.397px 10.935px;
+}
+
+.journey-card__number {
+  font-size: 81.407px;
+  line-height: 1;
+  font-weight: 300;
+  color: rgba(37, 37, 37, 0.35);
+  margin-bottom: var(--body-gap);
+}
+
+.journey-card__title {
+  font-size: var(--h5-size);
+  line-height: 1.5;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.journey-card__media {
+  position: relative;
+  flex: none;
+  height: 167.584px;
+  margin-top: auto;
+  overflow: hidden;
+}
+
+.journey-card__media img {
+  position: absolute;
+  left: 0;
+  top: -74.55%;
+  width: 100%;
+  height: 213.73%;
+  max-width: none;
+  object-fit: cover;
+}
+
+/* Description reveal (active card). Rows animate 0fr -> 1fr. */
+.journey-card__reveal {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows var(--card-duration) var(--card-ease),
+    opacity var(--card-duration) var(--card-ease);
+}
+
+.journey-card__reveal-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.journey-card__text {
+  padding-top: var(--body-gap);
+  font-size: var(--body-s-size);
+  line-height: 1.7;
+  font-weight: 500;
+  color: var(--color-text-on-light);
+}
+
+/* Reading button: shown without hover (touch) and on keyboard focus */
+.journey-card__go {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin: 12px 0 0 auto;
+  border-radius: 50%;
+  background: var(--surface-action-primary);
+}
+
+.journey-card__go img {
+  width: 24px;
+  height: 24px;
+}
+
+/* Elevation: the available card sits above the flat locked cards */
+a.journey-card {
+  --card-shadow: 0 1px 2px rgba(37, 37, 37, 0.08), 0 8px 16px -4px rgba(37, 37, 37, 0.14), 0 20px 36px -12px rgba(37, 37, 37, 0.18);
+  --card-shadow-hover: 0 2px 4px rgba(37, 37, 37, 0.08), 0 14px 24px -6px rgba(37, 37, 37, 0.18), 0 32px 52px -16px rgba(37, 37, 37, 0.24);
+  border-color: var(--card-stroke-active);
+  box-shadow: var(--card-shadow);
+  transition: background-color var(--card-duration) var(--card-ease),
+    gap var(--card-duration) var(--card-ease),
+    box-shadow var(--card-duration) var(--card-ease);
+  cursor: default;   /* default arrow; the cursor badge signals the action */
+  -webkit-tap-highlight-color: transparent;
+}
+
+a.journey-card:focus-visible {
+  box-shadow: var(--card-shadow-hover);
+  outline: 2px solid var(--border-color-on-light);
+  outline-offset: 3px;
+  background: var(--surface-cards-hovered);
+  gap: 21px;
+}
+
+a.journey-card:focus-visible .journey-card__reveal {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+a.journey-card:focus-visible .journey-card__go {
+  display: flex;
+}
+
+@media (hover: hover) {
+  a.journey-card:hover {
+    box-shadow: var(--card-shadow-hover);
+    background: var(--surface-cards-hovered);
+    gap: 21px;
+  }
+
+  a.journey-card:hover .journey-card__reveal {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+}
+
+@media (hover: none) {
+  a.journey-card {
+    background: var(--surface-cards-hovered);
+    gap: 21px;
+  }
+
+  a.journey-card .journey-card__reveal {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+
+  a.journey-card .journey-card__go {
+    display: flex;
+  }
+}
+
+/* Locked card (Figma "Locked card": 49% number, title and image; lock icon top right) */
+.journey-card.is-locked {
+  border-color: var(--card-stroke-locked);
+  cursor: default;
+}
+
+.journey-card.is-locked .journey-card__number,
+.journey-card.is-locked .journey-card__title {
+  opacity: 0.49;
+}
+
+.journey-card.is-locked .journey-card__media {
+  mix-blend-mode: luminosity;
+  opacity: 0.49;
+}
+
+.journey-card.is-locked:focus-visible {
+  outline: 2px solid var(--border-color-on-light);
+  outline-offset: 3px;
+}
+
+.journey-card__lock {
+  position: absolute;
+  top: 27px;
+  right: 24.6px;
+  width: 36px;
+  height: 42px;
+}
+
+/* Locked hover overlay: shown on hover and keyboard/touch focus */
+.journey-card__locked-panel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 25px 13px;
+  /* Opaque card colour underneath (Figma "Component 59") plus the 89% overlay on top */
+  background:
+    linear-gradient(var(--surface-cards-locked-overlay, rgba(232, 229, 220, 0.89)), var(--surface-cards-locked-overlay, rgba(232, 229, 220, 0.89))),
+    var(--surface-cards, #e8e5dc);
+  color: var(--color-text);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--card-duration) var(--card-ease);
+}
+
+.journey-card__locked-copy {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+  text-align: center;
+}
+
+.journey-card__locked-title {
+  max-width: 218px;
+  font-size: 21.75px;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+.journey-card__locked-text {
+  max-width: 187px;
+  font-size: 15.75px;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+.journey-card__locked-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+/* Actions / Button, Secondary Regular (44px, 16px side padding, Label M) */
+.journey-card__locked-actions .btn {
+  width: 100%;
+}
+
+.journey-card__locked-actions .btn--secondary {
+  height: 44px;
+  padding: var(--scale-300) var(--scale-400);
+  background: transparent;
+}
+
+.journey-card__lock {
+  transition: opacity var(--card-duration) var(--card-ease);
+}
+
+/* Figma hover variant has no lock icon */
+.journey-card.is-locked:focus-within .journey-card__lock {
+  opacity: 0;
+}
+
+/* Original content stays only as a ghost behind the overlay (49% x 11% visible) */
+.journey-card.is-locked .journey-card__body,
+.journey-card.is-locked .journey-card__media {
+  transition: opacity var(--card-duration) var(--card-ease);
+}
+
+.journey-card.is-locked:focus-within .journey-card__body {
+  opacity: 0.11;
+}
+
+.journey-card.is-locked:focus-within .journey-card__media {
+  opacity: 0.054;
+}
+
+.journey-card.is-locked:focus-within .journey-card__locked-panel {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (hover: hover) {
+  .journey-card.is-locked:hover .journey-card__lock {
+    opacity: 0;
+  }
+
+  .journey-card.is-locked:hover .journey-card__body {
+    opacity: 0.11;
+  }
+
+  .journey-card.is-locked:hover .journey-card__media {
+    opacity: 0.054;
+  }
+
+  .journey-card.is-locked:hover .journey-card__locked-panel {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .journey-card__locked-actions .btn--secondary:hover {
+    background: var(--surface-action-outline-hovered);
+  }
+}
+
+
+/* Small label on the recommended card: "Start here" / "Start with this card" / "Continue" */
+.journey-card__tag {
+  position: absolute;
+  top: var(--scale-300);
+  right: var(--scale-300);
+  z-index: 1;
+  padding: 0 var(--scale-300);
+  border-radius: 999px;
+  background: var(--surface-action-primary);
+  color: var(--color-text-on-dark);
+  font-size: var(--label-s-size);
+  line-height: var(--label-s-line);
+  font-weight: var(--label-weight);
+  white-space: nowrap;
+}
+
+/* Completed card (Figma: green wash with a check icon; hover shows the message and two actions) */
+.journey-card.is-completed {
+  border-color: var(--card-stroke-active);
+  cursor: default;
+}
+
+.journey-card.is-completed:focus-visible {
+  outline: var(--border-lg) solid var(--border-color-on-light);
+  outline-offset: 3px;
+}
+
+.journey-card__wash {
+  position: absolute;
+  inset: 0;
+  background: var(--surface-cards-completed-overlay);
+  pointer-events: none;
+}
+
+.journey-card__done-icon {
+  position: absolute;
+  top: 21px;
+  left: calc(100% - 20px - 72px);
+  z-index: 2;
+  width: 72px;
+  height: 71px;
+  color: var(--color-completed);
+  pointer-events: none;
+  transition: left var(--card-duration) var(--card-ease), top var(--card-duration) var(--card-ease);
+}
+
+.journey-card__done-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 25px 13px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--card-duration) var(--card-ease);
+}
+
+.journey-card__done-title {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 90px;
+  max-width: 218px;
+  margin-inline: auto;
+  text-align: center;
+  font-size: var(--h6-size);
+  line-height: var(--h6-line);
+  font-weight: var(--h6-weight);
+  color: var(--color-completed-text);
+}
+
+.journey-card.is-completed .journey-card__body,
+.journey-card.is-completed .journey-card__media {
+  transition: opacity var(--card-duration) var(--card-ease);
+}
+
+.journey-card.is-completed:focus-within .journey-card__done-panel {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.journey-card.is-completed:focus-within .journey-card__body,
+.journey-card.is-completed:focus-within .journey-card__media {
+  opacity: 0;
+}
+
+.journey-card.is-completed:focus-within .journey-card__done-icon {
+  left: calc(50% - 36px);
+  top: 43px;
+}
+
+@media (hover: hover) {
+  .journey-card.is-completed:hover .journey-card__done-panel {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .journey-card.is-completed:hover .journey-card__body,
+  .journey-card.is-completed:hover .journey-card__media {
+    opacity: 0;
+  }
+
+  .journey-card.is-completed:hover .journey-card__done-icon {
+    left: calc(50% - 36px);
+    top: 43px;
+  }
+}
+
+/* Cursor badge on the active card (desktop pointer only; moved by js/journey.js) */
+.journey-badge {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  display: none;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 14px;
+  border: 1px solid var(--border-color-on-dark);
+  border-radius: 999px;
+  background: var(--surface-action-primary);
+  color: var(--color-text-on-dark);
+  font-size: var(--label-m-size);
+  line-height: var(--label-m-line);
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--motion-duration) var(--motion-ease);
+  will-change: transform;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .journey-badge {
+    display: inline-flex;
+  }
+
+  .journey-badge.is-visible {
+    opacity: 1;
+  }
+}
+
+/* Tablet and mobile: single zig-zag column (mobile Figma reference) */
+@media (max-width: 1099px) {
+  .intro {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--scale-600);
+  }
+
+  .intro__text {
+    width: auto;
+    padding-bottom: 0;
+  }
+
+  .journey {
+    height: auto;
+    max-width: 340px;
+    margin-top: 96px;
+  }
+
+  .journey__start-label {
+    top: -66px;
+    left: 35%;
+  }
+
+  .journey > .journey__lines {
+    display: none;
+  }
+
+  .journey__lines--step {
+    display: block;
+    inset: auto;
+    left: 0;
+    top: 26.3px;
+    height: calc(100% + 86px);
+  }
+
+  .journey__steps {
+    display: flex;
+    flex-direction: column;
+    gap: 86px;
+  }
+
+  .journey__step {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: 100%;
+    transform: none;
+  }
+
+  .journey__item {
+    width: 70%;
+  }
+
+  .journey__step:nth-child(even) .journey__item {
+    margin-left: auto;
+  }
+
+  .journey-card {
+    --media-h: 138.654px;
+    --body-gap: 9.551px;
+    gap: 39.808px;
+    min-height: 354.65px;
+  }
+
+  .journey-card__body {
+    padding: 23.511px 16.876px 9.047px;
+  }
+
+  .journey-card__number {
+    font-size: 67.35px;
+  }
+
+  .journey-card__title {
+    font-size: 22.12px;
+  }
+
+  .journey-card__media {
+    height: var(--media-h);
+  }
+
+  .journey-card__locked-panel,
+  .journey-card__done-panel {
+    padding: 20px 11px;
+  }
+
+  .journey-card__done-icon {
+    top: 17px;
+    left: calc(100% - 17px - 58px);
+    width: 58px;
+    height: 57px;
+  }
+
+  .journey-card.is-completed:focus-within .journey-card__done-icon {
+    left: calc(50% - 29px);
+    top: 34px;
+  }
+
+  .journey-card__done-title {
+    margin-top: 70px;
+  }
+
+  .journey-card__locked-copy {
+    gap: 18px;
+  }
+
+  .journey-card__locked-title {
+    font-size: 18px;
+  }
+
+  .journey-card__locked-text {
+    font-size: 14px;
+  }
+
+  .journey-card__lock {
+    top: 22.3px;
+    right: 20.3px;
+    width: 29.785px;
+    height: 34.75px;
+  }
+
+  .journey-card__go {
+    width: 43.71px;
+    height: 42.48px;
+  }
+
+  a.journey-card:hover,
+  a.journey-card:focus-visible {
+    gap: 21px;
+  }
+}
+
+@media (max-width: 767px) {
+  .page {
+    padding-top: calc(var(--header-height) + 32px);
+    padding-bottom: 80px;
+  }
+
+  .intro__heading {
+    font-size: 36px;
+    line-height: 44px;
+  }
+
+  .journey-section {
+    margin-top: 80px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* No movement; keep short cross-fades so state changes stay readable */
+  .journey-card,
+  a.journey-card {
+    --card-duration: 200ms;
+    transition: none;
+  }
+
+  .journey-card__reveal {
+    transition: opacity var(--card-duration) var(--card-ease);
+  }
+
+  .journey__segment,
+  .journey-badge {
+    transition: none;
+  }
+}

@@ -7,12 +7,20 @@
   --color-text-on-light: #3b3b3b;      /* Text/0n-Light/Daefult */
   --color-text-on-dark: #ffffff;       /* Text/on-Dark/Default */
   --color-neutral-100: #e3e3e3;        /* Brand color/neutral/100 */
+  --color-neutral-200: #c6c6c6;        /* Brand color/neutral/200 */
+  --color-neutral-300: #aaaaaa;        /* Brand color/neutral/300 */
+  --color-neutral-400: #8e8e8e;        /* Brand color/neutral/400 */
+  --color-neutral-white: #ffffff;      /* Brand color/neutral/White */
   --color-brand-500: #3b3b3b;          /* Brand color/primery/500 (d) */
   --color-wordmark: #282828;
   --surface-action-primary: #3b3b3b;   /* Surface/Action/Primery/Default */
   --surface-action-primary-hovered: #232323; /* Surface/Action/Primery/Hovered */
   --surface-cards: #e8e5dc;            /* Surface/Cards/Default, Brand color/Dominent/550 (sh) */
   --surface-cards-hovered: #d5e3ca;    /* Surface/Cards/Hovered */
+  --surface-cards-locked-overlay: rgba(232, 229, 220, 0.89); /* Surface/Cards/Locked overlay */
+  --surface-cards-completed-overlay: rgba(206, 217, 199, 0.76); /* completed card wash (Figma 905:1894; variable pending) */
+  --color-completed: #93a787;          /* completed check icon (Figma 905:1894; variable pending) */
+  --color-completed-text: #41473c;     /* completed card message (Figma 905:1955; variable pending) */
   --color-section-label: #555953;
   --color-section-dot: #95b97b;
   --color-text-muted: #909090;
@@ -24,7 +32,7 @@
   --color-benefit-border: #333333;
   --surface-action-outline: #f7f5ef;   /* Surface/Action/Outline/Default */
   --surface-action-outline-hovered: #aac795; /* Surface/Action/Outline/Hovered */
-  --backdrop: rgba(0, 0, 0, 0.4);
+  --backdrop: rgba(0, 0, 0, 0.4);      /* Surface/Backdrop */
   --border-color-on-light: #3b3b3b;    /* Border/Color/On-light */
   --border-color-on-dark: #fdfcfb;     /* Border/Color/On-dark */
   --color-footer-bg: #2e2e2e;
@@ -81,6 +89,10 @@
   --h5-line: 34px;
   --h5-weight: 500;
 
+  --h6-size: 20px;
+  --h6-line: 28px;
+  --h6-weight: 600;
+
   --body-xxl-size: 24px;
   --body-xxl-line: 42px;
   --body-xxl-weight: 500;
@@ -107,6 +119,9 @@
   --label-s-tracking: 0.5px;
   --label-weight: 600;
   --label-uppercase-tracking: 1px;
+
+  /* Elevation */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);   /* Shadow/SM */
 
   /* Layout */
   --container-max: 1360px;
