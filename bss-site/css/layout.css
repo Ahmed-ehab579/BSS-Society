@@ -43,6 +43,7 @@
 }
 .nav__link:hover::after { transform: scaleX(1); transform-origin: left; }
 .nav__link[aria-current="page"] { font-weight: 700; }
+.nav__link[aria-current="page"]::after { transform: scaleX(1); background: #5e5e5e; height: 1px; bottom: -5px; }
 
 .nav__actions { display: flex; align-items: center; justify-content: space-between; width: 160px; }
 .lang-btn {

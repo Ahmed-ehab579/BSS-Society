@@ -1,0 +1,143 @@
+/* Start here page */
+.start-page { padding: 54px 0 263px; display: flex; flex-direction: column; }
+
+/* ---------- Intro ---------- */
+.sh-intro {
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 40px;
+  padding: 0 12px 37.16px 35px; margin-bottom: 138px;
+}
+.sh-intro h1 {
+  width: 642px; font-size: clamp(34px, 3.55vw, 51.1px); line-height: 1.45;
+  text-transform: uppercase; color: var(--c-ink-800);
+}
+.sh-intro p { width: 485px; max-width: 100%; font-weight: 500; font-size: 20.08px; line-height: 1.7; color: #636363; }
+
+/* ---------- Panel headings ---------- */
+.sh-panel { padding: 50px; display: flex; flex-direction: column; gap: 55px; }
+.sh-panel--journey { background: linear-gradient(to bottom, #f1eee4, rgba(255, 255, 255, 0)); margin-bottom: 60px; }
+.sh-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 40px; }
+.sh-head h2 { font-size: clamp(30px, 2.78vw, 40px); line-height: 1.35; color: var(--c-ink-600); }
+.sh-panel--topics .sh-head h2 { width: 425px; max-width: 100%; color: var(--c-ink-900); }
+.sh-head__aside { width: 416px; max-width: 100%; display: flex; flex-direction: column; gap: 11px; }
+.sh-head__aside p { padding-top: 20px; font-weight: 500; font-size: 21px; line-height: 1.7; color: #494949; }
+.sh-head__link {
+  align-self: flex-start; padding-top: 20px;
+  font-weight: 500; font-size: 18px; line-height: 1.7; color: var(--c-placeholder);
+  background: linear-gradient(currentColor, currentColor) left bottom / 0 1px no-repeat;
+  transition: color var(--dur-fast) ease, background-size var(--dur) var(--ease-out);
+}
+.sh-head__link:hover { color: var(--c-ink-600); background-size: 100% 1px; }
+.sh-panel--topics .sh-head__aside p { padding-top: 48px; font-size: 17px; color: #8b8b8b; }
+
+/* ---------- Journey path ---------- */
+.journey { position: relative; width: 1108.25px; height: 1345.3px; margin: 0 auto; }
+.journey__steps { list-style: none; margin: 0; padding: 0; }
+.journey__path {
+  position: absolute; left: 128.87px; top: 15.19px; width: 999.34px; height: 865.29px; max-width: none;
+  clip-path: inset(0 0 calc((1 - var(--draw, 1)) * 100%) 0);
+}
+
+.step {
+  position: absolute; left: var(--x); top: var(--y); width: 275.56px; height: 428.65px;
+}
+.step__card {
+  height: 100%; display: flex; flex-direction: column; gap: 48.11px; overflow: hidden;
+  background: var(--c-surface); border: 0.444px solid var(--c-line); border-radius: 21.31px;
+  transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+.step:hover .step__card { transform: translateY(-8px); box-shadow: 0 24px 40px -28px rgba(0, 0, 0, 0.45); }
+.step__text { display: flex; flex-direction: column; gap: 11.54px; padding: 28.42px 20.4px 10.94px; }
+.step__num {
+  font-weight: 300; font-size: 81.41px; line-height: 1; color: rgba(37, 37, 37, 0.35);
+  transition: color var(--dur) ease;
+}
+.step:hover .step__num { color: rgba(37, 37, 37, 0.6); }
+.step h3 { font-weight: 600; font-size: 26.73px; line-height: 1.5; color: var(--c-card-text); }
+.step__media { position: relative; height: 167.58px; flex: none; overflow: hidden; }
+.step__media img {
+  position: absolute; left: 0; width: 100%; max-width: none;
+  transition: transform 1.2s var(--ease-out);
+}
+.step:hover .step__media img { transform: scale(1.07); }
+
+/* Pin that hangs above each step */
+.step__pin {
+  position: absolute; left: var(--pin, 102.1px); bottom: 100%; width: 56.61px;
+  display: flex; flex-direction: column; align-items: center; z-index: 1;
+  transform-origin: 50% 100%;
+}
+.step__pin-dot {
+  display: grid; place-items: center; width: 52.61px; height: 52.61px; border-radius: 50%; background: #dbdbdb;
+  transition: background-color var(--dur) ease, transform var(--dur) var(--ease-out);
+}
+.step__pin-dot::after {
+  content: ""; width: 23.31px; height: 23.31px; border-radius: 50%; background: #9f9f9f;
+  transition: background-color var(--dur) ease, transform var(--dur) var(--ease-out);
+}
+.step__pin-line { position: relative; width: 0; height: 23.51px; }
+.step__pin-line img {
+  position: absolute; left: 50%; top: 50%; width: 23.51px; height: 1px; max-width: none;
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+.step:hover .step__pin-dot { background: #e3ead9; transform: translateY(-3px); }
+.step:hover .step__pin-dot::after { background: var(--c-accent); transform: scale(1.12); }
+
+.js .step__pin { transform: scale(0); }
+.js .step.is-visible .step__pin {
+  transform: none;
+  transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--i, 0) * 90ms + 350ms);
+}
+
+/* ---------- Topics carousel (smaller cards on this page) ---------- */
+.carousel--sm { gap: 40.51px; }
+.carousel--sm .carousel__controls { gap: 15.65px; }
+.carousel--sm .carousel__btn,
+.carousel--sm .carousel__btn img { width: 38.35px; height: 38.35px; }
+.carousel--sm .carousel__track { gap: 31.74px; }
+.carousel--sm .topic-card { width: 287px; height: 406px; padding: 46.04px 23.45px; border-radius: 25.4px; }
+.carousel--sm .topic-card__bg { width: 286.65px; height: 603.71px; }
+.carousel--sm .topic-card__body { width: 239.75px; gap: 21.72px; }
+.carousel--sm .topic-card--first .topic-card__body { gap: 17.37px; }
+.carousel--sm .topic-card h3 { font-size: 27.51px; line-height: 41.27px; }
+.carousel--sm .topic-card p { width: 219.03px; font-size: 15.87px; line-height: 24.07px; }
+
+/* ---------- Smaller screens (proposal: no mobile design yet) ---------- */
+@media (max-width: 1240px) {
+  /* The path becomes a swipe row: steps in order, pins joined by a dashed line */
+  .journey { width: auto; height: auto; margin: 0; min-width: 0; }
+  .journey__steps {
+    display: flex; gap: 28px; overflow-x: auto;
+    scroll-snap-type: x mandatory; scrollbar-width: none; scroll-padding-inline: 50px;
+    margin-inline: -50px; padding: 92px 50px 16px;
+  }
+  .journey__steps::-webkit-scrollbar { display: none; }
+  .journey__path { display: none; }
+  .step { position: relative; left: auto; top: auto; flex: none; scroll-snap-align: start; }
+  .step__pin { left: 50%; margin-left: -28.3px; }
+  .step::before {
+    content: ""; position: absolute; left: 50%; right: -28px; top: -50px;
+    border-top: 1.5px dashed #9f9f9f;
+  }
+  .step:last-child::before { display: none; }
+}
+
+@media (max-width: 1100px) {
+  .sh-intro, .sh-head { flex-direction: column; align-items: flex-start; }
+  .sh-intro { padding-inline: 0; margin-bottom: 72px; gap: 20px; }
+  .sh-intro h1 { width: 100%; max-width: 642px; }
+  .sh-head__aside p, .sh-panel--topics .sh-head__aside p { padding-top: 0; }
+}
+
+@media (max-width: 767px) {
+  .start-page { padding: 24px 0 96px; }
+  .sh-intro p { font-size: 17px; }
+  .sh-panel { padding: 32px 20px; gap: 32px; }
+  .sh-panel--journey { margin-bottom: 40px; }
+  .sh-head { gap: 16px; }
+  .sh-head__aside p { font-size: 17px; }
+  .sh-head__link { font-size: 16px; padding-top: 0; }
+  .journey__steps { margin-inline: -20px; padding-inline: 20px; scroll-padding-inline: 20px; gap: 20px; }
+  .step { width: 250px; height: 400px; }
+  .step::before { right: -20px; }
+  .carousel--sm .topic-card { width: 260px; height: 390px; }
+}

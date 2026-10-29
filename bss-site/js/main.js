@@ -3,7 +3,11 @@
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ---------- Intro animation ---------- */
-  const startIntro = () => requestAnimationFrame(() => document.documentElement.classList.add('is-loaded'));
+  // Force a style flush so the start state is committed, then animate (rAF would stall in background tabs)
+  const startIntro = () => {
+    void document.body.offsetWidth;
+    document.documentElement.classList.add('is-loaded');
+  };
   const heroImg = document.querySelector('.hero__media img');
   if (heroImg && !heroImg.complete) {
     heroImg.addEventListener('load', startIntro, { once: true });
@@ -15,20 +19,23 @@
 
   /* ---------- Scroll reveals ---------- */
   const revealEls = document.querySelectorAll('[data-reveal]');
+  const GROUP = '[data-track], [data-reveal-group]';
   if ('IntersectionObserver' in window && !reduceMotion) {
     const io = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
         // A scroller reveals all its items at once (off-screen items never intersect)
-        const items = entry.target.matches('[data-track]')
+        const items = entry.target.matches(GROUP)
           ? entry.target.querySelectorAll('[data-reveal]')
           : [entry.target];
         items.forEach((el) => el.classList.add('is-visible'));
         io.unobserve(entry.target);
       });
     }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
-    revealEls.forEach((el) => { if (!el.closest('[data-track]')) io.observe(el); });
-    document.querySelectorAll('[data-track]').forEach((el) => io.observe(el));
+    const isScroller = (el) => el.scrollWidth > el.clientWidth + 1;
+    const groups = [...document.querySelectorAll(GROUP)].filter(isScroller);
+    revealEls.forEach((el) => { if (!groups.some((g) => g.contains(el))) io.observe(el); });
+    groups.forEach((el) => io.observe(el));
   } else {
     revealEls.forEach((el) => el.classList.add('is-visible'));
   }
@@ -50,6 +57,7 @@
   /* ---------- Scroll-linked effects (parallax + zoom) ---------- */
   const parallax = document.querySelector('[data-parallax]');
   const zoomEls = document.querySelectorAll('[data-zoom]');
+  const drawEls = document.querySelectorAll('[data-draw]');
   let ticking = false;
 
   const onScroll = () => {
@@ -74,6 +82,14 @@
         const p = Math.min(Math.max(1 - (r.top + r.height / 2) / (vh + r.height / 2), 0), 1);
         el.style.setProperty('--zoom', (1.12 - p * 0.12).toFixed(4));
       });
+      // Draw the path top to bottom as it passes the lower part of the screen
+      drawEls.forEach((el) => {
+        const r = el.getBoundingClientRect();
+        const p = Math.min(Math.max((vh * 0.8 - r.top) / (r.height * 0.85), 0), 1);
+        el.style.setProperty('--draw', p.toFixed(4));
+      });
+    } else {
+      drawEls.forEach((el) => el.style.setProperty('--draw', 1));
     }
     ticking = false;
   };
