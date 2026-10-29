@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Library — The Best Speech Society</title>
+  <meta name="description" content="Carefully selected books, articles, videos, and audio resources to learn about Islam.">
+  <script>document.documentElement.classList.add('js');</script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@800&family=Cormorant+Garamond:wght@600&family=Inter:wght@500&family=Manrope:wght@300;400;500;600&family=Roboto:wght@400;600&display=swap">
+  <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap">
+
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/library.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" data-header>
+    <div class="site-header__inner">
+      <a class="logo" href="index.html" aria-label="The Best Speech Society — home">
+        <img src="assets/icons/logo.svg" width="43" height="53" alt="">
+        <span class="logo__text" aria-hidden="true"><span>Best Speech</span><span>society</span></span>
+      </a>
+
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-menu-toggle>
+        <span></span><span></span><span></span>
+        <span class="sr-only">Menu</span>
+      </button>
+
+      <nav class="nav" id="site-nav" aria-label="Main" data-nav>
+        <ul class="nav__links">
+          <li><a class="nav__link" href="index.html" data-label="Home">Home</a></li>
+          <li><a class="nav__link" href="about.html" data-label="About Us">About Us</a></li>
+          <li><a class="nav__link" href="start-here.html" data-label="Start Here">Start Here</a></li>
+          <li><a class="nav__link" href="library.html" aria-current="page" data-label="Library">Library</a></li>
+          <li><a class="nav__link" href="#" data-label="New Muslim">New Muslim</a></li>
+        </ul>
+        <div class="nav__actions">
+          <button class="lang-btn" type="button" aria-label="Select language">
+            <img src="assets/icons/globe.svg" width="20" height="20" alt="">
+          </button>
+          <a class="btn-outline-sm" href="index.html#contact">Contact Us</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+      <main id="main" class="library-page">
+    <img class="lib-deco" src="assets/icons/books-deco.svg" width="349" height="404" alt="" data-deco>
+    <div class="page">
+
+      <!-- Intro -->
+      <section class="lib-intro" aria-labelledby="lib-title">
+        <h1 id="lib-title">
+          <span class="hero__line"><span style="--i:0">Explore</span></span>
+          <span class="hero__line"><span style="--i:1">the library</span></span>
+        </h1>
+        <p class="hero__fade" style="--i:1">Find carefully selected books, articles, videos, and audio resources to help you learn about Islam with clarity, depth, and confidence at your own pace.</p>
+      </section>
+
+      <!-- Topic picker -->
+      <section class="lib-panel topics" aria-labelledby="topics-title" data-reveal="fade">
+        <div class="lib-head">
+          <h2 id="topics-title" data-reveal>Select a topic you’re interested in</h2>
+          <p data-reveal style="--i:1">Choose a subject that matters to you. Explore clear, carefully reviewed resources without feeling overwhelmed.</p>
+        </div>
+        <div class="carousel" data-carousel>
+          <div class="carousel__controls">
+            <button class="carousel__btn carousel__btn--prev" type="button" aria-label="Previous topics" data-prev disabled>
+              <img class="is-on" src="assets/icons/next.svg" width="41" height="41" alt="">
+              <img class="is-off" src="assets/icons/prev.svg" width="41" height="41" alt="">
+            </button>
+            <button class="carousel__btn carousel__btn--next" type="button" aria-label="Next topics" data-next>
+              <img class="is-on" src="assets/icons/next.svg" width="41" height="41" alt="">
+              <img class="is-off" src="assets/icons/prev.svg" width="41" height="41" alt="">
+            </button>
+          </div>
+          <div class="carousel__viewport" data-viewport>
+            <ul class="carousel__track" data-track role="list" style="list-style:none;margin:0;padding-left:0">
+              <li class="topic-pick" data-reveal style="--i:0">
+                <button class="topic-card topic-card--lib" type="button" data-topic="belief" aria-pressed="false">
+                  <span class="topic-card__bg"><img src="assets/img/topic-belief.jpg" width="736" height="1422" alt="" loading="lazy" style="--w:140.4%;--h:99.98%;--l:-20.2%;--t:-2.69%"></span>
+                  <span class="topic-card__body">
+                    <span class="topic-card__badge" aria-hidden="true"><span><span class="topic-card__tag">Selected topic</span><span class="topic-card__dot"></span></span></span>
+                    <span class="tc-title">Belief &amp; Faith</span>
+                    <span class="tc-desc">Understanding God, purpose, and the foundations of Islamic belief.</span>
+                  </span>
+                  <span class="explore" aria-hidden="true"><span class="explore__label">Explore</span><img src="assets/icons/explore-arrow.svg" width="27" height="27" alt=""></span>
+                </button>
+              </li>
+              <li class="topic-pick" data-reveal style="--i:1">
+                <button class="topic-card topic-card--lib" type="button" data-topic="quran" aria-pressed="false">
+                  <span class="topic-card__bg"><img src="assets/img/topic-quran.jpg" width="736" height="1377" alt="" loading="lazy" style="--w:109.09%;--h:100.08%;--l:-4.55%;--t:-11.87%"></span>
+                  <span class="topic-card__body">
+                    <span class="topic-card__badge" aria-hidden="true"><span><span class="topic-card__tag">Selected topic</span><span class="topic-card__dot"></span></span></span>
+                    <span class="tc-title">The Qur’an</span>
+                    <span class="tc-desc">Exploring the Qur’an, its message, and how Muslims engage with it.</span>
+                  </span>
+                  <span class="explore" aria-hidden="true"><span class="explore__label">Explore</span><img src="assets/icons/explore-arrow.svg" width="27" height="27" alt=""></span>
+                </button>
+              </li>
+              <li class="topic-pick is-selected" data-reveal style="--i:2">
+                <button class="topic-card topic-card--lib" type="button" data-topic="prophet" aria-pressed="true">
+                  <span class="topic-card__bg"><img src="assets/img/topic-prophet.jpg" width="736" height="1308" alt="" loading="lazy" style="--w:109.09%;--h:100.08%;--l:-4.55%;--t:-15.43%"></span>
+                  <span class="topic-card__body">
+                    <span class="topic-card__badge" aria-hidden="true"><span><span class="topic-card__tag">Selected topic</span><span class="topic-card__dot"></span></span></span>
+                    <span class="tc-title">Prophet<br>Muhammad</span>
+                    <span class="tc-desc">Learning from his life, character, and the message he shared.</span>
+                  </span>
+                  <span class="explore" aria-hidden="true"><span class="explore__label">Explore</span><img src="assets/icons/explore-arrow.svg" width="27" height="27" alt=""></span>
+                </button>
+              </li>
+              <li class="topic-pick" data-reveal style="--i:3">
+                <button class="topic-card topic-card--lib" type="button" data-topic="women" aria-pressed="false">
+                  <span class="topic-card__bg"><img src="assets/img/topic-women.jpg" width="736" height="1104" alt="" loading="lazy" style="--w:140.4%;--h:100%;--l:-20.2%;--t:-17.53%"></span>
+                  <span class="topic-card__body">
+                    <span class="topic-card__badge" aria-hidden="true"><span><span class="topic-card__tag">Selected topic</span><span class="topic-card__dot"></span></span></span>
+                    <span class="tc-title">Women in Islam</span>
+                    <span class="tc-desc">How islam honored women 1400 years ago, and gave her her rights</span>
+                  </span>
+                  <span class="explore" aria-hidden="true"><span class="explore__label">Explore</span><img src="assets/icons/explore-arrow.svg" width="27" height="27" alt=""></span>
+                </button>
+              </li>
+              <li class="topic-pick" data-reveal style="--i:4">
+                <button class="topic-card topic-card--lib" type="button" data-topic="quran" aria-pressed="false">
+                  <span class="topic-card__bg"><img src="assets/img/topic-quran.jpg" width="736" height="1377" alt="" loading="lazy" style="--w:109.09%;--h:100.08%;--l:-4.55%;--t:-11.87%"></span>
+                  <span class="topic-card__body">
+                    <span class="topic-card__badge" aria-hidden="true"><span><span class="topic-card__tag">Selected topic</span><span class="topic-card__dot"></span></span></span>
+                    <span class="tc-title">The Qur’an</span>
+                    <span class="tc-desc">Exploring the Qur’an, its message, and how Muslims engage with it.</span>
+                  </span>
+                  <span class="explore" aria-hidden="true"><span class="explore__label">Explore</span><img src="assets/icons/explore-arrow.svg" width="27" height="27" alt=""></span>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Resources -->
+      <section class="lib-panel resources" aria-labelledby="res-title" data-reveal="fade">
+        <div class="lib-head">
+          <h2 id="res-title" data-reveal>Select a topic you’re interested in</h2>
+        </div>
+        <div class="resources__body">
+          <div class="filters" data-reveal style="--i:1">
+            <div class="filters__row">
+              <p class="filters__label">Filter by:</p>
+              <div class="filters__chips">
+              <div class="chip chip--category" data-chip="category">
+                <button class="chip__btn" type="button" aria-haspopup="menu" aria-expanded="false">
+                  <span class="chip__name">Category:</span>
+                  <span class="chip__value" data-chip-value>Prophet Muhammad<span class="chip__remove" role="button" tabindex="0" aria-label="Remove Category filter" data-chip-remove><img src="assets/icons/chip-remove.svg" width="12" height="12" alt=""></span></span>
+                  <span class="chip__chev" aria-hidden="true"><img src="assets/icons/chevron-down.svg" width="14" height="8" alt=""></span>
+                </button>
+                <ul class="chip__menu" role="menu"><li><button type="button" role="menuitemradio" aria-checked="false" data-value="Belief & Faith">Belief & Faith</button></li><li><button type="button" role="menuitemradio" aria-checked="false" data-value="The Qur’an">The Qur’an</button></li><li><button type="button" role="menuitemradio" aria-checked="true" data-value="Prophet Muhammad">Prophet Muhammad</button></li><li><button type="button" role="menuitemradio" aria-checked="false" data-value="Women in Islam">Women in Islam</button></li></ul>
+              </div>
+              <div class="chip chip--language" data-chip="language">
+                <button class="chip__btn" type="button" aria-haspopup="menu" aria-expanded="false">
+                  <span class="chip__name">Language:</span>
+                  <span class="chip__value" data-chip-value>En<span class="chip__remove" role="button" tabindex="0" aria-label="Remove Language filter" data-chip-remove><img src="assets/icons/chip-remove.svg" width="12" height="12" alt=""></span></span>
+                  <span class="chip__chev" aria-hidden="true"><img src="assets/icons/chevron-down.svg" width="14" height="8" alt=""></span>
+                </button>
+                <ul class="chip__menu" role="menu"><li><button type="button" role="menuitemradio" aria-checked="true" data-value="En">En</button></li><li><button type="button" role="menuitemradio" aria-checked="false" data-value="Ar">Ar</button></li></ul>
+              </div>
+              <div class="chip chip--level chip--plain" data-chip="level">
+                <button class="chip__btn" type="button" aria-haspopup="menu" aria-expanded="false">
+                  <span class="chip__name">Level</span>
+                  <span class="chip__value" data-chip-value>Basic<span class="chip__remove" role="button" tabindex="0" aria-label="Remove Level filter" data-chip-remove><img src="assets/icons/chip-remove.svg" width="12" height="12" alt=""></span></span>
+                  <span class="chip__chev" aria-hidden="true"><img src="assets/icons/chevron-down.svg" width="14" height="8" alt=""></span>
+                </button>
+                <ul class="chip__menu" role="menu"><li><button type="button" role="menuitemradio" aria-checked="true" data-value="Basic">Basic</button></li><li><button type="button" role="menuitemradio" aria-checked="false" data-value="Intermediate">Intermediate</button></li><li><button type="button" role="menuitemradio" aria-checked="false" data-value="Advanced">Advanced</button></li></ul>
+              </div>
+              <div class="chip chip--format chip--plain" data-chip="format">
+                <button class="chip__btn" type="button" aria-haspopup="menu" aria-expanded="false">
+                  <span class="chip__name">Format</span>
+                  <span class="chip__value" data-chip-value>Video<span class="chip__remove" role="button" tabindex="0" aria-label="Remove Format filter" data-chip-remove><img src="assets/icons/chip-remove.svg" width="12" height="12" alt=""></span></span>
+                  <span class="chip__chev" aria-hidden="true"><img src="assets/icons/chevron-down.svg" width="14" height="8" alt=""></span>
+                </button>
+                <ul class="chip__menu" role="menu"><li><button type="button" role="menuitemradio" aria-checked="true" data-value="Video">Video</button></li><li><button type="button" role="menuitemradio" aria-checked="false" data-value="Book">Book</button></li><li><button type="button" role="menuitemradio" aria-checked="false" data-value="Article">Article</button></li><li><button type="button" role="menuitemradio" aria-checked="false" data-value="Audio">Audio</button></li></ul>
+              </div>
+              </div>
+            </div>
+            <div class="filters__row filters__row--search">
+              <label class="filters__label" for="lib-search">Search</label>
+              <div class="search">
+                <img src="assets/icons/search.svg" width="25" height="25" alt="">
+                <input id="lib-search" type="search" placeholder="Search books, articles, videos, and audio..." autocomplete="off" data-search>
+              </div>
+            </div>
+          </div>
+
+          <div class="results">
+            <div class="results__head" data-reveal>
+              <p class="results__kicker">You’re exploring the topic of:</p>
+              <div class="results__row">
+                <div class="results__title" data-results-title aria-live="polite">
+                  <h3 data-topic-name>Prophet Muhammad</h3>
+                  <small data-honorific>(Peace &amp; blessing be upon him)</small>
+                </div>
+                <div class="results__controls">
+                  <div class="view-toggle" role="group" aria-label="Layout">
+                    <button type="button" aria-pressed="true" aria-label="Grid view" data-view="grid"><img src="assets/icons/view-grid.svg" width="15" height="15" alt=""></button>
+                    <button type="button" aria-pressed="false" aria-label="List view" data-view="list"><img src="assets/icons/view-list.svg" width="15" height="15" alt=""></button>
+                  </div>
+                  <div class="sort" data-sort>
+                    <button class="sort__btn" type="button" aria-haspopup="menu" aria-expanded="false">Sort: <b data-sort-value>Recommended</b><img src="assets/icons/sort-chevron.svg" width="9" height="5" alt=""></button>
+                    <ul class="chip__menu" role="menu"><li><button type="button" role="menuitemradio" aria-checked="true" data-value="Recommended">Recommended</button></li><li><button type="button" role="menuitemradio" aria-checked="false" data-value="Newest">Newest</button></li><li><button type="button" role="menuitemradio" aria-checked="false" data-value="A–Z">A–Z</button></li></ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="results__list">
+              <ul class="res-grid" data-res-grid>
+                <li class="res-card" data-reveal style="--i:0;--n:0" data-search="who is god in islam contemplative visual inquiry analyzing divine transcendence mercy singularity of origin video">
+                  <div class="res-card__media">
+                    <img src="assets/img/lib-res-1.jpg" width="315" height="288" alt="" loading="lazy" style="--h:165.19%;--t:-32.6%">
+                    <span class="res-card__type"><img src="assets/icons/lib-video.svg" width="12" height="12" alt="">Video</span>
+                    <img class="res-card__play" src="assets/icons/lib-play.svg" width="94" height="94" alt="">
+                  </div>
+                  <div class="res-card__body">
+                    <div class="res-card__text">
+                      <h4>Who is God in Islam?</h4>
+                      <p>Contemplative visual inquiry analyzing divine transcendence, mercy, singularity of origin, and</p>
+                    </div>
+                    <button class="res-card__cta" type="button"><span>Watch Video</span></button>
+                  </div>
+                </li>
+                <li class="res-card" data-reveal style="--i:1;--n:1" data-search="who is god in islam contemplative visual inquiry analyzing divine transcendence mercy singularity of origin video">
+                  <div class="res-card__media">
+                    <img src="assets/img/lib-res-2.jpg" width="534" height="900" alt="" loading="lazy" style="--h:165.19%;--t:-32.6%">
+                    <span class="res-card__type"><img src="assets/icons/lib-video.svg" width="12" height="12" alt="">Video</span>
+                  </div>
+                  <div class="res-card__body">
+                    <div class="res-card__text">
+                      <h4>Who is God in Islam?</h4>
+                      <p>Contemplative visual inquiry analyzing divine transcendence, mercy, singularity of origin, and</p>
+                    </div>
+                    <button class="res-card__cta" type="button"><span>Watch Video</span></button>
+                  </div>
+                </li>
+                <li class="res-card" data-reveal style="--i:2;--n:2" data-search="who is god in islam contemplative visual inquiry analyzing divine transcendence mercy singularity of origin video">
+                  <div class="res-card__media">
+                    <img src="assets/img/lib-res-3.jpg" width="534" height="800" alt="" loading="lazy" style="--h:165.19%;--t:-32.6%">
+                    <span class="res-card__type"><img src="assets/icons/lib-video.svg" width="12" height="12" alt="">Video</span>
+                  </div>
+                  <div class="res-card__body">
+                    <div class="res-card__text">
+                      <h4>Who is God in Islam?</h4>
+                      <p>Contemplative visual inquiry analyzing divine transcendence, mercy, singularity of origin, and</p>
+                    </div>
+                    <button class="res-card__cta" type="button"><span>Watch Video</span></button>
+                  </div>
+                </li>
+                <li class="res-card" data-reveal style="--i:0;--n:3" data-search="who is god in islam contemplative visual inquiry analyzing divine transcendence mercy singularity of origin video">
+                  <div class="res-card__media">
+                    <img src="assets/img/lib-res-4.jpg" width="506" height="900" alt="" loading="lazy" style="--h:249.68%;--t:-105.81%">
+                    <span class="res-card__type"><img src="assets/icons/lib-video.svg" width="12" height="12" alt="">Video</span>
+                  </div>
+                  <div class="res-card__body">
+                    <div class="res-card__text">
+                      <h4>Who is God in Islam?</h4>
+                      <p>Contemplative visual inquiry analyzing divine transcendence, mercy, singularity of origin, and</p>
+                    </div>
+                    <button class="res-card__cta" type="button"><span>Watch Video</span></button>
+                  </div>
+                </li>
+                <li class="res-card" data-reveal style="--i:1;--n:4" data-search="who is god in islam contemplative visual inquiry analyzing divine transcendence mercy singularity of origin video">
+                  <div class="res-card__media">
+                    <img src="assets/img/lib-res-5.jpg" width="506" height="900" alt="" loading="lazy" style="--h:249.68%;--l:-0.08%;--t:-98.66%">
+                    <span class="res-card__type"><img src="assets/icons/lib-video.svg" width="12" height="12" alt="">Video</span>
+                    <img class="res-card__play" src="assets/icons/lib-play.svg" width="94" height="94" alt="">
+                  </div>
+                  <div class="res-card__body">
+                    <div class="res-card__text">
+                      <h4>Who is God in Islam?</h4>
+                      <p>Contemplative visual inquiry analyzing divine transcendence, mercy, singularity of origin, and</p>
+                    </div>
+                    <button class="res-card__cta" type="button"><span>Watch Video</span></button>
+                  </div>
+                </li>
+                <li class="res-card" data-reveal style="--i:2;--n:5" data-search="who is god in islam contemplative visual inquiry analyzing divine transcendence mercy singularity of origin video">
+                  <div class="res-card__media">
+                    <img src="assets/img/lib-res-6.jpg" width="506" height="900" alt="" loading="lazy" style="--h:249.6%;--t:-101%">
+                    <span class="res-card__type"><img src="assets/icons/lib-video.svg" width="12" height="12" alt="">Video</span>
+                  </div>
+                  <div class="res-card__body">
+                    <div class="res-card__text">
+                      <h4>Who is God in Islam?</h4>
+                      <p>Contemplative visual inquiry analyzing divine transcendence, mercy, singularity of origin, and</p>
+                    </div>
+                    <button class="res-card__cta" type="button"><span>Watch Video</span></button>
+                  </div>
+                </li>
+                <li class="res-card" data-reveal style="--i:0;--n:6" data-search="who is god in islam contemplative visual inquiry analyzing divine transcendence mercy singularity of origin video">
+                  <div class="res-card__media">
+                    <img src="assets/img/lib-res-7.jpg" width="504" height="900" alt="" loading="lazy" style="--h:250.55%;--t:-54.14%">
+                    <span class="res-card__type"><img src="assets/icons/lib-video.svg" width="12" height="12" alt="">Video</span>
+                  </div>
+                  <div class="res-card__body">
+                    <div class="res-card__text">
+                      <h4>Who is God in Islam?</h4>
+                      <p>Contemplative visual inquiry analyzing divine transcendence, mercy, singularity of origin, and</p>
+                    </div>
+                    <button class="res-card__cta" type="button"><span>Watch Video</span></button>
+                  </div>
+                </li>
+                <li class="res-card" data-reveal style="--i:1;--n:7" data-search="who is god in islam contemplative visual inquiry analyzing divine transcendence mercy singularity of origin video">
+                  <div class="res-card__media">
+                    <img src="assets/img/lib-res-1.jpg" width="315" height="288" alt="" loading="lazy" style="--h:165.19%;--t:-32.6%">
+                    <span class="res-card__type"><img src="assets/icons/lib-video.svg" width="12" height="12" alt="">Video</span>
+                  </div>
+                  <div class="res-card__body">
+                    <div class="res-card__text">
+                      <h4>Who is God in Islam?</h4>
+                      <p>Contemplative visual inquiry analyzing divine transcendence, mercy, singularity of origin, and</p>
+                    </div>
+                    <button class="res-card__cta" type="button"><span>Watch Video</span></button>
+                  </div>
+                </li>
+              </ul>
+              <p class="res-empty" data-res-empty hidden>No resources match your search.</p>
+            </div>
+
+            <div class="load-more" data-reveal>
+              <button type="button">Load more resources <img src="assets/icons/load-more.svg" width="14" height="14" alt=""></button>
+              <p>Showing <b>8 of 48</b> curated works across all formats</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Guided path call to action -->
+      <section class="lib-cta" aria-labelledby="cta-title" data-reveal>
+        <div class="lib-cta__text">
+          <h2 id="cta-title">You curious to know about Islam but you’re not sure where to begin?</h2>
+          <p>Explore our 7-step "Start Here" path for beginners, guiding you from core monotheism to prayer.</p>
+        </div>
+        <a class="lib-cta__link" href="start-here.html">Start your journey</a>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div class="site-footer__content">
+        <div class="footer-news">
+          <a class="logo-footer" href="index.html" aria-label="The Best Speech Society — home">
+            <img src="assets/icons/logo-footer.svg" width="74" height="91" alt="">
+            <span class="logo-footer__text" aria-hidden="true"><span>The Best</span><span>Speech society</span></span>
+          </a>
+          <div class="footer-news__body">
+            <p>Receive updates on new books and resources from Ahsan al-Qawl.</p>
+            <form class="footer-news__form" novalidate data-newsletter>
+              <label class="sr-only" for="nl-email">Your email</label>
+              <input class="footer-news__input" id="nl-email" type="email" placeholder="Your email" autocomplete="email" required aria-describedby="nl-err">
+              <button class="footer-news__btn" type="submit">Subscribe</button>
+            </form>
+            <p class="footer-news__error" id="nl-err" aria-live="polite"></p>
+            <p class="footer-news__legal">By subscribing you agree to our Privacy Policy and consent to receive updates from The Best Speech Society.</p>
+          </div>
+        </div>
+
+        <div class="footer-links">
+          <div class="footer-col">
+            <h2>Explore</h2>
+            <ul>
+              <li><a href="start-here.html">Start here</a></li>
+              <li><a href="library.html" aria-current="page">Library</a></li>
+              <li><a href="#">New muslim path</a></li>
+              <li><a href="about.html">About us</a></li>
+              <li><a href="index.html">Home</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h2>Legal</h2>
+            <ul>
+              <li><a href="#">Terms</a></li>
+              <li><a href="#">Privacy</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h2>Follow us</h2>
+            <ul>
+              <li><a href="#"><img src="assets/icons/facebook.svg" width="24" height="24" alt="">Facebook</a></li>
+              <li><a href="#"><img src="assets/icons/youtube.svg" width="24" height="24" alt="">Youtube</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="site-footer__credits">
+        <img src="assets/icons/divider.svg" width="1360" height="1" alt="">
+        <p>© 2026 Ahsan al-Qawl. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js" defer></script>
+  <script src="js/library.js" defer></script>
+</body>
+</html>

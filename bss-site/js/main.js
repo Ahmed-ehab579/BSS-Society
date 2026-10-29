@@ -178,9 +178,17 @@
       if (Math.abs(dx) > 4) track.classList.add('is-dragging');
       track.scrollLeft = startLeft - dx;
     });
+    // Swallow the click that follows a real drag so cards don't activate
+    track.addEventListener('click', (e) => {
+      if (track.dataset.dragged) { e.preventDefault(); e.stopPropagation(); }
+    }, true);
     const endDrag = () => {
       if (!dragging) return;
       dragging = false;
+      if (track.classList.contains('is-dragging')) {
+        track.dataset.dragged = '1';
+        setTimeout(() => { delete track.dataset.dragged; }, 0);
+      }
       track.classList.remove('is-dragging');
       // Let scroll-snap settle on the nearest card
       const s = step();
