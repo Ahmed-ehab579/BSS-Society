@@ -7,10 +7,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&display=swap">
-  <link rel="stylesheet" href="css/tokens.css?v=14">
+  <link rel="stylesheet" href="css/tokens.css?v=15">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/header.css">
-  <link rel="stylesheet" href="css/start-here.css?v=15">
+  <link rel="stylesheet" href="css/start-here.css?v=33">
+  <link rel="stylesheet" href="css/topics.css">
+  <link rel="stylesheet" href="css/footer.css">
 </head>
 <body>
   <header class="site-header">
@@ -66,8 +68,6 @@
         <p class="journey-notice" data-storage-notice role="status" hidden>Your progress can’t be saved in this browser, so it will be lost when you leave this page.</p>
 
         <div class="journey">
-          <p class="journey__start-label">Begin the journey</p>
-
           <svg class="journey__lines" viewBox="0 0 1153 1345.29" preserveAspectRatio="none" aria-hidden="true" focusable="false">
             <path class="journey__segment" data-from="1" data-to="2" d="M142.7 26.3 C330 10 430 160 553.8 151.4"/>
             <path class="journey__segment" data-from="2" data-to="3" d="M553.8 151.4 C700 165 790 85 970.7 94.6"/>
@@ -135,11 +135,194 @@
         </div>
       </div>
     </section>
+
+    <section class="container section topics-section" id="topics" aria-labelledby="topics-heading">
+      <div class="section-panel">
+        <div class="topics__content">
+          <div class="section-intro">
+            <div class="section-intro__heading-group">
+              <p class="section-label">Library</p>
+              <h2 class="text-h2 section-intro__heading" id="topics-heading">Explore by topic.</h2>
+            </div>
+            <div class="section-intro__supporting">
+              <p class="text-body-xl section-intro__text">Choose a subject that matters to you. Explore clear, carefully reviewed resources without feeling overwhelmed.</p>
+              <a class="btn btn--large btn--primary section-cta" href="index.html#library">
+                Discover the library
+                <span class="btn__arrow-clip" aria-hidden="true">
+                  <span class="btn__arrow-track">
+                    <img src="assets/icons/arrow-up-right.svg" width="24" height="24" alt="">
+                    <img src="assets/icons/arrow-up-right.svg" width="24" height="24" alt="">
+                  </span>
+                </span>
+              </a>
+            </div>
+          </div>
+
+          <div class="carousel" data-carousel role="region" aria-roledescription="carousel" aria-label="Topics you might be interested in">
+            <div class="carousel__controls">
+              <button class="icon-btn carousel__toggle" type="button" data-carousel-toggle data-state="playing" aria-label="Pause carousel">
+                <img src="assets/icons/pause.svg" width="28" height="28" alt="" data-icon="pause">
+                <img src="assets/icons/play.svg" width="28" height="28" alt="" data-icon="play">
+              </button>
+              <button class="icon-btn icon-btn--prev" type="button" data-carousel-prev aria-label="Previous topic">
+                <img src="assets/icons/arrow-right.svg" width="28" height="28" alt="">
+              </button>
+              <button class="icon-btn" type="button" data-carousel-next aria-label="Next topic">
+                <img src="assets/icons/arrow-right.svg" width="28" height="28" alt="">
+              </button>
+            </div>
+
+            <div class="carousel__viewport">
+              <div class="carousel__track" aria-live="off">
+<article class="topic-card topic-card--belief" role="group" aria-roledescription="slide" aria-label="1 of 5">
+                  <div class="topic-card__bg">
+                    <img loading="lazy" src="assets/images/topic-belief.jpg" width="736" height="1377" alt="" draggable="false">
+                  </div>
+                  <div class="topic-card__overlay"></div>
+                  <div class="topic-card__text">
+                    <h3 class="text-h4 topic-card__title">Belief &amp; Faith</h3>
+                    <p class="text-body-m topic-card__desc">Understanding God, purpose, and the foundations of Islamic belief.</p>
+                  </div>
+                  <!-- Explore pill: becomes the card's single link once Library topic pages exist -->
+                  <span class="topic-card__cta" aria-hidden="true">
+                    <span class="topic-card__cta-label">Explore</span>
+                    <img src="assets/icons/arrow-up-right-explore.svg" width="26.9436" height="26.9436" alt="">
+                  </span>
+                </article>
+<article class="topic-card topic-card--quran" role="group" aria-roledescription="slide" aria-label="2 of 5">
+                  <div class="topic-card__bg">
+                    <img loading="lazy" src="assets/images/topic-quran.jpg" width="736" height="1422" alt="" draggable="false">
+                  </div>
+                  <div class="topic-card__overlay"></div>
+                  <div class="topic-card__text">
+                    <h3 class="text-h4 topic-card__title">The Qur’an</h3>
+                    <p class="text-body-m topic-card__desc">Exploring the Qur’an, its message, and how Muslims engage with it.</p>
+                  </div>
+                  <!-- Explore pill: becomes the card's single link once Library topic pages exist -->
+                  <span class="topic-card__cta" aria-hidden="true">
+                    <span class="topic-card__cta-label">Explore</span>
+                    <img src="assets/icons/arrow-up-right-explore.svg" width="26.9436" height="26.9436" alt="">
+                  </span>
+                </article>
+<article class="topic-card topic-card--prophet" role="group" aria-roledescription="slide" aria-label="3 of 5">
+                  <div class="topic-card__bg">
+                    <img loading="lazy" src="assets/images/topic-prophet.jpg" width="736" height="1308" alt="" draggable="false">
+                  </div>
+                  <div class="topic-card__overlay"></div>
+                  <div class="topic-card__text">
+                    <h3 class="text-h4 topic-card__title">Prophet Muhammad</h3>
+                    <p class="text-body-m topic-card__desc">Learning from his life, character, and the message he shared.</p>
+                  </div>
+                  <!-- Explore pill: becomes the card's single link once Library topic pages exist -->
+                  <span class="topic-card__cta" aria-hidden="true">
+                    <span class="topic-card__cta-label">Explore</span>
+                    <img src="assets/icons/arrow-up-right-explore.svg" width="26.9436" height="26.9436" alt="">
+                  </span>
+                </article>
+<article class="topic-card topic-card--women" role="group" aria-roledescription="slide" aria-label="4 of 5">
+                  <div class="topic-card__bg">
+                    <img loading="lazy" src="assets/images/topic-women.jpg" width="736" height="1104" alt="" draggable="false">
+                  </div>
+                  <div class="topic-card__overlay"></div>
+                  <div class="topic-card__text">
+                    <h3 class="text-h4 topic-card__title">Women in Islam</h3>
+                    <p class="text-body-m topic-card__desc">How islam honored women 1400 years ago, and gave her her rights</p>
+                  </div>
+                  <!-- Explore pill: becomes the card's single link once Library topic pages exist -->
+                  <span class="topic-card__cta" aria-hidden="true">
+                    <span class="topic-card__cta-label">Explore</span>
+                    <img src="assets/icons/arrow-up-right-explore.svg" width="26.9436" height="26.9436" alt="">
+                  </span>
+                </article>
+<article class="topic-card topic-card--life" role="group" aria-roledescription="slide" aria-label="5 of 5">
+                  <div class="topic-card__bg">
+                    <img loading="lazy" src="assets/images/topic-life.jpg" width="512" height="286" alt="" draggable="false">
+                  </div>
+                  <div class="topic-card__overlay"></div>
+                  <div class="topic-card__text">
+                    <h3 class="text-h4 topic-card__title">Life &amp; Questions</h3>
+                    <p class="text-body-m topic-card__desc">Thoughtful resources about family, women, daily life, and common questions.</p>
+                  </div>
+                  <!-- Explore pill: becomes the card's single link once Library topic pages exist -->
+                  <span class="topic-card__cta" aria-hidden="true">
+                    <span class="topic-card__cta-label">Explore</span>
+                    <img src="assets/icons/arrow-up-right-explore.svg" width="26.9436" height="26.9436" alt="">
+                  </span>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div class="site-footer__content">
+        <div class="site-footer__newsletter">
+          <p class="footer-brand">
+            <img class="footer-brand__symbol" src="assets/icons/brand-symbol-footer.svg" width="73.9037" height="91.314" alt="">
+            <span class="footer-brand__line footer-brand__line--1">The Best</span>
+            <span class="footer-brand__line footer-brand__line--2">Speech society</span>
+          </p>
+
+          <!-- Not connected to a service yet: validation only, nothing is sent. -->
+          <form class="newsletter" data-validate novalidate aria-label="Newsletter">
+            <p class="text-body-m newsletter__text" id="newsletter-text">Receive updates on new books and resources from Ahsan al-Qawl.</p>
+            <div class="newsletter__actions">
+              <div class="newsletter__row">
+                <label class="visually-hidden" for="newsletter-email">Email address</label>
+                <input class="newsletter__input" id="newsletter-email" name="email" type="email" autocomplete="email" spellcheck="false" placeholder="Your email" aria-describedby="newsletter-text" required>
+                <button class="btn btn--secondary-on-dark" type="submit">Subscribe</button>
+              </div>
+              <p class="newsletter__error" id="newsletter-email-error" hidden></p>
+              <p class="form-status form-status--on-dark text-body-xs" role="status"></p>
+              <p class="text-body-xs newsletter__consent">By subscribing you agree to our Privacy Policy and consent to receive updates from The Best Speech Society.</p>
+            </div>
+          </form>
+        </div>
+
+        <nav class="site-footer__links" aria-label="Footer">
+          <div class="footer-col footer-col--explore">
+            <h2 class="footer-col__title">Explore</h2>
+            <ul class="footer-col__list">
+              <li><a class="footer-link" href="start-here.html"><span class="footer-link__label">Start here</span></a></li>
+              <li><a class="footer-link" href="index.html#library"><span class="footer-link__label">Library</span></a></li>
+              <li><a class="footer-link" href="index.html#new-muslim"><span class="footer-link__label">New muslim path</span></a></li>
+              <li><a class="footer-link" href="index.html#about"><span class="footer-link__label">About us</span></a></li>
+              <li><a class="footer-link" href="index.html"><span class="footer-link__label">Home</span></a></li>
+            </ul>
+          </div>
+          <!-- Legal and social destinations not provided yet: shown without a link. -->
+          <div class="footer-col footer-col--legal">
+            <h2 class="footer-col__title">Legal</h2>
+            <ul class="footer-col__list">
+              <li><a class="footer-link"><span class="footer-link__label">Terms</span></a></li>
+              <li><a class="footer-link"><span class="footer-link__label">Privacy</span></a></li>
+            </ul>
+          </div>
+          <div class="footer-col footer-col--social">
+            <h2 class="footer-col__title">Follow us</h2>
+            <ul class="footer-col__list">
+              <li><a class="footer-link"><img class="footer-link__icon" src="assets/icons/facebook.svg" width="24" height="24" alt=""><span class="footer-link__label">Facebook</span></a></li>
+              <li><a class="footer-link"><img class="footer-link__icon" src="assets/icons/youtube.svg" width="24" height="24" alt=""><span class="footer-link__label">Youtube</span></a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+
+      <div class="site-footer__credits">
+        <p class="text-body-xs" dir="auto">© 2026 Ahsan al-Qawl. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
 
   <script src="js/base.js"></script>
   <script src="js/header.js"></script>
-  <script src="js/progress.js?v=4"></script>
-  <script src="js/journey.js?v=15"></script>
+  <script src="js/progress.js?v=12"></script>
+  <script src="js/journey.js?v=25"></script>
+  <script src="js/carousel.js?v=2"></script>
+  <script src="js/forms.js"></script>
 </body>
 </html>
