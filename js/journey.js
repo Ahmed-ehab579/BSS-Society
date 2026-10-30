@@ -22,6 +22,7 @@
       ${body(topic, revealBlock(topic))}${media(topic, true)}
       <img class="journey-card__lock" src="assets/icons/lock.svg" width="36" height="42" alt="">
       <div class="journey-card__locked-panel">
+        <span class="journey-card__icon-spacer" aria-hidden="true"></span>
         <div class="journey-card__locked-copy">
           <p class="journey-card__locked-title">This topic builds on earlier steps</p>
           <p class="journey-card__locked-text">Start with Step ${previous.id}, or explore this topic now.</p>
@@ -54,6 +55,7 @@
       <span class="journey-card__wash" aria-hidden="true"></span>
       <svg class="journey-card__done-icon" viewBox="0 0 74 73" width="74" height="73" fill="none" aria-hidden="true"><circle cx="37" cy="36.5" r="34.5" stroke="currentColor" stroke-width="5"/><path d="M22 37.5l10.5 10.5L52 26" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <div class="journey-card__done-panel">
+        <span class="journey-card__icon-spacer" aria-hidden="true"></span>
         <p class="journey-card__done-title">You’ve finished this article</p>
         <div class="journey-card__locked-actions">
           <a class="btn btn--primary btn--regular" href="${articleUrl(topic.id)}">Read again</a>
@@ -103,12 +105,22 @@
     });
     updateSegments();
     matchLabelBackground();
+    measureIcons();
     const notice = document.querySelector("[data-storage-notice]");
     if (notice) notice.hidden = P.canSave();
     if (focusId) {
       const card = journey.querySelector(`.journey__step[data-step="${focusId}"] .journey-card`);
       if (card) card.focus({ preventScroll: true });
     }
+  }
+
+  // The hover icon lands on the panel's icon spacer: measure where it sits inside each card.
+  function measureIcons() {
+    journey.querySelectorAll(".journey-card.is-locked, .journey-card.is-completed").forEach((card) => {
+      const spacer = card.querySelector(".journey-card__icon-spacer");
+      if (!spacer) return;
+      card.style.setProperty("--spacer-top", `${spacer.getBoundingClientRect().top - card.getBoundingClientRect().top}px`);
+    });
   }
 
   // The label frame takes the exact colour of the panel behind it, so it never looks like a second surface.
@@ -149,8 +161,35 @@
 
   P.onChange(() => render());
   render();
-  window.addEventListener("load", matchLabelBackground);
-  new ResizeObserver(matchLabelBackground).observe(journey.closest(".section-panel") || journey);
+  // Phones: opening the page (or coming back to it) scrolls to the card the reader should read next, the one
+  // with the "Start here" / "Continue" label. Skipped when the address has a #hash, once the reader has
+  // started scrolling or tapping, and when everything is already completed.
+  const phone = window.matchMedia("(max-width: 767px)");
+  let reader = false;                  // true once the reader scrolls or taps on their own
+  ["touchstart", "wheel", "keydown", "pointerdown"].forEach((type) =>
+    window.addEventListener(type, () => { reader = true; }, { once: true, passive: true }));
+
+  function scrollToTurn() {
+    if (reader || !phone.matches || window.location.hash) return;
+    const label = journey.querySelector(".journey__start-label");
+    if (!label) return;
+    const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    label.scrollIntoView({ block: "start", behavior: calm ? "auto" : "smooth" });
+  }
+
+  const settle = () => window.setTimeout(scrollToTurn, 150);   // after the browser's own scroll restore
+  if (document.readyState === "complete") settle();
+  else window.addEventListener("load", settle, { once: true });
+  window.addEventListener("pageshow", (event) => {
+    if (!event.persisted) return;      // coming back from the back/forward cache
+    reader = false;
+    settle();
+  });
+
+  const refit = () => { matchLabelBackground(); measureIcons(); };
+  window.addEventListener("load", refit);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(refit);
+  new ResizeObserver(refit).observe(journey.closest(".section-panel") || journey);
 
   // Cursor badges (mouse only): "Start reading" over an available card, "Locked" over a locked
   // card. The locked badge hides over the card's two buttons and returns on the rest of the card.
