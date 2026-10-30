@@ -1,0 +1,68 @@
+/* Page shell and page introduction shared by the inner pages (Start here, Library). */
+.page {
+  --section-gap: calc(var(--scale-1100) * 2);   /* 128px: one vertical rhythm between the page sections */
+  padding-top: calc(var(--header-height) + var(--scale-1100));
+  padding-bottom: 60px;                /* with the footer's own top margin: the same 167.7px as the other pages */
+}
+
+.section {
+  scroll-margin-top: calc(var(--header-height) + var(--scale-600));
+}
+
+/* Introduction */
+/* Outer boundaries match the section panel below (.section-panel, max 1305px) at every width */
+.intro {
+  max-width: calc(1305px + 2 * var(--gutter));
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--scale-900);
+}
+
+.intro__heading {
+  max-width: 800px;
+  color: var(--color-heading);
+}
+
+/* Desktop hero heading: 53/81, wrapper 558px (shrinks with the container) */
+@media (min-width: 1100px) {
+  .intro__heading {
+    flex: 0 1 558px;
+    min-width: 0;
+    max-width: 558px;
+    font-size: 53px;
+    line-height: 81px;
+  }
+}
+
+.intro__text {
+  width: 485px;
+  flex-shrink: 0;
+  padding-bottom: var(--scale-300);
+  color: var(--color-text-body);
+}
+
+@media (max-width: 1099px) {
+  .intro {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--scale-600);
+  }
+
+  .intro__text {
+    width: auto;
+    padding-bottom: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .page {
+    --section-gap: calc(var(--scale-1000) + var(--scale-800));   /* 80px */
+    padding-top: calc(var(--header-height) + var(--scale-800));
+  }
+
+  .intro__heading {
+    font-size: 36px;
+    line-height: 44px;
+  }
+}
