@@ -5,20 +5,22 @@
   const KEY = "bss.journey.v1";
   const START_PCT = 12;   // reading further than this marks a topic "in progress"
 
+  // Photos come from the project's own assets; `focus` is the object-position used when the photo is
+  // cropped to the card.
   const TOPICS = [
-    { id: 1, title: "Deep questions, clear answers", image: "assets/images/journey-mosque.jpg", imageSize: [620, 930],
-      text: "You do not need to know everything to begin. Start with a simple, thoughtful introduction." },
-    { id: 2, title: "Answers that build understanding" },
-    { id: 3, title: "Exploring the bigger picture" },
-    { id: 4, title: "Understanding the heart and mind" },
-    { id: 5, title: "Questions that come next" },
-    { id: 6, title: "Communicating with care" },
-  ].map((topic) => ({
-    image: "assets/images/journey-desert.jpg",
-    imageSize: [620, 772],
-    text: "You do not need to know everything to begin. Explore a simple, thoughtful starting point",
-    ...topic,
-  }));
+    { id: 1, title: "Deep questions, clear answers", image: "assets/images/topic-life.jpg", imageSize: [512, 286], focus: "50% 40%",
+      text: "Start with the questions people ask most, and find simple, honest answers without any pressure." },
+    { id: 2, title: "Answers that build understanding", image: "assets/images/article-resource-1.jpg", imageSize: [736, 1240], focus: "50% 72%",
+      text: "See how each answer connects to the next, so the ideas make sense together and not in pieces." },
+    { id: 3, title: "Exploring the bigger picture", image: "assets/images/article-resource-3.jpg", imageSize: [736, 916], focus: "50% 82%",
+      text: "Step back and look at the purpose, meaning and direction that all the smaller details belong to." },
+    { id: 4, title: "Understanding the heart and mind", image: "assets/images/topic-women.jpg", imageSize: [736, 1104], focus: "50% 58%",
+      text: "Explore how faith speaks to both reason and feeling, and why each of them matters on the journey." },
+    { id: 5, title: "Questions that come next", image: "assets/images/article-resource-4.jpg", imageSize: [736, 1308], focus: "50% 50%",
+      text: "Meet the deeper questions that naturally follow, and learn to hold them with patience and calm." },
+    { id: 6, title: "Communicating with care", image: "assets/images/new-muslim.jpg", imageSize: [688, 1024], focus: "50% 62%",
+      text: "Learn to share and discuss what you have learned with kindness, clarity and respect for others." },
+  ];
 
   let memory = { topics: {} };
   let saveFailed = false;   // true when the last write could not be stored in this browser
@@ -70,18 +72,23 @@
     write({ ...state, topics });
   }
 
-  // status: not-started | in-progress | completed. A topic is unlocked when the previous one is
-  // completed, when the reader opened it on purpose ("Read this topic anyway"), or once started.
+  // status: not-started | in-progress | completed. A topic is unlocked when all earlier ones are
+  // completed, or when the reader unlocks it on purpose.
   function info(id) {
     const topics = read().topics;
     const topic = topics[id] || {};
     const status = topic.status || "not-started";
-    const previousDone = id === 1 || (topics[id - 1] && topics[id - 1].status === "completed");
+    // Strict order: every earlier topic must be completed, not only the one just before.
+    const previousDone = TOPICS.every((other) => other.id >= id || (topics[other.id] && topics[other.id].status === "completed"));
     return {
       id,
       status,
       pct: topic.pct || 0,
-      unlocked: Boolean(previousDone || topic.manual || status !== "not-started"),
+      // Its turn has come: every earlier topic is completed.
+      inSequence: Boolean(previousDone),
+      // Open to read: its turn has come, or the reader unlocked it on purpose ("Unlock this article anyway").
+      // Completing a topic out of order never opens the next one: that still needs all earlier topics.
+      unlocked: Boolean(previousDone || topic.manual),
     };
   }
 
@@ -101,16 +108,23 @@
       if (current.status === "completed" || pct < START_PCT || pct <= current.pct) return;
       update(id, { status: "in-progress", pct: Math.round(pct) });
     },
-    complete: (id) => update(id, { status: "completed", pct: 100, completedAt: Date.now() }),
-    markUnread: (id) => update(id, { status: "not-started", pct: 0, completedAt: null }),
+    // Opening a topic marks it in progress straight away (never touches a completed one).
+    start(id) {
+      if (info(id).status === "not-started") update(id, { status: "in-progress", pct: 0 });
+    },
     unlock: (id) => update(id, { manual: true }),
+    // Only a topic whose turn has come can be completed; reading ahead is saved as progress only.
+    complete(id) {
+      if (!info(id).unlocked) return;
+      update(id, { status: "completed", pct: 100, completedAt: Date.now() });
+    },
+    markUnread: (id) => update(id, { status: "not-started", pct: 0, completedAt: null }),
     // The one card to point the reader at: first unlocked topic that is not completed yet.
     recommended() {
       const topics = all();
       const next = topics.find((topic) => topic.unlocked && topic.status !== "completed");
       if (!next) return null;
-      const anyStarted = topics.some((topic) => topic.status !== "not-started");
-      const label = next.status === "in-progress" ? "Continue" : anyStarted ? "Start with this card" : "";   // no label on a fresh path
+      const label = next.status === "in-progress" ? "Continue" : "Start here";
       return { id: next.id, label };
     },
     onChange(listener) { listeners.add(listener); return () => listeners.delete(listener); },

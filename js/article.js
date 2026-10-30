@@ -53,6 +53,14 @@
 
   if (!P) { update(); return; }
 
+  // A locked topic has to be unlocked from the path first ("Unlock this article anyway").
+  if (!P.info(topicId).unlocked) {
+    window.location.replace("start-here.html");
+    return;
+  }
+
+  P.start(topicId);   // opened = in progress (blue pin); only finishing completes it
+
   /* ---- Saved reading progress: "in progress" once the reader is past the first stretch ---- */
   let savedStep = 0;
   function saveProgress() {
@@ -92,7 +100,9 @@
     almost: "Almost there. Take a little more time with the text.",
     armed: "Nice work reaching the end. Mark it as read to unlock the next topic.",
     completed: "Marked as read. The next topic is unlocked.",
+    completedWaiting: "Marked as read. Finish the earlier topics, in order, to unlock the next one.",
     lastCompleted: "Marked as read. You have reached the end of the path.",
+    outOfOrder: "Finish the earlier topics first, in order, to mark this one as read.",
     saveFailed: "We couldn’t save your progress in this browser, so this will be lost when you leave the page.",
   };
   const isLast = topicId === P.TOPICS[P.TOPICS.length - 1].id;
@@ -105,10 +115,15 @@
     let message = atEnd ? copy.almost : copy.reading;
     if (status === "completed") {
       state = "completed";
-      message = !P.canSave() ? copy.saveFailed : isLast ? copy.lastCompleted : copy.completed;
+      const nextOpen = isLast || P.info(topicId + 1).unlocked;
+      message = !P.canSave() ? copy.saveFailed : isLast ? copy.lastCompleted : nextOpen ? copy.completed : copy.completedWaiting;
     } else if (armed) {
       state = "armed";
       message = copy.armed;
+      if (!P.info(topicId).unlocked) {   // read ahead: cannot be completed out of order
+        state = "reading";
+        message = copy.outOfOrder;
+      }
     }
 
     card.dataset.state = state;
@@ -140,7 +155,7 @@
     if (!nextTopic) { next.hidden = true; return; }
     const unlocked = P.info(nextTopic.id).unlocked;
     nextTitle.textContent = nextTopic.title;
-    nextKicker.textContent = unlocked ? `Next topic • Step 0${nextTopic.id}` : "Complete this topic to unlock";
+    nextKicker.textContent = unlocked ? `Next topic • Step 0${nextTopic.id}` : completed ? "Finish the earlier topics to unlock" : "Complete this topic to unlock";
     next.classList.toggle("is-disabled", !unlocked);
     next.classList.toggle("is-recommended", unlocked && completed);
     if (unlocked) {

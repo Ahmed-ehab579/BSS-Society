@@ -1,7 +1,8 @@
 /* Start Here page: intro, learning path and its states. Shared styles live in tokens/base/header. */
 .page {
-  padding-top: calc(var(--header-height) + 60px);
-  padding-bottom: 120px;
+  --section-gap: calc(var(--scale-1100) * 2);   /* 128px: one vertical rhythm between the page sections */
+  padding-top: calc(var(--header-height) + var(--scale-1100));
+  padding-bottom: 60px;                /* with the footer's own top margin: the same 167.7px as the other pages */
 }
 
 .section {
@@ -41,8 +42,19 @@
   color: var(--color-text-body);
 }
 
-.journey-section {
-  margin-top: 138px;
+.journey-section,
+.topics-section {
+  margin-top: var(--section-gap);
+}
+
+/* The journey intro: heading and description end on the same bottom line, like the page intro above.
+   (The Library intro below keeps the homepage Library layout exactly.) */
+.journey-section .section-intro {
+  align-items: flex-end;
+}
+
+.journey-section .section-intro__supporting {
+  padding-top: 0;
 }
 
 /* Shown only when progress cannot be saved in this browser */
@@ -66,21 +78,23 @@
 .journey {
   --line-muted: #b8b8b8;               /* dashed connector between locked cards */
   --line-active: #5c5c5c;              /* connector once both cards are available */
-  --pin-active-ring: #c5d5b2;          /* Figma pin, State=Grren */
-  --pin-active-dot: #6e8e49;
+  --pin-green-light: #c5d5b2;          /* Figma pin, State=Grren: ring / progress track */
+  --pin-green-dark: #6e8e49;           /* Figma pin, State=Grren: dot / progress arc / completed */
+  --pin-progress-ring: #c3d6ea;        /* started, not finished (proposed: no Figma design yet) */
+  --pin-progress-dot: #4f7fae;
   --card-stroke-active: #7d7d7d;       /* available card stroke */
   --card-stroke-locked: #929292;       /* locked card stroke */
   --card-width: 275.56px;
   position: relative;
   max-width: 1153px;
   height: 1345.29px;
-  margin: 171px auto 0;
+  margin: calc(var(--scale-1100) + var(--scale-1000)) auto 0;   /* room for the "Start here" label above the first pin */
 }
 
 .journey__start-label {
   position: absolute;
-  top: -66px;
-  left: 12.38%;
+  bottom: calc(100% + var(--scale-300));
+  left: 50%;
   width: 120px;
   transform: translateX(-50%);
   text-align: center;
@@ -186,13 +200,38 @@
   background: var(--border-color-on-light);
 }
 
-/* Pin above an available card: green state */
-.journey__step[data-state="active"] .journey__pin {
-  background: var(--pin-active-ring);
+/* Pin states: ready = green ring and dot (only when it is its turn; unlocked early stays gray), in progress = blue (only when it is its turn; a card unlocked early stays gray even once opened), completed = solid green with a check */
+.journey__step[data-status="not-started"][data-turn="now"] .journey__pin {
+  background: var(--pin-green-light);
 }
 
-.journey__step[data-state="active"] .journey__pin::before {
-  background: var(--pin-active-dot);
+.journey__step[data-status="not-started"][data-turn="now"] .journey__pin::before {
+  background: var(--pin-green-dark);
+}
+
+.journey__step[data-status="in-progress"][data-turn="now"] .journey__pin {
+  background: var(--pin-progress-ring);
+}
+
+.journey__step[data-status="in-progress"][data-turn="now"] .journey__pin::before {
+  background: var(--pin-progress-dot);
+}
+
+.journey__step[data-status="completed"] .journey__pin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--pin-green-dark);
+  color: var(--color-text-on-dark);
+}
+
+.journey__step[data-status="completed"] .journey__pin::before {
+  display: none;
+}
+
+.pin-check {
+  width: 26px;
+  height: 26px;
 }
 
 /* Card */
@@ -246,15 +285,14 @@
 
 .journey-card__media img {
   position: absolute;
-  left: 0;
-  top: -74.55%;
+  inset: 0;
   width: 100%;
-  height: 213.73%;
+  height: 100%;
   max-width: none;
-  object-fit: cover;
+  object-fit: cover;               /* the crop is set per photo with object-position */
 }
 
-/* Description reveal (active card). Rows animate 0fr -> 1fr. */
+/* Description block (shown on available cards; hidden by default on other card types). */
 .journey-card__reveal {
   display: grid;
   grid-template-rows: 0fr;
@@ -273,7 +311,7 @@
   font-size: var(--body-s-size);
   line-height: 1.7;
   font-weight: 500;
-  color: var(--color-text-on-light);
+  color: #686868;                     /* subtitle colour on every card state */
 }
 
 /* Reading button: shown without hover (touch) and on keyboard focus */
@@ -293,30 +331,32 @@
   height: 24px;
 }
 
-/* Elevation: the available card sits above the flat locked cards */
+/* Elevation: the card whose turn it is sits above the flat ones */
 a.journey-card {
   --card-shadow: 0 1px 2px rgba(37, 37, 37, 0.08), 0 8px 16px -4px rgba(37, 37, 37, 0.14), 0 20px 36px -12px rgba(37, 37, 37, 0.18);
-  --card-shadow-hover: 0 2px 4px rgba(37, 37, 37, 0.08), 0 14px 24px -6px rgba(37, 37, 37, 0.18), 0 32px 52px -16px rgba(37, 37, 37, 0.24);
+  gap: 21px;                         /* always the expanded size: description visible, default colour */
   border-color: var(--card-stroke-active);
-  box-shadow: var(--card-shadow);
-  transition: background-color var(--card-duration) var(--card-ease),
-    gap var(--card-duration) var(--card-ease),
-    box-shadow var(--card-duration) var(--card-ease);
+  transition: background-color var(--card-duration) var(--card-ease);
   cursor: default;   /* default arrow; the cursor badge signals the action */
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Only the card whose turn it is sits elevated; a card unlocked early has no shadow */
+.journey__step[data-turn="now"] a.journey-card {
+  box-shadow: var(--card-shadow);
+}
+
+/* The description is always shown on an available card */
+a.journey-card .journey-card__reveal {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+/* Hover and keyboard focus only change the colour */
 a.journey-card:focus-visible {
-  box-shadow: var(--card-shadow-hover);
   outline: 2px solid var(--border-color-on-light);
   outline-offset: 3px;
   background: var(--surface-cards-hovered);
-  gap: 21px;
-}
-
-a.journey-card:focus-visible .journey-card__reveal {
-  grid-template-rows: 1fr;
-  opacity: 1;
 }
 
 a.journey-card:focus-visible .journey-card__go {
@@ -325,29 +365,43 @@ a.journey-card:focus-visible .journey-card__go {
 
 @media (hover: hover) {
   a.journey-card:hover {
-    box-shadow: var(--card-shadow-hover);
     background: var(--surface-cards-hovered);
-    gap: 21px;
-  }
-
-  a.journey-card:hover .journey-card__reveal {
-    grid-template-rows: 1fr;
-    opacity: 1;
   }
 }
 
+/* Touch: no hover, so the reading button is always shown */
 @media (hover: none) {
-  a.journey-card {
-    background: var(--surface-cards-hovered);
-    gap: 21px;
-  }
-
-  a.journey-card .journey-card__reveal {
-    grid-template-rows: 1fr;
-    opacity: 1;
-  }
-
   a.journey-card .journey-card__go {
+    display: flex;
+  }
+}
+
+/* Locked and completed cards keep the available card's size and show its description:
+   muted on a locked card (like its number and title), under the green wash on a completed one. */
+.journey-card.is-locked,
+.journey-card.is-completed {
+  gap: 21px;
+}
+
+.journey-card.is-locked .journey-card__reveal,
+.journey-card.is-completed .journey-card__reveal {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.journey-card.is-locked .journey-card__text {
+  opacity: 0.49;
+}
+
+/* The reading arrow belongs to available cards only; it just keeps the layout the same on touch */
+.journey-card.is-locked .journey-card__go,
+.journey-card.is-completed .journey-card__go {
+  visibility: hidden;
+}
+
+@media (hover: none) {
+  .journey-card.is-locked .journey-card__go,
+  .journey-card.is-completed .journey-card__go {
     display: flex;
   }
 }
@@ -491,22 +545,6 @@ a.journey-card:focus-visible .journey-card__go {
   }
 }
 
-
-/* Small label on the recommended card: "Start here" / "Start with this card" / "Continue" */
-.journey-card__tag {
-  position: absolute;
-  top: var(--scale-300);
-  right: var(--scale-300);
-  z-index: 1;
-  padding: 0 var(--scale-300);
-  border-radius: 999px;
-  background: var(--surface-action-primary);
-  color: var(--color-text-on-dark);
-  font-size: var(--label-s-size);
-  line-height: var(--label-s-line);
-  font-weight: var(--label-weight);
-  white-space: nowrap;
-}
 
 /* Completed card (Figma: green wash with a check icon; hover shows the message and two actions) */
 .journey-card.is-completed {
@@ -656,11 +694,6 @@ a.journey-card:focus-visible .journey-card__go {
     margin-top: 96px;
   }
 
-  .journey__start-label {
-    top: -66px;
-    left: 35%;
-  }
-
   .journey > .journey__lines {
     display: none;
   }
@@ -762,17 +795,21 @@ a.journey-card:focus-visible .journey-card__go {
     width: 43.71px;
     height: 42.48px;
   }
-
-  a.journey-card:hover,
-  a.journey-card:focus-visible {
-    gap: 21px;
-  }
 }
 
 @media (max-width: 767px) {
+  /* Section CTA keeps the regular mobile size and pressed feedback (as on the homepage) */
+  .topics-section .section-cta {
+    height: 48px;
+    padding: var(--scale-300) var(--scale-600);
+  }
+
+  .topics-section .section-cta:active .btn__arrow-track {
+    transform: none;
+  }
+
   .page {
-    padding-top: calc(var(--header-height) + 32px);
-    padding-bottom: 80px;
+    padding-top: calc(var(--header-height) + var(--scale-800));
   }
 
   .intro__heading {
@@ -780,8 +817,8 @@ a.journey-card:focus-visible .journey-card__go {
     line-height: 44px;
   }
 
-  .journey-section {
-    margin-top: 80px;
+  .page {
+    --section-gap: calc(var(--scale-1000) + var(--scale-800));   /* 80px */
   }
 }
 

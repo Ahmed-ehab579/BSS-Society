@@ -9,14 +9,17 @@
   const articleUrl = (id) => `article.html?topic=${id}`;
 
   const media = (topic, lazy) =>
-    `<div class="journey-card__media"><img src="${topic.image}" width="${topic.imageSize[0]}" height="${topic.imageSize[1]}" alt=""${lazy ? ' loading="lazy"' : ""}></div>`;
+    `<div class="journey-card__media"><img src="${topic.image}" width="${topic.imageSize[0]}" height="${topic.imageSize[1]}" alt="" style="object-position: ${topic.focus}"${lazy ? ' loading="lazy"' : ""}></div>`;
   const body = (topic, inner = "") =>
     `<div class="journey-card__body"><span class="journey-card__number" aria-hidden="true">0${topic.id}</span><h3 class="journey-card__title">${escape(topic.title)}</h3>${inner}</div>`;
 
-  function locked(topic) {
-    const previous = P.topic(topic.id - 1);
+  // Topics go in order: a locked card points at the first topic that is not completed yet (not at
+  // the step just before it). "Unlock this article anyway" opens only that card: it is then active,
+  // but its pin stays gray until the reader opens it (blue) or its turn comes.
+  function locked(topic, target) {
+    const previous = target;
     return `<div class="journey-card is-locked" tabindex="0" role="group" aria-label="Locked topic: ${escape(topic.title)}">
-      ${body(topic)}${media(topic, true)}
+      ${body(topic, revealBlock(topic))}${media(topic, true)}
       <img class="journey-card__lock" src="assets/icons/lock.svg" width="36" height="42" alt="">
       <div class="journey-card__locked-panel">
         <div class="journey-card__locked-copy">
@@ -25,25 +28,29 @@
         </div>
         <div class="journey-card__locked-actions">
           <a class="btn btn--primary btn--regular" href="${articleUrl(previous.id)}">Go to Topic ${previous.id}</a>
-          <button class="btn btn--secondary btn--small journey-card__unlock" type="button" data-unlock="${topic.id}">Read this topic anyway</button>
+          <button class="btn btn--secondary btn--small journey-card__unlock" type="button" data-unlock="${topic.id}">Unlock this article anyway</button>
         </div>
       </div>
     </div>`;
   }
 
-  function available(topic, tag) {
-    const reveal = `<div class="journey-card__reveal"><div class="journey-card__reveal-inner"><p class="journey-card__text">${escape(topic.text)}</p><span class="journey-card__go" aria-hidden="true"><img src="assets/icons/arrow-up-right.svg" width="24" height="24" alt=""></span></div></div>`;
+  // Description block: shown on available cards, and kept (hidden) on locked and completed cards so
+  // every card has the same size.
+  const revealBlock = (topic) =>
+    `<div class="journey-card__reveal"><div class="journey-card__reveal-inner"><p class="journey-card__text">${escape(topic.text)}</p><span class="journey-card__go" aria-hidden="true"><img src="assets/icons/arrow-up-right.svg" width="24" height="24" alt=""></span></div></div>`;
+
+  function available(topic) {
+    const reveal = revealBlock(topic);
     const state = topic.status === "in-progress" ? " is-in-progress" : "";
-    const label = tag ? `<span class="journey-card__tag">${escape(tag)}</span>` : "";
     return `<a class="journey-card${state}" href="${articleUrl(topic.id)}">
-      ${body(topic, reveal)}${media(topic, topic.id > 1)}${label}
+      ${body(topic, reveal)}${media(topic, topic.id > 1)}
       <span class="visually-hidden">${topic.status === "in-progress" ? "Continue reading" : "Start reading"}</span>
     </a>`;
   }
 
   function completed(topic) {
     return `<div class="journey-card is-completed" tabindex="0" role="group" aria-label="Completed topic: ${escape(topic.title)}">
-      ${body(topic)}${media(topic, topic.id > 1)}
+      ${body(topic, revealBlock(topic))}${media(topic, topic.id > 1)}
       <span class="journey-card__wash" aria-hidden="true"></span>
       <svg class="journey-card__done-icon" viewBox="0 0 74 73" width="74" height="73" fill="none" aria-hidden="true"><circle cx="37" cy="36.5" r="34.5" stroke="currentColor" stroke-width="5"/><path d="M22 37.5l10.5 10.5L52 26" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <div class="journey-card__done-panel">
@@ -56,6 +63,7 @@
     </div>`;
   }
 
+  const CHECK = '<svg class="pin-check" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5.5 12.5l4.2 4.2L18.5 7.5" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   const stateName = (topic) => (topic.unlocked ? "active" : "locked");
 
   function render(focusId) {
@@ -66,9 +74,26 @@
       const slot = step && step.querySelector(".journey__slot");
       if (!slot) return;
       step.dataset.state = stateName(topic);
-      step.dataset.status = topic.status;
-      const tag = recommended && recommended.id === topic.id ? recommended.label : "";   // may be empty
-      slot.innerHTML = !topic.unlocked ? locked(topic) : topic.status === "completed" ? completed(topic) : available(topic, tag);
+      step.dataset.status = topic.unlocked ? topic.status : "locked";   // a locked card never shows progress
+      step.dataset.turn = topic.inSequence ? "now" : "later";
+      slot.innerHTML = !topic.unlocked ? locked(topic, P.topic(recommended ? recommended.id : topic.id - 1)) : topic.status === "completed" ? completed(topic) : available(topic);
+
+      // Pin above the card: check mark when completed (colours: data-status in CSS)
+      const item = step.querySelector(".journey__item");
+      item.querySelector(".journey__pin").innerHTML = topic.unlocked && topic.status === "completed" ? CHECK : "";
+
+      // "Start here" / "Continue" sits above the pin of the recommended card only
+      let label = item.querySelector(".journey__start-label");
+      if (recommended && recommended.id === topic.id) {
+        if (!label) {
+          label = document.createElement("p");
+          label.className = "journey__start-label";
+          item.prepend(label);
+        }
+        label.textContent = recommended.label;
+      } else if (label) {
+        label.remove();
+      }
     });
     updateSegments();
     const notice = document.querySelector("[data-storage-notice]");
