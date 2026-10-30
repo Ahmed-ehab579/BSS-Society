@@ -169,15 +169,36 @@
   ["touchstart", "wheel", "keydown", "pointerdown"].forEach((type) =>
     window.addEventListener(type, () => { reader = true; }, { once: true, passive: true }));
 
+  // A slow, eased glide (not the browser's quick smooth scroll): 1.2 to 2.6 seconds depending on the distance,
+  // starting gently and landing gently. Stops the moment the reader touches or scrolls.
+  function glideTo(top) {
+    const start = window.scrollY;
+    const distance = top - start;
+    if (Math.abs(distance) < 4) return;
+    const duration = Math.min(2600, Math.max(1200, Math.abs(distance) * 0.9));
+    const began = performance.now();
+    const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);   // ease in and out (cubic)
+    function step(now) {
+      if (reader) return;
+      const t = Math.min(1, (now - began) / duration);
+      window.scrollTo({ top: start + distance * ease(t), behavior: "instant" });
+      if (t < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
   function scrollToTurn() {
     if (reader || !phone.matches || window.location.hash) return;
     const label = journey.querySelector(".journey__start-label");
     if (!label) return;
-    const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    label.scrollIntoView({ block: "start", behavior: calm ? "auto" : "smooth" });
+    const margin = parseFloat(getComputedStyle(label).scrollMarginTop) || 0;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const top = Math.min(max, Math.max(0, label.getBoundingClientRect().top + window.scrollY - margin));
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) window.scrollTo({ top, behavior: "instant" });
+    else glideTo(top);
   }
 
-  const settle = () => window.setTimeout(scrollToTurn, 150);   // after the browser's own scroll restore
+  const settle = () => window.setTimeout(scrollToTurn, 700);   // a beat at the top first, and after the browser's own scroll restore
   if (document.readyState === "complete") settle();
   else window.addEventListener("load", settle, { once: true });
   window.addEventListener("pageshow", (event) => {
