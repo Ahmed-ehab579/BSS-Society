@@ -63,7 +63,6 @@
     </div>`;
   }
 
-  const CHECK = '<svg class="pin-check" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5.5 12.5l4.2 4.2L18.5 7.5" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   const stateName = (topic) => (topic.unlocked ? "active" : "locked");
 
   function render(focusId) {
@@ -78,9 +77,16 @@
       step.dataset.turn = topic.inSequence ? "now" : "later";
       slot.innerHTML = !topic.unlocked ? locked(topic, P.topic(recommended ? recommended.id : topic.id - 1)) : topic.status === "completed" ? completed(topic) : available(topic);
 
-      // Pin above the card: check mark when completed (colours: data-status in CSS)
+      // Pin above the card: colours come from data-status / data-turn in CSS; the card whose turn it is
+      // (and that is not started) gets pulse waves. Only touched when it changes, so the animation is not restarted.
       const item = step.querySelector(".journey__item");
-      item.querySelector(".journey__pin").innerHTML = topic.unlocked && topic.status === "completed" ? CHECK : "";
+      const pin = item.querySelector(".journey__pin");
+      const pulses = topic.unlocked && topic.inSequence && topic.status === "not-started";
+      if (pulses && !pin.firstElementChild) {
+        pin.innerHTML = '<span class="pin-pulse" aria-hidden="true"></span><span class="pin-pulse pin-pulse--late" aria-hidden="true"></span>';
+      } else if (!pulses && pin.firstElementChild) {
+        pin.innerHTML = "";
+      }
 
       // "Start here" / "Continue" sits above the pin of the recommended card only
       let label = item.querySelector(".journey__start-label");
@@ -96,12 +102,25 @@
       }
     });
     updateSegments();
+    matchLabelBackground();
     const notice = document.querySelector("[data-storage-notice]");
     if (notice) notice.hidden = P.canSave();
     if (focusId) {
       const card = journey.querySelector(`.journey__step[data-step="${focusId}"] .journey-card`);
       if (card) card.focus({ preventScroll: true });
     }
+  }
+
+  // The label frame takes the exact colour of the panel behind it, so it never looks like a second surface.
+  // The panel fades from the card colour to the page colour from top to bottom.
+  function matchLabelBackground() {
+    const label = journey.querySelector(".journey__start-label");
+    const panel = journey.closest(".section-panel");
+    if (!label || !panel) return;
+    const l = label.getBoundingClientRect();
+    const p = panel.getBoundingClientRect();
+    const f = Math.min(1, Math.max(0, (l.top + l.height / 2 - p.top) / p.height));
+    label.style.background = `color-mix(in srgb, var(--surface-cards) ${((1 - f) * 100).toFixed(1)}%, var(--color-page-bg))`;
   }
 
   // A dashed segment is dark only when both cards it connects are unlocked.
@@ -130,6 +149,8 @@
 
   P.onChange(() => render());
   render();
+  window.addEventListener("load", matchLabelBackground);
+  new ResizeObserver(matchLabelBackground).observe(journey.closest(".section-panel") || journey);
 
   // Cursor badges (mouse only): "Start reading" over an available card, "Locked" over a locked
   // card. The locked badge hides over the card's two buttons and returns on the rest of the card.
