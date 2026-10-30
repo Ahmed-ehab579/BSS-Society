@@ -101,6 +101,7 @@
 }
 
 .journey__start-label {
+  scroll-margin-top: calc(var(--header-height) + var(--scale-400));   /* for the phone auto-scroll */
   position: absolute;
   bottom: calc(100% + var(--scale-300));
   left: 50%;
@@ -347,7 +348,7 @@
   color: #686868;                     /* subtitle colour on every card state */
 }
 
-/* Reading button: shown without hover (touch) and on keyboard focus */
+/* Reading button: only on keyboard focus (desktop). Never on touch screens or phones. */
 .journey-card__go {
   display: none;
   align-items: center;
@@ -402,13 +403,6 @@ a.journey-card:focus-visible .journey-card__go {
   }
 }
 
-/* Touch: no hover, so the reading button is always shown */
-@media (hover: none) {
-  a.journey-card .journey-card__go {
-    display: flex;
-  }
-}
-
 /* Locked and completed cards keep the available card's size and show its description:
    muted on a locked card (like its number and title), under the green wash on a completed one. */
 .journey-card.is-locked,
@@ -424,19 +418,6 @@ a.journey-card:focus-visible .journey-card__go {
 
 .journey-card.is-locked .journey-card__text {
   opacity: 0.49;
-}
-
-/* The reading arrow belongs to available cards only; it just keeps the layout the same on touch */
-.journey-card.is-locked .journey-card__go,
-.journey-card.is-completed .journey-card__go {
-  visibility: hidden;
-}
-
-@media (hover: none) {
-  .journey-card.is-locked .journey-card__go,
-  .journey-card.is-completed .journey-card__go {
-    display: flex;
-  }
 }
 
 /* Locked card (Figma "Locked card": 49% number, title and image; lock icon top right) */
@@ -460,12 +441,63 @@ a.journey-card:focus-visible .journey-card__go {
   outline-offset: 3px;
 }
 
-.journey-card__lock {
+/* Hover icon motion shared by the locked (lock) and completed (check) cards: on hover or focus the icon
+   glides to the middle, grows 1.25x and settles above the message. The panel content sits at the bottom
+   (icon spacer, message, 50px, buttons) so the buttons never move; js/journey.js measures the spacer into --spacer-top so the
+   icon lands exactly on it. Sizes are set per breakpoint. */
+.journey-card.is-locked,
+.journey-card.is-completed {
+  --icon-pad: 25px;                    /* panel padding above the icon */
+  --icon-gap: 28px;                    /* icon to message */
+  --icon-scale: 1.25;
+  --panel-gap: 50px;                   /* message to buttons */
+  --spacer-top: var(--icon-pad);       /* replaced by the measured value */
+  --icon-hover-top: calc(var(--spacer-top) + var(--icon-h) * (var(--icon-scale) - 1) / 2);
+}
+
+.journey-card__icon-spacer {
+  display: block;
+  flex: none;
+  height: calc(var(--icon-h) * var(--icon-scale) + var(--icon-gap));
+}
+
+.journey-card.is-locked {
+  --icon-w: 36px;
+  --icon-h: 42px;
+  --icon-top: 27px;
+  --icon-right: 24.6px;
+}
+
+.journey-card.is-completed {
+  --icon-w: 72px;
+  --icon-h: 71px;
+  --icon-top: 21px;
+  --icon-right: 20px;
+}
+
+.journey-card__lock,
+.journey-card__done-icon {
   position: absolute;
-  top: 27px;
-  right: 24.6px;
-  width: 36px;
-  height: 42px;
+  top: var(--icon-top);
+  left: calc(100% - var(--icon-right) - var(--icon-w));
+  z-index: 2;                          /* above the hover panel */
+  width: var(--icon-w);
+  height: var(--icon-h);
+  transform-origin: center;
+  pointer-events: none;
+  transition: left var(--card-duration) var(--card-ease), top var(--card-duration) var(--card-ease),
+    transform var(--card-duration) var(--card-ease);
+}
+
+.journey-card__done-icon {
+  color: var(--color-completed);
+}
+
+.journey-card.is-locked:focus-within .journey-card__lock,
+.journey-card.is-completed:focus-within .journey-card__done-icon {
+  left: calc(50% - var(--icon-w) / 2);
+  top: var(--icon-hover-top);
+  transform: scale(var(--icon-scale));
 }
 
 /* Locked hover overlay: shown on hover and keyboard/touch focus */
@@ -474,7 +506,7 @@ a.journey-card:focus-visible .journey-card__go {
   inset: 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-end;           /* buttons stay at the bottom, where they always were; icon and message stack above them */
   padding: 25px 13px;
   /* Opaque card colour underneath (Figma "Component 59") plus the 89% overlay on top */
   background:
@@ -487,11 +519,10 @@ a.journey-card:focus-visible .journey-card__go {
 }
 
 .journey-card__locked-copy {
-  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 26px;
   text-align: center;
 }
@@ -514,6 +545,7 @@ a.journey-card:focus-visible .journey-card__go {
   display: flex;
   flex-direction: column;
   gap: 13px;
+  margin-top: var(--panel-gap);
 }
 
 /* Actions / Button, Secondary Regular (44px, 16px side padding, Label M) */
@@ -525,15 +557,6 @@ a.journey-card:focus-visible .journey-card__go {
   height: 44px;
   padding: var(--scale-300) var(--scale-400);
   background: transparent;
-}
-
-.journey-card__lock {
-  transition: opacity var(--card-duration) var(--card-ease);
-}
-
-/* Figma hover variant has no lock icon */
-.journey-card.is-locked:focus-within .journey-card__lock {
-  opacity: 0;
 }
 
 /* Original content stays only as a ghost behind the overlay (49% x 11% visible) */
@@ -557,7 +580,9 @@ a.journey-card:focus-visible .journey-card__go {
 
 @media (hover: hover) {
   .journey-card.is-locked:hover .journey-card__lock {
-    opacity: 0;
+    left: calc(50% - var(--icon-w) / 2);
+    top: var(--icon-hover-top);
+    transform: scale(var(--icon-scale));
   }
 
   .journey-card.is-locked:hover .journey-card__body {
@@ -597,17 +622,7 @@ a.journey-card:focus-visible .journey-card__go {
   pointer-events: none;
 }
 
-.journey-card__done-icon {
-  position: absolute;
-  top: 21px;
-  left: calc(100% - 20px - 72px);
-  z-index: 2;
-  width: 72px;
-  height: 71px;
-  color: var(--color-completed);
-  pointer-events: none;
-  transition: left var(--card-duration) var(--card-ease), top var(--card-duration) var(--card-ease);
-}
+
 
 .journey-card__done-panel {
   position: absolute;
@@ -615,7 +630,7 @@ a.journey-card:focus-visible .journey-card__go {
   z-index: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-end;           /* buttons stay at the bottom, where they always were; icon and message stack above them */
   padding: 25px 13px;
   opacity: 0;
   pointer-events: none;
@@ -623,11 +638,6 @@ a.journey-card:focus-visible .journey-card__go {
 }
 
 .journey-card__done-title {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 90px;
   max-width: 218px;
   margin-inline: auto;
   text-align: center;
@@ -652,11 +662,6 @@ a.journey-card:focus-visible .journey-card__go {
   opacity: 0;
 }
 
-.journey-card.is-completed:focus-within .journey-card__done-icon {
-  left: calc(50% - 36px);
-  top: 43px;
-}
-
 @media (hover: hover) {
   .journey-card.is-completed:hover .journey-card__done-panel {
     opacity: 1;
@@ -669,8 +674,9 @@ a.journey-card:focus-visible .journey-card__go {
   }
 
   .journey-card.is-completed:hover .journey-card__done-icon {
-    left: calc(50% - 36px);
-    top: 43px;
+    left: calc(50% - var(--icon-w) / 2);
+    top: var(--icon-hover-top);
+    transform: scale(var(--icon-scale));
   }
 }
 
@@ -789,20 +795,17 @@ a.journey-card:focus-visible .journey-card__go {
     padding: 20px 11px;
   }
 
-  .journey-card__done-icon {
-    top: 17px;
-    left: calc(100% - 17px - 58px);
-    width: 58px;
-    height: 57px;
+  .journey-card.is-locked,
+  .journey-card.is-completed {
+    --icon-pad: 20px;
+    --icon-gap: 24px;
   }
 
-  .journey-card.is-completed:focus-within .journey-card__done-icon {
-    left: calc(50% - 29px);
-    top: 34px;
-  }
-
-  .journey-card__done-title {
-    margin-top: 70px;
+  .journey-card.is-completed {
+    --icon-w: 58px;
+    --icon-h: 57px;
+    --icon-top: 17px;
+    --icon-right: 17px;
   }
 
   .journey-card__locked-copy {
@@ -817,20 +820,22 @@ a.journey-card:focus-visible .journey-card__go {
     font-size: 14px;
   }
 
-  .journey-card__lock {
-    top: 22.3px;
-    right: 20.3px;
-    width: 29.785px;
-    height: 34.75px;
+  .journey-card.is-locked {
+    --icon-w: 29.785px;
+    --icon-h: 34.75px;
+    --icon-top: 22.3px;
+    --icon-right: 20.3px;
   }
 
-  .journey-card__go {
-    width: 43.71px;
-    height: 42.48px;
-  }
 }
 
 @media (max-width: 767px) {
+  /* No arrow button on phone cards, so they are shorter */
+  a.journey-card .journey-card__go,
+  a.journey-card:focus-visible .journey-card__go {
+    display: none;
+  }
+
   /* Label frame: 3px more padding on every side on phones (6/8 -> 9/11) */
   .journey__start-label {
     padding: calc(6px + 3px) calc(var(--scale-200) + 3px);
