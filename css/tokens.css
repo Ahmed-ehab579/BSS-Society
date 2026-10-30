@@ -43,6 +43,16 @@
   --color-field-placeholder: #8a8a8a;
   --surface-form-panel: rgba(243, 240, 231, 0.9);
   --border-color-form-panel: #848484;
+  /* Library (Figma 984:2587; variables pending in Figma) */
+  --color-text-subtle: #858780;        /* filter labels, search placeholder, results eyebrow */
+  --color-type-icon: #647b4e;          /* material type icon in the card badge */
+  --surface-badge: rgba(251, 250, 246, 0.9);
+  --surface-media: #f0efe8;            /* resource photo background while loading or missing */
+  --surface-media-scrim: rgba(0, 0, 0, 0.2);
+  --border-color-control: #dadbd4;     /* view toggle and sort */
+  --radius-pill: 999px;
+  --radius-card: 24px;
+  --shadow-menu: 0 8px 24px rgba(0, 0, 0, 0.12);
   /* Validation colours: not defined in Figma (pending approval) */
   --color-error: #b3261e;
   --color-error-on-dark: #ffb4ab;

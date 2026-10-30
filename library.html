@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Library — Best Speech Society</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&display=swap">
+  <link rel="stylesheet" href="css/tokens.css?v=16">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/intro.css">
+  <link rel="stylesheet" href="css/library.css?v=1">
+  <link rel="stylesheet" href="css/footer.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="index.html" aria-label="Best Speech Society — Home">
+        <img class="brand__symbol" src="assets/icons/brand-symbol.svg" width="43.0392" height="53.1819" alt="">
+        <span class="brand__wordmark" aria-hidden="true">
+          <span class="brand__line brand__line--1">Best Speech</span>
+          <span class="brand__line brand__line--2">Society</span>
+        </span>
+      </a>
+
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
+        <span class="menu-icon" aria-hidden="true">
+          <span class="menu-icon__bar"></span>
+          <span class="menu-icon__bar"></span>
+          <span class="menu-icon__bar"></span>
+        </span>
+      </button>
+
+      <nav class="site-nav" id="site-nav" aria-label="Main">
+        <ul class="site-nav__links">
+          <li><a class="site-nav__link" href="index.html" data-label="Home">Home</a></li>
+          <li><a class="site-nav__link" href="index.html#about" data-label="About Us">About Us</a></li>
+          <li><a class="site-nav__link" href="start-here.html" data-label="Start here">Start here</a></li>
+          <li><a class="site-nav__link is-active" href="library.html" data-label="Library" aria-current="page">Library</a></li>
+          <li><a class="site-nav__link" href="index.html#new-muslim" data-label="New muslim">New muslim</a></li>
+        </ul>
+        <a class="btn btn--small btn--secondary site-nav__cta" href="index.html#contact">Contact Us</a>
+      </nav>
+    </div>
+  </header>
+  <div class="menu-backdrop" aria-hidden="true"></div>
+
+  <main class="page">
+    <section class="container intro" aria-labelledby="intro-heading">
+      <h1 class="text-h1 intro__heading" id="intro-heading">Explore the library</h1>
+      <p class="text-body-xl intro__text">Find carefully selected books, articles, videos, and audio resources to help you learn about Islam with clarity, depth, and confidence at your own pace.</p>
+    </section>
+
+    <section class="container section library-section" id="resources" aria-labelledby="resources-heading">
+      <div class="section-panel library-panel">
+        <h2 class="text-h2 library-panel__heading" id="resources-heading">Select a topic you’re interested in</h2>
+
+        <!-- Filters and search. Rendered by js/library.js from the FILTERS list; the state is kept in the URL. -->
+        <div class="library-tools" data-library-tools>
+          <div class="library-tools__row library-tools__row--filters">
+            <p class="library-tools__label" id="filters-label">Filter by:</p>
+            <div class="filter-bar" role="group" aria-labelledby="filters-label" data-filter-bar>
+              <button class="filter-clear-all" type="button" data-clear-all hidden>Clear all</button>
+            </div>
+          </div>
+
+          <div class="library-tools__row library-tools__row--search">
+            <label class="library-tools__label" for="library-search">Search</label>
+            <div class="search" data-search>
+              <img class="search__icon" src="assets/icons/search.svg" width="25.3727" height="25.3727" alt="">
+              <input class="search__input" id="library-search" type="search" placeholder="Search books, articles, videos, and audio..." autocomplete="off" spellcheck="false" enterkeyhint="search">
+              <button class="search__clear" type="button" aria-label="Clear search" data-search-clear hidden>
+                <img src="assets/icons/filter-remove.svg" width="12" height="12" alt="">
+              </button>
+            </div>
+          </div>
+
+          <!-- Phones: one Filters button that opens a sheet, plus the active filters as removable chips -->
+          <div class="filter-mobile">
+            <button class="filter-mobile__open" type="button" aria-haspopup="dialog" aria-controls="filter-sheet" data-sheet-open>
+              Filters <span class="filter-mobile__count" data-filter-count hidden></span>
+              <img src="assets/icons/filter-chevron.svg" width="13.6611" height="7.80635" alt="">
+            </button>
+            <ul class="filter-mobile__chips" aria-label="Active filters" data-active-chips></ul>
+          </div>
+        </div>
+
+        <div class="results" data-results>
+          <div class="results__header">
+            <div class="results__title">
+              <p class="results__eyebrow" data-results-eyebrow>You’re exploring:</p>
+              <div class="results__heading-row">
+                <h3 class="results__heading" data-results-heading>All topics</h3>
+                <p class="results__note" data-results-note hidden>(Peace &amp; blessing be upon him)</p>
+              </div>
+            </div>
+
+            <div class="results__controls">
+              <div class="view-toggle" role="group" aria-label="View">
+                <button class="view-toggle__btn" type="button" aria-pressed="true" data-view="grid" aria-label="Grid view">
+                  <img src="assets/icons/view-grid.svg" width="14.6981" height="14.6981" alt="">
+                </button>
+                <button class="view-toggle__btn" type="button" aria-pressed="false" data-view="list" aria-label="List view">
+                  <img src="assets/icons/view-list.svg" width="14.6981" height="14.6981" alt="">
+                </button>
+              </div>
+              <label class="sort">
+                <span class="sort__label">Sort:</span>
+                <select class="sort__select" data-sort>
+                  <option value="recommended">Recommended</option>
+                  <option value="newest">Newest</option>
+                  <option value="title">Title A–Z</option>
+                </select>
+                <img class="sort__icon" src="assets/icons/sort-chevron.svg" width="9.2384" height="5.15507" alt="">
+              </label>
+            </div>
+          </div>
+
+          <p class="visually-hidden" role="status" aria-live="polite" data-results-status></p>
+
+          <ul class="resource-grid" data-resource-grid></ul>
+
+          <div class="results-empty" data-results-empty hidden>
+            <p class="results-empty__title">No resources match these filters</p>
+            <p class="results-empty__text" data-empty-text>Try another topic or format, or clear the filters to see the whole library.</p>
+            <button class="btn btn--small btn--secondary" type="button" data-clear-all>Clear all filters</button>
+          </div>
+
+          <div class="results__more" data-results-more>
+            <button class="load-more" type="button" data-load-more>
+              Load more resources
+              <img src="assets/icons/load-more.svg" width="14" height="14" alt="">
+            </button>
+            <p class="results__count" data-results-count></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Phone filter sheet (a modal dialog: focus stays inside, Esc closes it) -->
+  <dialog class="filter-sheet" id="filter-sheet" aria-labelledby="filter-sheet-title" data-sheet>
+    <div class="filter-sheet__header">
+      <h2 class="filter-sheet__title" id="filter-sheet-title">Filters</h2>
+      <button class="filter-sheet__close" type="button" aria-label="Close filters" data-sheet-close>
+        <img src="assets/icons/filter-remove.svg" width="12" height="12" alt="">
+      </button>
+    </div>
+    <div class="filter-sheet__body" data-sheet-body></div>
+    <div class="filter-sheet__footer">
+      <button class="btn btn--small btn--secondary" type="button" data-clear-all>Clear all</button>
+      <button class="btn btn--small btn--primary" type="button" data-sheet-close data-sheet-apply>Show results</button>
+    </div>
+  </dialog>
+
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div class="site-footer__content">
+        <div class="site-footer__newsletter">
+          <p class="footer-brand">
+            <img class="footer-brand__symbol" src="assets/icons/brand-symbol-footer.svg" width="73.9037" height="91.314" alt="">
+            <span class="footer-brand__line footer-brand__line--1">The Best</span>
+            <span class="footer-brand__line footer-brand__line--2">Speech society</span>
+          </p>
+
+          <!-- Not connected to a service yet: validation only, nothing is sent. -->
+          <form class="newsletter" data-validate novalidate aria-label="Newsletter">
+            <p class="text-body-m newsletter__text" id="newsletter-text">Receive updates on new books and resources from Ahsan al-Qawl.</p>
+            <div class="newsletter__actions">
+              <div class="newsletter__row">
+                <label class="visually-hidden" for="newsletter-email">Email address</label>
+                <input class="newsletter__input" id="newsletter-email" name="email" type="email" autocomplete="email" spellcheck="false" placeholder="Your email" aria-describedby="newsletter-text" required>
+                <button class="btn btn--secondary-on-dark" type="submit">Subscribe</button>
+              </div>
+              <p class="newsletter__error" id="newsletter-email-error" hidden></p>
+              <p class="form-status form-status--on-dark text-body-xs" role="status"></p>
+              <p class="text-body-xs newsletter__consent">By subscribing you agree to our Privacy Policy and consent to receive updates from The Best Speech Society.</p>
+            </div>
+          </form>
+        </div>
+
+        <nav class="site-footer__links" aria-label="Footer">
+          <div class="footer-col footer-col--explore">
+            <h2 class="footer-col__title">Explore</h2>
+            <ul class="footer-col__list">
+              <li><a class="footer-link" href="start-here.html"><span class="footer-link__label">Start here</span></a></li>
+              <li><a class="footer-link" href="library.html"><span class="footer-link__label">Library</span></a></li>
+              <li><a class="footer-link" href="index.html#new-muslim"><span class="footer-link__label">New muslim path</span></a></li>
+              <li><a class="footer-link" href="index.html#about"><span class="footer-link__label">About us</span></a></li>
+              <li><a class="footer-link" href="index.html"><span class="footer-link__label">Home</span></a></li>
+            </ul>
+          </div>
+          <!-- Legal and social destinations not provided yet: shown without a link. -->
+          <div class="footer-col footer-col--legal">
+            <h2 class="footer-col__title">Legal</h2>
+            <ul class="footer-col__list">
+              <li><a class="footer-link"><span class="footer-link__label">Terms</span></a></li>
+              <li><a class="footer-link"><span class="footer-link__label">Privacy</span></a></li>
+            </ul>
+          </div>
+          <div class="footer-col footer-col--social">
+            <h2 class="footer-col__title">Follow us</h2>
+            <ul class="footer-col__list">
+              <li><a class="footer-link"><img class="footer-link__icon" src="assets/icons/facebook.svg" width="24" height="24" alt=""><span class="footer-link__label">Facebook</span></a></li>
+              <li><a class="footer-link"><img class="footer-link__icon" src="assets/icons/youtube.svg" width="24" height="24" alt=""><span class="footer-link__label">Youtube</span></a></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+
+      <div class="site-footer__credits">
+        <p class="text-body-xs" dir="auto">© 2026 Ahsan al-Qawl. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/base.js"></script>
+  <script src="js/header.js"></script>
+  <script src="js/library.js?v=1"></script>
+  <script src="js/forms.js"></script>
+</body>
+</html>
