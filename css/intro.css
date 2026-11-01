@@ -42,6 +42,17 @@
   color: var(--color-text-body);
 }
 
+/* Top-aligned variant (Library), like the homepage hero: the text drops 14px so its first line
+   sits level with the heading */
+.intro--top {
+  align-items: flex-start;
+}
+
+.intro--top .intro__text {
+  padding-top: 14px;
+  padding-bottom: 0;
+}
+
 @media (max-width: 1099px) {
   .intro {
     flex-direction: column;
@@ -49,8 +60,10 @@
     gap: var(--scale-600);
   }
 
-  .intro__text {
+  .intro__text,
+  .intro--top .intro__text {
     width: auto;
+    padding-top: 0;
     padding-bottom: 0;
   }
 }
