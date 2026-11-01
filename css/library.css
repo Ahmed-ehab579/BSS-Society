@@ -697,7 +697,7 @@
   color: var(--color-card-heading);
   font-size: var(--body-xxl-size);
   line-height: 30px;
-  font-weight: var(--h6-weight);
+  font-weight: 500;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   line-clamp: 2;
@@ -1116,6 +1116,10 @@
     height: auto;
   }
 
+  .filter-mobile__open .filter-mobile__icon {
+    width: 16px;
+  }
+
   .filter-mobile__count {
     display: inline-flex;
     align-items: center;
@@ -1282,6 +1286,7 @@
   .resource-grid[data-layout="two"] .resource-card__title {
     font-size: 15px;
     line-height: 20px;
+    font-weight: var(--label-weight);
   }
 
   .resource-grid[data-layout="two"] .resource-card__desc {
