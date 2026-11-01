@@ -438,7 +438,7 @@
       if (button.closest("[data-library-tools]")) button.hidden = !hasAny;
     });
     els.filterCount.hidden = active.length === 0;
-    els.filterCount.textContent = ` (${active.length})`;
+    els.filterCount.textContent = active.length;
     els.sheetOpen.setAttribute("aria-label", active.length ? `Filters, ${active.length} active` : "Filters");
 
     els.chips.innerHTML = active.map(({ key, label }) => {
