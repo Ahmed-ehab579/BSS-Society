@@ -56,7 +56,8 @@
   --radius-media: 12px;
   --shadow-media: 0 5px 8px rgba(0, 0, 0, 0.28);
   --shadow-media-book: 0 2px 5px 1px rgba(0, 0, 0, 0.11);
-  --shadow-card-hover: 0 14px 28px -10px rgba(0, 0, 0, 0.22);
+  --surface-cards-hovered-neutral: #e2ded3;   /* resource card hover */
+  --shadow-card-hover: 0 8px 18px -10px rgba(0, 0, 0, 0.16);
   --border-color-control: #dadbd4;     /* view toggle and sort */
   --radius-pill: 999px;
   --radius-card: 24px;
