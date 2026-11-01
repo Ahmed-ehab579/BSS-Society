@@ -56,7 +56,7 @@
   --radius-media: 12px;
   --shadow-media: 0 5px 8px rgba(0, 0, 0, 0.28);
   --shadow-media-book: 0 2px 5px 1px rgba(0, 0, 0, 0.11);
-  --surface-resource-card: #e8e5dd;    /* resource card default */
+  --surface-resource-card: #e4e0d6;    /* resource card default */
   --surface-cards-hovered-neutral: #e2ded3;   /* resource card hover */
   --shadow-card-hover: 0 8px 18px -10px rgba(0, 0, 0, 0.16);
   --border-color-control: #dadbd4;     /* view toggle and sort */
