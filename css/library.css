@@ -520,6 +520,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  border: var(--scale-12) solid var(--border-color-on-light);
   border-radius: var(--radius-card);
   background: var(--surface-resource-card);
   box-shadow: var(--shadow-sm);
@@ -528,15 +529,9 @@
     background-color var(--motion-duration-hover) var(--motion-ease);
 }
 
-/* Inside stroke drawn above the media, as on the other cards */
-.resource-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border: var(--scale-12) solid var(--border-color-on-light);
-  border-radius: inherit;
-  pointer-events: none;
-}
+/* The stroke is the card's own border: an overlay inside the card was clipped at the bottom when
+   the card ended on a fraction of a pixel (one-a-row layout, whose photo height comes from an
+   aspect ratio). The media is inset, so nothing needs to sit above the stroke. */
 
 .resource-card__media {
   padding: 14px 14px 0;
