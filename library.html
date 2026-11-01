@@ -7,11 +7,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&display=swap">
-  <link rel="stylesheet" href="css/tokens.css?v=19">
+  <link rel="stylesheet" href="css/tokens.css?v=20">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/header.css">
   <link rel="stylesheet" href="css/intro.css">
-  <link rel="stylesheet" href="css/library.css?v=4">
+  <link rel="stylesheet" href="css/library.css?v=5">
   <link rel="stylesheet" href="css/footer.css">
 </head>
 <body>
@@ -112,7 +112,7 @@
               </div>
               <!-- Sort: the same menu as the filter pills -->
               <div class="filter sort" data-sort>
-                <button class="sort__toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="sort-menu" data-sort-toggle>
+                <button class="sort__toggle" type="button" aria-haspopup="true" data-sheet-target="sort-sheet" aria-expanded="false" aria-controls="sort-menu" data-sort-toggle>
                   <span class="sort__label">Sort:</span>
                   <span class="sort__value" data-sort-value>Recommended</span>
                   <img class="sort__icon" src="assets/icons/sort-chevron.svg" width="9.2384" height="5.15507" alt="">
@@ -148,6 +148,22 @@
       </div>
     </section>
   </main>
+
+  <!-- Phone sort sheet: one choice, so picking an option applies it and closes the sheet -->
+  <dialog class="filter-sheet sort-sheet" id="sort-sheet" aria-labelledby="sort-sheet-title" data-sort-sheet>
+    <div class="filter-sheet__header">
+      <h2 class="filter-sheet__title" id="sort-sheet-title">Sort by</h2>
+      <button class="filter-sheet__close" type="button" aria-label="Close sort options" data-sort-sheet-close>
+        <img src="assets/icons/filter-remove.svg" width="12" height="12" alt="">
+      </button>
+    </div>
+    <fieldset class="sort-sheet__options">
+      <legend class="visually-hidden">Sort by</legend>
+      <label class="filter-option"><input class="filter-option__input" type="radio" name="sort-sheet" value="recommended"><span class="filter-option__label">Recommended</span></label>
+      <label class="filter-option"><input class="filter-option__input" type="radio" name="sort-sheet" value="newest"><span class="filter-option__label">Newest</span></label>
+      <label class="filter-option"><input class="filter-option__input" type="radio" name="sort-sheet" value="title"><span class="filter-option__label">Title A–Z</span></label>
+    </fieldset>
+  </dialog>
 
   <!-- Phone filter sheet (a modal dialog: focus stays inside, Esc closes it) -->
   <dialog class="filter-sheet" id="filter-sheet" aria-labelledby="filter-sheet-title" data-sheet>
@@ -227,7 +243,7 @@
 
   <script src="js/base.js"></script>
   <script src="js/header.js"></script>
-  <script src="js/library.js?v=4"></script>
+  <script src="js/library.js?v=5"></script>
   <script src="js/forms.js"></script>
 </body>
 </html>
