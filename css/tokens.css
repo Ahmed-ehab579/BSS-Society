@@ -46,9 +46,17 @@
   /* Library (Figma 984:2587; variables pending in Figma) */
   --color-text-subtle: #858780;        /* filter labels, search placeholder, results eyebrow */
   --color-type-icon: #647b4e;          /* material type icon in the card badge */
-  --surface-badge: rgba(251, 250, 246, 0.9);
+  --surface-badge: rgba(255, 255, 255, 0.88);
+  --border-color-badge: #c2c2c2;
   --surface-media: #f0efe8;            /* resource photo background while loading or missing */
+  --surface-book: #f6f3ed;             /* board behind book covers */
   --surface-media-scrim: rgba(0, 0, 0, 0.2);
+  --surface-media-scrim-light: rgba(0, 0, 0, 0.07);
+  --surface-media-scrim-audio: rgba(50, 50, 50, 0.33);
+  --radius-media: 12px;
+  --shadow-media: 0 5px 8px rgba(0, 0, 0, 0.28);
+  --shadow-media-book: 0 2px 5px 1px rgba(0, 0, 0, 0.11);
+  --shadow-card-hover: 0 14px 28px -10px rgba(0, 0, 0, 0.22);
   --border-color-control: #dadbd4;     /* view toggle and sort */
   --radius-pill: 999px;
   --radius-card: 24px;
