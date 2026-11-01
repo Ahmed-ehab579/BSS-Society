@@ -697,7 +697,7 @@
   color: var(--color-card-heading);
   font-size: var(--body-xxl-size);
   line-height: 30px;
-  font-weight: 500;
+  font-weight: var(--body-weight);   /* regular on desktop; phone layouts set their own weight */
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   line-clamp: 2;
@@ -1315,6 +1315,7 @@
   .resource-grid[data-layout="one"] .resource-card__title {
     font-size: var(--h6-size);
     line-height: var(--h6-line);
+    font-weight: 500;
   }
 
   /* List: small thumbnail on the left; type, title, short text and a compact action on the right */
