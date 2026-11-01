@@ -7,11 +7,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&display=swap">
-  <link rel="stylesheet" href="css/tokens.css?v=18">
+  <link rel="stylesheet" href="css/tokens.css?v=19">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/header.css">
   <link rel="stylesheet" href="css/intro.css">
-  <link rel="stylesheet" href="css/library.css?v=3">
+  <link rel="stylesheet" href="css/library.css?v=4">
   <link rel="stylesheet" href="css/footer.css">
 </head>
 <body>
@@ -110,15 +110,20 @@
                   <img src="assets/icons/view-list.svg" width="14.6981" height="14.6981" alt="">
                 </button>
               </div>
-              <label class="sort">
-                <span class="sort__label">Sort:</span>
-                <select class="sort__select" data-sort>
-                  <option value="recommended">Recommended</option>
-                  <option value="newest">Newest</option>
-                  <option value="title">Title A–Z</option>
-                </select>
-                <img class="sort__icon" src="assets/icons/sort-chevron.svg" width="9.2384" height="5.15507" alt="">
-              </label>
+              <!-- Sort: the same menu as the filter pills -->
+              <div class="filter sort" data-sort>
+                <button class="sort__toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="sort-menu" data-sort-toggle>
+                  <span class="sort__label">Sort:</span>
+                  <span class="sort__value" data-sort-value>Recommended</span>
+                  <img class="sort__icon" src="assets/icons/sort-chevron.svg" width="9.2384" height="5.15507" alt="">
+                </button>
+                <fieldset class="filter__menu filter__menu--end" id="sort-menu" hidden>
+                  <legend class="visually-hidden">Sort by</legend>
+                  <label class="filter-option"><input class="filter-option__input" type="radio" name="sort" value="recommended"><span class="filter-option__label">Recommended</span></label>
+                  <label class="filter-option"><input class="filter-option__input" type="radio" name="sort" value="newest"><span class="filter-option__label">Newest</span></label>
+                  <label class="filter-option"><input class="filter-option__input" type="radio" name="sort" value="title"><span class="filter-option__label">Title A–Z</span></label>
+                </fieldset>
+              </div>
             </div>
           </div>
 
@@ -222,7 +227,7 @@
 
   <script src="js/base.js"></script>
   <script src="js/header.js"></script>
-  <script src="js/library.js?v=3"></script>
+  <script src="js/library.js?v=4"></script>
   <script src="js/forms.js"></script>
 </body>
 </html>
