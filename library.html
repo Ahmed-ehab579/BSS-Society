@@ -7,11 +7,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&display=swap">
-  <link rel="stylesheet" href="css/tokens.css?v=21">
+  <link rel="stylesheet" href="css/tokens.css?v=22">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/header.css">
   <link rel="stylesheet" href="css/intro.css">
-  <link rel="stylesheet" href="css/library.css?v=6">
+  <link rel="stylesheet" href="css/library.css?v=7">
   <link rel="stylesheet" href="css/footer.css">
 </head>
 <body>
@@ -81,6 +81,7 @@
           <!-- Phones: one Filters button that opens a sheet, plus the active filters as removable chips -->
           <div class="filter-mobile">
             <button class="filter-mobile__open" type="button" aria-haspopup="dialog" aria-controls="filter-sheet" data-sheet-open>
+              <img class="filter-mobile__icon" src="assets/icons/filter.svg" width="16" height="16" alt="">
               Filters <span class="filter-mobile__count" data-filter-count hidden></span>
               <img src="assets/icons/filter-chevron.svg" width="13.6611" height="7.80635" alt="">
             </button>
@@ -99,12 +100,12 @@
             </div>
 
             <div class="results__controls">
-              <!-- Phones only: 1 card a row, 2 a row (default) or a list -->
+              <!-- Phones only: 1 card a row (default), 2 a row or a list -->
               <div class="view-toggle" role="group" aria-label="Layout">
-                <button class="view-toggle__btn" type="button" aria-pressed="false" data-view="one" aria-label="One card per row">
+                <button class="view-toggle__btn" type="button" aria-pressed="true" data-view="one" aria-label="One card per row">
                   <img src="assets/icons/view-single.svg" width="14.6981" height="14.6981" alt="">
                 </button>
-                <button class="view-toggle__btn" type="button" aria-pressed="true" data-view="two" aria-label="Two cards per row">
+                <button class="view-toggle__btn" type="button" aria-pressed="false" data-view="two" aria-label="Two cards per row">
                   <img src="assets/icons/view-grid.svg" width="14.6981" height="14.6981" alt="">
                 </button>
                 <button class="view-toggle__btn" type="button" aria-pressed="false" data-view="list" aria-label="List">
@@ -130,7 +131,7 @@
 
           <p class="visually-hidden" role="status" aria-live="polite" data-results-status></p>
 
-          <ul class="resource-grid" data-layout="two" data-resource-grid></ul>
+          <ul class="resource-grid" data-layout="one" data-resource-grid></ul>
 
           <div class="results-empty" data-results-empty hidden>
             <p class="results-empty__title">No resources match these filters</p>
@@ -244,7 +245,7 @@
 
   <script src="js/base.js"></script>
   <script src="js/header.js"></script>
-  <script src="js/library.js?v=6"></script>
+  <script src="js/library.js?v=7"></script>
   <script src="js/forms.js"></script>
 </body>
 </html>

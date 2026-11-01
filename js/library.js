@@ -4,7 +4,7 @@
 (function () {
   const PAGE_SIZE = 12;         // full rows in both the three-column (desktop) and two-column (phone) grids
   const SEARCH_DELAY = 200;     // ms after the last keystroke before the results update
-  const VIEW_KEY = "bss.library.view.v2";
+  const VIEW_KEY = "bss.library.view.v3";   // v3: the default changed to one card a row
   const VIEWS = ["one", "two", "list"];   // phone layouts: 1 card a row, 2 a row, list (desktop is always the grid)
 
   // Filters in their on-screen order. `all` is the label of the "no filter" option in the menus;
@@ -160,7 +160,7 @@
     chips: $("[data-active-chips]"),
   };
 
-  const state = { category: "all", language: "all", level: "all", format: "all", q: "", sort: "recommended", view: "two" };
+  const state = { category: "all", language: "all", level: "all", format: "all", q: "", sort: "recommended", view: "one" };
   let visible = PAGE_SIZE;
   let statusTimer;
   let searchTimer;
