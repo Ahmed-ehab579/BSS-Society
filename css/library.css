@@ -690,9 +690,9 @@
   overflow: hidden;
   margin: 0;
   color: var(--color-card-heading);
-  font-size: var(--body-xxl-size);
-  line-height: 30px;
-  font-weight: var(--body-weight);   /* regular on desktop; phone layouts set their own weight */
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: var(--h6-weight);   /* semibold on desktop; phone layouts set their own size and weight */
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   line-clamp: 2;
