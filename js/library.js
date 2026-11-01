@@ -2,9 +2,10 @@
 // The resources are placeholder content for the mockup (no backend yet). The current filters live in
 // the URL (?category=prophet&format=video&q=...) so a filtered view can be linked, shared and reloaded.
 (function () {
-  const PAGE_SIZE = 9;          // three full rows of the three-column grid
+  const PAGE_SIZE = 12;         // full rows in both the three-column (desktop) and two-column (phone) grids
   const SEARCH_DELAY = 200;     // ms after the last keystroke before the results update
-  const VIEW_KEY = "bss.library.view";
+  const VIEW_KEY = "bss.library.view.v2";
+  const VIEWS = ["one", "two", "list"];   // phone layouts: 1 card a row, 2 a row, list (desktop is always the grid)
 
   // Filters in their on-screen order. `all` is the label of the "no filter" option in the menus;
   // `short` is the text shown in the pill when it is shorter than the menu label.
@@ -33,16 +34,16 @@
     ] },
   ];
 
-  // One entry per material type: badge text and icon, action label, and the icon shown over the photo
-  // (only for media you play: videos and audio books).
+  // One entry per material type (Figma 984:2777): badge text and icon, action label, how the media is
+  // shown ("photo" fills the frame, "book" sits on a light board) and the icon laid over it.
   const TYPES = {
-    book: { badge: "Book", icon: "assets/icons/type-book.svg", action: "Read book" },
-    audio: { badge: "Audio book", icon: "assets/icons/type-audio.svg", action: "Listen", overlay: "assets/icons/media-listen.svg" },
-    article: { badge: "Article", icon: "assets/icons/type-article.svg", action: "Read article" },
-    video: { badge: "Video", icon: "assets/icons/type-video.svg", action: "Watch video", overlay: "assets/icons/media-play.svg" },
+    book: { badge: "Book", icon: "assets/icons/badge-book.svg", iconSize: [10.5322, 10.97], action: "Read book", media: "book" },
+    audio: { badge: "Audio book", icon: "assets/icons/badge-audio.svg", iconSize: [15.303, 12.7575], action: "Listen", media: "book", overlay: "audio" },
+    article: { badge: "Article", icon: "assets/icons/badge-article.svg", iconSize: [10.5322, 10.97], action: "Read article", media: "photo" },
+    video: { badge: "Video", icon: "assets/icons/badge-video.svg", iconSize: [10.5325, 10.9704], action: "Watch video", media: "photo", overlay: "play" },
   };
 
-  // Photo and its object-position; the Library photos use the crops from the Figma cards.
+  // Photo (or book cover) and its object-position. Library photos use the crops from the Figma cards.
   const IMG = {
     mosque: ["assets/images/library-mosque.jpg", "50% 50%"],
     quran: ["assets/images/library-quran.jpg", "50% 50%"],
@@ -50,48 +51,78 @@
     caravan: ["assets/images/library-caravan.jpg", "50% 71%"],
     courtyard: ["assets/images/library-courtyard.jpg", "50% 66%"],
     embrace: ["assets/images/library-embrace.jpg", "50% 67%"],
-    arches: ["assets/images/library-garden.jpg", "50% 36%"],
+    garden: ["assets/images/library-garden.jpg", "50% 36%"],
+    street: ["assets/images/library-article-street.jpg", "50% 41%"],
     belief: ["assets/images/topic-belief.jpg", "50% 50%"],
-    prophet: ["assets/images/topic-prophet.jpg", "50% 50%"],
     women: ["assets/images/topic-women.jpg", "50% 45%"],
     life: ["assets/images/topic-life.jpg", "50% 45%"],
     reading: ["assets/images/hero-reading-800.jpg", "50% 40%"],
+    mockup: ["assets/images/library-book-mockup.png"],
+    juzamma: ["assets/images/library-book-2.png"],
+    grace: ["assets/images/library-book-3.png"],
+    core: ["assets/images/library-book-4.png"],
+    arabic: ["assets/images/library-book-5.png"],
   };
 
-  // Placeholder resources. `added` drives the "Newest" sort; the list order is the "Recommended" order.
+  // Placeholder resources: every topic has every format, the three levels and some Arabic items, so any
+  // filter combination can be tried. The list order is the "Recommended" order.
   const RESOURCES = [
-    ["Who is God in Islam?", "A calm look at how Islam describes God: one, merciful, near, and unlike anything in creation.", "belief", "en", "basic", "video", "mosque", "2026-09-02"],
-    ["The life of the Prophet Muhammad", "From his childhood in Makkah to his final sermon, the key moments of his life told simply.", "prophet", "en", "basic", "book", "quran", "2026-08-14"],
-    ["Walking in his footsteps", "A short film retracing the migration from Makkah to Madinah and what it teaches about patience.", "prophet", "en", "basic", "video", "desert", "2026-10-05"],
-    ["His character in daily life", "Stories of how he treated his family, neighbours and strangers, and why they still matter today.", "prophet", "en", "intermediate", "article", "caravan", "2026-07-21"],
-    ["Mercy to the worlds", "An audio reflection on the Prophet’s mercy towards people, animals and the world around him.", "prophet", "en", "basic", "audio", "courtyard", "2026-09-18"],
-    ["The farewell sermon explained", "Line by line, what the Prophet’s last public address says about equality, rights and faith.", "prophet", "en", "advanced", "article", "embrace", "2026-06-30"],
-    ["السيرة النبوية للمبتدئين", "مدخل ميسر إلى سيرة النبي ﷺ وأهم أحداث حياته، مكتوب بلغة واضحة وقريبة.", "prophet", "ar", "basic", "book", "arches", "2026-05-12"],
-    ["What is the Qur’an?", "Where the Qur’an came from, how it is structured, and how Muslims read and live with it.", "quran", "en", "basic", "video", "quran", "2026-10-12"],
-    ["Reading the opening chapter", "A gentle walk through Al-Fatiha, the chapter Muslims recite in every prayer, verse by verse.", "quran", "en", "basic", "audio", "reading", "2026-08-03"],
-    ["Themes of the Qur’an", "Mercy, justice, purpose and the hereafter: the big themes that run through the whole book.", "quran", "en", "intermediate", "book", "arches", "2026-04-19"],
-    ["How the Qur’an was preserved", "The careful history of memorising, writing and compiling the Qur’an over the first decades.", "quran", "en", "advanced", "article", "courtyard", "2026-03-08"],
-    ["تدبر القرآن", "كيف نقرأ القرآن بتمهل وتدبر، مع أمثلة من آيات قصيرة يسهل البدء بها.", "quran", "ar", "intermediate", "audio", "mosque", "2026-07-02"],
-    ["Why believe in God?", "Simple, honest reasons people give for belief, and the questions they often start with.", "belief", "en", "basic", "article", "belief", "2026-09-25"],
-    ["The six pillars of faith", "Belief in God, the angels, the books, the prophets, the last day and destiny, each explained.", "belief", "en", "basic", "book", "mosque", "2026-02-11"],
-    ["Faith and reason", "How the Islamic tradition brings thinking and believing together instead of setting them apart.", "belief", "en", "advanced", "video", "arches", "2026-06-07"],
-    ["Prayer: a first guide", "What the five daily prayers are, why Muslims pray, and how to begin one step at a time.", "belief", "en", "basic", "video", "courtyard", "2026-10-20"],
-    ["Destiny and free will", "An audio talk on one of the oldest questions in faith, with clear examples and no jargon.", "belief", "en", "intermediate", "audio", "desert", "2026-01-29"],
-    ["أركان الإيمان الستة", "شرح مبسط لأركان الإيمان وما تعنيه في حياة المسلم اليومية.", "belief", "ar", "basic", "article", "quran", "2026-05-27"],
-    ["Women in Islam: the basics", "The rights, roles and dignity Islam gives women, explained through the Qur’an and history.", "women", "en", "basic", "article", "women", "2026-08-22"],
-    ["Mothers of the believers", "The lives of the Prophet’s wives and the scholarship, courage and leadership they showed.", "women", "en", "intermediate", "book", "arches", "2026-04-02"],
-    ["Khadijah: the first believer", "A short film on the businesswoman who was the first to believe and support the message.", "women", "en", "basic", "video", "caravan", "2026-09-10"],
-    ["Questions women ask", "Honest answers to common questions about hijab, marriage, work and worship.", "women", "en", "basic", "audio", "embrace", "2026-07-15"],
-    ["Marriage and family in Islam", "What a healthy Muslim family looks like, built on mercy, care and shared responsibility.", "life", "en", "intermediate", "book", "embrace", "2026-03-22"],
-    ["Everyday manners", "Greetings, gratitude, kindness to neighbours: the small daily habits Islam encourages.", "life", "en", "basic", "video", "life", "2026-10-26"],
-    ["Is Islam compatible with science?", "A balanced look at the relationship between revelation and scientific discovery.", "life", "en", "advanced", "article", "reading", "2026-02-24"],
-    ["Fasting in Ramadan", "Why Muslims fast, what a day of Ramadan looks like, and what the month is meant to build.", "life", "en", "basic", "audio", "desert", "2026-06-18"],
-    ["New to Islam: what next?", "Practical first steps after taking the shahada, from prayer to finding a community.", "life", "en", "basic", "book", "courtyard", "2026-08-30"],
-    ["أسئلة الحياة اليومية", "إجابات قصيرة وواضحة عن أسئلة يومية يطرحها كثير من المسلمين الجدد.", "life", "ar", "basic", "video", "caravan", "2026-01-15"],
-    ["Patience in hard times", "An audio reflection on how faith helps people carry grief, worry and loss.", "belief", "en", "intermediate", "audio", "reading", "2026-05-04"],
-    ["Understanding the Hadith", "What the Hadith are, how scholars checked them, and how they relate to the Qur’an.", "prophet", "en", "advanced", "book", "reading", "2026-03-14"],
-  ].map(([title, text, category, language, level, format, image, added], index) => ({
-    id: index + 1, title, text, category, language, level, format, image: IMG[image][0], focus: IMG[image][1], added,
+    ["Who is God in Islam?", "A calm look at how Islam describes God: one, merciful, near, and unlike anything in creation.", "belief", "en", "basic", "video", "mosque"],
+    ["The life of the Prophet Muhammad", "From his childhood in Makkah to his final sermon, the key moments of his life told simply.", "prophet", "en", "basic", "book", "mockup"],
+    ["How the Qur’an was preserved", "The careful history of memorising, writing and compiling the Qur’an over the first decades.", "quran", "en", "advanced", "article", "street"],
+    ["Mercy to the worlds", "An audio reflection on the Prophet’s mercy towards people, animals and the world around him.", "prophet", "en", "basic", "audio", "grace"],
+    ["Walking in his footsteps", "A short film retracing the migration from Makkah to Madinah and what it teaches about patience.", "prophet", "en", "basic", "video", "caravan"],
+    ["Juz ʿAmma: a reading planner", "Read the last part of the Qur’an a little each day, with short notes on every chapter.", "quran", "en", "basic", "book", "juzamma"],
+    ["Why believe in God?", "Simple, honest reasons people give for belief, and the questions they often start with.", "belief", "en", "basic", "article", "belief"],
+    ["Questions women ask", "Honest answers to common questions about hijab, marriage, work and worship.", "women", "en", "basic", "audio", "juzamma"],
+    ["Everyday manners", "Greetings, gratitude, kindness to neighbours: the small daily habits Islam encourages.", "life", "en", "basic", "video", "life"],
+    ["The six pillars of faith", "Belief in God, the angels, the books, the prophets, the last day and destiny, each explained.", "belief", "en", "basic", "book", "core"],
+    ["What is the Qur’an?", "Where the Qur’an came from, how it is structured, and how Muslims read and live with it.", "quran", "en", "basic", "video", "quran"],
+    ["Women in Islam: the basics", "The rights, roles and dignity Islam gives women, explained through the Qur’an and history.", "women", "en", "basic", "article", "women"],
+    ["Fasting in Ramadan", "Why Muslims fast, what a day of Ramadan looks like, and what the month is meant to build.", "life", "en", "basic", "audio", "mockup"],
+    ["His character in daily life", "Stories of how he treated his family, neighbours and strangers, and why they still matter today.", "prophet", "en", "intermediate", "article", "courtyard"],
+    ["Mothers of the believers", "The lives of the Prophet’s wives and the scholarship, courage and leadership they showed.", "women", "en", "intermediate", "book", "grace"],
+    ["Faith and reason", "How the Islamic tradition brings thinking and believing together instead of setting them apart.", "belief", "en", "advanced", "video", "garden"],
+    ["Reading the opening chapter", "A gentle walk through Al-Fatiha, the chapter Muslims recite in every prayer, verse by verse.", "quran", "en", "basic", "audio", "juzamma"],
+    ["New to Islam: what next?", "Practical first steps after taking the shahada, from prayer to finding a community.", "life", "en", "basic", "book", "juzamma"],
+    ["Khadijah: the first believer", "A short film on the businesswoman who was the first to believe and support the message.", "women", "en", "basic", "video", "caravan"],
+    ["Destiny and free will", "An audio talk on one of the oldest questions in faith, with clear examples and no jargon.", "belief", "en", "intermediate", "audio", "grace"],
+    ["The farewell sermon explained", "Line by line, what the Prophet’s last public address says about equality, rights and faith.", "prophet", "en", "advanced", "article", "embrace"],
+    ["Is Islam compatible with science?", "A balanced look at the relationship between revelation and scientific discovery.", "life", "en", "advanced", "article", "reading"],
+    ["Themes of the Qur’an", "Mercy, justice, purpose and the hereafter: the big themes that run through the whole book.", "quran", "en", "intermediate", "book", "grace"],
+    ["Prayer: a first guide", "What the five daily prayers are, why Muslims pray, and how to begin one step at a time.", "belief", "en", "basic", "video", "courtyard"],
+    ["Understanding the Hadith", "What the Hadith are, how scholars checked them, and how they relate to the Qur’an.", "prophet", "en", "advanced", "book", "core"],
+    ["Women scholars through history", "Meet the women who taught, narrated and preserved knowledge across the centuries.", "women", "en", "intermediate", "video", "garden"],
+    ["Raising children with faith", "Gentle, practical advice on passing faith to children with love rather than pressure.", "life", "en", "intermediate", "audio", "grace"],
+    ["Signs in creation", "How the Qur’an invites people to reflect on the sky, the earth and themselves.", "belief", "en", "intermediate", "article", "desert"],
+    ["How the Qur’an was revealed", "Twenty-three years of revelation: when, where and how the verses came down.", "quran", "en", "intermediate", "video", "desert"],
+    ["Lessons from the Seerah", "Short audio lessons drawn from the Prophet’s life for everyday situations.", "prophet", "en", "intermediate", "audio", "mockup"],
+    ["Hijab: questions and answers", "What the hijab means to many Muslim women, and answers to the questions people often ask.", "women", "en", "intermediate", "article", "street"],
+    ["Marriage and family in Islam", "What a healthy Muslim family looks like, built on mercy, care and shared responsibility.", "life", "en", "intermediate", "book", "core"],
+    ["The core of Islamic belief", "A deeper study of the creed, its sources and how scholars explained it over time.", "belief", "en", "advanced", "book", "mockup"],
+    ["The language of the Qur’an", "Why Arabic matters for the Qur’an, and how its style and sound carry meaning.", "quran", "en", "advanced", "audio", "arabic"],
+    ["The year of sorrow", "The year the Prophet lost Khadijah and Abu Talib, and how he carried on with hope.", "prophet", "en", "intermediate", "video", "garden"],
+    ["A guide for new Muslim sisters", "Practical support for women in their first year of Islam, from prayer to community.", "women", "en", "basic", "book", "mockup"],
+    ["Rights and responsibilities in marriage", "An audio series on what husbands and wives owe each other, with care and fairness.", "women", "en", "advanced", "audio", "core"],
+    ["Work, money and faith", "Earning, spending and giving: how faith shapes everyday decisions about money.", "life", "en", "intermediate", "video", "mosque"],
+    ["Stories of the prophets in the Qur’an", "Noah, Abraham, Moses and Jesus: the shared story of the prophets as the Qur’an tells it.", "quran", "en", "basic", "article", "caravan"],
+    ["Patience in hard times", "An audio reflection on how faith helps people carry grief, worry and loss.", "belief", "en", "intermediate", "audio", "mockup"],
+    ["Halal food explained", "What halal means, why it matters, and how Muslims apply it in daily life.", "life", "en", "basic", "article", "street"],
+    ["أركان الإيمان الستة", "شرح مبسط لأركان الإيمان وما تعنيه في حياة المسلم اليومية.", "belief", "ar", "basic", "article", "quran"],
+    ["معنى التوحيد", "حديث صوتي هادئ عن معنى التوحيد وأثره في القلب والحياة.", "belief", "ar", "basic", "audio", "arabic"],
+    ["تدبر القرآن", "كيف نقرأ القرآن بتمهل وتدبر، مع أمثلة من آيات قصيرة يسهل البدء بها.", "quran", "ar", "intermediate", "audio", "arabic"],
+    ["تفسير جزء عم", "تفسير ميسر لسور جزء عم، مع فوائد قصيرة بعد كل سورة.", "quran", "ar", "basic", "book", "juzamma"],
+    ["علوم القرآن", "مدخل إلى نزول القرآن وجمعه وقراءاته، لمن يريد التعمق.", "quran", "ar", "advanced", "video", "quran"],
+    ["السيرة النبوية للمبتدئين", "مدخل ميسر إلى سيرة النبي ﷺ وأهم أحداث حياته، مكتوب بلغة واضحة وقريبة.", "prophet", "ar", "basic", "book", "arabic"],
+    ["رحلة الهجرة", "فيلم قصير عن الهجرة من مكة إلى المدينة ودروسها في الصبر والتوكل.", "prophet", "ar", "basic", "video", "desert"],
+    ["مكانة المرأة في الإسلام", "كيف كرّم الإسلام المرأة، من خلال القرآن والسيرة والتاريخ.", "women", "ar", "basic", "article", "women"],
+    ["أسئلة الحياة اليومية", "إجابات قصيرة وواضحة عن أسئلة يومية يطرحها كثير من المسلمين الجدد.", "life", "ar", "basic", "video", "caravan"],
+    ["آداب المسلم اليومية", "آداب الطعام والسلام والزيارة وغيرها، في كتاب صغير سهل القراءة.", "life", "ar", "intermediate", "book", "arabic"],
+  ].map(([title, text, category, language, level, format, image], index) => ({
+    id: index + 1, title, text, category, language, level, format,
+    image: IMG[image][0], focus: IMG[image][1] || "50% 50%",
+    // Spread the publish dates so "Newest" gives a different order from "Recommended".
+    added: new Date(Date.UTC(2026, 9, 28) - ((index * 37) % 300) * 86400000).toISOString().slice(0, 10),
     dir: language === "ar" ? "rtl" : "auto",
   }));
 
@@ -126,7 +157,7 @@
     chips: $("[data-active-chips]"),
   };
 
-  const state = { category: "all", language: "all", level: "all", format: "all", q: "", sort: "recommended", view: "grid" };
+  const state = { category: "all", language: "all", level: "all", format: "all", q: "", sort: "recommended", view: "two" };
   let visible = PAGE_SIZE;
   let statusTimer;
   let searchTimer;
@@ -148,8 +179,9 @@
     const sort = params.get("sort");
     state.sort = [...els.sort.options].some((option) => option.value === sort) ? sort : "recommended";
     try {
-      if (window.localStorage.getItem(VIEW_KEY) === "list") state.view = "list";
-    } catch (error) { /* storage blocked: keep the grid */ }
+      const view = window.localStorage.getItem(VIEW_KEY);
+      if (VIEWS.includes(view)) state.view = view;
+    } catch (error) { /* storage blocked: keep the default view */ }
   }
 
   function writeUrl() {
@@ -176,18 +208,30 @@
   function cardHtml(item) {
     const type = TYPES[item.format];
     const escape = (text) => text.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+    const picture = type.media === "book"
+      ? `<img class="resource-card__book" src="${item.image}" alt="" loading="lazy" decoding="async" onerror="this.hidden = true">`
+      : `<img class="resource-card__photo" src="${item.image}" alt="" loading="lazy" decoding="async"
+          style="object-position: ${item.focus}" onerror="this.hidden = true">`;
+    const overlay = {
+      play: `<img class="resource-card__play" src="assets/icons/media-play-lg.svg" width="112.864" height="112.864" alt="">`,
+      audio: `<span class="resource-card__listen"><img src="assets/icons/media-audio-book.svg" width="35" height="35" alt=""></span>`,
+    }[type.overlay] || "";
     return `
       <li class="resource-card resource-card--${item.format}">
         <div class="resource-card__media">
-          <img class="resource-card__photo" src="${item.image}" alt="" loading="lazy" decoding="async"
-            style="object-position: ${item.focus}" onerror="this.hidden = true">
-          <span class="resource-card__badge">
-            <img src="${type.icon}" width="12" height="12" alt="">${type.badge}
-          </span>
-          ${type.overlay ? `<img class="resource-card__overlay" src="${type.overlay}" width="94.1506" height="94.1506" alt="">` : ""}
+          <div class="resource-card__frame resource-card__frame--${type.media}">
+            ${picture}
+            ${overlay}
+            <span class="resource-card__badge">
+              <img src="${type.icon}" width="${type.iconSize[0]}" height="${type.iconSize[1]}" alt="">${type.badge}
+            </span>
+          </div>
         </div>
         <div class="resource-card__body">
           <div class="resource-card__text">
+            <span class="resource-card__type" aria-hidden="true">
+              <img src="${type.icon}" width="${type.iconSize[0]}" height="${type.iconSize[1]}" alt="">${type.badge}
+            </span>
             <h4 class="resource-card__title" dir="${item.dir}">${escape(item.title)}</h4>
             <p class="resource-card__desc" dir="${item.dir}">${escape(item.text)}</p>
           </div>
@@ -428,6 +472,14 @@
     els.search.classList.toggle("is-expanded", hasText || document.activeElement === els.searchInput);
   }
 
+  // A shorter hint on phones, where the full sentence is cut off.
+  const phone = window.matchMedia("(max-width: 767px)");
+  function setPlaceholder() {
+    els.searchInput.placeholder = phone.matches ? "Search the library" : "Search books, articles, videos, and audio...";
+  }
+  phone.addEventListener("change", setPlaceholder);
+  setPlaceholder();
+
   els.searchInput.addEventListener("focus", updateSearchUi);
   els.searchInput.addEventListener("blur", () => setTimeout(updateSearchUi));   // after a click on Clear
   els.searchInput.addEventListener("input", () => {
@@ -466,7 +518,7 @@
 
   function setView(view) {
     state.view = view;
-    els.grid.classList.toggle("is-list", view === "list");
+    els.grid.dataset.layout = view;
     els.views.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.view === view)));
     try { window.localStorage.setItem(VIEW_KEY, view); } catch (error) { /* not remembered: fine */ }
   }
