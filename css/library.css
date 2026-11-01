@@ -449,7 +449,7 @@
   display: flex;
   align-items: center;
   gap: var(--scale-100);
-  height: 36px;
+  height: 40px;
   padding: 0 var(--scale-300);
   border: var(--border-md) solid var(--border-color-control);
   border-radius: var(--scale-300);
@@ -665,18 +665,21 @@
   display: none;
 }
 
+/* Spacing from the Figma sample card (1012:3539): 32px from the photo to the title, 12px between
+   title and text, and the button pinned to the bottom so buttons line up across a row */
 .resource-card__body {
   display: flex;
   flex: 1;
   flex-direction: column;
+  justify-content: space-between;
   gap: var(--scale-800);
-  padding: var(--scale-500) var(--scale-400) var(--scale-400);
+  padding: var(--scale-800) var(--scale-400) var(--scale-400);
 }
 
 .resource-card__text {
   display: flex;
   flex-direction: column;
-  gap: var(--scale-200);
+  gap: var(--scale-300);
 }
 
 .resource-card__title {
@@ -696,14 +699,17 @@
   display: -webkit-box;
   overflow: hidden;
   color: var(--color-section-label);
-  font-size: var(--body-m-size);
-  line-height: 24px;
+  font-size: var(--body-s-size);
+  line-height: var(--body-s-line);
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   line-clamp: 3;
 }
 
+/* The site's primary button with its sliding arrow (as on the homepage), 44px tall: the
+   recommended minimum touch target */
 .resource-card__action {
+  --arrow: 20px;
   width: 100%;
   height: 44px;
   margin-top: auto;
@@ -713,12 +719,18 @@
   cursor: default;
 }
 
-/* Hover: the card lifts, takes the hovered card surface (as the other cards do), and its media
-   comes slightly forward */
+.resource-card__action .btn__arrow-clip,
+.resource-card__action .btn__arrow-track img {
+  width: var(--arrow);
+  height: var(--arrow);
+}
+
+/* Hover: the card lifts a little, darkens to the hover surface, its media comes slightly forward
+   and the button's arrow slides */
 @media (hover: hover) {
   .resource-card:hover {
-    transform: translateY(-6px);
-    background: var(--surface-cards-hovered);
+    transform: translateY(-3px);
+    background: var(--surface-cards-hovered-neutral);
     box-shadow: var(--shadow-card-hover);
   }
 
@@ -732,6 +744,10 @@
 
   .resource-card:hover .resource-card__action {
     background: var(--surface-action-primary-hovered);
+  }
+
+  .resource-card:hover .resource-card__action .btn__arrow-track {
+    transform: translateY(calc(-1 * (var(--arrow) + 11px)));
   }
 }
 
@@ -1016,10 +1032,10 @@
     font-size: var(--body-m-size);   /* 16px: stops iOS zooming into the field */
   }
 
+  /* Active chips on the left, the Filters text link on the right */
   .filter-mobile {
     display: flex;
-    flex-direction: column;
-    align-items: stretch;
+    align-items: center;
     gap: var(--scale-300);
     min-width: 0;
   }
@@ -1029,17 +1045,18 @@
   }
 
   .filter-mobile__open {
+    order: 2;
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: var(--scale-200);
-    width: 100%;
-    height: 44px;
-    padding: 0 var(--scale-400);
-    border: var(--border-md) solid var(--color-field-border);
-    border-radius: var(--radius-pill);
-    background: var(--color-field-bg);
+    flex-shrink: 0;
+    min-height: 44px;   /* touch target; the text itself stays compact */
+    margin-left: auto;
+    padding: 0 var(--scale-100);
+    border: 0;
+    background: none;
     color: var(--color-text-on-light);
+    text-decoration: underline;
+    text-underline-offset: 3px;
     font-family: inherit;
     font-size: var(--label-m-size);
     line-height: var(--label-m-line);
@@ -1048,23 +1065,8 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  .filter-mobile__open img {
-    width: 11px;
-    height: auto;
-  }
-
   .filter-mobile__count {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 20px;
-    height: 20px;
-    padding: 0 6px;
-    border-radius: var(--radius-pill);
-    background: var(--surface-action-primary);
-    color: var(--color-text-on-dark);
-    font-size: var(--label-s-size);
-    line-height: 1;
+    white-space: pre;
   }
 
   .filter-mobile__count[hidden] {
@@ -1140,9 +1142,14 @@
     display: flex;
   }
 
+  /* Switch and sort share one 44px height (minimum comfortable touch target) */
   .view-toggle__btn {
-    width: 36px;
-    height: 32px;
+    width: 40px;
+    height: 34px;
+  }
+
+  .sort {
+    height: 44px;
   }
 
   /* Phone layouts (chosen with the switch): two a row (default), one a row, or a list */
@@ -1197,13 +1204,14 @@
     --listen-size: 48px;
   }
 
+  /* Same rhythm as the desktop sample, scaled down: more air above the title than below it */
   .resource-grid[data-layout="two"] .resource-card__body {
     gap: var(--scale-400);
-    padding: var(--scale-300);
+    padding: var(--scale-400) var(--scale-300) var(--scale-300);
   }
 
   .resource-grid[data-layout="two"] .resource-card__text {
-    gap: var(--scale-100);
+    gap: var(--scale-200);
   }
 
   .resource-grid[data-layout="two"] .resource-card__title {
@@ -1219,7 +1227,8 @@
   }
 
   .resource-grid[data-layout="two"] .resource-card__action {
-    height: 36px;
+    --arrow: 18px;
+    gap: var(--scale-100);
     padding: 0 var(--scale-200);
     font-size: 13px;
   }
@@ -1303,16 +1312,14 @@
   }
 
   .resource-grid[data-layout="list"] .resource-card__action {
-    align-self: flex-start;
-    width: auto;
-    height: 32px;
-    padding: 0 var(--scale-400);
-    font-size: var(--label-s-size);
+    --arrow: 18px;
+    gap: var(--scale-100);
+    font-size: 13px;
   }
 
   /* Pressed feedback instead of hover on touch */
   .resource-card:active {
-    background: var(--surface-cards-hovered);
+    background: var(--surface-cards-hovered-neutral);
   }
 
   .load-more {

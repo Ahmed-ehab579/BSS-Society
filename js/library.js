@@ -236,7 +236,15 @@
             <p class="resource-card__desc" dir="${item.dir}">${escape(item.text)}</p>
           </div>
           <!-- No destination yet: the action becomes a link once the resource pages exist. -->
-          <a class="btn btn--primary resource-card__action" aria-label="${type.action}: ${escape(item.title)}">${type.action}</a>
+          <a class="btn btn--primary resource-card__action" aria-label="${type.action}: ${escape(item.title)}">
+            ${type.action}
+            <span class="btn__arrow-clip" aria-hidden="true">
+              <span class="btn__arrow-track">
+                <img src="assets/icons/arrow-up-right.svg" width="24" height="24" alt="">
+                <img src="assets/icons/arrow-up-right.svg" width="24" height="24" alt="">
+              </span>
+            </span>
+          </a>
         </div>
       </li>`;
   }
@@ -414,7 +422,7 @@
       if (button.closest("[data-library-tools]")) button.hidden = !hasAny;
     });
     els.filterCount.hidden = active.length === 0;
-    els.filterCount.textContent = active.length;
+    els.filterCount.textContent = ` (${active.length})`;
     els.sheetOpen.setAttribute("aria-label", active.length ? `Filters, ${active.length} active` : "Filters");
 
     els.chips.innerHTML = active.map(({ key, label }) => {
