@@ -144,10 +144,17 @@
   display: none;
 }
 
+/* Keyboard focus: a light ring hugging the control (no dark stroke, no gap) */
 .filter__toggle:focus-visible,
+.sort__toggle:focus-visible {
+  border-color: var(--color-neutral-400);
+  outline: none;
+  box-shadow: 0 0 0 1px var(--color-neutral-400);
+}
+
 .filter__remove:focus-visible {
-  outline: 2px solid var(--border-color-on-light);
-  outline-offset: 2px;
+  outline: 2px solid var(--color-neutral-400);
+  outline-offset: 0;
 }
 
 /* Menu */
@@ -443,9 +450,12 @@
   outline-offset: 1px;
 }
 
-/* Sort: a native select dressed as the Figma pill */
+/* Sort: the Figma pill, opening the same menu as the filters (aligned to its right edge) */
 .sort {
   position: relative;
+}
+
+.sort__toggle {
   display: flex;
   align-items: center;
   gap: var(--scale-100);
@@ -454,41 +464,39 @@
   border: var(--border-md) solid var(--border-color-control);
   border-radius: var(--scale-300);
   background: var(--color-field-bg);
+  color: var(--color-text-subtle);
+  font-family: inherit;
   font-size: var(--label-s-size);
   line-height: var(--label-s-line);
   font-weight: 500;
-}
-
-.sort__label {
-  color: var(--color-text-subtle);
-}
-
-.sort__select {
-  height: 100%;
-  margin: 0;
-  padding: 0 calc(9px + var(--scale-200)) 0 0;
-  border: 0;
-  background: none;
-  color: var(--color-card-heading);
-  font: inherit;
+  white-space: nowrap;
   cursor: pointer;
-  -webkit-appearance: none;
-  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color var(--motion-duration) var(--motion-ease);
 }
 
-.sort__select:focus-visible {
-  outline: none;
-}
-
-.sort:focus-within {
-  outline: 2px solid var(--border-color-on-light);
-  outline-offset: 2px;
+.sort__value {
+  color: var(--color-card-heading);
 }
 
 .sort__icon {
-  position: absolute;
-  right: var(--scale-300);
-  pointer-events: none;
+  margin-left: var(--scale-100);
+  transition: transform var(--motion-duration) var(--motion-ease);
+}
+
+.sort.is-open .sort__icon {
+  transform: rotate(180deg);
+}
+
+.filter__menu--end {
+  right: 0;
+  left: auto;
+}
+
+@media (hover: hover) {
+  .sort__toggle:hover {
+    border-color: var(--color-neutral-400);
+  }
 }
 
 /* ---- Resource cards (Figma 984:2777) ------------------------------------------------------------ */
@@ -513,7 +521,7 @@
   flex-direction: column;
   overflow: hidden;
   border-radius: var(--radius-card);
-  background: var(--surface-cards);
+  background: var(--surface-resource-card);
   box-shadow: var(--shadow-sm);
   transition: transform var(--motion-duration-hover) var(--motion-ease),
     box-shadow var(--motion-duration-hover) var(--motion-ease),
@@ -708,14 +716,16 @@
 
 /* The site's primary button with its sliding arrow (as on the homepage), 44px tall: the
    recommended minimum touch target */
+/* Large size of the site's primary button (56px) on desktop and one-a-row cards; the denser phone
+   layouts use a 36px version (above the 24px WCAG minimum target) */
 .resource-card__action {
-  --arrow: 20px;
+  --arrow: 24px;
   width: 100%;
-  height: 44px;
+  height: 56px;
   margin-top: auto;
-  padding: 0 var(--scale-400);
-  font-size: var(--label-m-size);
-  line-height: var(--label-m-line);
+  padding: var(--scale-400) var(--scale-600);
+  font-size: var(--label-l-size);
+  line-height: var(--label-l-line);
   cursor: default;
 }
 
@@ -725,8 +735,7 @@
   height: var(--arrow);
 }
 
-/* Hover: the card lifts a little, darkens to the hover surface, its media comes slightly forward
-   and the button's arrow slides */
+/* Hover: the card lifts a little, darkens to the hover surface and its media comes slightly forward */
 @media (hover: hover) {
   .resource-card:hover {
     transform: translateY(-3px);
@@ -742,11 +751,12 @@
     transform: translateY(-4px) scale(1.04);
   }
 
-  .resource-card:hover .resource-card__action {
+  /* The button reacts only to its own hover, as on the homepage */
+  .resource-card__action:hover {
     background: var(--surface-action-primary-hovered);
   }
 
-  .resource-card:hover .resource-card__action .btn__arrow-track {
+  .resource-card__action:hover .btn__arrow-track {
     transform: translateY(calc(-1 * (var(--arrow) + 11px)));
   }
 }
@@ -1148,7 +1158,7 @@
     height: 34px;
   }
 
-  .sort {
+  .sort__toggle {
     height: 44px;
   }
 
@@ -1226,11 +1236,14 @@
     line-clamp: 2;
   }
 
-  .resource-grid[data-layout="two"] .resource-card__action {
-    --arrow: 18px;
+  .resource-grid[data-layout="two"] .resource-card__action,
+  .resource-grid[data-layout="list"] .resource-card__action {
+    --arrow: 16px;
     gap: var(--scale-100);
+    height: 36px;
     padding: 0 var(--scale-200);
     font-size: 13px;
+    line-height: 18px;
   }
 
   /* One a row: the desktop card at full width, a little shorter */
@@ -1309,12 +1322,6 @@
     line-height: 18px;
     -webkit-line-clamp: 2;
     line-clamp: 2;
-  }
-
-  .resource-grid[data-layout="list"] .resource-card__action {
-    --arrow: 18px;
-    gap: var(--scale-100);
-    font-size: 13px;
   }
 
   /* Pressed feedback instead of hover on touch */

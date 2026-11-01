@@ -148,6 +148,8 @@
     loadMore: $("[data-load-more]"),
     count: $("[data-results-count]"),
     sort: $("[data-sort]"),
+    sortValue: $("[data-sort-value]"),
+    sortToggle: $("[data-sort-toggle]"),
     views: $$("[data-view]"),
     sheet: $("[data-sheet]"),
     sheetBody: $("[data-sheet-body]"),
@@ -177,7 +179,7 @@
     });
     state.q = (params.get("q") || "").trim().slice(0, 100);
     const sort = params.get("sort");
-    state.sort = [...els.sort.options].some((option) => option.value === sort) ? sort : "recommended";
+    state.sort = $$('input[name="sort"]').some((input) => input.value === sort) ? sort : "recommended";
     try {
       const view = window.localStorage.getItem(VIEW_KEY);
       if (VIEWS.includes(view)) state.view = view;
@@ -312,30 +314,38 @@
         </fieldset>
       </div>`).join(""));
 
-    $$(".filter").forEach((filter) => {
+    els.bar.querySelectorAll(".filter").forEach((filter) => {
       const key = filter.dataset.filter;
-      const toggle = filter.querySelector(".filter__toggle");
-      const menu = filter.querySelector(".filter__menu");
-
-      toggle.addEventListener("click", () => setMenu(filter, menu.hidden));
+      bindMenu(filter, (value) => setFilter(key, value));
       filter.querySelector("[data-filter-remove]").addEventListener("click", () => {
         setFilter(key, "all");
-        toggle.focus();   // the remove button disappears with the filter: keep focus on the pill
+        filter.querySelector(".filter__toggle").focus();   // the × disappears with the filter: keep focus on the pill
       });
-      menu.addEventListener("change", (event) => setFilter(key, event.target.value));
-      // Labels can't take focus: without this, pressing on one would blur the menu and close it early.
-      menu.addEventListener("mousedown", (event) => event.preventDefault());
-      // A click or Enter picks the option and closes the menu; arrow keys only move the selection.
-      menu.addEventListener("click", (event) => {
-        if (event.target.matches("input") && event.detail > 0) closeMenu(filter, true);
-      });
-      menu.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          if (event.target.matches("input")) setFilter(key, event.target.value);
-          closeMenu(filter, true);
-        }
-      });
+    });
+  }
+
+  // Menu behaviour shared by the filter pills and Sort. Each `.filter` has a toggle button
+  // (aria-haspopup) and a `.filter__menu` of radio options.
+  function bindMenu(filter, pick) {
+    const menu = filter.querySelector(".filter__menu");
+    filter.querySelector("[aria-haspopup]").addEventListener("click", () => setMenu(filter, menu.hidden));
+    menu.addEventListener("change", (event) => pick(event.target.value));
+    // Labels can't take focus: without this, pressing on one would blur the menu and close it early.
+    menu.addEventListener("mousedown", (event) => event.preventDefault());
+    // A click or Enter picks the option and closes the menu; arrow keys only move the selection.
+    menu.addEventListener("click", (event) => {
+      if (event.target.matches("input") && event.detail > 0) closeMenu(filter, true);
+    });
+    menu.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        if (event.target.matches("input")) pick(event.target.value);
+        closeMenu(filter, true);
+      }
+    });
+    // Keyboard users tabbing out of an open menu close it.
+    filter.addEventListener("focusout", (event) => {
+      if (!filter.contains(event.relatedTarget)) closeMenu(filter);
     });
   }
 
@@ -344,14 +354,14 @@
     const menu = filter.querySelector(".filter__menu");
     menu.hidden = !open;
     filter.classList.toggle("is-open", open);
-    filter.querySelector(".filter__toggle").setAttribute("aria-expanded", String(open));
+    filter.querySelector("[aria-haspopup]").setAttribute("aria-expanded", String(open));
     if (open) (menu.querySelector("input:checked") || menu.querySelector("input")).focus();
   }
 
   function closeMenu(filter, returnFocus = false) {
     if (filter.querySelector(".filter__menu").hidden) return;
     setMenu(filter, false);
-    if (returnFocus) filter.querySelector(".filter__toggle").focus();
+    if (returnFocus) filter.querySelector("[aria-haspopup]").focus();
   }
 
   document.addEventListener("click", (event) => {
@@ -361,12 +371,6 @@
   document.addEventListener("keydown", (event) => {
     if (event.key !== "Escape") return;
     $$(".filter.is-open").forEach((filter) => closeMenu(filter, true));
-  });
-
-  // Keyboard users tabbing out of an open menu close it.
-  els.bar.addEventListener("focusout", (event) => {
-    const filter = event.target.closest(".filter");
-    if (filter && !filter.contains(event.relatedTarget)) closeMenu(filter);
   });
 
   // ---- Filters (phone sheet and chips) ---------------------------------------------------------
@@ -518,8 +522,17 @@
 
   // ---- Sort, view, load more -------------------------------------------------------------------
 
-  els.sort.addEventListener("change", () => {
-    state.sort = els.sort.value;
+  function syncSort() {
+    const input = $$('input[name="sort"]').find((option) => option.value === state.sort);
+    input.checked = true;
+    els.sortValue.textContent = input.nextElementSibling.textContent;
+    els.sortToggle.setAttribute("aria-label", `Sort: ${els.sortValue.textContent}`);
+  }
+
+  bindMenu(els.sort, (value) => {
+    if (value === state.sort) return;
+    state.sort = value;
+    syncSort();
     writeUrl();
     renderResults();
   });
@@ -547,7 +560,7 @@
   renderBar();
   renderSheet();
   els.searchInput.value = state.q;
-  els.sort.value = state.sort;
+  syncSort();
   setView(state.view);
   syncFilters();
   updateSearchUi();
