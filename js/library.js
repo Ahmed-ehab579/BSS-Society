@@ -152,6 +152,7 @@
     sortToggle: $("[data-sort-toggle]"),
     views: $$("[data-view]"),
     sheet: $("[data-sheet]"),
+    sortSheet: $("[data-sort-sheet]"),
     sheetBody: $("[data-sheet-body]"),
     sheetOpen: $("[data-sheet-open]"),
     sheetApply: $("[data-sheet-apply]"),
@@ -328,7 +329,13 @@
   // (aria-haspopup) and a `.filter__menu` of radio options.
   function bindMenu(filter, pick) {
     const menu = filter.querySelector(".filter__menu");
-    filter.querySelector("[aria-haspopup]").addEventListener("click", () => setMenu(filter, menu.hidden));
+    const toggle = filter.querySelector("[aria-haspopup]");
+    // On phones a toggle with data-sheet-target opens that bottom sheet instead of the dropdown.
+    const sheet = toggle.dataset.sheetTarget && document.getElementById(toggle.dataset.sheetTarget);
+    toggle.addEventListener("click", () => {
+      if (sheet && phone.matches) openSheet(sheet);
+      else setMenu(filter, menu.hidden);
+    });
     menu.addEventListener("change", (event) => pick(event.target.value));
     // Labels can't take focus: without this, pressing on one would blur the menu and close it early.
     menu.addEventListener("mousedown", (event) => event.preventDefault());
@@ -389,18 +396,23 @@
       </fieldset>`).join("");
 
     els.sheetBody.addEventListener("change", (event) => setFilter(event.target.name.replace("sheet-", ""), event.target.value));
-    els.sheetOpen.addEventListener("click", () => {
-      if (typeof els.sheet.showModal === "function") els.sheet.showModal();
-      else els.sheet.setAttribute("open", "");
-    });
-    $$("[data-sheet-close]").forEach((button) => button.addEventListener("click", () => closeSheet()));
-    // A tap on the dimmed backdrop (the dialog element itself, outside its content) closes the sheet.
-    els.sheet.addEventListener("click", (event) => { if (event.target === els.sheet) closeSheet(); });
+    els.sheetOpen.addEventListener("click", () => openSheet(els.sheet));
+    $$("[data-sheet-close]").forEach((button) => button.addEventListener("click", () => closeSheet(els.sheet)));
+    $$("[data-sort-sheet-close]").forEach((button) => button.addEventListener("click", () => closeSheet(els.sortSheet)));
+    // A tap on the dimmed backdrop (the dialog element itself, outside its content) closes a sheet.
+    [els.sheet, els.sortSheet].forEach((sheet) => sheet.addEventListener("click", (event) => {
+      if (event.target === sheet) closeSheet(sheet);
+    }));
   }
 
-  function closeSheet() {
-    if (typeof els.sheet.close === "function") els.sheet.close();
-    else els.sheet.removeAttribute("open");
+  function openSheet(sheet) {
+    if (typeof sheet.showModal === "function") sheet.showModal();
+    else sheet.setAttribute("open", "");
+  }
+
+  function closeSheet(sheet) {
+    if (typeof sheet.close === "function") sheet.close();
+    else sheet.removeAttribute("open");
   }
 
   // ---- Shared filter state ---------------------------------------------------------------------
@@ -523,18 +535,25 @@
   // ---- Sort, view, load more -------------------------------------------------------------------
 
   function syncSort() {
+    $$('input[name="sort-sheet"]').forEach((option) => { option.checked = option.value === state.sort; });
     const input = $$('input[name="sort"]').find((option) => option.value === state.sort);
     input.checked = true;
     els.sortValue.textContent = input.nextElementSibling.textContent;
     els.sortToggle.setAttribute("aria-label", `Sort: ${els.sortValue.textContent}`);
   }
 
-  bindMenu(els.sort, (value) => {
+  function setSort(value) {
     if (value === state.sort) return;
     state.sort = value;
     syncSort();
     writeUrl();
     renderResults();
+  }
+
+  bindMenu(els.sort, setSort);
+  els.sortSheet.addEventListener("change", (event) => {
+    setSort(event.target.value);
+    closeSheet(els.sortSheet);
   });
 
   function setView(view) {

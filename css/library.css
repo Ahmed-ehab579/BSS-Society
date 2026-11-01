@@ -716,14 +716,14 @@
 
 /* The site's primary button with its sliding arrow (as on the homepage), 44px tall: the
    recommended minimum touch target */
-/* Large size of the site's primary button (56px) on desktop and one-a-row cards; the denser phone
-   layouts use a 36px version (above the 24px WCAG minimum target) */
+/* Medium (regular, 48px) size of the site's primary button on desktop and one-a-row cards; the
+   denser phone layouts use a 36px version (above the 24px WCAG minimum target) */
 .resource-card__action {
-  --arrow: 24px;
+  --arrow: 20px;
   width: 100%;
-  height: 56px;
+  height: 48px;
   margin-top: auto;
-  padding: var(--scale-400) var(--scale-600);
+  padding: var(--scale-300) var(--scale-600);
   font-size: var(--label-l-size);
   line-height: var(--label-l-line);
   cursor: default;
@@ -875,6 +875,42 @@
 .filter-sheet[open] {
   display: flex;
   flex-direction: column;
+  animation: sheet-in var(--motion-duration-hover) var(--motion-ease);
+}
+
+/* Sheets rise from the bottom of the screen */
+@keyframes sheet-in {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+.sort-sheet__options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--scale-100);
+  margin: 0;
+  padding: var(--scale-200) var(--scale-400) calc(var(--scale-600) + env(safe-area-inset-bottom));
+  border: 0;
+}
+
+/* Full-width rows, 48px tall for comfortable tapping */
+.sort-sheet .filter-option {
+  min-height: 48px;
+  padding: 0 var(--scale-400);
+  font-size: var(--label-l-size);
+  line-height: var(--label-l-line);
+}
+
+/* The check mark sits at the end of the row */
+.sort-sheet .filter-option__label {
+  display: flex;
+  flex: 1;
+  align-items: center;
+}
+
+.sort-sheet .filter-option__label::after {
+  margin-left: auto;
 }
 
 .filter-sheet::backdrop {
@@ -1346,6 +1382,10 @@
   .resource-card__photo,
   .resource-card__book {
     transition: none;
+  }
+
+  .filter-sheet[open] {
+    animation: none;
   }
 
   .resource-card:hover,
