@@ -7,13 +7,6 @@
   margin-top: var(--section-gap);
 }
 
-.path-notice {
-  margin-bottom: var(--scale-400);
-  color: var(--color-error);
-  font-size: var(--body-s-size);
-  line-height: var(--body-s-line);
-}
-
 .path {
   overflow-anchor: none;   /* js/new-muslim.js keeps the clicked card in place instead */
   display: flex;
@@ -172,6 +165,13 @@
   grid-template-rows: 1fr;
   visibility: visible;
   transition: grid-template-rows var(--motion-duration-expand) var(--motion-ease-expand), visibility 0s;
+}
+
+/* Set by js/new-muslim.js when the step closing sits above the one being opened */
+.path-step.is-closing-instantly .path-step__header,
+.path-step.is-closing-instantly .path-step__content,
+.path-step.is-closing-instantly .path-step__body {
+  transition: none;
 }
 
 .path-step__clip {
@@ -404,8 +404,23 @@
     border-bottom-color: transparent;
   }
 
+  /* The row works as an accordion: chevron down while closed, up while open */
+  .topic__chevron {
+    transform: rotate(45deg);
+  }
+
   .topic.is-selected .topic__chevron {
-    transform: rotate(45deg);   /* points down while its preview is open */
+    transform: rotate(225deg);
+  }
+
+  @media (hover: hover) {
+    .topic__row:hover .topic__chevron {
+      transform: rotate(45deg) translate(2px, 2px);
+    }
+
+    .topic.is-selected .topic__row:hover .topic__chevron {
+      transform: rotate(225deg) translate(2px, 2px);
+    }
   }
 }
 
@@ -480,8 +495,8 @@
   }
 
   .topic-preview__text {
-    font-size: var(--body-m-size);
-    line-height: var(--body-m-line);
+    font-size: var(--body-s-size);
+    line-height: var(--body-s-line);
   }
 
   .callout {
