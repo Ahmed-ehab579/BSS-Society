@@ -1,0 +1,479 @@
+/* New Muslim page: the four-step path, topic previews and the library callout (Figma 1137:4683).
+   Page shell and intro come from intro.css; buttons and type from base.css. */
+
+.path-section,
+.callout-section {
+  max-width: calc(1305px + 2 * var(--gutter));   /* same outer edges as the intro */
+  margin-top: var(--section-gap);
+}
+
+.path-notice {
+  margin-bottom: var(--scale-400);
+  color: var(--color-error);
+  font-size: var(--body-s-size);
+  line-height: var(--body-s-line);
+}
+
+.path {
+  display: flex;
+  flex-direction: column;
+  gap: var(--scale-400);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ---- Step card ---------------------------------------------------------------------------- */
+
+.path-step {
+  border: var(--scale-12) solid var(--color-neutral-400);
+  border-radius: var(--radius-step);
+  background: var(--surface-cards);
+  transition: background-color var(--motion-duration-hover) var(--motion-ease);
+}
+
+.path-step.is-open {
+  background: var(--surface-cards-hovered-neutral);
+}
+
+/* Number, title and text on the left; progress ring top right; buttons bottom right */
+.path-step__header {
+  display: grid;
+  grid-template-areas:
+    "intro progress"
+    "intro actions";
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: var(--scale-900);
+  margin: 0 var(--scale-900);
+  padding: var(--scale-900) 0 var(--scale-800);
+}
+
+.path-step.is-open .path-step__header {
+  border-bottom: var(--scale-12) solid var(--color-neutral-400);
+}
+
+.path-step__intro {
+  grid-area: intro;
+  min-width: 0;
+}
+
+.path-step__number {
+  display: block;
+  color: var(--color-step-number);
+  font-size: 92px;
+  line-height: 82px;
+  font-weight: 300;
+  letter-spacing: -4.1px;
+}
+
+.path-step__title {
+  margin: var(--scale-400) 0 0;
+  color: var(--color-heading);
+  font-size: var(--h3-size);
+  line-height: 40px;
+  font-weight: var(--h3-weight);
+  letter-spacing: -0.8px;
+}
+
+.path-step__text {
+  margin-top: var(--scale-300);
+  color: var(--color-text-body);
+  font-size: var(--body-m-size);
+  line-height: var(--body-m-line);
+}
+
+/* Progress ring (Figma "chart"): explored topics out of the step's total */
+.path-step__progress {
+  position: relative;
+  grid-area: progress;
+  justify-self: end;
+  width: 60px;
+  height: 60px;
+}
+
+.progress-ring {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.progress-ring__track,
+.progress-ring__value {
+  fill: none;
+  stroke-width: 4;
+}
+
+.progress-ring__track {
+  stroke: var(--color-neutral-200);
+}
+
+.progress-ring__value {
+  stroke: var(--color-text-on-light);
+  stroke-linecap: round;
+  transition: stroke-dashoffset 600ms var(--motion-ease);
+}
+
+.path-step[data-status="not-started"] .progress-ring__value {
+  stroke: none;   /* a round cap would otherwise show a dot at 0 */
+}
+
+.path-step[data-status="completed"] .progress-ring__value {
+  stroke: var(--color-completed);
+}
+
+.progress-ring__label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-on-light);
+  font-size: var(--body-l-size);
+  line-height: 1;
+}
+
+.path-step__actions {
+  display: flex;
+  grid-area: actions;
+  align-self: end;
+  gap: var(--scale-400);
+}
+
+.path-step__toggle {
+  gap: var(--scale-200);
+}
+
+.path-step__chevron {
+  transition: transform var(--motion-duration-hover) var(--motion-ease);
+}
+
+.path-step.is-open .path-step__chevron {
+  transform: rotate(180deg);
+}
+
+/* ---- Topics: rows on the left, the selected topic's preview on the right ------------------- */
+
+.path-step__content {
+  padding: var(--scale-900);
+}
+
+.path-step__content[hidden] {
+  display: none;
+}
+
+/* The list is a two-column grid; each item's row sits in the left column and its preview spans the
+   right column. On narrow screens the same markup stacks, with the preview under its row. */
+.topic-list {
+  display: grid;
+  grid-template-columns: minmax(0, 529px) minmax(0, 539px);
+  justify-content: space-between;
+  column-gap: var(--scale-900);
+  align-items: start;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.topic {
+  display: contents;
+}
+
+.topic__row {
+  grid-column: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--scale-300);
+  width: 100%;
+  padding: 26px 0 28px;
+  border: 0;
+  border-bottom: var(--border-md) solid var(--color-neutral-300);
+  background: none;
+  color: var(--color-text-body);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: color var(--motion-duration) var(--motion-ease);
+}
+
+.topic:last-child .topic__row {
+  border-bottom: 0;
+}
+
+.topic__title {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--h5-size);
+  line-height: var(--h5-line);
+  font-weight: var(--body-weight);
+}
+
+.topic.is-selected .topic__title {
+  color: var(--color-heading);
+  font-weight: var(--h5-weight);
+}
+
+.topic__status {
+  display: none;
+  align-items: center;
+  gap: var(--scale-100);
+  color: var(--color-completed-text);
+  font-size: var(--label-s-size);
+  line-height: var(--label-s-line);
+  font-weight: var(--label-weight);
+  white-space: nowrap;
+}
+
+.topic.is-explored .topic__status {
+  display: inline-flex;
+}
+
+/* Check mark before "Explored" */
+.topic__status::before {
+  content: "";
+  width: 5px;
+  height: 10px;
+  margin-right: 2px;
+  border: solid var(--color-completed);
+  border-width: 0 2px 2px 0;
+  transform: translateY(-2px) rotate(45deg);
+}
+
+/* The asset is an "L"; turned -45deg it reads as ">" */
+.topic__chevron {
+  flex-shrink: 0;
+  transform: rotate(-45deg);
+  transition: transform var(--motion-duration) var(--motion-ease);
+}
+
+.topic__row:focus-visible {
+  outline: 2px solid var(--color-neutral-400);
+  outline-offset: 2px;
+  border-radius: var(--scale-100);
+}
+
+.topic-preview {
+  grid-column: 2;
+  grid-row: 1 / span var(--span);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--scale-600);
+  padding: var(--scale-800);
+  border: var(--scale-12) solid var(--color-neutral-400);
+  border-radius: 18px;
+  background: var(--surface-preview);
+}
+
+.topic-preview[hidden] {
+  display: none;
+}
+
+.topic-preview__image {
+  width: 100%;
+  height: 170px;
+  border: var(--scale-12) solid var(--color-neutral-400);
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.topic-preview__text {
+  color: var(--color-text-on-light);
+  font-size: var(--body-l-size);
+  line-height: 32px;
+}
+
+.topic-preview__action {
+  gap: var(--scale-200);
+}
+
+@media (hover: hover) {
+  .topic__row:hover {
+    color: var(--color-heading);
+  }
+
+  .topic__row:hover .topic__chevron {
+    transform: rotate(-45deg) translate(2px, 2px);
+  }
+
+  .path-step__start:hover .btn__arrow-track,
+  .topic-preview__action:hover .btn__arrow-track {
+    transform: translateY(-35px);
+  }
+}
+
+/* ---- Callout: bridge to the library ------------------------------------------------------- */
+
+.callout {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--scale-900);
+  padding: var(--scale-900);
+  border-radius: var(--radius-card);
+  background: var(--surface-banner);
+}
+
+.callout__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--scale-600);
+  min-width: 0;
+}
+
+.callout__heading {
+  color: var(--color-text-on-dark);
+  font-size: var(--h2-size);
+  line-height: 52px;
+  font-weight: var(--h2-weight);
+  letter-spacing: -0.6px;
+}
+
+.callout__body {
+  max-width: 614px;
+  color: var(--color-topic-text);
+  font-size: var(--body-l-size);
+  line-height: var(--body-l-line);
+}
+
+.callout__action {
+  gap: var(--scale-200);
+  height: 52px;
+  padding: 0 var(--scale-600);
+  font-size: var(--label-l-size);
+}
+
+/* ---- Responsive ------------------------------------------------------------------------------- */
+
+/* Below desktop width the topics stack, each preview opening under its row */
+@media (max-width: 1099px) {
+  .topic-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .topic-preview {
+    grid-column: 1;
+    grid-row: auto;
+    margin: var(--scale-200) 0 var(--scale-400);
+  }
+
+  .topic.is-selected .topic__row {
+    border-bottom-color: transparent;
+  }
+
+  .topic.is-selected .topic__chevron {
+    transform: rotate(45deg);   /* points down while its preview is open */
+  }
+}
+
+@media (max-width: 767px) {
+  .path-step__header {
+    grid-template-areas:
+      "intro progress"
+      "actions actions";
+    row-gap: var(--scale-600);
+    margin: 0 var(--scale-500);
+    padding: var(--scale-600) 0;
+  }
+
+  .path-step__number {
+    font-size: 64px;
+    line-height: 60px;
+    letter-spacing: -2.8px;
+  }
+
+  .path-step__title {
+    margin-top: var(--scale-300);
+    font-size: var(--h5-size);
+    line-height: var(--h5-line);
+    letter-spacing: -0.4px;
+  }
+
+  .path-step__text {
+    margin-top: var(--scale-200);
+    font-size: var(--body-s-size);
+    line-height: var(--body-s-line);
+  }
+
+  .path-step__progress {
+    width: 52px;
+    height: 52px;
+  }
+
+  .progress-ring__label {
+    font-size: var(--body-s-size);
+  }
+
+  .path-step__actions {
+    flex-direction: column;
+    gap: var(--scale-300);
+  }
+
+  .path-step__actions .btn {
+    width: 100%;
+  }
+
+  .path-step__content {
+    padding: var(--scale-200) var(--scale-500) var(--scale-500);
+  }
+
+  .topic__row {
+    padding: var(--scale-400) 0;
+  }
+
+  .topic__title {
+    font-size: var(--body-l-size);
+    line-height: 26px;
+  }
+
+  .topic-preview {
+    gap: var(--scale-400);
+    padding: var(--scale-400);
+    border-radius: var(--scale-400);
+  }
+
+  .topic-preview__image {
+    height: 160px;
+  }
+
+  .topic-preview__text {
+    font-size: var(--body-m-size);
+    line-height: var(--body-m-line);
+  }
+
+  .topic-preview__action {
+    width: 100%;
+  }
+
+  .callout {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--scale-600);
+    padding: var(--scale-600);
+  }
+
+  .callout__heading {
+    font-size: 30px;
+    line-height: 38px;
+  }
+
+  .callout__body {
+    font-size: var(--body-m-size);
+    line-height: var(--body-m-line);
+  }
+
+  .callout__action {
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .path-step,
+  .path-step__chevron,
+  .progress-ring__value,
+  .topic__row,
+  .topic__chevron {
+    transition: none;
+  }
+}
