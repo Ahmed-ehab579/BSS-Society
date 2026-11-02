@@ -48,6 +48,14 @@
   align-items: flex-start;
 }
 
+/* Longer titles may use the room the text column leaves (two lines instead of three) */
+@media (min-width: 1100px) {
+  .intro--top .intro__heading {
+    flex-basis: 720px;
+    max-width: 720px;
+  }
+}
+
 .intro--top .intro__text {
   padding-top: 14px;
   padding-bottom: 0;

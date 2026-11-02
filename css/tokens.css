@@ -63,6 +63,11 @@
   --radius-pill: 999px;
   --radius-card: 24px;
   --shadow-menu: 0 8px 24px rgba(0, 0, 0, 0.12);
+  /* New Muslim path (Figma 1137:4683; variables pending in Figma) */
+  --color-step-number: rgba(32, 33, 36, 0.3);
+  --surface-preview: #f1efe6;          /* topic preview panel */
+  --surface-banner: #5a5a5a;           /* "Explore more resources" callout */
+  --radius-step: 28px;
   /* Validation colours: not defined in Figma (pending approval) */
   --color-error: #b3261e;
   --color-error-on-dark: #ffb4ab;
