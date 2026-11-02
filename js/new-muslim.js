@@ -132,7 +132,6 @@
               <li class="topic" role="listitem" data-topic="${topic.id}">
                 <button class="topic__row" type="button" aria-expanded="false" aria-controls="topic-${topic.id}">
                   <span class="topic__title">${escape(topic.title)}</span>
-                  <span class="topic__status" data-topic-status></span>
                   <img class="topic__chevron" src="assets/icons/row-chevron.svg" width="24" height="24" alt="">
                 </button>
                 <div class="topic-preview" id="topic-${topic.id}" style="--span: ${step.topics.length + 1}" role="region" aria-label="${escape(topic.title)}">
@@ -168,13 +167,6 @@
       ring.setAttribute("stroke-dashoffset", String(RING * (1 - done / total)));
       el.querySelector("[data-progress-label]").textContent = `${done}/${total}`;
       el.querySelector("[data-progress]").setAttribute("aria-label", `${done} of ${total} topics explored`);
-
-      step.topics.forEach((topic) => {
-        const topicEl = el.querySelector(`[data-topic="${topic.id}"]`);
-        const explored = isExplored(topic.id);
-        topicEl.classList.toggle("is-explored", explored);
-        topicEl.querySelector("[data-topic-status]").textContent = explored ? "Explored" : "";
-      });
     });
   }
 
