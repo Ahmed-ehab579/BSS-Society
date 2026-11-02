@@ -30,12 +30,10 @@
   background: var(--surface-cards-hovered-neutral);
 }
 
-/* Number, title and text on the left; progress ring top right; buttons bottom right */
+/* Number, title and text on the left; buttons bottom right */
 .path-step__header {
   display: grid;
-  grid-template-areas:
-    "intro progress"
-    "intro actions";
+  grid-template-areas: "intro actions";
   grid-template-columns: minmax(0, 1fr) auto;
   column-gap: var(--scale-900);
   margin: 0 var(--scale-900);
@@ -76,56 +74,6 @@
   color: var(--color-text-body);
   font-size: var(--body-m-size);
   line-height: var(--body-m-line);
-}
-
-/* Progress ring (Figma "chart"): explored topics out of the step's total */
-.path-step__progress {
-  position: relative;
-  grid-area: progress;
-  justify-self: end;
-  width: 60px;
-  height: 60px;
-}
-
-.progress-ring {
-  width: 100%;
-  height: 100%;
-  transform: rotate(-90deg);
-}
-
-.progress-ring__track,
-.progress-ring__value {
-  fill: none;
-  stroke-width: 4;
-}
-
-.progress-ring__track {
-  stroke: var(--color-neutral-200);
-}
-
-.progress-ring__value {
-  stroke: var(--color-text-on-light);
-  stroke-linecap: round;
-  transition: stroke-dashoffset 600ms var(--motion-ease);
-}
-
-.path-step[data-status="not-started"] .progress-ring__value {
-  stroke: none;   /* a round cap would otherwise show a dot at 0 */
-}
-
-.path-step[data-status="completed"] .progress-ring__value {
-  stroke: var(--color-completed);
-}
-
-.progress-ring__label {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-text-on-light);
-  font-size: var(--body-l-size);
-  line-height: 1;
 }
 
 .path-step__actions {
@@ -427,8 +375,9 @@
 @media (max-width: 767px) {
   .path-step__header {
     grid-template-areas:
-      "intro progress"
-      "actions actions";
+      "intro"
+      "actions";
+    grid-template-columns: minmax(0, 1fr);
     row-gap: var(--scale-600);
     margin: 0 var(--scale-500);
     padding: var(--scale-600) 0;
@@ -451,15 +400,6 @@
     margin-top: var(--scale-200);
     font-size: var(--body-s-size);
     line-height: var(--body-s-line);
-  }
-
-  .path-step__progress {
-    width: 52px;
-    height: 52px;
-  }
-
-  .progress-ring__label {
-    font-size: var(--body-s-size);
   }
 
   .path-step__actions {
@@ -535,7 +475,6 @@
   .path-step.is-open .path-step__content,
   .path-step__body,
   .path-step.is-open .path-step__body,
-  .progress-ring__value,
   .topic__row,
   .topic__chevron,
   .topic-preview,

@@ -1,0 +1,257 @@
+/* Resource card (Figma 984:2777): shared by the Library and the New Muslim step pages.
+   Markup comes from js/resource-card.js. Page-specific layouts (grids, phone views) stay with the page. */
+
+.resource-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: var(--scale-12) solid var(--border-color-on-light);
+  border-radius: var(--radius-card);
+  background: var(--surface-resource-card);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--motion-duration-hover) var(--motion-ease),
+    box-shadow var(--motion-duration-hover) var(--motion-ease),
+    background-color var(--motion-duration-hover) var(--motion-ease);
+}
+
+/* The stroke is the card's own border: an overlay inside the card was clipped at the bottom when
+   the card ended on a fraction of a pixel (one-a-row layout, whose photo height comes from an
+   aspect ratio). The media is inset, so nothing needs to sit above the stroke. */
+
+.resource-card__media {
+  padding: 14px 14px 0;
+}
+
+/* The media frame: a photo for videos and articles, a cover on a light board for books */
+.resource-card__frame {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 240px;
+  overflow: hidden;
+  border-radius: var(--radius-media);
+  isolation: isolate;
+}
+
+.resource-card__frame--photo {
+  background: var(--surface-media);
+  box-shadow: var(--shadow-media);
+}
+
+.resource-card__frame--book {
+  border: var(--scale-12) solid var(--color-neutral-400);
+  background: var(--surface-book);
+  box-shadow: var(--shadow-media-book);
+}
+
+.resource-card__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 600ms var(--motion-ease);
+}
+
+.resource-card__book {
+  width: auto;
+  max-width: 70%;
+  height: 84%;
+  object-fit: contain;
+  transition: transform var(--motion-duration-hover) var(--motion-ease);
+}
+
+/* Scrim over photos (darker under the video play button) and over audio covers */
+.resource-card__frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.resource-card--video .resource-card__frame::before {
+  background: var(--surface-media-scrim);
+}
+
+.resource-card--article .resource-card__frame::before {
+  background: var(--surface-media-scrim-light);
+}
+
+.resource-card--audio .resource-card__frame::before {
+  background: var(--surface-media-scrim-audio);
+}
+
+/* Play (video) and listen (audio book) buttons, centred on the media. The play asset carries its
+   drop shadow below the circle, so it moves down by that extra height to centre the circle itself. */
+.resource-card__play {
+  --play-size: 112.864px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  width: var(--play-size);
+  height: var(--play-size);
+  max-width: none;
+  transform: translate(-50%, calc(-50% + var(--play-size) * 0.147));
+  pointer-events: none;
+}
+
+.resource-card__listen {
+  --listen-size: 73px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--listen-size);
+  height: var(--listen-size);
+  border: 1.66px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  background: rgba(32, 33, 36, 0.5);
+  box-shadow: 0 16.6px 24.9px -5px rgba(0, 0, 0, 0.1), 0 6.6px 10px -6.6px rgba(0, 0, 0, 0.1);
+  transform: translate(-50%, -50%);
+  -webkit-backdrop-filter: blur(3.32px);
+  backdrop-filter: blur(3.32px);
+  pointer-events: none;
+}
+
+.resource-card__listen img {
+  width: 48%;
+  height: auto;
+}
+
+.resource-card__badge {
+  position: absolute;
+  top: var(--scale-300);
+  right: var(--scale-300);
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: var(--scale-100);
+  padding: 2px 11px;
+  border: var(--scale-12) solid var(--border-color-badge);
+  border-radius: var(--radius-pill);
+  background: var(--surface-badge);
+  color: var(--color-card-heading);
+  font-size: var(--label-s-size);
+  line-height: var(--label-s-line);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.resource-card__badge img {
+  width: auto;
+  height: 11px;
+}
+
+/* Type line used in the phone list layout instead of the badge */
+.resource-card__type {
+  display: none;
+}
+
+/* Spacing from the Figma sample card (1012:3539): 32px from the photo to the title, 12px between
+   title and text, and the button pinned to the bottom so buttons line up across a row */
+.resource-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--scale-800);
+  padding: var(--scale-800) var(--scale-400) var(--scale-400);
+}
+
+.resource-card__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--scale-300);
+}
+
+.resource-card__title {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0;
+  color: var(--color-card-heading);
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: var(--h6-weight);   /* semibold on desktop; phone layouts set their own size and weight */
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.resource-card__desc {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--color-section-label);
+  font-size: var(--body-s-size);
+  line-height: var(--body-s-line);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+}
+
+/* The site's primary button with its sliding arrow (as on the homepage), 44px tall: the
+   recommended minimum touch target */
+/* Medium (regular, 48px) size of the site's primary button on desktop and one-a-row cards; the
+   denser phone layouts use a 36px version (above the 24px WCAG minimum target) */
+.resource-card__action {
+  --arrow: 20px;
+  width: 100%;
+  height: 48px;
+  margin-top: auto;
+  padding: var(--scale-300) var(--scale-600);
+  font-size: var(--label-l-size);
+  line-height: var(--label-l-line);
+  cursor: default;
+}
+
+.resource-card__action .btn__arrow-clip,
+.resource-card__action .btn__arrow-track img {
+  width: var(--arrow);
+  height: var(--arrow);
+}
+
+/* Hover: the card lifts a little, darkens to the hover surface and its media comes slightly forward */
+@media (hover: hover) {
+  .resource-card:hover {
+    transform: translateY(-3px);
+    background: var(--surface-cards-hovered-neutral);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .resource-card:hover .resource-card__photo {
+    transform: scale(1.05);
+  }
+
+  .resource-card:hover .resource-card__book {
+    transform: translateY(-4px) scale(1.04);
+  }
+
+  /* The button reacts only to its own hover, as on the homepage */
+  .resource-card__action:hover {
+    background: var(--surface-action-primary-hovered);
+  }
+
+  .resource-card__action:hover .btn__arrow-track {
+    transform: translateY(calc(-1 * (var(--arrow) + 11px)));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .resource-card,
+  .resource-card__photo,
+  .resource-card__book {
+    transition: none;
+  }
+
+  .resource-card:hover,
+  .resource-card:hover .resource-card__photo,
+  .resource-card:hover .resource-card__book {
+    transform: none;
+  }
+}
