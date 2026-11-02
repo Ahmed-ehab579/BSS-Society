@@ -214,6 +214,7 @@
 
   // The toggle's width follows its label; animate it so the start button beside it glides instead of jumping.
   const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+  const stacked = matchMedia("(max-width: 1099px)");   /* previews open under their rows */
   function setToggleLabel(toggle, text) {
     const label = toggle.querySelector("[data-toggle-label]");
     if (label.textContent === text) return;
@@ -255,6 +256,19 @@
     step.topics.forEach((topic) => {
       const row = el.querySelector(`[data-topic="${topic.id}"] .topic__row`);
       row.addEventListener("click", () => {
+        // On narrow screens, a preview closing above the tapped topic would shrink while the page scrolls
+        // back, which reads as several motions at once. Close it instantly instead (the tapped row stays
+        // still), so only the new preview animates, opening downwards.
+        const previous = selected[step.id];
+        const previousEl = previous && previous !== topic && el.querySelector(`[data-topic="${previous.id}"]`);
+        if (previousEl && stacked.matches && step.topics.indexOf(previous) < step.topics.indexOf(topic)) {
+          const top = row.getBoundingClientRect().top;
+          previousEl.classList.add("is-closing-instantly");
+          selectTopic(step, topic);
+          window.scrollBy(0, row.getBoundingClientRect().top - top);
+          requestAnimationFrame(() => previousEl.classList.remove("is-closing-instantly"));
+          return;
+        }
         holdInPlace(row);
         selectTopic(step, topic);
       });
