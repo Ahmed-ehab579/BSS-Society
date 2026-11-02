@@ -183,6 +183,35 @@
     });
   }
 
+  function expandTiming() {
+    const styles = getComputedStyle(document.documentElement);
+    return { duration: parseFloat(styles.getPropertyValue("--motion-duration-expand")) || 700, easing: styles.getPropertyValue("--motion-ease-expand").trim() || "ease-in-out" };
+  }
+
+  // When a card (or topic preview) above closes while the clicked one opens, the page would shift up and
+  // the clicked one would seem to open upwards. Hold the clicked element still on screen for the length
+  // of the animation so everything opens downwards. Stops as soon as the reader scrolls themselves.
+  let stopHolding = null;
+  function holdInPlace(target) {
+    if (stopHolding) stopHolding();
+    const top = target.getBoundingClientRect().top;
+    const end = performance.now() + expandTiming().duration + 100;
+    let frame = 0;
+    const stop = () => {
+      cancelAnimationFrame(frame);
+      ["wheel", "touchmove", "keydown"].forEach((type) => window.removeEventListener(type, stop));
+      stopHolding = null;
+    };
+    const tick = () => {
+      const shift = target.getBoundingClientRect().top - top;
+      if (Math.abs(shift) > 0.5) window.scrollBy(0, shift);
+      if (performance.now() < end) frame = requestAnimationFrame(tick); else stop();
+    };
+    ["wheel", "touchmove", "keydown"].forEach((type) => window.addEventListener(type, stop, { passive: true }));
+    stopHolding = stop;
+    frame = requestAnimationFrame(tick);
+  }
+
   // The toggle's width follows its label; animate it so the start button beside it glides instead of jumping.
   const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
   function setToggleLabel(toggle, text) {
@@ -192,8 +221,7 @@
     label.textContent = text;
     const to = toggle.getBoundingClientRect().width;
     if (reducedMotion.matches || from === to) return;
-    const styles = getComputedStyle(document.documentElement);
-    const timing = { duration: parseFloat(styles.getPropertyValue("--motion-duration-expand")) || 700, easing: styles.getPropertyValue("--motion-ease-expand").trim() || "ease-in-out" };
+    const timing = expandTiming();
     toggle.animate([{ width: `${from}px` }, { width: `${to}px` }], timing);
     label.animate([{ opacity: 0 }, { opacity: 1 }], { ...timing, duration: timing.duration * 0.6 });
   }
@@ -218,13 +246,18 @@
     const el = stepEl(step);
 
     el.querySelector("[data-toggle]").addEventListener("click", () => {
+      holdInPlace(el);
       const open = !el.classList.contains("is-open");
       setOpen(step, open);
       if (open) selectTopic(step, selected[step.id] || step.topics[0]);
     });
 
     step.topics.forEach((topic) => {
-      el.querySelector(`[data-topic="${topic.id}"] .topic__row`).addEventListener("click", () => selectTopic(step, topic));
+      const row = el.querySelector(`[data-topic="${topic.id}"] .topic__row`);
+      row.addEventListener("click", () => {
+        holdInPlace(row);
+        selectTopic(step, topic);
+      });
     });
   });
 

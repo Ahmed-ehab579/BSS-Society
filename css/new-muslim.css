@@ -15,6 +15,7 @@
 }
 
 .path {
+  overflow-anchor: none;   /* js/new-muslim.js keeps the clicked card in place instead */
   display: flex;
   flex-direction: column;
   gap: var(--scale-400);
