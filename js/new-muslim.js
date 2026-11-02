@@ -1,10 +1,7 @@
-// New Muslim path: four steps, each with a few topics. Progress ("explored" topics) is kept on this
-// device only, separate from the Start here journey. Every step stays open: nobody is ever blocked.
-// The topics are placeholder content and their pages do not exist yet, so a topic counts as explored once
-// its preview has been opened. The start buttons stay static until the step page exists.
+// New Muslim path: four steps, each with a few topics. Every step stays open: nobody is ever blocked.
+// The topics are placeholder content. The progress rings stay at 0 and the start buttons stay static
+// until the step pages and the progress rules exist.
 (function () {
-  const KEY = "bss.newMuslim.v1";
-
   const IMG = {
     mosque: ["assets/images/article-hero.jpg", "50% 56%"],
     quran: ["assets/images/library-quran.jpg", "50% 50%"],
@@ -51,40 +48,6 @@
 
   const list = document.querySelector("[data-path]");
   if (!list) return;
-  const notice = document.querySelector("[data-storage-notice]");
-
-  // ---- Saved progress (guarded: the page still works for this visit if storage is blocked) ----
-
-  let memory = { explored: {} };
-  let saveFailed = false;
-
-  function read() {
-    if (saveFailed) return memory;
-    try {
-      const parsed = JSON.parse(window.localStorage.getItem(KEY) || "null");
-      if (parsed && typeof parsed.explored === "object") return parsed;
-    } catch (error) { /* unavailable or corrupt: use this visit's memory */ }
-    return memory;
-  }
-
-  function write(state) {
-    memory = state;
-    const json = JSON.stringify(state);
-    try {
-      window.localStorage.setItem(KEY, json);
-      saveFailed = window.localStorage.getItem(KEY) !== json;
-    } catch (error) {
-      saveFailed = true;
-    }
-    if (notice) notice.hidden = !saveFailed;
-  }
-
-  const isExplored = (topicId) => Boolean(read().explored[topicId]);
-  const doneCount = (step) => step.topics.filter((topic) => isExplored(topic.id)).length;
-  const stepStatus = (step) => {
-    const done = doneCount(step);
-    return done === 0 ? "not-started" : done === step.topics.length ? "completed" : "in-progress";
-  };
 
   // ---- Rendering ----------------------------------------------------------------------------
 
@@ -94,19 +57,19 @@
 
   function stepHtml(step) {
     return `
-      <li class="path-step" data-step="${step.id}">
+      <li class="path-step" data-step="${step.id}" data-status="not-started">
         <div class="path-step__header">
           <div class="path-step__intro">
             <span class="path-step__number" aria-hidden="true">${pad(step.id)}</span>
             <h3 class="path-step__title"><span class="visually-hidden">Step ${step.id}: </span>${escape(step.title)}</h3>
             <p class="path-step__text">${escape(step.text)}</p>
           </div>
-          <div class="path-step__progress" data-progress role="img">
+          <div class="path-step__progress" role="img" aria-label="0 of ${step.topics.length} topics completed">
             <svg class="progress-ring" viewBox="0 0 60 60" aria-hidden="true" focusable="false">
               <circle class="progress-ring__track" cx="30" cy="30" r="26"></circle>
               <circle class="progress-ring__value" cx="30" cy="30" r="26" stroke-dasharray="${RING}" stroke-dashoffset="${RING}"></circle>
             </svg>
-            <span class="progress-ring__label" data-progress-label></span>
+            <span class="progress-ring__label">0/${step.topics.length}</span>
           </div>
           <div class="path-step__actions">
             <button class="btn btn--regular btn--primary path-step__start" type="button" data-start>
@@ -154,22 +117,6 @@
 
   const stepEl = (step) => list.querySelector(`[data-step="${step.id}"]`);
 
-  // Ring, labels and explored marks follow the saved progress.
-  function sync() {
-    STEPS.forEach((step) => {
-      const el = stepEl(step);
-      const done = doneCount(step);
-      const total = step.topics.length;
-      const status = stepStatus(step);
-      el.dataset.status = status;
-
-      const ring = el.querySelector(".progress-ring__value");
-      ring.setAttribute("stroke-dashoffset", String(RING * (1 - done / total)));
-      el.querySelector("[data-progress-label]").textContent = `${done}/${total}`;
-      el.querySelector("[data-progress]").setAttribute("aria-label", `${done} of ${total} topics explored`);
-    });
-  }
-
   // ---- Behaviour ----------------------------------------------------------------------------
 
   // One step open at a time keeps the path easy to follow. Open and close animate in CSS.
@@ -188,9 +135,8 @@
     return { duration: parseFloat(styles.getPropertyValue("--motion-duration-expand")) || 700, easing: styles.getPropertyValue("--motion-ease-expand").trim() || "ease-in-out" };
   }
 
-  // When a card (or topic preview) above closes while the clicked one opens, the page would shift up and
-  // the clicked one would seem to open upwards. Hold the clicked element still on screen for the length
-  // of the animation so everything opens downwards. Stops as soon as the reader scrolls themselves.
+  // Keep the clicked element still on screen while things around it animate, so everything opens
+  // downwards. Stops as soon as the reader scrolls themselves.
   let stopHolding = null;
   function holdInPlace(target) {
     if (stopHolding) stopHolding();
@@ -227,46 +173,57 @@
     label.animate([{ opacity: 0 }, { opacity: 1 }], { ...timing, duration: timing.duration * 0.6 });
   }
 
-  // Showing a topic's preview marks it explored (until topic pages exist).
+  // The topic whose preview is showing in each step (null: none, possible on narrow screens only).
   const selected = {};
   function selectTopic(step, topic) {
     selected[step.id] = topic;
     stepEl(step).querySelectorAll(".topic").forEach((el) => {
-      const isSelected = el.dataset.topic === topic.id;
+      const isSelected = Boolean(topic) && el.dataset.topic === topic.id;
       el.classList.toggle("is-selected", isSelected);
       el.querySelector(".topic__row").setAttribute("aria-expanded", String(isSelected));
     });
-    if (!isExplored(topic.id)) {
-      const state = read();
-      write({ ...state, explored: { ...state.explored, [topic.id]: true } });
-      sync();
-    }
   }
 
-  STEPS.forEach((step) => {
+  // Something above the clicked element closing would shrink for the whole animation while the page
+  // scrolls back, which reads as several motions at once. Close it instantly instead, keeping the clicked
+  // element still, so only the newly opened part animates.
+  function closeAboveInstantly(closing, clicked, change) {
+    const top = clicked.getBoundingClientRect().top;
+    closing.classList.add("is-closing-instantly");
+    change();
+    window.scrollBy(0, clicked.getBoundingClientRect().top - top);
+    requestAnimationFrame(() => closing.classList.remove("is-closing-instantly"));
+  }
+
+  STEPS.forEach((step, index) => {
     const el = stepEl(step);
 
     el.querySelector("[data-toggle]").addEventListener("click", () => {
-      holdInPlace(el);
       const open = !el.classList.contains("is-open");
-      setOpen(step, open);
-      if (open) selectTopic(step, selected[step.id] || step.topics[0]);
+      const change = () => {
+        setOpen(step, open);
+        if (open) selectTopic(step, selected[step.id] || step.topics[0]);
+      };
+      const openAbove = STEPS.slice(0, index).map(stepEl).find((other) => other.classList.contains("is-open"));
+      if (open && openAbove) closeAboveInstantly(openAbove, el, change);
+      else {
+        holdInPlace(el);
+        change();
+      }
     });
 
-    step.topics.forEach((topic) => {
-      const row = el.querySelector(`[data-topic="${topic.id}"] .topic__row`);
+    step.topics.forEach((topic, topicIndex) => {
+      const topicEl = el.querySelector(`[data-topic="${topic.id}"]`);
+      const row = topicEl.querySelector(".topic__row");
       row.addEventListener("click", () => {
-        // On narrow screens, a preview closing above the tapped topic would shrink while the page scrolls
-        // back, which reads as several motions at once. Close it instantly instead (the tapped row stays
-        // still), so only the new preview animates, opening downwards.
         const previous = selected[step.id];
-        const previousEl = previous && previous !== topic && el.querySelector(`[data-topic="${previous.id}"]`);
-        if (previousEl && stacked.matches && step.topics.indexOf(previous) < step.topics.indexOf(topic)) {
-          const top = row.getBoundingClientRect().top;
-          previousEl.classList.add("is-closing-instantly");
-          selectTopic(step, topic);
-          window.scrollBy(0, row.getBoundingClientRect().top - top);
-          requestAnimationFrame(() => previousEl.classList.remove("is-closing-instantly"));
+        if (previous === topic) {
+          // Narrow screens: tapping the open topic closes it. Desktop always shows one preview.
+          if (stacked.matches) selectTopic(step, null);
+          return;
+        }
+        if (previous && stacked.matches && step.topics.indexOf(previous) < topicIndex) {
+          closeAboveInstantly(el.querySelector(`[data-topic="${previous.id}"]`), row, () => selectTopic(step, topic));
           return;
         }
         holdInPlace(row);
@@ -275,19 +232,11 @@
     });
   });
 
-  // Every step starts closed.
-  sync();
-
-  // Other tabs keep the page up to date.
-  window.addEventListener("storage", (event) => { if (event.key === KEY) sync(); });
-
-  // Storage blocked: say so once, without pretending progress is saved.
-  try {
-    const probe = `${KEY}.probe`;
-    window.localStorage.setItem(probe, "1");
-    window.localStorage.removeItem(probe);
-  } catch (error) {
-    saveFailed = true;
-    if (notice) notice.hidden = false;
-  }
+  // Back on desktop width, an open step always shows a preview.
+  stacked.addEventListener("change", () => {
+    if (stacked.matches) return;
+    STEPS.forEach((step) => {
+      if (stepEl(step).classList.contains("is-open") && !selected[step.id]) selectTopic(step, step.topics[0]);
+    });
+  });
 })();
