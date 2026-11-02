@@ -488,7 +488,7 @@
      below the padding so the content reads as one group; the image radius is the card radius minus the
      padding, so the corners run parallel */
   .topic-preview__card {
-    gap: var(--scale-300);
+    gap: var(--scale-400);   /* clearly larger than the space between text lines */
     padding: var(--scale-400) var(--scale-400) var(--scale-500);
     border-radius: var(--scale-600);
   }
@@ -500,8 +500,8 @@
   }
 
   .topic-preview__text {
-    font-size: var(--body-s-size);
-    line-height: var(--body-s-line);
+    font-size: 15px;
+    line-height: 25px;
   }
 
   .callout {
