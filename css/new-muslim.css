@@ -484,14 +484,19 @@
     line-height: 26px;
   }
 
+  /* 16px inset (20px at the bottom to balance the text's line spacing); the image to text gap stays
+     below the padding so the content reads as one group; the image radius is the card radius minus the
+     padding, so the corners run parallel */
   .topic-preview__card {
     gap: var(--scale-300);
-    padding: var(--scale-300);
-    border-radius: var(--scale-400);
+    padding: var(--scale-400) var(--scale-400) var(--scale-500);
+    border-radius: var(--scale-600);
   }
 
   .topic-preview__image {
-    height: 160px;
+    height: auto;
+    aspect-ratio: 16 / 10;   /* keeps the same proportions on every phone width */
+    border-radius: var(--scale-200);
   }
 
   .topic-preview__text {
