@@ -157,6 +157,7 @@
   /* Motion */
   --motion-duration: 220ms;
   --motion-duration-hover: 360ms;      /* Figma smart animate 300ms, slightly slower */
+  --motion-duration-expand: 480ms;     /* cards opening and closing */
   --motion-ease: cubic-bezier(0.2, 0, 0, 1);
   --motion-duration-link: 150ms;       /* Footer Link note: underline fades in over 150ms */
 }
