@@ -179,8 +179,23 @@
       const isOpen = other === step && open;
       el.classList.toggle("is-open", isOpen);
       el.querySelector("[data-toggle]").setAttribute("aria-expanded", String(isOpen));
-      el.querySelector("[data-toggle-label]").textContent = isOpen ? "Hide the content" : "Discover the content";
+      setToggleLabel(el.querySelector("[data-toggle]"), isOpen ? "Hide the content" : "Discover the content");
     });
+  }
+
+  // The toggle's width follows its label; animate it so the start button beside it glides instead of jumping.
+  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+  function setToggleLabel(toggle, text) {
+    const label = toggle.querySelector("[data-toggle-label]");
+    if (label.textContent === text) return;
+    const from = toggle.getBoundingClientRect().width;
+    label.textContent = text;
+    const to = toggle.getBoundingClientRect().width;
+    if (reducedMotion.matches || from === to) return;
+    const styles = getComputedStyle(document.documentElement);
+    const timing = { duration: parseFloat(styles.getPropertyValue("--motion-duration-expand")) || 700, easing: styles.getPropertyValue("--motion-ease-expand").trim() || "ease-in-out" };
+    toggle.animate([{ width: `${from}px` }, { width: `${to}px` }], timing);
+    label.animate([{ opacity: 0 }, { opacity: 1 }], { ...timing, duration: timing.duration * 0.6 });
   }
 
   // Showing a topic's preview marks it explored (until topic pages exist).

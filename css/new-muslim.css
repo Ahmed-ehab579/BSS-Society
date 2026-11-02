@@ -143,6 +143,8 @@
 
 .path-step__toggle {
   gap: var(--scale-200);
+  overflow: hidden;      /* the label stays on one line while the width animates */
+  white-space: nowrap;
 }
 
 .path-step__chevron {
