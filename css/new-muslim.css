@@ -395,6 +395,11 @@
     margin: var(--scale-200) 0 var(--scale-400);
   }
 
+  /* Set by js/new-muslim.js when the closing preview sits above the tapped topic */
+  .topic.is-closing-instantly .topic-preview {
+    transition: none;
+  }
+
   .topic.is-selected .topic__row {
     border-bottom-color: transparent;
   }
