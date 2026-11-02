@@ -1,7 +1,7 @@
 // New Muslim path: four steps, each with a few topics. Progress ("explored" topics) is kept on this
 // device only, separate from the Start here journey. Every step stays open: nobody is ever blocked.
-// The topics are placeholder content; their pages do not exist yet, so "Read this topic" only records
-// progress for now.
+// The topics are placeholder content and their pages do not exist yet, so a topic counts as explored once
+// its preview has been opened. The start buttons stay static until the step page exists.
 (function () {
   const KEY = "bss.newMuslim.v1";
 
@@ -20,28 +20,28 @@
 
   const STEPS = [
     { title: "Begin with the essentials", text: "The core beliefs of Islam, explained simply and without pressure.", topics: [
-      ["Who is God in Islam?", "Understand how Islam describes God: one, merciful and near, and why that belief sits at the heart of everything else.", "mosque"],
-      ["What is the Qur’an?", "Where the Qur’an came from, how it is organised, and how Muslims read it and live with it day to day.", "quran"],
-      ["Who is Prophet Muhammad?", "Meet the Prophet through his life, his character and the message he shared, told simply and warmly.", "desert"],
-      ["What does it mean to be Muslim?", "The meaning of the testimony of faith, and what it changes, and does not change, in your everyday life.", "courtyard"],
+      ["Who is God in Islam?", "Understand how Islam describes God: one, without partner, merciful and always near. See why this belief, called tawhid, sits at the heart of everything else, and how it shapes the way Muslims pray, give thanks and face hard days.", "mosque"],
+      ["What is the Qur’an?", "Where the Qur’an came from, how its chapters and verses are organised, and why Muslims see it as the word of God. Learn how it is read aloud, studied and lived with day to day, even before you know any Arabic.", "quran"],
+      ["Who is Prophet Muhammad?", "Meet the Prophet through his life in Makkah and Madinah, his character and the message he shared. Discover why Muslims love him, follow his example and send blessings on him, told simply and warmly.", "desert"],
+      ["What does it mean to be Muslim?", "The meaning of the testimony of faith and the five pillars that grow from it. Learn what becoming Muslim changes in your everyday life, what it does not change, and why there is no rush to know everything at once.", "courtyard"],
     ] },
     { title: "Build your daily foundation", text: "Prayer, purification and the small habits that shape each day.", topics: [
-      ["How to pray, step by step", "A calm guide to the five daily prayers: what to say, how to move, and how to begin even before you know it all.", "garden"],
-      ["Wudu: preparing for prayer", "How and why Muslims wash before prayer, with a simple order you can follow from the very first day.", "street"],
-      ["Your first Ramadan", "What to expect from the month of fasting, how to prepare, and how to look after yourself along the way.", "caravan"],
-      ["Halal food made simple", "What halal means in practice, at home, at work and when eating out with friends and family.", "life"],
+      ["How to pray, step by step", "A calm guide to the five daily prayers: when they happen, what to say and how to move. Start with the simplest version you can manage, and grow into the full prayer at your own pace, without worrying about mistakes.", "garden"],
+      ["Wudu: preparing for prayer", "How and why Muslims wash before prayer, with a simple order you can follow from the very first day. Learn what breaks wudu, when a full wash is needed, and how to keep it easy at home, at work or while travelling.", "street"],
+      ["Your first Ramadan", "What to expect from the month of fasting, from the pre-dawn meal to breaking the fast at sunset. Practical ideas to prepare, look after your health and share the month with others, plus who is excused from fasting.", "caravan"],
+      ["Halal food made simple", "What halal means in practice, at home, at work and when eating out with friends and family. Learn which foods and drinks to avoid, how to read labels, and how to explain your choices kindly without making things awkward.", "life"],
     ] },
     { title: "Live with confidence", text: "Bring your faith into family, work and friendships with ease.", topics: [
-      ["Sharing the news with family", "Gentle, practical ideas for talking with the people you love about your new faith.", "embrace"],
-      ["Muslim manners in daily life", "Greetings, kindness and the small courtesies that carry the spirit of Islam into each day.", "courtyard"],
-      ["Answers to common questions", "Clear, honest answers to the questions new Muslims are asked most often by friends and colleagues.", "street"],
-      ["Faith at work and study", "Making room for prayer and faith in a busy week, with simple examples that work.", "life"],
+      ["Sharing the news with family", "Gentle, practical ideas for talking with the people you love about your new faith. When to share, what to say, how to answer worries with patience, and how Islam asks you to keep treating your family with kindness.", "embrace"],
+      ["Muslim manners in daily life", "Greetings, kindness and the small courtesies that carry the spirit of Islam into each day. From saying salam to how you eat, speak and treat neighbours, see how good character is part of worship itself.", "courtyard"],
+      ["Answers to common questions", "Clear, honest answers to the questions new Muslims are asked most often by friends and colleagues. Topics include women in Islam, the hijab, fasting and what Muslims believe about Jesus, explained without jargon.", "street"],
+      ["Faith at work and study", "Making room for prayer and faith in a busy week, with simple examples that work. How to find a quiet place to pray, talk to a manager or teacher, handle Fridays and keep your faith steady during exams and deadlines.", "life"],
     ] },
     { title: "Keep learning with support", text: "Find community, trusted sources and help whenever you need it.", topics: [
-      ["Finding a welcoming community", "How to find a mosque or group where you feel at home, and what to expect on your first visit.", "mosque"],
-      ["Learning to read the Qur’an", "First steps with the Arabic letters and sounds, at a pace that suits you.", "quran"],
-      ["Choosing trustworthy sources", "How to tell reliable teachers and books from confusing or extreme voices online.", "garden"],
-      ["Getting help when you need it", "Who to turn to with questions, doubts or hard days, and that asking is always welcome.", "women"],
+      ["Finding a welcoming community", "How to find a mosque or group where you feel at home, and what to expect on your first visit. Learn about new Muslim circles, women’s groups and online communities, and how to build friendships that support you.", "mosque"],
+      ["Learning to read the Qur’an", "First steps with the Arabic letters and sounds, at a pace that suits you. Start with the short chapters used in prayer, find a patient teacher or app, and remember that every effort to read is rewarded.", "quran"],
+      ["Choosing trustworthy sources", "How to tell reliable teachers and books from confusing or extreme voices online. Simple questions to ask about any source, why scholarship matters, and a short list of trusted places to start your reading.", "garden"],
+      ["Getting help when you need it", "Who to turn to with questions, doubts or hard days, and why asking is always welcome. Find mentors, helplines and our own team, and know that struggling at times is a normal part of every believer’s journey.", "women"],
     ] },
   ].map((step, s) => ({
     ...step,
@@ -110,7 +110,7 @@
           </div>
           <div class="path-step__actions">
             <button class="btn btn--regular btn--primary path-step__start" type="button" data-start>
-              <span data-start-label></span>
+              <span>Start step ${step.id}</span>
               <span class="btn__arrow-clip" aria-hidden="true">
                 <span class="btn__arrow-track">
                   <img src="assets/icons/arrow-up-right.svg" width="24" height="24" alt="">
@@ -124,7 +124,9 @@
             </button>
           </div>
         </div>
-        <div class="path-step__content" id="step-${step.id}-content" hidden>
+        <div class="path-step__content" id="step-${step.id}-content">
+          <div class="path-step__clip">
+          <div class="path-step__body">
           <ul class="topic-list" role="list" aria-label="Topics in step ${step.id}">
             ${step.topics.map((topic) => `
               <li class="topic" role="listitem" data-topic="${topic.id}">
@@ -133,22 +135,18 @@
                   <span class="topic__status" data-topic-status></span>
                   <img class="topic__chevron" src="assets/icons/row-chevron.svg" width="24" height="24" alt="">
                 </button>
-                <div class="topic-preview" id="topic-${topic.id}" style="--span: ${step.topics.length + 1}" role="region" aria-label="${escape(topic.title)}" hidden>
-                  <img class="topic-preview__image" src="${topic.image}" alt="" loading="lazy" decoding="async" style="object-position: ${topic.focus}" onerror="this.hidden = true">
-                  <p class="topic-preview__text">${escape(topic.text)}</p>
-                  <!-- No topic page yet: the button records progress; it becomes a link once the page exists. -->
-                  <button class="btn btn--regular btn--primary topic-preview__action" type="button" data-read>
-                    <span data-read-label>Read this topic</span>
-                    <span class="btn__arrow-clip" aria-hidden="true">
-                      <span class="btn__arrow-track">
-                        <img src="assets/icons/arrow-up-right.svg" width="24" height="24" alt="">
-                        <img src="assets/icons/arrow-up-right.svg" width="24" height="24" alt="">
-                      </span>
-                    </span>
-                  </button>
+                <div class="topic-preview" id="topic-${topic.id}" style="--span: ${step.topics.length + 1}" role="region" aria-label="${escape(topic.title)}">
+                  <div class="topic-preview__clip">
+                    <div class="topic-preview__card">
+                      <img class="topic-preview__image" src="${topic.image}" alt="" loading="lazy" decoding="async" style="object-position: ${topic.focus}" onerror="this.hidden = true">
+                      <p class="topic-preview__text">${escape(topic.text)}</p>
+                    </div>
+                  </div>
                 </div>
               </li>`).join("")}
           </ul>
+          </div>
+          </div>
         </div>
       </li>`;
   }
@@ -171,44 +169,43 @@
       el.querySelector("[data-progress-label]").textContent = `${done}/${total}`;
       el.querySelector("[data-progress]").setAttribute("aria-label", `${done} of ${total} topics explored`);
 
-      el.querySelector("[data-start-label]").textContent =
-        status === "not-started" ? `Start step ${step.id}` : status === "in-progress" ? "Continue" : "Review step";
-
       step.topics.forEach((topic) => {
         const topicEl = el.querySelector(`[data-topic="${topic.id}"]`);
         const explored = isExplored(topic.id);
         topicEl.classList.toggle("is-explored", explored);
         topicEl.querySelector("[data-topic-status]").textContent = explored ? "Explored" : "";
-        topicEl.querySelector("[data-read-label]").textContent = explored ? "Read again" : "Read this topic";
       });
     });
   }
 
   // ---- Behaviour ----------------------------------------------------------------------------
 
-  // One step open at a time keeps the path easy to follow.
+  // One step open at a time keeps the path easy to follow. Open and close animate in CSS.
   function setOpen(step, open) {
     STEPS.forEach((other) => {
       const el = stepEl(other);
       const isOpen = other === step && open;
       el.classList.toggle("is-open", isOpen);
-      el.querySelector(".path-step__content").hidden = !isOpen;
       el.querySelector("[data-toggle]").setAttribute("aria-expanded", String(isOpen));
       el.querySelector("[data-toggle-label]").textContent = isOpen ? "Hide the content" : "Discover the content";
     });
   }
 
+  // Showing a topic's preview marks it explored (until topic pages exist).
+  const selected = {};
   function selectTopic(step, topic) {
+    selected[step.id] = topic;
     stepEl(step).querySelectorAll(".topic").forEach((el) => {
-      const selected = el.dataset.topic === topic.id;
-      el.classList.toggle("is-selected", selected);
-      el.querySelector(".topic__row").setAttribute("aria-expanded", String(selected));
-      el.querySelector(".topic-preview").hidden = !selected;
+      const isSelected = el.dataset.topic === topic.id;
+      el.classList.toggle("is-selected", isSelected);
+      el.querySelector(".topic__row").setAttribute("aria-expanded", String(isSelected));
     });
+    if (!isExplored(topic.id)) {
+      const state = read();
+      write({ ...state, explored: { ...state.explored, [topic.id]: true } });
+      sync();
+    }
   }
-
-  // The topic to point at: the first one not explored yet (or the first when all are done).
-  const nextTopic = (step) => step.topics.find((topic) => !isExplored(topic.id)) || step.topics[0];
 
   STEPS.forEach((step) => {
     const el = stepEl(step);
@@ -216,38 +213,16 @@
     el.querySelector("[data-toggle]").addEventListener("click", () => {
       const open = !el.classList.contains("is-open");
       setOpen(step, open);
-      if (open) selectTopic(step, nextTopic(step));
-    });
-
-    // Until the step page exists, "Start / Continue" opens the step at its next topic.
-    el.querySelector("[data-start]").addEventListener("click", () => {
-      setOpen(step, true);
-      const topic = nextTopic(step);
-      selectTopic(step, topic);
-      const row = el.querySelector(`[data-topic="${topic.id}"] .topic__row`);
-      row.focus({ preventScroll: true });
-      el.querySelector(".path-step__content").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest" });
+      if (open) selectTopic(step, selected[step.id] || step.topics[0]);
     });
 
     step.topics.forEach((topic) => {
-      const topicEl = el.querySelector(`[data-topic="${topic.id}"]`);
-      topicEl.querySelector(".topic__row").addEventListener("click", () => selectTopic(step, topic));
-      topicEl.querySelector("[data-read]").addEventListener("click", () => {
-        const state = read();
-        write({ ...state, explored: { ...state.explored, [topic.id]: true } });
-        sync();
-      });
+      el.querySelector(`[data-topic="${topic.id}"] .topic__row`).addEventListener("click", () => selectTopic(step, topic));
     });
   });
 
-  // Start where the reader left off: the first step that is not completed (step 1 on a first visit).
-  // When everything is done, all steps start closed.
+  // Every step starts closed.
   sync();
-  const current = STEPS.find((step) => stepStatus(step) !== "completed");
-  if (current) {
-    setOpen(current, true);
-    selectTopic(current, nextTopic(current));
-  }
 
   // Other tabs keep the page up to date.
   window.addEventListener("storage", (event) => { if (event.key === KEY) sync(); });
