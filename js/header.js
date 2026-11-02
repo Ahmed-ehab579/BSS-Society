@@ -74,8 +74,10 @@
   const pagePath = (path) => path.replace(/index\.html$/, "");
   const isThisPage = (link) =>
     link.origin === location.origin && pagePath(link.pathname) === pagePath(location.pathname);
-  // The link for the current page itself (Home on the homepage, Start here on its own page).
-  const homeLink = navLinks.find((link) => !link.hash && isThisPage(link));
+  // The link for the current page itself (Home on the homepage, Start here on its own page), or for a
+  // sub-page the section link its markup marks active (New muslim on the step pages).
+  const homeLink = navLinks.find((link) => !link.hash && isThisPage(link))
+    || navLinks.find((link) => !link.hash && link.classList.contains("is-active"));
 
   // Sections in page order, each with its header link (null when it has none, e.g. Contact).
   const sections = [...document.querySelectorAll("main section[id]")].map((section) => ({

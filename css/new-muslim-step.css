@@ -1,0 +1,314 @@
+/* New Muslim step page: what you'll learn, topic tabs and the suggested resources (Figma 1137:4893).
+   Page shell and intro: intro.css. Resource cards: resource-card.css. Contact: contact.css. */
+
+.learn,
+.suggested,
+.contact {
+  max-width: calc(1305px + 2 * var(--gutter));   /* same outer edges as the intro */
+  margin-top: var(--section-gap);
+}
+
+.step-heading {
+  margin: 0;
+  color: var(--color-heading);
+  font-size: var(--h4-size);
+  line-height: var(--h4-line);
+  font-weight: var(--body-weight);
+  letter-spacing: -0.65px;
+}
+
+/* ---- What you'll learn ------------------------------------------------------------------------- */
+
+.learn__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--scale-400);
+  margin: var(--scale-800) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.learn__item {
+  display: flex;
+  align-items: center;
+  gap: var(--scale-200);
+  padding: var(--scale-300) var(--scale-600) var(--scale-300) var(--scale-400);
+  border: var(--scale-12) solid var(--color-neutral-400);
+  border-radius: var(--radius-pill);
+  background: var(--surface-cards);
+  color: var(--color-heading);
+  font-size: var(--body-l-size);
+  line-height: var(--body-l-line);
+  font-weight: 500;
+}
+
+.learn__item img {
+  flex-shrink: 0;
+}
+
+/* ---- Suggested resources ----------------------------------------------------------------------- */
+
+.suggested__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--scale-900);
+}
+
+.suggested__text {
+  width: 485px;            /* the intro's text column */
+  flex-shrink: 0;
+  padding-top: var(--scale-200);
+  color: var(--color-text-body);
+  font-size: var(--body-xl-size);
+  line-height: var(--body-xl-line);
+}
+
+/* Topic tabs: neutral at rest, the card surface on hover, green when selected */
+.topic-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--scale-400);
+  margin: var(--scale-1000) 0 var(--scale-600);
+}
+
+.topic-tab {
+  padding: var(--scale-200) var(--scale-600);
+  border: var(--scale-12) solid var(--color-neutral-400);
+  border-radius: var(--radius-pill);
+  background: var(--surface-action-outline);
+  color: var(--color-text-body);
+  font-family: inherit;
+  font-size: var(--body-l-size);
+  line-height: var(--body-l-line);
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--motion-duration-hover) var(--motion-ease),
+    color var(--motion-duration-hover) var(--motion-ease);
+}
+
+.topic-tab[aria-selected="true"] {
+  background: var(--surface-cards-hovered);
+  color: var(--color-heading);
+  font-weight: 500;
+}
+
+.topic-tab:focus-visible {
+  outline: 2px solid var(--border-color-on-light);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) {
+  .topic-tab:not([aria-selected="true"]):hover {
+    background: var(--surface-cards);
+    color: var(--color-heading);
+  }
+}
+
+/* Topic panel: the homepage's shaded section panel */
+.topic-panel {
+  --panel-pad: var(--scale-1000);   /* .section-panel padding */
+}
+
+.topic-panel:focus {
+  outline: none;
+}
+
+.topic-panel__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--scale-900);
+}
+
+.topic-panel__intro {
+  max-width: 706px;
+  min-width: 0;
+}
+
+.topic-panel__number {
+  display: block;
+  color: var(--color-step-number);
+  font-size: 82px;
+  line-height: 82px;
+  font-weight: 300;
+  letter-spacing: -4.1px;
+}
+
+.topic-panel__title {
+  margin: var(--scale-400) 0 0;
+  color: var(--color-heading);
+  font-size: var(--h3-size);
+  line-height: 40px;
+  font-weight: var(--h3-weight);
+  letter-spacing: -0.8px;
+}
+
+.topic-panel__text {
+  margin-top: var(--scale-300);
+  color: var(--color-text-body);
+  font-size: var(--body-l-size);
+  line-height: var(--body-l-line);
+}
+
+/* Arrows: the homepage icon button, on the light outline surface (the panel is already Surface/Cards) */
+.topic-panel__controls {
+  display: flex;
+  flex-shrink: 0;
+  gap: var(--scale-400);
+}
+
+.topic-panel__controls .icon-btn {
+  background: var(--surface-action-outline);
+  transition: background-color var(--motion-duration-hover) var(--motion-ease),
+    opacity var(--motion-duration-hover) var(--motion-ease);
+}
+
+.icon-btn--prev img {
+  transform: scaleX(-1);
+}
+
+.topic-panel__controls .icon-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+@media (hover: hover) {
+  .topic-panel__controls .icon-btn:not(:disabled):hover {
+    background: var(--surface-cards-hovered);
+  }
+}
+
+/* One row of Library cards that scrolls sideways (swipe, trackpad or the arrows) and snaps to a card.
+   The row runs to the panel's edges, so cards slide out at the edge instead of being cut inside the
+   padding; the vertical padding keeps the cards' hover lift and shadow from being clipped. */
+.topic-panel__track {
+  display: flex;
+  gap: var(--scale-600);
+  margin: var(--scale-800) calc(-1 * var(--panel-pad)) calc(-1 * var(--scale-400));
+  padding: var(--scale-200) var(--panel-pad) var(--scale-400);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--panel-pad);
+  scrollbar-width: none;
+  list-style: none;
+}
+
+.topic-panel__track::-webkit-scrollbar {
+  display: none;
+}
+
+.topic-panel__track > .resource-card {
+  flex: 0 0 283px;      /* the Library card width */
+  scroll-snap-align: start;
+}
+
+/* ---- Responsive ------------------------------------------------------------------------------- */
+
+@media (max-width: 1023px) {
+  .suggested__head {
+    flex-direction: column;
+    gap: var(--scale-400);
+  }
+
+  .suggested__text {
+    width: auto;
+    max-width: 600px;
+    padding-top: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .step-heading {
+    font-size: 28px;
+    line-height: 36px;
+  }
+
+  .learn__list {
+    gap: var(--scale-300);
+    margin-top: var(--scale-600);
+  }
+
+  .learn__item {
+    padding: var(--scale-200) var(--scale-500) var(--scale-200) var(--scale-300);
+    font-size: var(--body-m-size);
+    line-height: var(--body-m-line);
+  }
+
+  .learn__item img {
+    width: 20px;
+    height: 20px;
+  }
+
+  .suggested__text {
+    font-size: var(--body-m-size);
+    line-height: var(--body-m-line);
+  }
+
+  /* Tabs stay on one line and scroll sideways, edge to edge */
+  .topic-tabs {
+    flex-wrap: nowrap;
+    gap: var(--scale-200);
+    margin: var(--scale-800) calc(-1 * var(--gutter)) var(--scale-400);
+    padding: var(--scale-100) var(--gutter);
+    overflow-x: auto;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+  }
+
+  .topic-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .topic-tab {
+    min-height: 44px;
+    padding: var(--scale-200) var(--scale-500);
+    font-size: var(--body-m-size);
+    line-height: var(--body-m-line);
+  }
+
+  .topic-panel__number {
+    font-size: 64px;
+    line-height: 60px;
+    letter-spacing: -2.8px;
+  }
+
+  .topic-panel__title {
+    margin-top: var(--scale-300);
+    font-size: var(--h5-size);
+    line-height: var(--h5-line);
+    letter-spacing: -0.4px;
+  }
+
+  .topic-panel__text {
+    font-size: var(--body-m-size);
+    line-height: var(--body-m-line);
+  }
+
+  .topic-panel {
+    --panel-pad: var(--scale-600);
+  }
+
+  /* Swipe instead of arrows; the next card peeks in to show there is more */
+  .topic-panel__controls {
+    display: none;
+  }
+
+  .topic-panel__track {
+    gap: var(--scale-400);
+    margin-top: var(--scale-600);
+  }
+
+  .topic-panel__track > .resource-card {
+    flex-basis: min(283px, 78%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topic-tab,
+  .topic-panel__controls .icon-btn {
+    transition: none;
+  }
+}

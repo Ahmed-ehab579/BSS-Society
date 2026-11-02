@@ -2,6 +2,7 @@
 // The resources are placeholder content for the mockup (no backend yet). The current filters live in
 // the URL (?category=prophet&format=video&q=...) so a filtered view can be linked, shared and reloaded.
 (function () {
+  const TYPES = window.BSS.RESOURCE_TYPES;   // material types, from js/resource-card.js
   const PAGE_SIZE = 12;         // full rows in both the three-column (desktop) and two-column (phone) grids
   const SEARCH_DELAY = 200;     // ms after the last keystroke before the results update
   const VIEW_KEY = "bss.library.view.v3";   // v3: the default changed to one card a row
@@ -33,15 +34,6 @@
       { value: "video", label: "Videos" },
     ] },
   ];
-
-  // One entry per material type (Figma 984:2777): badge text and icon, action label, how the media is
-  // shown ("photo" fills the frame, "book" sits on a light board) and the icon laid over it.
-  const TYPES = {
-    book: { badge: "Book", icon: "assets/icons/badge-book.svg", iconSize: [10.5322, 10.97], action: "Read book", media: "book" },
-    audio: { badge: "Audio book", icon: "assets/icons/badge-audio.svg", iconSize: [15.303, 12.7575], action: "Listen", media: "book", overlay: "audio" },
-    article: { badge: "Article", icon: "assets/icons/badge-article.svg", iconSize: [10.5322, 10.97], action: "Read article", media: "photo" },
-    video: { badge: "Video", icon: "assets/icons/badge-video.svg", iconSize: [10.5325, 10.9704], action: "Watch video", media: "photo", overlay: "play" },
-  };
 
   // Photo (or book cover) and its object-position. Library photos use the crops from the Figma cards.
   const IMG = {
@@ -208,50 +200,6 @@
     return list;
   }
 
-  function cardHtml(item) {
-    const type = TYPES[item.format];
-    const escape = (text) => text.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
-    const picture = type.media === "book"
-      ? `<img class="resource-card__book" src="${item.image}" alt="" loading="lazy" decoding="async" onerror="this.hidden = true">`
-      : `<img class="resource-card__photo" src="${item.image}" alt="" loading="lazy" decoding="async"
-          style="object-position: ${item.focus}" onerror="this.hidden = true">`;
-    const overlay = {
-      play: `<img class="resource-card__play" src="assets/icons/media-play-lg.svg" width="112.864" height="112.864" alt="">`,
-      audio: `<span class="resource-card__listen"><img src="assets/icons/media-audio-book.svg" width="35" height="35" alt=""></span>`,
-    }[type.overlay] || "";
-    return `
-      <li class="resource-card resource-card--${item.format}">
-        <div class="resource-card__media">
-          <div class="resource-card__frame resource-card__frame--${type.media}">
-            ${picture}
-            ${overlay}
-            <span class="resource-card__badge">
-              <img src="${type.icon}" width="${type.iconSize[0]}" height="${type.iconSize[1]}" alt="">${type.badge}
-            </span>
-          </div>
-        </div>
-        <div class="resource-card__body">
-          <div class="resource-card__text">
-            <span class="resource-card__type" aria-hidden="true">
-              <img src="${type.icon}" width="${type.iconSize[0]}" height="${type.iconSize[1]}" alt="">${type.badge}
-            </span>
-            <h4 class="resource-card__title" dir="${item.dir}">${escape(item.title)}</h4>
-            <p class="resource-card__desc" dir="${item.dir}">${escape(item.text)}</p>
-          </div>
-          <!-- No destination yet: the action becomes a link once the resource pages exist. -->
-          <a class="btn btn--primary resource-card__action" aria-label="${type.action}: ${escape(item.title)}">
-            ${type.action}
-            <span class="btn__arrow-clip" aria-hidden="true">
-              <span class="btn__arrow-track">
-                <img src="assets/icons/arrow-up-right.svg" width="24" height="24" alt="">
-                <img src="assets/icons/arrow-up-right.svg" width="24" height="24" alt="">
-              </span>
-            </span>
-          </a>
-        </div>
-      </li>`;
-  }
-
   function renderResults({ announce = true } = {}) {
     const list = matches();
     const shown = Math.min(visible, list.length);
@@ -262,7 +210,7 @@
     els.note.hidden = !(category && category.note);
     if (category && category.note) els.note.textContent = category.note;
 
-    els.grid.innerHTML = list.slice(0, shown).map(cardHtml).join("");
+    els.grid.innerHTML = list.slice(0, shown).map(window.BSS.resourceCardHtml).join("");
     els.grid.hidden = list.length === 0;
     els.empty.hidden = list.length > 0;
     els.more.hidden = list.length === 0;
