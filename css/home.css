@@ -108,12 +108,19 @@
     line-height: var(--body-m-line);
   }
 
+  /* Side by side, primary first, sharing the row; they wrap onto two lines only on very narrow
+     screens where both labels can't fit */
   .hero__actions {
-    flex-direction: column;
+    gap: var(--scale-300);
   }
 
   .hero__actions .btn {
-    width: 100%;
+    flex: 1 1 0;
+    min-width: max-content;
+    height: 52px;
+    padding-inline: var(--scale-400);
+    font-size: 15px;
+    line-height: 22px;
   }
 
   .hero__media {
