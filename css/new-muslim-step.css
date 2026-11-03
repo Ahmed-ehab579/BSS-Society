@@ -16,6 +16,14 @@
 
 /* ---- What you'll learn ------------------------------------------------------------------------- */
 /* In the shaded section panel, like the topic panel below and the homepage sections */
+/* Panel title in the H4 style; the gap below scales down with it */
+.learn__heading {
+  margin-bottom: var(--scale-800);
+  font-size: var(--h4-size);
+  line-height: var(--h4-line);
+  font-weight: var(--h4-weight);
+}
+
 
 .learn__list {
   display: flex;
@@ -198,6 +206,13 @@
     font-size: 32px;          /* the site's phone H2 (as .section-intro__heading) */
     line-height: 40px;
     letter-spacing: -0.64px;
+  }
+
+  .learn__heading {
+    margin-bottom: var(--scale-600);
+    font-size: var(--h5-size);
+    line-height: var(--h5-line);
+    letter-spacing: normal;
   }
 
   .learn__list {
