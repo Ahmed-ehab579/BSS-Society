@@ -98,7 +98,57 @@
         else link.removeAttribute("aria-current");
       }
     });
+    moveIndicator(active);
   }
+
+  // One underline for the whole nav (desktop) that slides to the active link. Between pages it starts
+  // under the link of the page you came from, then slides to this page's link.
+  const LAST_KEY = "bss.nav.last";
+  const list = document.querySelector(".site-nav__links");
+  const indicator = document.createElement("span");
+  indicator.className = "site-nav__indicator";
+  indicator.setAttribute("aria-hidden", "true");
+  if (list) list.appendChild(indicator);
+  let indicatorLink = null;
+
+  function moveIndicator(link, { instant = false } = {}) {
+    if (!list) return;
+    indicatorLink = link || null;
+    if (instant) indicator.style.transition = "none";
+    if (link) {
+      indicator.style.width = `${link.offsetWidth}px`;
+      indicator.style.transform = `translate(${link.offsetLeft}px, ${link.offsetTop + link.offsetHeight + 4}px)`;
+    }
+    indicator.classList.toggle("is-visible", Boolean(link));
+    if (instant) {
+      indicator.getBoundingClientRect();   // apply the jump before transitions come back
+      indicator.style.transition = "";
+    }
+  }
+
+  const startLink = navLinks.find((link) => link.classList.contains("is-active")) || null;
+  let fromLink = null;
+  try {
+    const label = sessionStorage.getItem(LAST_KEY);
+    fromLink = navLinks.find((link) => link.dataset.label === label) || null;
+  } catch (error) { /* storage unavailable: no slide between pages */ }
+  if (fromLink && startLink && fromLink !== startLink && !reduceMotion.matches) {
+    moveIndicator(fromLink, { instant: true });
+    requestAnimationFrame(() => requestAnimationFrame(() => moveIndicator(startLink)));
+  } else {
+    moveIndicator(startLink, { instant: true });
+  }
+
+  // Remember where the underline was when leaving for another page
+  window.addEventListener("pagehide", () => {
+    try {
+      if (indicatorLink) sessionStorage.setItem(LAST_KEY, indicatorLink.dataset.label);
+      else sessionStorage.removeItem(LAST_KEY);
+    } catch (error) { /* storage unavailable */ }
+  });
+
+  // Fonts and resizes change link positions: re-place the underline without animating
+  if (document.fonts) document.fonts.ready.then(() => moveIndicator(indicatorLink, { instant: true }));
 
   // Active section: the last one whose top has passed a line a third of the
   // way down the visible area below the header.
@@ -133,6 +183,7 @@
   }, { passive: true });
 
   window.addEventListener("resize", () => {
+    moveIndicator(indicatorLink, { instant: true });
     if (!frame) frame = requestAnimationFrame(update);
   });
 
