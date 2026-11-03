@@ -15,6 +15,7 @@
 }
 
 /* ---- What you'll learn ------------------------------------------------------------------------- */
+/* In the shaded section panel, like the topic panel below and the homepage sections */
 
 .learn__list {
   display: flex;
@@ -32,7 +33,7 @@
   padding: var(--scale-200) var(--scale-500) var(--scale-200) var(--scale-300);
   border: var(--scale-12) solid var(--color-neutral-400);
   border-radius: var(--radius-pill);
-  background: var(--surface-cards);
+  background: var(--surface-action-outline);   /* the panel is already Surface/Cards */
   color: var(--color-heading);
   font-size: var(--body-m-size);
   line-height: var(--body-m-line);
