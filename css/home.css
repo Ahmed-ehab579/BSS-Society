@@ -414,14 +414,14 @@
   color: var(--color-topic-text);
 }
 
-/* Explore pill (Button: Default circle / expand). Only the width changes:
-   content is right-aligned, so the right edge and arrow stay fixed and the
-   label is uncovered from behind the arrow without scaling. */
+/* Explore pill (Button: Default circle / expand). Only the width changes: on hover it grows to the
+   card's full width. The right edge and arrow stay fixed; the label rides the left edge as it opens. */
 .topic-card__cta {
-  --cta-expanded: 137.93px; /* 20.27 + label 70 + gap 10.19 + arrow 26.94 + 10.53 */
+  --cta-inset: 34px;
+  --cta-expanded: calc(100% - 2 * var(--cta-inset));
   position: absolute;
-  right: 34px;
-  bottom: 34px;
+  right: var(--cta-inset);
+  bottom: var(--cta-inset);
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -441,6 +441,8 @@
 .topic-card__cta-label {
   flex: none;
   width: 70px;
+  margin-left: 11.37px;   /* 20.27px from the pill's left edge */
+  margin-right: auto;     /* takes the free space once open, so the arrow stays on the right */
   font-size: 19.702px;
   line-height: 22.496px;
   font-weight: var(--h5-weight);
@@ -683,8 +685,7 @@
   }
 
   .topic-card__cta {
-    right: 20px;
-    bottom: 20px;
+    --cta-inset: 20px;
   }
 
   .topic-card__text {
