@@ -1,0 +1,104 @@
+/* Cards / Benefit Card: shared by the homepage (New Muslim section) and About Us (Our commitment).
+   Grid placement stays with each page. */
+
+/* Cards / Benefit Card — informational, not interactive.
+   Default: title near the bottom, description clipped below the card.
+   Hover (desktop): green surface, content slides up to reveal the description. */
+.benefit-card {
+  position: relative;
+  height: 351px;
+  overflow: hidden;
+  padding: 25.583px 22.434px 21.995px;
+  border: 0.478px solid var(--color-benefit-border);
+  border-radius: 22.952px;
+  background: var(--surface-cards);
+  color: var(--color-card-text);
+  transition: background-color var(--motion-duration-hover) var(--motion-ease);
+}
+
+.benefit-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 69.096px;
+  height: 69.096px;
+}
+
+.benefit-card__icon img {
+  width: 100%;
+  height: auto;
+}
+
+/* The book artwork is inset within its 69px icon frame */
+.benefit-card__icon .is-inset {
+  width: 85.28%;
+}
+
+.benefit-card__content {
+  position: absolute;
+  top: 151.679px;
+  left: 22.434px;
+  right: 22.434px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--scale-600);
+  padding-left: 4.782px;
+  transform: translateY(107.215px);
+  transition: transform var(--motion-duration-hover) var(--motion-ease);
+}
+
+.benefit-card__title,
+.benefit-card__text {
+  max-width: 209.082px;
+}
+
+@media (min-width: 1200px) and (hover: hover) {
+  .benefit-card:hover {
+    background: var(--surface-cards-hovered);
+  }
+
+  .benefit-card:hover .benefit-card__content {
+    transform: none;
+  }
+}
+
+/* Below 1200px: compact cards with everything visible */
+@media (max-width: 1199px) {
+  .benefit-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--scale-600);
+    height: auto;
+    padding: var(--scale-600);
+  }
+
+  .benefit-card__icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .benefit-card__content {
+    position: static;
+    gap: var(--scale-600);
+    padding-left: 0;
+    transform: none;
+    transition: none;
+  }
+
+  .benefit-card__title {
+    font-size: var(--body-xl-size);
+    line-height: 28px;
+  }
+
+  .benefit-card__title,
+  .benefit-card__text {
+    max-width: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .benefit-card,
+  .benefit-card__content {
+    transition: none;
+  }
+}

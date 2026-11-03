@@ -1,0 +1,549 @@
+/* About us (Figma 1199:1002): who we are, our commitment, the books journey, what sets us apart and
+   the support band. Page shell and intro: intro.css. Benefit cards: benefit-card.css. */
+
+.who,
+.commitment,
+.journey,
+.apart {
+  max-width: calc(1305px + 2 * var(--gutter));   /* same outer edges as the intro */
+  margin-top: var(--section-gap);
+}
+
+/* Section heading row (label + H2 on the left, supporting text on the right), as on the homepage */
+.about-intro {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--scale-900);
+}
+
+.about-intro__heading-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--scale-400);
+  min-width: 0;
+}
+
+.about-intro__heading {
+  color: var(--color-heading);
+}
+
+.about-intro__text {
+  width: 485px;            /* the intro's text column */
+  flex-shrink: 0;
+  color: var(--color-text-body);
+}
+
+/* ---- Who we are: text on the left, photo fading in from the right ------------------------------ */
+
+.who__panel {
+  position: relative;
+  display: flex;
+  min-height: 743px;
+  overflow: hidden;
+  border-radius: var(--scale-500);
+}
+
+.who__media {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 58%;
+  overflow: hidden;
+  border-radius: 0 var(--scale-500) var(--scale-500) 0;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 30%);   /* no visible left edge */
+  mask-image: linear-gradient(to right, transparent, #000 30%);
+}
+
+.who__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 0% 0%;
+}
+
+/* The page background melts into the photo from the left */
+.who__panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(267.3deg, rgba(245, 242, 235, 0) 19.7%, var(--color-page-bg) 41%);
+  pointer-events: none;
+}
+
+.who__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--scale-1000);
+  width: min(735px, 62%);
+  padding: 60px 34px;
+}
+
+.who__heading-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--scale-400);
+}
+
+.who__heading {
+  max-width: 528px;
+  color: var(--color-heading);
+}
+
+.who__text {
+  color: var(--color-text-body);
+  font-size: var(--body-xxl-size);
+  line-height: 1.75;
+}
+
+.who__text strong {
+  color: var(--color-heading);
+  font-weight: 500;
+}
+
+/* Stats: big light number, unit, then a short note */
+.stats {
+  display: flex;
+  gap: var(--scale-1100);
+  margin: 0;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--scale-100);
+  max-width: 160px;
+  margin: 0;
+  color: var(--color-heading);
+}
+
+.stat__value {
+  order: -1;
+  margin: 0;
+  font-size: 62px;
+  line-height: 1;
+  font-weight: 300;
+  letter-spacing: -1.25px;
+}
+
+.stat__plus {
+  font-size: 50px;
+}
+
+.stat__label {
+  font-size: var(--body-s-size);
+  line-height: var(--body-s-line);
+}
+
+.stat__note {
+  margin: var(--scale-300) 0 0;
+  color: var(--color-text-body);
+  font-size: 13px;
+  line-height: 1.5;
+  font-weight: 500;
+  letter-spacing: 0.47px;
+}
+
+/* ---- Our commitment: the homepage's Benefit Cards, four in a row ---------------------------- */
+
+.commitment__cards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--scale-900);
+  margin-top: var(--scale-1100);
+}
+
+@media (min-width: 1200px) {
+  /* Titles here are mostly one line, so the description would peek out under the card's edge: it
+     stays invisible until the card opens (hover), then fades in as it slides up */
+  .commitment .benefit-card__text {
+    opacity: 0;
+    transition: opacity var(--motion-duration-hover) var(--motion-ease);
+  }
+
+  .commitment .benefit-card:hover .benefit-card__text,
+  .commitment:focus-within .benefit-card__text {
+    opacity: 1;
+  }
+
+  /* Keyboard users moving through the section see every description */
+  .commitment:focus-within .benefit-card__content {
+    transform: none;
+  }
+}
+
+/* ---- Our books journey: four steps zig-zagging down, joined by dashed lines ------------------- */
+
+.journey__steps {
+  margin: var(--scale-1100) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.journey-step {
+  position: relative;
+  display: flex;
+  gap: var(--scale-900);
+  padding-left: 10%;                /* Figma: steps 1 and 3 start at 130 / 1280 */
+}
+
+.journey-step--right {
+  padding-left: 49%;                /* steps 2 and 4 start at 630 / 1280 */
+}
+
+.journey-step + .journey-step {
+  margin-top: 190px;
+}
+
+/* Dashed connector from the previous step (Figma vectors 8 and 9): it runs from under the left step
+   to the right one, and is mirrored on the way back */
+.journey-step + .journey-step::before {
+  content: "";
+  position: absolute;
+  top: -173px;
+  left: 32.4%;
+  width: 33.4%;
+  height: 157px;
+  background: url("../assets/icons/about-connector.svg") no-repeat center / 100% 100%;
+  pointer-events: none;
+}
+
+.journey-step + .journey-step:not(.journey-step--right)::before {
+  transform: scaleX(-1);
+}
+
+.journey-step__number {
+  flex-shrink: 0;
+  width: 91px;
+  color: var(--color-section-dot);
+  font-size: 93px;
+  line-height: 1;
+  font-weight: 300;
+  text-align: center;
+}
+
+.journey-step__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--scale-500);
+  padding-top: var(--scale-200);
+}
+
+.journey-step__title {
+  max-width: 320px;
+  margin: 0;
+  color: var(--color-heading);
+  font-size: 33px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.journey-step__text {
+  max-width: 437px;
+  color: var(--color-text-body);
+  font-size: var(--body-l-size);
+  line-height: 1.8;
+}
+
+/* ---- What sets us apart ------------------------------------------------------------------------ */
+
+.apart__cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 320px));
+  justify-content: center;
+  gap: var(--scale-1000);
+  margin: var(--scale-1100) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.apart-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--scale-1000);
+  min-height: 381px;
+  overflow: hidden;
+  padding: 38px 21px 32px;
+  border: var(--scale-12) solid var(--color-benefit-border);
+  border-radius: 21px;
+  background: var(--surface-cards);
+}
+
+/* Large faded illustration tucked into the top-right corner */
+.apart-card__art {
+  position: absolute;
+  top: -6px;
+  right: -28px;
+  height: 160px;
+  width: auto;
+  pointer-events: none;
+}
+
+.apart-card__title {
+  position: relative;
+  max-width: 190px;
+  margin: 0;
+  color: var(--color-heading);
+  font-size: 29px;
+  line-height: 1.46;
+  font-weight: 500;
+}
+
+.apart-card__text {
+  position: relative;
+  color: var(--color-text-body);
+  font-size: var(--body-l-size);
+  line-height: 1.6;
+}
+
+/* ---- Support band: full width, centred ------------------------------------------------------- */
+
+.support {
+  margin-top: var(--section-gap);
+  padding: 80px 0;
+  background: var(--surface-cards);
+}
+
+.support__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 648px;
+  text-align: center;
+}
+
+.support__label {
+  justify-content: center;
+}
+
+.support__heading {
+  margin-top: var(--scale-400);
+  color: var(--color-heading);
+}
+
+.support__text {
+  margin-top: var(--scale-500);
+  color: var(--color-text-body);
+}
+
+.support__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--scale-400);
+  margin-top: var(--scale-1000);
+}
+
+/* The support band sits right above the footer */
+.about-page {
+  padding-bottom: 0;
+}
+
+/* ---- Responsive ------------------------------------------------------------------------------- */
+
+@media (max-width: 1199px) {
+  .commitment__cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--scale-600);
+  }
+
+  .apart__cards {
+    grid-template-columns: repeat(2, minmax(0, 320px));
+  }
+}
+
+/* Below desktop: steps stack on the left, joined by a straight dashed line under the numbers */
+@media (max-width: 1099px) {
+  .journey-step,
+  .journey-step--right {
+    padding-left: 0;
+  }
+
+  .journey-step + .journey-step {
+    margin-top: var(--scale-1100);
+  }
+
+  .journey-step + .journey-step::before,
+  .journey-step + .journey-step:not(.journey-step--right)::before {
+    top: calc(-1 * var(--scale-1100) + var(--scale-200));
+    left: 45px;
+    width: 0;
+    height: calc(var(--scale-1100) - var(--scale-400));
+    border-left: 1.5px dashed var(--color-text-on-light);
+    background: none;
+    transform: none;
+  }
+}
+
+@media (max-width: 1023px) {
+  .about-intro {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--scale-600);
+  }
+
+  .about-intro__text {
+    width: auto;
+    max-width: 600px;
+  }
+
+  /* Photo on top, text below */
+  .who__panel {
+    flex-direction: column;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  .who__panel::after {
+    display: none;
+  }
+
+  .who__media {
+    position: static;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--scale-500);
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .who__media img {
+    object-position: 50% 30%;
+  }
+
+  .who__content {
+    width: auto;
+    padding: var(--scale-900) 0 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .about-intro__text,
+  .support__text {
+    font-size: var(--body-m-size);
+    line-height: var(--body-m-line);
+  }
+
+  .about-intro__heading,
+  .who__heading,
+  .support__heading {
+    font-size: 32px;
+    line-height: 40px;
+    letter-spacing: -0.64px;
+  }
+
+  .who__media {
+    border-radius: 16px;
+  }
+
+  .who__content {
+    gap: var(--scale-800);
+    padding-top: var(--scale-800);
+  }
+
+  .who__text {
+    font-size: var(--body-l-size);
+  }
+
+  .stats {
+    justify-content: space-between;
+    gap: var(--scale-400);
+  }
+
+  .stat__value {
+    font-size: 44px;
+    letter-spacing: -0.9px;
+  }
+
+  .stat__plus {
+    font-size: 36px;
+  }
+
+  .stat__note {
+    font-size: var(--body-xs-size);
+    letter-spacing: 0;
+  }
+
+  .commitment__cards,
+  .apart__cards {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--scale-400);
+    margin-top: var(--scale-900);
+  }
+
+  .benefit-card {
+    border-radius: 16px;
+  }
+
+  .journey__steps {
+    margin-top: var(--scale-900);
+  }
+
+  .journey-step {
+    gap: var(--scale-400);
+  }
+
+  .journey-step__number {
+    width: 60px;
+    font-size: 48px;
+    letter-spacing: -1px;
+  }
+
+  .journey-step + .journey-step::before,
+  .journey-step + .journey-step:not(.journey-step--right)::before {
+    left: 30px;
+  }
+
+  .journey-step__body {
+    gap: var(--scale-300);
+    padding-top: var(--scale-100);
+  }
+
+  .journey-step__title {
+    font-size: var(--h6-size);
+    line-height: var(--h6-line);
+  }
+
+  .journey-step__text {
+    font-size: var(--body-m-size);
+    line-height: var(--body-m-line);
+  }
+
+  .apart-card {
+    min-height: 300px;
+    padding: var(--scale-800) var(--scale-500) var(--scale-600);
+    border-radius: 16px;
+  }
+
+  .apart-card__title {
+    font-size: var(--h5-size);
+  }
+
+  .apart-card__text {
+    font-size: var(--body-m-size);
+  }
+
+  .support {
+    padding: var(--scale-1100) 0;
+  }
+
+  .support__actions {
+    flex-direction: row-reverse;
+    width: 100%;
+    gap: var(--scale-300);
+  }
+
+  .support__actions .btn {
+    flex: 1 1 0;
+    min-width: max-content;
+    height: 52px;
+    padding-inline: var(--scale-400);
+    font-size: 15px;
+    line-height: 22px;
+  }
+}
