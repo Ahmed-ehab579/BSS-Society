@@ -361,6 +361,8 @@
 
 /* Cards / Topic Card */
 .topic-card {
+  --text-left: 24.9px;
+  --text-width: min(254.494px, 100% - 2 * var(--text-left));
   position: relative;
   flex: 0 0 332px;
   height: 461px;
@@ -402,30 +404,28 @@
 .topic-card__text {
   position: absolute;
   top: 48.87px;
-  left: 24.9px;
+  left: var(--text-left);
   display: flex;
   flex-direction: column;
   gap: 18.442px;
-  width: 254.494px;
-  max-width: calc(100% - 49.8px);
+  width: var(--text-width);
 }
 
 .topic-card__desc {
   color: var(--color-topic-text);
 }
 
-/* Explore pill (Button: Default circle / expand). Only the width changes: on hover it grows to the
-   card's full width. The right edge and arrow stay fixed; the label rides the left edge as it opens. */
+/* Explore pill (Button: Default circle / expand). Opened (hover, keyboard focus, touch) it spans the
+   text box above it, edge to edge, with "Explore" and the arrow centred together. Closed it is the
+   circle at the right end of that box; the label's width and the gap grow from 0 as it opens. */
 .topic-card__cta {
-  --cta-inset: 34px;
-  --cta-expanded: calc(100% - 2 * var(--cta-inset));
   position: absolute;
-  right: var(--cta-inset);
-  bottom: var(--cta-inset);
+  right: calc(100% - var(--text-left) - var(--text-width));
+  bottom: 34px;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  gap: 10.188px;
+  justify-content: center;
+  gap: 0;
   width: 47.995px;
   height: 46.649px;
   padding-inline: 8.902px;
@@ -435,79 +435,63 @@
   background: rgba(59, 59, 59, 0);
   color: var(--color-text-on-dark);
   transition: width var(--motion-duration-hover) var(--motion-ease),
-    background-color var(--motion-duration-hover) var(--motion-ease),
-    border-color var(--motion-duration-hover) var(--motion-ease),
-    color var(--motion-duration-hover) var(--motion-ease);
+    gap var(--motion-duration-hover) var(--motion-ease),
+    background-color var(--motion-duration-hover) var(--motion-ease);
 }
 
 .topic-card__cta-label {
   flex: none;
-  width: 70px;
-  margin-left: 11.37px;   /* 20.27px from the pill's left edge */
-  margin-right: auto;     /* takes the free space once open, so the arrow stays on the right */
+  max-width: 0;
+  overflow: hidden;
   font-size: 19.702px;
   line-height: 22.496px;
   font-weight: var(--h5-weight);
   white-space: nowrap;
   opacity: 0;
-  transition: opacity var(--motion-duration-hover) var(--motion-ease);
+  transition: max-width var(--motion-duration-hover) var(--motion-ease),
+    opacity var(--motion-duration-hover) var(--motion-ease);
 }
 
 .topic-card__cta img {
   flex: none;
   width: 26.944px;
   height: 26.944px;
-  transition: filter var(--motion-duration-hover) var(--motion-ease);
 }
 
-/* Open: the light green surface with dark grey label and arrow (the white arrow asset is tinted to
-   Text/On-light #3b3b3b: black, then inverted by 23%) */
 .topic-card:focus-within .topic-card__cta {
-  width: var(--cta-expanded);
-  border-color: var(--surface-cards-hovered);
-  background: var(--surface-cards-hovered);
-  color: var(--color-text-on-light);
-}
-
-.topic-card:focus-within .topic-card__cta img {
-  filter: brightness(0) invert(0.23);
+  width: var(--text-width);
+  gap: 10.188px;
+  background: rgba(59, 59, 59, 0.26);
 }
 
 .topic-card:focus-within .topic-card__cta-label {
+  max-width: 70px;
   opacity: 1;
 }
 
 @media (hover: hover) {
   .topic-card:hover .topic-card__cta {
-    width: var(--cta-expanded);
-    border-color: var(--surface-cards-hovered);
-    background: var(--surface-cards-hovered);
-    color: var(--color-text-on-light);
-  }
-
-  .topic-card:hover .topic-card__cta img {
-    filter: brightness(0) invert(0.23);
+    width: var(--text-width);
+    gap: 10.188px;
+    background: rgba(59, 59, 59, 0.26);
   }
 
   .topic-card:hover .topic-card__cta-label {
+    max-width: 70px;
     opacity: 1;
   }
 }
 
-/* Touch and other non-hover input: expanded by default */
+/* Touch and other non-hover input: opened by default */
 @media (hover: none) {
   .topic-card__cta {
-    width: var(--cta-expanded);
-    border-color: var(--surface-cards-hovered);
-    background: var(--surface-cards-hovered);
-    color: var(--color-text-on-light);
-  }
-
-  .topic-card__cta img {
-    filter: brightness(0) invert(0.23);
+    width: var(--text-width);
+    gap: 10.188px;
+    background: rgba(59, 59, 59, 0.26);
   }
 
   .topic-card__cta-label {
+    max-width: 70px;
     opacity: 1;
   }
 }
@@ -707,15 +691,17 @@
     border-radius: 16px;
   }
 
+  .topic-card {
+    --text-left: 20px;
+  }
+
   .topic-card__cta {
-    --cta-inset: 20px;
+    bottom: 20px;
   }
 
   .topic-card__text {
     top: 32px;
-    left: 20px;
     gap: var(--scale-300);
-    max-width: calc(100% - 40px);
   }
 
   .topic-card__title {
