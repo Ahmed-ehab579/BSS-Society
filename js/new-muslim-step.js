@@ -46,8 +46,10 @@
       aria-selected="false" tabindex="-1">Topic ${i + 1}<span class="visually-hidden">: ${escape(topic.title)}</span></button>`).join("");
   const tabs = [...els.tabs.querySelectorAll('[role="tab"]')];
 
-  // `reveal` (user actions only): bring the tab into view in the row, which scrolls sideways on phones
-  function showTopic(index, { focusTab = false, reveal = false } = {}) {
+  // `reveal` (user actions only): bring the tab into view in the row, which scrolls sideways on phones.
+  // `animate` (user actions only): the panel's content fades across instead of swapping instantly.
+  function showTopic(index, { focusTab = false, reveal = false, animate = false } = {}) {
+    const changed = index !== topicIndex;
     topicIndex = index;
     const topic = step.topics[index];
     tabs.forEach((tab, i) => {
@@ -59,12 +61,8 @@
     if (reveal) tabs[index].scrollIntoView({ block: "nearest", inline: "nearest", behavior: reducedMotion.matches ? "auto" : "smooth" });
 
     els.panel.setAttribute("aria-labelledby", tabs[index].id);
-    els.number.textContent = pad(index + 1);
-    els.topicTitle.textContent = topic.title;
-    els.topicText.textContent = topic.text;
-    els.track.innerHTML = topic.resources.map(cardHtml).join("");
-    els.track.scrollLeft = 0;
-    updateArrows();
+    if (animate && changed && !reducedMotion.matches) swapAnimated(() => renderTopic(index));
+    else if (changed || !animate) renderTopic(index);
 
     // Keep the view in the URL without adding a history entry for every tab
     const url = new URL(location.href);
@@ -73,7 +71,43 @@
     history.replaceState(null, "", url);
   }
 
-  tabs.forEach((tab, i) => tab.addEventListener("click", () => showTopic(i, { reveal: true })));
+  function renderTopic(index) {
+    const topic = step.topics[index];
+    els.number.textContent = pad(index + 1);
+    els.topicTitle.textContent = topic.title;
+    els.topicText.textContent = topic.text;
+    els.track.innerHTML = topic.resources.map(cardHtml).join("");
+    els.track.scrollLeft = 0;
+    updateArrows();
+  }
+
+  // Topic change: the old content fades out quickly, the panel eases to its new height and the new
+  // content fades up, the cards following one another by a few milliseconds. A newer click cancels
+  // an unfinished change.
+  const parts = () => [els.panel.querySelector(".topic-panel__intro"), ...els.track.children];
+  let swapId = 0;
+  function swapAnimated(render) {
+    const id = ++swapId;
+    els.panel.getAnimations({ subtree: true }).forEach((animation) => animation.cancel());
+    const from = els.panel.getBoundingClientRect().height;
+    const fadeOut = parts().map((el) => el.animate(
+      [{ opacity: 1, transform: "none" }, { opacity: 0, transform: "translateY(-4px)" }],
+      { duration: 140, easing: "ease-in", fill: "forwards" }));
+    Promise.all(fadeOut.map((animation) => animation.finished)).then(() => {
+      if (id !== swapId) return;
+      fadeOut.forEach((animation) => animation.cancel());
+      render();
+      const to = els.panel.getBoundingClientRect().height;
+      if (Math.abs(to - from) > 1) {
+        els.panel.animate([{ height: `${from}px` }, { height: `${to}px` }], { duration: 320, easing: "cubic-bezier(0.2, 0, 0, 1)" });
+      }
+      parts().forEach((el, i) => el.animate(
+        [{ opacity: 0, transform: "translateY(8px)" }, { opacity: 1, transform: "none" }],
+        { duration: 320, delay: i === 0 ? 0 : 40 + i * 30, easing: "cubic-bezier(0.2, 0, 0, 1)", fill: "backwards" }));
+    }).catch(() => { /* cancelled by a newer change */ });
+  }
+
+  tabs.forEach((tab, i) => tab.addEventListener("click", () => showTopic(i, { reveal: true, animate: true })));
 
   // Arrow keys move between tabs (WAI-ARIA tabs pattern, automatic activation)
   els.tabs.addEventListener("keydown", (event) => {
@@ -83,7 +117,7 @@
     const move = moves[event.key];
     const last = tabs.length - 1;
     const target = move === -Infinity ? 0 : move === Infinity ? last : (topicIndex + move + tabs.length) % tabs.length;
-    showTopic(target, { focusTab: true, reveal: true });
+    showTopic(target, { focusTab: true, reveal: true, animate: true });
   });
 
   // ---- Resource row: scrolls by one card; the arrows switch off at either end ----------------------
