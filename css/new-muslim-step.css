@@ -50,9 +50,10 @@
 
 /* ---- Suggested resources ----------------------------------------------------------------------- */
 
-/* Same gap under the heading as "What you'll learn" */
+/* Section heading in the H2 style, 48px above the topic tabs */
 .suggested__heading {
-  margin-bottom: var(--scale-800);
+  margin: 0 0 var(--scale-1000);
+  color: var(--color-heading);
 }
 
 /* Topic tabs: neutral at rest, the card surface on hover, green when selected */
@@ -210,7 +211,10 @@
   }
 
   .suggested__heading {
-    margin-bottom: var(--scale-600);
+    margin-bottom: var(--scale-800);
+    font-size: 32px;          /* the site's phone H2 (as .section-intro__heading) */
+    line-height: 40px;
+    letter-spacing: -0.64px;
   }
 
   .learn__item {
