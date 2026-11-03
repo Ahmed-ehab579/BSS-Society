@@ -253,9 +253,12 @@
     gap: 0;
   }
 
+  /* Menu links: larger than the desktop nav, easier to read and tap */
   .site-nav__link {
     justify-content: center;
-    height: 48px;
+    height: 56px;
+    font-size: 22px;
+    line-height: 30px;
   }
 
   /* Contact Us: full width, large button sizing, same outline style */
