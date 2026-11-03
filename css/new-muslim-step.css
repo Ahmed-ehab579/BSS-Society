@@ -8,13 +8,10 @@
   margin-top: var(--section-gap);
 }
 
+/* Section headings: the H2 style (.text-h2), 48px above their content */
 .step-heading {
-  margin: 0;
+  margin: 0 0 var(--scale-1000);
   color: var(--color-heading);
-  font-size: var(--h4-size);
-  line-height: var(--h4-line);
-  font-weight: var(--body-weight);
-  letter-spacing: -0.65px;
 }
 
 /* ---- What you'll learn ------------------------------------------------------------------------- */
@@ -23,7 +20,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--scale-400);
-  margin: var(--scale-800) 0 0;
+  margin: 0;
   padding: 0;
   list-style: none;
 }
@@ -49,12 +46,6 @@
 }
 
 /* ---- Suggested resources ----------------------------------------------------------------------- */
-
-/* Section heading in the H2 style, 48px above the topic tabs */
-.suggested__heading {
-  margin: 0 0 var(--scale-1000);
-  color: var(--color-heading);
-}
 
 /* Topic tabs: neutral at rest, the card surface on hover, green when selected */
 .topic-tabs {
@@ -201,20 +192,14 @@
 
 @media (max-width: 767px) {
   .step-heading {
-    font-size: 28px;
-    line-height: 36px;
-  }
-
-  .learn__list {
-    gap: var(--scale-300);
-    margin-top: var(--scale-600);
-  }
-
-  .suggested__heading {
     margin-bottom: var(--scale-800);
     font-size: 32px;          /* the site's phone H2 (as .section-intro__heading) */
     line-height: 40px;
     letter-spacing: -0.64px;
+  }
+
+  .learn__list {
+    gap: var(--scale-300);
   }
 
   .learn__item {
