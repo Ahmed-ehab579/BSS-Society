@@ -34,6 +34,23 @@
   color: var(--color-text-body);
 }
 
+/* Two lines at every desktop width: small laptops get a slightly smaller title and text column */
+.about-title {
+  text-wrap: balance;
+}
+
+@media (min-width: 1100px) and (max-width: 1319px) {
+  .about-title {
+    flex-basis: auto;
+    font-size: clamp(42px, 3.8vw, 53px);
+    line-height: 1.5;
+  }
+
+  .about-title + .intro__text {
+    width: 400px;
+  }
+}
+
 /* ---- Who we are: text on the left, photo fading in from the right ------------------------------ */
 
 .who__panel {
@@ -95,8 +112,8 @@
 
 .who__text {
   color: var(--color-text-body);
-  font-size: var(--body-xxl-size);
-  line-height: 1.75;
+  font-size: var(--body-xl-size);
+  line-height: 1.8;
 }
 
 .who__text strong {
@@ -453,8 +470,8 @@
     width: 100%;
     aspect-ratio: 4 / 3;
     border-radius: var(--scale-500);
-    -webkit-mask-image: none;
-    mask-image: none;
+    -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent);   /* fades toward the text */
+    mask-image: linear-gradient(to bottom, #000 62%, transparent);
   }
 
   .who__media img {
@@ -463,7 +480,7 @@
 
   .who__content {
     width: auto;
-    padding: var(--scale-900) 0 0;
+    padding: var(--scale-400) 0 0;
   }
 }
 
@@ -488,11 +505,11 @@
 
   .who__content {
     gap: var(--scale-800);
-    padding-top: var(--scale-800);
+    padding-top: var(--scale-300);
   }
 
   .who__text {
-    font-size: var(--body-l-size);
+    font-size: var(--body-m-size);
   }
 
   .stats {
