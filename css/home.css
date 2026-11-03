@@ -415,23 +415,25 @@
   color: var(--color-topic-text);
 }
 
-/* Explore pill (Button: Default circle / expand). Opened (hover, keyboard focus, touch) it spans the
-   text box above it, edge to edge, with "Explore" and the arrow centred together. Closed it is the
-   circle at the right end of that box; the label's width and the gap grow from 0 as it opens. */
+/* Explore pill (Button: Default circle / expand). One inset all round (the text's left margin):
+   closed it is a 52px circle in the bottom-right corner; opened (hover, keyboard focus, touch) it
+   spans the card between equal side margins, with "Explore" and the arrow centred together. The
+   label's width and the gap grow from 0 as it opens. */
 .topic-card__cta {
+  --cta-size: 52px;
   position: absolute;
-  right: calc(100% - var(--text-left) - var(--text-width));
-  bottom: 34px;
+  right: var(--text-left);
+  bottom: var(--text-left);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0;
-  width: 47.995px;
-  height: 46.649px;
-  padding-inline: 8.902px;
+  width: var(--cta-size);
+  height: var(--cta-size);
+  padding-inline: 0;
   overflow: hidden;
   border: 1.624px solid var(--color-text-on-dark);
-  border-radius: 35.771px;
+  border-radius: var(--radius-pill);
   background: rgba(59, 59, 59, 0);
   color: var(--color-text-on-dark);
   transition: width var(--motion-duration-hover) var(--motion-ease),
@@ -454,12 +456,12 @@
 
 .topic-card__cta img {
   flex: none;
-  width: 26.944px;
-  height: 26.944px;
+  width: 28px;
+  height: 28px;
 }
 
 .topic-card:focus-within .topic-card__cta {
-  width: var(--text-width);
+  width: calc(100% - 2 * var(--text-left));
   gap: 10.188px;
   background: rgba(59, 59, 59, 0.26);
 }
@@ -471,7 +473,7 @@
 
 @media (hover: hover) {
   .topic-card:hover .topic-card__cta {
-    width: var(--text-width);
+    width: calc(100% - 2 * var(--text-left));
     gap: 10.188px;
     background: rgba(59, 59, 59, 0.26);
   }
@@ -485,7 +487,7 @@
 /* Touch and other non-hover input: opened by default */
 @media (hover: none) {
   .topic-card__cta {
-    width: var(--text-width);
+    width: calc(100% - 2 * var(--text-left));
     gap: 10.188px;
     background: rgba(59, 59, 59, 0.26);
   }
@@ -696,7 +698,7 @@
   }
 
   .topic-card__cta {
-    bottom: 20px;
+    --cta-size: 48px;
   }
 
   .topic-card__text {
