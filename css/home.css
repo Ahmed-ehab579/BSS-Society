@@ -108,9 +108,10 @@
     line-height: var(--body-m-line);
   }
 
-  /* Side by side, primary first, sharing the row; they wrap onto two lines only on very narrow
-     screens where both labels can't fit */
+  /* Side by side, sharing the row, with the primary button on the right (it stays first for
+     keyboard and screen readers); they wrap onto two lines only when both labels can't fit */
   .hero__actions {
+    flex-direction: row-reverse;
     gap: var(--scale-300);
   }
 
