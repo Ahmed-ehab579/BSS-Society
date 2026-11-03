@@ -284,9 +284,9 @@
     margin-top: var(--scale-600);
   }
 
-  /* Compact cards on phones: narrower, shorter media, smaller type and a 40px button */
+  /* Compact cards on phones: 204px wide, shorter media, smaller type and a 40px button */
   .topic-panel__track > .resource-card {
-    flex-basis: min(228px, 72%);
+    flex-basis: min(204px, 66%);
     border-radius: var(--scale-500);
   }
 
