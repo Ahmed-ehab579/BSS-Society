@@ -203,9 +203,9 @@
 @media (max-width: 767px) {
   .step-heading {
     margin-bottom: var(--scale-800);
-    font-size: 32px;          /* the site's phone H2 (as .section-intro__heading) */
-    line-height: 40px;
-    letter-spacing: -0.64px;
+    font-size: 40px;          /* the page's section title on phones (the phone page title is 36px) */
+    line-height: 48px;
+    letter-spacing: -0.8px;
   }
 
   .learn__heading {
