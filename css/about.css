@@ -274,14 +274,59 @@
   background: var(--surface-cards);
 }
 
-/* Large faded illustration tucked into the top-right corner */
+/* Large faded illustration in the top-right corner, partly outside the card. It is a mask so its
+   colour can change: on hover it slides into the card, stands upright and turns soft green
+   (Figma 1205:1280). Each one is placed by its centre, so it turns on the spot. */
 .apart-card__art {
+  --art-turn: -17.54deg;
   position: absolute;
-  top: -6px;
-  right: -28px;
-  height: 160px;
-  width: auto;
+  background: var(--color-card-art);
+  -webkit-mask: var(--art) center / contain no-repeat;
+  mask: var(--art) center / contain no-repeat;
   pointer-events: none;
+  transition: transform var(--motion-duration-art) var(--motion-ease-expand),
+    background-color var(--motion-duration-art) var(--motion-ease-expand);
+}
+
+.apart-card__art--curated {
+  --art: url("../assets/icons/about-curated.svg");
+  --art-turn: -16.46deg;
+  top: -4px;
+  right: -53px;
+  width: 143px;
+  height: 161px;
+}
+
+.apart-card__art--reviewed {
+  --art: url("../assets/icons/about-reviewed.svg");
+  top: 1px;
+  right: -60px;
+  width: 145px;
+  height: 150px;
+}
+
+.apart-card__art--beyond {
+  --art: url("../assets/icons/about-beyond.svg");
+  --art-turn: -11.57deg;
+  top: -2px;
+  right: -59px;
+  width: 155px;
+  height: 156px;
+}
+
+@media (hover: hover) and (min-width: 768px) {
+  .apart-card:hover .apart-card__art {
+    background: var(--color-card-art-active);
+    transform: translateX(-30px) rotate(var(--art-turn));
+  }
+}
+
+/* Phones and touch screens have no hover: they show the green state from the start */
+@media (hover: none), (max-width: 767px) {
+  .apart-card__art {
+    background: var(--color-card-art-active);
+    transform: translateX(-30px) rotate(var(--art-turn));
+  }
 }
 
 .apart-card__title {
@@ -545,5 +590,12 @@
     padding-inline: var(--scale-400);
     font-size: 15px;
     line-height: 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .apart-card__art,
+  .commitment .benefit-card__text {
+    transition: none;
   }
 }
