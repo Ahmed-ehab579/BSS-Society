@@ -43,7 +43,7 @@
 
   els.tabs.innerHTML = step.topics.map((topic, i) => `
     <button class="topic-tab" type="button" role="tab" id="topic-tab-${i + 1}" aria-controls="topic-panel"
-      aria-selected="false" tabindex="-1">${escape(topic.title)}</button>`).join("");
+      aria-selected="false" tabindex="-1">Topic ${i + 1}<span class="visually-hidden">: ${escape(topic.title)}</span></button>`).join("");
   const tabs = [...els.tabs.querySelectorAll('[role="tab"]')];
 
   // `reveal` (user actions only): bring the tab into view in the row, which scrolls sideways on phones
