@@ -57,6 +57,7 @@
 }
 
 .topic-tab {
+  position: relative;   /* keeps the hidden topic title inside the tab (and the scrolling row on phones) */
   padding: var(--scale-200) var(--scale-600);
   border: var(--scale-12) solid var(--color-neutral-400);
   border-radius: var(--radius-pill);
