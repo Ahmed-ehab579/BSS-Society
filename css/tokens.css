@@ -68,6 +68,9 @@
   --surface-preview: #f1efe6;          /* topic preview panel */
   --surface-banner: #5a5a5a;           /* "Explore more resources" callout */
   --radius-step: 28px;
+  /* About us (Figma 1205:1280; variables pending in Figma) */
+  --color-card-art: rgba(41, 41, 41, 0.06);          /* faded card illustration */
+  --color-card-art-active: rgba(127, 169, 96, 0.19); /* the same illustration on hover */
   /* Validation colours: not defined in Figma (pending approval) */
   --color-error: #b3261e;
   --color-error-on-dark: #ffb4ab;
@@ -158,6 +161,7 @@
   --motion-duration: 220ms;
   --motion-duration-hover: 360ms;      /* Figma smart animate 300ms, slightly slower */
   --motion-duration-expand: 700ms;     /* cards opening and closing */
+  --motion-duration-art: 1000ms;       /* Figma smart animate 1020ms */
   --motion-ease-expand: cubic-bezier(0.65, 0, 0.35, 1);   /* even ease-in-out, same pace both ways */
   --motion-ease: cubic-bezier(0.2, 0, 0, 1);
   --motion-duration-link: 150ms;       /* Footer Link note: underline fades in over 150ms */
