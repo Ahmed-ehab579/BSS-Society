@@ -101,8 +101,9 @@
     moveIndicator(active);
   }
 
-  // One underline for the whole nav (desktop) that slides to the active link. Between pages it starts
-  // under the link of the page you came from, then slides to this page's link.
+  // One underline for the whole nav (desktop) that slides to the active link. Clicking a link to
+  // another page slides it there first, then opens the page with the underline already in place; other
+  // arrivals (back button, footer links) slide from where it was on the previous page.
   const LAST_KEY = "bss.nav.last";
   const list = document.querySelector(".site-nav__links");
   const indicator = document.createElement("span");
@@ -116,8 +117,10 @@
     indicatorLink = link || null;
     if (instant) indicator.style.transition = "none";
     if (link) {
-      indicator.style.width = `${link.offsetWidth}px`;
-      indicator.style.transform = `translate(${link.offsetLeft}px, ${link.offsetTop + link.offsetHeight + 4}px)`;
+      const box = link.getBoundingClientRect();
+      const origin = list.getBoundingClientRect();   // exact sub-pixel position inside the nav list
+      indicator.style.width = `${box.width}px`;
+      indicator.style.transform = `translate(${box.left - origin.left}px, ${box.bottom - origin.top + 4}px)`;
     }
     indicator.classList.toggle("is-visible", Boolean(link));
     if (instant) {
@@ -132,23 +135,55 @@
     const label = sessionStorage.getItem(LAST_KEY);
     fromLink = navLinks.find((link) => link.dataset.label === label) || null;
   } catch (error) { /* storage unavailable: no slide between pages */ }
+  // Web fonts change the link widths: start the slide once they are in (or after a short wait)
+  const fontsIn = Promise.race([
+    document.fonts ? document.fonts.ready : Promise.resolve(),
+    new Promise((resolve) => setTimeout(resolve, 400)),
+  ]);
   if (fromLink && startLink && fromLink !== startLink && !reduceMotion.matches) {
     moveIndicator(fromLink, { instant: true });
-    requestAnimationFrame(() => requestAnimationFrame(() => moveIndicator(startLink)));
+    fontsIn.then(() => {
+      moveIndicator(fromLink, { instant: true });
+      requestAnimationFrame(() => requestAnimationFrame(() => moveIndicator(indicatorLink === fromLink ? startLink : indicatorLink)));
+    });
   } else {
     moveIndicator(startLink, { instant: true });
+    fontsIn.then(() => moveIndicator(indicatorLink, { instant: true }));
   }
+
+  // Clicking a nav link to another page: slide first, then go
+  const desktopNav = window.matchMedia("(min-width: 900px)");
+  let leaving = false;
+  navLinks.forEach((link) => link.addEventListener("click", (event) => {
+    if (link.hash || isThisPage(link) || event.defaultPrevented || event.button !== 0 ||
+      event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    try { sessionStorage.setItem(LAST_KEY, link.dataset.label); } catch (error) { /* storage unavailable */ }
+    if (!desktopNav.matches || reduceMotion.matches || link === indicatorLink) return;
+    event.preventDefault();
+    leaving = true;
+    moveIndicator(link);
+    let gone = false;
+    const go = () => { if (!gone) { gone = true; window.location.href = link.href; } };
+    indicator.addEventListener("transitionend", go, { once: true });
+    setTimeout(go, 500);
+  }));
+
+  // Back to this page from the browser's cache: put the underline back on this page's link
+  window.addEventListener("pageshow", (event) => {
+    if (!event.persisted) return;
+    leaving = false;
+    moveIndicator(navLinks.find((link) => link.classList.contains("is-active")) || null, { instant: true });
+  });
 
   // Remember where the underline was when leaving for another page
   window.addEventListener("pagehide", () => {
+    if (leaving) return;   // a nav click already stored the destination
     try {
       if (indicatorLink) sessionStorage.setItem(LAST_KEY, indicatorLink.dataset.label);
       else sessionStorage.removeItem(LAST_KEY);
     } catch (error) { /* storage unavailable */ }
   });
 
-  // Fonts and resizes change link positions: re-place the underline without animating
-  if (document.fonts) document.fonts.ready.then(() => moveIndicator(indicatorLink, { instant: true }));
 
   // Active section: the last one whose top has passed a line a third of the
   // way down the visible area below the header.
