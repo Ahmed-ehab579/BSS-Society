@@ -240,8 +240,8 @@ a {
   height: 24px;
 }
 
-/* Hover states: pointer devices only, so taps don't leave them stuck on.
-   :active gives the same look as temporary pressed feedback on touch. */
+/* Hover states: pointer devices only, so taps don't leave them stuck on. On touch, pressing a
+   button only darkens it (:active below); the arrow slide is kept for pointer devices. */
 @media (hover: hover) {
   .btn--secondary:hover {
     background: var(--surface-action-outline-hovered);
@@ -253,7 +253,8 @@ a {
     background: var(--surface-action-primary-hovered);
   }
 
-  .btn--primary.btn--large:hover .btn__arrow-track {
+  .btn--primary.btn--large:hover .btn__arrow-track,
+  .btn--primary.btn--large:active .btn__arrow-track {
     transform: translateY(-35px);
   }
 
@@ -286,10 +287,6 @@ a {
 
 .btn--primary.btn--regular:active {
   background: var(--surface-action-primary-hovered);
-}
-
-.btn--primary.btn--large:active .btn__arrow-track {
-  transform: translateY(-35px);
 }
 
 /* Actions / Icon Button (40 × 40) */
