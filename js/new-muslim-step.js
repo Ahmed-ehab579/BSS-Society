@@ -15,6 +15,7 @@
     topicTitle: document.querySelector("[data-topic-title]"),
     topicText: document.querySelector("[data-topic-text]"),
     track: document.querySelector("[data-resources]"),
+    dots: document.querySelector("[data-dots]"),
     prev: document.querySelector('[data-scroll="-1"]'),
     next: document.querySelector('[data-scroll="1"]'),
   };
@@ -77,6 +78,8 @@
     els.topicTitle.textContent = topic.title;
     els.topicText.textContent = topic.text;
     els.track.innerHTML = topic.resources.map(cardHtml).join("");
+    els.dots.innerHTML = topic.resources.map((item, i) => `
+      <button class="topic-panel__dot" type="button" tabindex="-1" aria-label="Show resource ${i + 1} of ${topic.resources.length}"></button>`).join("");
     els.track.scrollLeft = 0;
     updateArrows();
   }
@@ -132,7 +135,31 @@
     const max = els.track.scrollWidth - els.track.clientWidth;
     els.prev.disabled = els.track.scrollLeft <= 1;
     els.next.disabled = els.track.scrollLeft >= max - 1;
+    updateDots(max);
   }
+
+  // Dots (phones): one per card. The active one follows how far the row has scrolled, so the first
+  // and last cards light up at either end even though the last card can't reach the left edge.
+  // They are a visual aid for touch; keyboard users have the cards' own buttons.
+  function updateDots(max = els.track.scrollWidth - els.track.clientWidth) {
+    const dots = [...els.dots.children];
+    if (!dots.length) return;
+    const progress = max > 1 ? els.track.scrollLeft / max : 0;
+    const active = Math.round(progress * (dots.length - 1));
+    dots.forEach((dot, i) => {
+      dot.classList.toggle("is-active", i === active);
+      if (i === active) dot.setAttribute("aria-current", "true");
+      else dot.removeAttribute("aria-current");
+    });
+  }
+
+  els.dots.addEventListener("click", (event) => {
+    const dot = event.target.closest(".topic-panel__dot");
+    if (!dot) return;
+    const dots = [...els.dots.children];
+    const max = els.track.scrollWidth - els.track.clientWidth;
+    els.track.scrollTo({ left: (dots.indexOf(dot) / (dots.length - 1)) * max, behavior: reducedMotion.matches ? "auto" : "smooth" });
+  });
 
   [els.prev, els.next].forEach((button) => button.addEventListener("click", () => {
     els.track.scrollBy({ left: Number(button.dataset.scroll) * cardStep(), behavior: reducedMotion.matches ? "auto" : "smooth" });

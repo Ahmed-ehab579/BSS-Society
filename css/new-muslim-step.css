@@ -198,6 +198,47 @@
   scroll-snap-align: start;
 }
 
+/* Pagination dots: phones only (desktop has the arrows). The active dot stretches into a pill;
+   width and colour ease between dots as the row scrolls. */
+.topic-panel__dots {
+  display: none;
+  justify-content: center;
+  gap: 6px;
+  margin-top: var(--scale-400);
+}
+
+.topic-panel__dot {
+  position: relative;
+  width: 8px;
+  height: 24px;              /* 8px dot inside a 24px tall touch area */
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: width var(--motion-duration-hover) var(--motion-ease);
+}
+
+.topic-panel__dot::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  right: 0;
+  left: 0;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--color-neutral-300);
+  transition: background-color var(--motion-duration-hover) var(--motion-ease);
+}
+
+.topic-panel__dot.is-active {
+  width: 24px;
+}
+
+.topic-panel__dot.is-active::before {
+  background: var(--color-text-on-light);
+}
+
 /* ---- Responsive ------------------------------------------------------------------------------- */
 
 @media (max-width: 767px) {
@@ -279,6 +320,10 @@
     display: none;
   }
 
+  .topic-panel__dots {
+    display: flex;
+  }
+
   .topic-panel__track {
     gap: var(--scale-400);
     margin-top: var(--scale-600);
@@ -352,6 +397,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .topic-tab,
+  .topic-panel__dot,
+  .topic-panel__dot::before,
   .topic-panel__controls .icon-btn {
     transition: none;
   }
