@@ -435,7 +435,9 @@
   background: rgba(59, 59, 59, 0);
   color: var(--color-text-on-dark);
   transition: width var(--motion-duration-hover) var(--motion-ease),
-    background-color var(--motion-duration-hover) var(--motion-ease);
+    background-color var(--motion-duration-hover) var(--motion-ease),
+    border-color var(--motion-duration-hover) var(--motion-ease),
+    color var(--motion-duration-hover) var(--motion-ease);
 }
 
 .topic-card__cta-label {
@@ -455,11 +457,20 @@
   flex: none;
   width: 26.944px;
   height: 26.944px;
+  transition: filter var(--motion-duration-hover) var(--motion-ease);
 }
 
+/* Open: the light green surface with dark grey label and arrow (the white arrow asset is tinted to
+   Text/On-light #3b3b3b: black, then inverted by 23%) */
 .topic-card:focus-within .topic-card__cta {
   width: var(--cta-expanded);
-  background: rgba(59, 59, 59, 0.26);
+  border-color: var(--surface-cards-hovered);
+  background: var(--surface-cards-hovered);
+  color: var(--color-text-on-light);
+}
+
+.topic-card:focus-within .topic-card__cta img {
+  filter: brightness(0) invert(0.23);
 }
 
 .topic-card:focus-within .topic-card__cta-label {
@@ -469,7 +480,13 @@
 @media (hover: hover) {
   .topic-card:hover .topic-card__cta {
     width: var(--cta-expanded);
-    background: rgba(59, 59, 59, 0.26);
+    border-color: var(--surface-cards-hovered);
+    background: var(--surface-cards-hovered);
+    color: var(--color-text-on-light);
+  }
+
+  .topic-card:hover .topic-card__cta img {
+    filter: brightness(0) invert(0.23);
   }
 
   .topic-card:hover .topic-card__cta-label {
@@ -481,7 +498,13 @@
 @media (hover: none) {
   .topic-card__cta {
     width: var(--cta-expanded);
-    background: rgba(59, 59, 59, 0.26);
+    border-color: var(--surface-cards-hovered);
+    background: var(--surface-cards-hovered);
+    color: var(--color-text-on-light);
+  }
+
+  .topic-card__cta img {
+    filter: brightness(0) invert(0.23);
   }
 
   .topic-card__cta-label {
