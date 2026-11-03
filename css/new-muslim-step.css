@@ -284,8 +284,69 @@
     margin-top: var(--scale-600);
   }
 
+  /* Compact cards on phones: narrower, shorter media, smaller type and a 40px button */
   .topic-panel__track > .resource-card {
-    flex-basis: min(283px, 78%);
+    flex-basis: min(228px, 72%);
+    border-radius: var(--scale-500);
+  }
+
+  .topic-panel__track .resource-card__media {
+    padding: 10px 10px 0;
+  }
+
+  .topic-panel__track .resource-card__frame {
+    height: 160px;
+    border-radius: 10px;
+  }
+
+  .topic-panel__track .resource-card__play {
+    --play-size: 84px;
+  }
+
+  .topic-panel__track .resource-card__listen {
+    --listen-size: 56px;
+  }
+
+  .topic-panel__track .resource-card__badge {
+    top: var(--scale-200);
+    right: var(--scale-200);
+    padding: 1px 8px;
+    font-size: 11px;
+    line-height: 16px;
+  }
+
+  .topic-panel__track .resource-card__badge img {
+    height: 10px;
+  }
+
+  .topic-panel__track .resource-card__body {
+    gap: var(--scale-500);
+    padding: var(--scale-500) var(--scale-300) var(--scale-300);
+  }
+
+  .topic-panel__track .resource-card__text {
+    gap: var(--scale-200);
+  }
+
+  .topic-panel__track .resource-card__title {
+    font-size: 17px;
+    line-height: 24px;
+    font-weight: var(--h6-weight);
+  }
+
+  .topic-panel__track .resource-card__desc {
+    font-size: 13px;
+    line-height: 20px;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  .topic-panel__track .resource-card__action {
+    --arrow: 18px;
+    height: 40px;
+    padding: var(--scale-200) var(--scale-400);
+    font-size: var(--label-m-size);
+    line-height: var(--label-m-line);
   }
 }
 
