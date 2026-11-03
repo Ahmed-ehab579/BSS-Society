@@ -78,8 +78,6 @@
     els.topicTitle.textContent = topic.title;
     els.topicText.textContent = topic.text;
     els.track.innerHTML = topic.resources.map(cardHtml).join("");
-    els.dots.innerHTML = topic.resources.map((item, i) => `
-      <button class="topic-panel__dot" type="button" tabindex="-1" aria-label="Show resource ${i + 1} of ${topic.resources.length}"></button>`).join("");
     els.track.scrollLeft = 0;
     updateArrows();
   }
@@ -135,18 +133,33 @@
     const max = els.track.scrollWidth - els.track.clientWidth;
     els.prev.disabled = els.track.scrollLeft <= 1;
     els.next.disabled = els.track.scrollLeft >= max - 1;
-    updateDots(max);
+    updateDots();
   }
 
-  // Dots (phones): one per card. The active one follows how far the row has scrolled, so the first
-  // and last cards light up at either end even though the last card can't reach the left edge.
-  // They are a visual aid for touch; keyboard users have the cards' own buttons.
-  function updateDots(max = els.track.scrollWidth - els.track.clientWidth) {
-    const dots = [...els.dots.children];
-    if (!dots.length) return;
-    const progress = max > 1 ? els.track.scrollLeft / max : 0;
-    const active = Math.round(progress * (dots.length - 1));
-    dots.forEach((dot, i) => {
+  // Dots (phones): one per stop the row can actually snap to. Cards near the end share the last stop
+  // (the row can't scroll further), so a wide screen gets fewer dots than cards. The active dot is
+  // the stop nearest to the current scroll. A visual aid for touch; keyboard users have the cards.
+  let stops = [];
+  function snapStops() {
+    const max = els.track.scrollWidth - els.track.clientWidth;
+    const pad = parseFloat(getComputedStyle(els.track).scrollPaddingLeft) || 0;
+    const origin = els.track.getBoundingClientRect().left - els.track.scrollLeft + pad;
+    const positions = [...els.track.children].map((card) =>
+      Math.max(0, Math.min(max, Math.round(card.getBoundingClientRect().left - origin))));
+    return positions.filter((position, i) => i === 0 || position - positions[i - 1] > 2);
+  }
+
+  function updateDots() {
+    if (getComputedStyle(els.dots).display === "none") return;
+    const next = snapStops();
+    if (next.length !== stops.length || next.some((position, i) => position !== stops[i])) {
+      stops = next;
+      els.dots.innerHTML = stops.length < 2 ? "" : stops.map((position, i) => `
+        <button class="topic-panel__dot" type="button" tabindex="-1" aria-label="Show position ${i + 1} of ${stops.length}"></button>`).join("");
+    }
+    const left = els.track.scrollLeft;
+    const active = stops.reduce((best, position, i) => (Math.abs(position - left) < Math.abs(stops[best] - left) ? i : best), 0);
+    [...els.dots.children].forEach((dot, i) => {
       dot.classList.toggle("is-active", i === active);
       if (i === active) dot.setAttribute("aria-current", "true");
       else dot.removeAttribute("aria-current");
@@ -156,9 +169,8 @@
   els.dots.addEventListener("click", (event) => {
     const dot = event.target.closest(".topic-panel__dot");
     if (!dot) return;
-    const dots = [...els.dots.children];
-    const max = els.track.scrollWidth - els.track.clientWidth;
-    els.track.scrollTo({ left: (dots.indexOf(dot) / (dots.length - 1)) * max, behavior: reducedMotion.matches ? "auto" : "smooth" });
+    const left = stops[[...els.dots.children].indexOf(dot)];
+    els.track.scrollTo({ left, behavior: reducedMotion.matches ? "auto" : "smooth" });
   });
 
   [els.prev, els.next].forEach((button) => button.addEventListener("click", () => {
