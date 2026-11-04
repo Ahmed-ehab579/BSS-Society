@@ -533,16 +533,15 @@
   .journey-step--right {
     flex-wrap: wrap;
     row-gap: var(--scale-500);
-    width: min(92%, 560px);
+    width: min(82%, 480px);
     min-height: 0;
-    margin-inline: auto;
     padding: var(--scale-300) var(--scale-300) var(--scale-600);
     border: 0.3px solid var(--color-neutral-200);
     border-radius: var(--scale-500);
     background: var(--surface-resource-card);
   }
 
-  /* The photo sits at the top of the card, inset like the Library cards */
+  /* The photo sits at the top of the card and fades down toward the text */
   .journey-step__photo,
   .journey-step--right .journey-step__photo {
     position: relative;
@@ -557,8 +556,13 @@
     opacity: 1;
     transform: none;
     transition: none;
-    -webkit-mask-image: none;
-    mask-image: none;
+    -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent);   /* fades into the card */
+    mask-image: linear-gradient(to bottom, #000 62%, transparent);
+  }
+
+  /* Cards alternate left and right, and the path bends between them */
+  .journey-step--right {
+    margin-left: auto;
   }
 
   .journey-step__body {
@@ -567,7 +571,12 @@
   }
 
   .journey-step + .journey-step {
-    margin-top: var(--scale-1100);
+    margin-top: 96px;
+  }
+
+  .journey-path__base,
+  .journey-path__fill {
+    stroke-dasharray: 9 8;
   }
 
 }
@@ -673,7 +682,7 @@
   }
 
   .journey__track {
-    margin-top: var(--scale-1000);
+    margin-top: var(--scale-1100);
   }
 
   /* The number sits above the title: beside it, the text column would be too narrow in the card */
@@ -691,8 +700,9 @@
     flex: 0 0 100%;
     width: auto;
     padding-inline: var(--scale-100);
-    font-size: 44px;
-    letter-spacing: -1px;
+    font-size: 64px;
+    font-weight: 400;
+    letter-spacing: -1.5px;
     text-align: left;
   }
 
