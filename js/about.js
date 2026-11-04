@@ -8,12 +8,14 @@
 
   const section = track.closest(".journey");
   const heading = section.querySelector(".about-intro__heading");
+  const intro = section.querySelector(".about-intro");   // stacked: the text sits under the heading
   const steps = [...track.querySelectorAll(".journey-step")];
   const stacked = window.matchMedia("(max-width: 1099px)");
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const SVG = "http://www.w3.org/2000/svg";
   const RADIUS = 23;     // corner radius of the Figma path
-  const GAP = 14;        // space between a path and the text it leaves or reaches
+  const GAP = 14;        // space between a path and the text or card it leaves or reaches
+  const HEADING_GAP = 40; // space under the heading (desktop)
   const EASE = 0.14;     // how quickly the fill catches up with the scroll, per frame
 
   const svg = document.createElementNS(SVG, "svg");
@@ -68,7 +70,10 @@
       const previous = steps[i - 1];
       const startX = lineX(previous || piece.step);
       const endX = lineX(piece.step);
-      const startY = (previous ? textBox(previous).bottom : heading.getBoundingClientRect().bottom) - box.top + GAP;
+      const from = previous
+        ? (stacked.matches ? previous.getBoundingClientRect() : textBox(previous))
+        : (stacked.matches ? intro : heading).getBoundingClientRect();
+      const startY = from.bottom - box.top + (previous || stacked.matches ? GAP : HEADING_GAP);
       const target = stacked.matches ? piece.step.getBoundingClientRect() : textBox(piece.step);
       const endY = target.top - box.top - GAP;
       const d = bend(startX, startY, endX, endY);

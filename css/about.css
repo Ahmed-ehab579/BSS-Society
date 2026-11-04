@@ -197,7 +197,7 @@
 
 .journey__track {
   position: relative;
-  margin-top: 96px;                 /* room for the path coming down from the heading */
+  margin-top: 176px;                /* room for the path coming down from the heading */
 }
 
 .journey__steps {
@@ -523,17 +523,26 @@
   }
 }
 
-/* Below desktop: steps stack on the left, joined by a straight dashed line under the numbers */
+/* Below desktop: each step is a card, joined to the next by a straight dashed line */
 @media (max-width: 1099px) {
+  .journey__track {
+    margin-top: 96px;
+  }
+
   .journey-step,
   .journey-step--right {
     flex-wrap: wrap;
+    row-gap: var(--scale-500);
+    width: min(92%, 560px);
     min-height: 0;
-    padding-top: 0;
-    padding-left: 0;
+    margin-inline: auto;
+    padding: var(--scale-300) var(--scale-300) var(--scale-600);
+    border: 0.3px solid var(--color-neutral-200);
+    border-radius: var(--scale-500);
+    background: var(--surface-resource-card);
   }
 
-  /* Stacked: the photo sits above its step and fades down toward the text */
+  /* The photo sits at the top of the card, inset like the Library cards */
   .journey-step__photo,
   .journey-step--right .journey-step__photo {
     position: relative;
@@ -544,13 +553,12 @@
     flex: 0 0 100%;
     width: 100%;
     aspect-ratio: 16 / 9;
-    margin-bottom: calc(-1 * var(--scale-500));
-    border-radius: var(--scale-500) var(--scale-500) 0 0;
+    border-radius: var(--radius-media);
     opacity: 1;
     transform: none;
     transition: none;
-    -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent);
-    mask-image: linear-gradient(to bottom, #000 62%, transparent);
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 
   .journey-step__body {
@@ -668,19 +676,29 @@
     margin-top: var(--scale-1000);
   }
 
+  /* The number sits above the title: beside it, the text column would be too narrow in the card */
   .journey-step {
-    gap: var(--scale-400);
+    row-gap: var(--scale-300);
+    column-gap: 0;
+  }
+
+  .journey-step__photo,
+  .journey-step--right .journey-step__photo {
+    margin-bottom: var(--scale-200);
   }
 
   .journey-step__number {
-    width: 60px;
-    font-size: 48px;
+    flex: 0 0 100%;
+    width: auto;
+    padding-inline: var(--scale-100);
+    font-size: 44px;
     letter-spacing: -1px;
+    text-align: left;
   }
 
   .journey-step__body {
-    gap: var(--scale-300);
-    padding-top: var(--scale-100);
+    gap: var(--scale-200);
+    padding: 0 var(--scale-100);
   }
 
   .journey-step__title {
