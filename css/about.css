@@ -242,6 +242,10 @@
   stroke-dasharray: 1 2;            /* with pathLength 1: js/about.js moves the offset from 1 to 0 */
 }
 
+.journey__counter {
+  display: none;                    /* phones and tablets only */
+}
+
 /* Steps the path has not reached yet are quieter */
 .journey-step__number {
   transition: color var(--motion-duration-hover) var(--motion-ease);
@@ -523,25 +527,65 @@
   }
 }
 
-/* Below desktop: each step is a card, joined to the next by a straight dashed line */
+/* Below desktop (Figma 1229:1400): the cards scroll in a column while one number stays at the middle of
+   the screen and rolls to the card in view. js/about.js sets --step. */
 @media (max-width: 1099px) {
   .journey__track {
-    margin-top: 96px;
+    display: grid;
+    grid-template-columns: 76px minmax(0, 460px);
+    justify-content: center;
+    column-gap: var(--scale-800);
+    margin-top: var(--scale-1100);
+  }
+
+  .journey-path,
+  .journey-step__number {
+    display: none;
+  }
+
+  .journey__counter {
+    position: sticky;
+    top: calc(50vh - 0.5em);
+    top: calc(50svh - 0.5em);
+    display: block;
+    align-self: start;
+    height: 1em;
+    margin-block: var(--counter-offset);
+    overflow: hidden;
+    color: var(--color-section-dot);
+    font-size: 63px;
+    line-height: 1;
+    font-weight: 300;
+    --counter-offset: 180px;        /* about half a card: it rests level with the first and last cards */
+  }
+
+  .journey__counter-strip {
+    display: block;
+    transform: translateY(calc(var(--step, 0) * -1em));
+    transition: transform var(--motion-duration-art) var(--motion-ease-expand);
+  }
+
+  .journey__counter-strip > span {
+    display: block;
+    height: 1em;
   }
 
   .journey-step,
   .journey-step--right {
-    flex-wrap: wrap;
-    row-gap: var(--scale-500);
-    width: min(82%, 480px);
+    display: block;
     min-height: 0;
-    padding: var(--scale-300) var(--scale-300) var(--scale-600);
+    padding: 0;
+    overflow: hidden;
     border: 0.3px solid var(--color-neutral-200);
     border-radius: var(--scale-500);
-    background: var(--surface-resource-card);
+    background: var(--surface-preview);
   }
 
-  /* The photo sits at the top of the card and fades down toward the text */
+  .journey-step + .journey-step {
+    margin-top: var(--scale-600);
+  }
+
+  /* The photo fills the top of the card and fades down toward the text */
   .journey-step__photo,
   .journey-step--right .journey-step__photo {
     position: relative;
@@ -549,36 +593,31 @@
     right: auto;
     bottom: auto;
     left: auto;
-    flex: 0 0 100%;
     width: 100%;
-    aspect-ratio: 16 / 9;
-    border-radius: var(--radius-media);
+    aspect-ratio: 4 / 3;
     opacity: 1;
     transform: none;
     transition: none;
-    -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent);   /* fades into the card */
+    -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent);
     mask-image: linear-gradient(to bottom, #000 62%, transparent);
   }
 
-  /* Cards alternate left and right, and the path bends between them */
-  .journey-step--right {
-    margin-left: auto;
-  }
-
   .journey-step__body {
-    flex: 1;
-    min-width: 0;
+    gap: var(--scale-300);
+    padding: var(--scale-200) var(--scale-400) var(--scale-500);
   }
 
-  .journey-step + .journey-step {
-    margin-top: 96px;
+  .journey-step__title {
+    max-width: none;
+    font-size: var(--h6-size);
+    line-height: var(--h6-line);
   }
 
-  .journey-path__base,
-  .journey-path__fill {
-    stroke-dasharray: 9 8;
+  .journey-step__text {
+    max-width: none;
+    font-size: var(--body-s-size);
+    line-height: var(--body-s-line);
   }
-
 }
 
 @media (max-width: 1023px) {
@@ -682,43 +721,14 @@
   }
 
   .journey__track {
-    margin-top: var(--scale-1100);
+    grid-template-columns: 60px minmax(0, 1fr);
+    column-gap: var(--scale-300);
+    margin-top: var(--scale-900);
   }
 
-  /* The number sits above the title: beside it, the text column would be too narrow in the card */
-  .journey-step {
-    row-gap: var(--scale-300);
-    column-gap: 0;
-  }
-
-  .journey-step__photo,
-  .journey-step--right .journey-step__photo {
-    margin-bottom: var(--scale-200);
-  }
-
-  .journey-step__number {
-    flex: 0 0 100%;
-    width: auto;
-    padding-inline: var(--scale-100);
-    font-size: 64px;
-    font-weight: 400;
+  .journey__counter {
+    font-size: 56px;
     letter-spacing: -1.5px;
-    text-align: left;
-  }
-
-  .journey-step__body {
-    gap: var(--scale-200);
-    padding: 0 var(--scale-100);
-  }
-
-  .journey-step__title {
-    font-size: var(--h6-size);
-    line-height: var(--h6-line);
-  }
-
-  .journey-step__text {
-    font-size: var(--body-m-size);
-    line-height: var(--body-m-line);
   }
 
   .apart-card {
@@ -759,7 +769,8 @@
   .apart-card__art,
   .commitment .benefit-card__text,
   .journey-step__photo,
-  .journey-step__number {
+  .journey-step__number,
+  .journey__counter-strip {
     transition: none;
   }
 }
