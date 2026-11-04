@@ -532,10 +532,10 @@
 @media (max-width: 1099px) {
   .journey__track {
     display: grid;
-    grid-template-columns: 76px minmax(0, 460px);
-    justify-content: center;
+    grid-template-columns: auto minmax(0, 420px);
+    justify-content: space-between;    /* number on the left, cards against the right edge */
     column-gap: var(--scale-800);
-    margin-top: var(--scale-1100);
+    margin-top: 80px;
   }
 
   .journey-path,
@@ -553,10 +553,11 @@
     margin-block: var(--counter-offset);
     overflow: hidden;
     color: var(--color-section-dot);
-    font-size: 63px;
+    font-size: 96px;
     line-height: 1;
     font-weight: 300;
-    --counter-offset: 180px;        /* about half a card: it rests level with the first and last cards */
+    letter-spacing: -3px;
+    --counter-offset: 200px;        /* about half a card: it rests level with the first and last cards */
   }
 
   .journey__counter-strip {
@@ -576,7 +577,7 @@
     min-height: 0;
     padding: 0;
     overflow: hidden;
-    border: 0.3px solid var(--color-neutral-200);
+    border: 0.3px solid var(--color-neutral-400);
     border-radius: var(--scale-500);
     background: var(--surface-preview);
   }
@@ -716,19 +717,28 @@
     margin-top: var(--scale-900);
   }
 
+  .commitment__cards {
+    margin-top: var(--scale-1100);
+  }
+
   .benefit-card {
     border-radius: 16px;
   }
 
+  .about-intro {
+    gap: var(--scale-300);
+  }
+
   .journey__track {
-    grid-template-columns: 60px minmax(0, 1fr);
-    column-gap: var(--scale-300);
-    margin-top: var(--scale-900);
+    grid-template-columns: minmax(0, 1fr) 69%;
+    column-gap: var(--scale-200);
+    margin-top: var(--scale-1100);
   }
 
   .journey__counter {
-    font-size: 56px;
-    letter-spacing: -1.5px;
+    font-size: 72px;
+    letter-spacing: -2.5px;
+    --counter-offset: 225px;
   }
 
   .apart-card {
