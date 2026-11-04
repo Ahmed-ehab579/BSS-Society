@@ -46,7 +46,7 @@
     if (Math.abs(x2 - x1) < 1) return `M ${x1} ${y1} V ${y2}`;
     const mid = (y1 + y2) / 2;
     const dir = x2 > x1 ? 1 : -1;
-    const r = Math.min(RADIUS, (y2 - y1) / 2);
+    const r = Math.min(stacked.matches ? 12 : RADIUS, (y2 - y1) / 2, Math.abs(x2 - x1) / 2);
     return `M ${x1} ${y1} V ${mid - r} Q ${x1} ${mid} ${x1 + dir * r} ${mid} H ${x2 - dir * r} Q ${x2} ${mid} ${x2} ${mid + r} V ${y2}`;
   }
 
@@ -54,11 +54,11 @@
     const box = track.getBoundingClientRect();
     const x = (rect, offset) => rect.left - box.left + offset;
     const textBox = (step) => step.querySelector(".journey-step__body").getBoundingClientRect();
-    // Where the path runs on each side (desktop), or under the numbers (stacked)
+    // Where the path runs on each side (desktop), or from the middle of each card (stacked)
     const lineX = (step) => {
       if (stacked.matches) {
-        const number = step.querySelector(".journey-step__number").getBoundingClientRect();
-        return number.left - box.left + number.width / 2;
+        const card = step.getBoundingClientRect();
+        return card.left - box.left + card.width / 2;
       }
       return x(textBox(step), step.classList.contains("journey-step--right") ? 73 : 140);
     };
