@@ -1,21 +1,22 @@
-// About us: the dashed path through "Our books journey". It starts under the heading and links the steps,
-// and a darker line fills it as the page scrolls: each piece completes when the next step reaches the
-// middle of the screen, and that step then counts as reached. Paths are drawn from the real positions
-// of the text, so they stay aligned at every width.
+// About us, "Our books journey". Desktop: a dashed path starts under the heading and links the steps, and
+// a darker line fills it as the page scrolls: each piece completes when the next step reaches the middle
+// of the screen, and that step then counts as reached. Paths are drawn from the real positions of the
+// text, so they stay aligned at every width. Phones and tablets: the cards scroll while one number stays
+// at the middle of the screen, rolling to the card in view.
 (function () {
   const track = document.querySelector("[data-journey]");
   if (!track) return;
 
   const section = track.closest(".journey");
   const heading = section.querySelector(".about-intro__heading");
-  const intro = section.querySelector(".about-intro");   // stacked: the text sits under the heading
+  const counter = track.querySelector("[data-journey-counter]");
   const steps = [...track.querySelectorAll(".journey-step")];
   const stacked = window.matchMedia("(max-width: 1099px)");
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const SVG = "http://www.w3.org/2000/svg";
   const RADIUS = 23;     // corner radius of the Figma path
-  const GAP = 14;        // space between a path and the text or card it leaves or reaches
-  const HEADING_GAP = 40; // space under the heading (desktop)
+  const GAP = 14;        // space between a path and the text it leaves or reaches
+  const HEADING_GAP = 40; // space under the heading
   const EASE = 0.14;     // how quickly the fill catches up with the scroll, per frame
 
   const svg = document.createElementNS(SVG, "svg");
@@ -46,53 +47,60 @@
     if (Math.abs(x2 - x1) < 1) return `M ${x1} ${y1} V ${y2}`;
     const mid = (y1 + y2) / 2;
     const dir = x2 > x1 ? 1 : -1;
-    const r = Math.min(stacked.matches ? 12 : RADIUS, (y2 - y1) / 2, Math.abs(x2 - x1) / 2);
+    const r = Math.min(RADIUS, (y2 - y1) / 2, Math.abs(x2 - x1) / 2);
     return `M ${x1} ${y1} V ${mid - r} Q ${x1} ${mid} ${x1 + dir * r} ${mid} H ${x2 - dir * r} Q ${x2} ${mid} ${x2} ${mid + r} V ${y2}`;
   }
 
   function layout() {
-    const box = track.getBoundingClientRect();
-    const x = (rect, offset) => rect.left - box.left + offset;
-    const textBox = (step) => step.querySelector(".journey-step__body").getBoundingClientRect();
-    // Where the path runs on each side (desktop), or from the middle of each card (stacked)
-    const lineX = (step) => {
-      if (stacked.matches) {
-        const card = step.getBoundingClientRect();
-        return card.left - box.left + card.width / 2;
-      }
-      return x(textBox(step), step.classList.contains("journey-step--right") ? 73 : 140);
-    };
+    if (!stacked.matches) {
+      const box = track.getBoundingClientRect();
+      const textBox = (step) => step.querySelector(".journey-step__body").getBoundingClientRect();
+      const lineX = (step) => textBox(step).left - box.left + (step.classList.contains("journey-step--right") ? 73 : 140);
 
-    svg.setAttribute("width", box.width);
-    svg.setAttribute("height", box.height);
+      svg.setAttribute("width", box.width);
+      svg.setAttribute("height", box.height);
 
-    pieces.forEach((piece, i) => {
-      const previous = steps[i - 1];
-      const startX = lineX(previous || piece.step);
-      const endX = lineX(piece.step);
-      const from = previous
-        ? (stacked.matches ? previous.getBoundingClientRect() : textBox(previous))
-        : (stacked.matches ? intro : heading).getBoundingClientRect();
-      const startY = from.bottom - box.top + (previous || stacked.matches ? GAP : HEADING_GAP);
-      const target = stacked.matches ? piece.step.getBoundingClientRect() : textBox(piece.step);
-      const endY = target.top - box.top - GAP;
-      const d = bend(startX, startY, endX, endY);
-      [piece.base, piece.fill, piece.reveal].forEach((path) => path.setAttribute("d", d));
-      Object.entries({ x: -20, y: startY - 20, width: box.width + 40, height: endY - startY + 40 })
-        .forEach(([key, value]) => piece.mask.setAttribute(key, value));
-      piece.top = box.top + window.scrollY + startY;
-      piece.bottom = box.top + window.scrollY + endY;
-    });
+      pieces.forEach((piece, i) => {
+        const previous = steps[i - 1];
+        const startX = lineX(previous || piece.step);
+        const endX = lineX(piece.step);
+        const from = previous ? textBox(previous) : heading.getBoundingClientRect();
+        const startY = from.bottom - box.top + (previous ? GAP : HEADING_GAP);
+        const endY = textBox(piece.step).top - box.top - GAP;
+        const d = bend(startX, startY, endX, endY);
+        [piece.base, piece.fill, piece.reveal].forEach((path) => path.setAttribute("d", d));
+        Object.entries({ x: -20, y: startY - 20, width: box.width + 40, height: endY - startY + 40 })
+          .forEach(([key, value]) => piece.mask.setAttribute(key, value));
+        piece.top = box.top + window.scrollY + startY;
+        piece.bottom = box.top + window.scrollY + endY;
+      });
+    }
     update();
   }
 
   let frame = null;
 
-  // The line that drives the fill: the middle of the screen
+  // The line that drives everything: the middle of the screen
   function update() {
-    const middle = window.scrollY + window.innerHeight / 2;
+    const middle = window.innerHeight / 2;
+    if (stacked.matches) {
+      // The card whose centre is nearest the middle of the screen
+      let active = 0;
+      let nearest = Infinity;
+      steps.forEach((step, i) => {
+        const card = step.getBoundingClientRect();
+        const distance = Math.abs(card.top + card.height / 2 - middle);
+        if (distance < nearest) {
+          nearest = distance;
+          active = i;
+        }
+      });
+      counter.style.setProperty("--step", active);
+      return;
+    }
+    const line = window.scrollY + middle;
     pieces.forEach((piece) => {
-      piece.target = Math.min(1, Math.max(0, (middle - piece.top) / (piece.bottom - piece.top)));
+      piece.target = Math.min(1, Math.max(0, (line - piece.top) / (piece.bottom - piece.top)));
       piece.step.classList.toggle("is-reached", piece.target >= 1);
     });
     if (!frame) frame = requestAnimationFrame(animate);
