@@ -40,6 +40,10 @@
 }
 
 @media (min-width: 1100px) and (max-width: 1319px) {
+  .who__content .stats {
+    gap: var(--scale-800);   /* keeps each note on one line on small laptops */
+  }
+
   .about-title {
     flex-basis: auto;
     font-size: clamp(42px, 3.8vw, 53px);
@@ -122,8 +126,10 @@
 }
 
 /* Stats: big light number, unit, then a short note */
+/* Three equal columns, so number, unit and note line up across them */
 .stats {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 160px));
   gap: var(--scale-1100);
   margin: 0;
 }
@@ -132,7 +138,6 @@
   display: flex;
   flex-direction: column;
   gap: var(--scale-100);
-  max-width: 160px;
   margin: 0;
   color: var(--color-heading);
 }
@@ -702,20 +707,22 @@
   }
 
   .stats {
-    justify-content: space-between;
-    gap: var(--scale-400);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--scale-300);
   }
 
   .stat__value {
-    font-size: 44px;
-    letter-spacing: -0.9px;
+    font-size: clamp(30px, 10vw, 40px);
+    letter-spacing: -0.8px;
+    white-space: nowrap;
   }
 
   .stat__plus {
-    font-size: 36px;
+    font-size: 0.8em;
   }
 
   .stat__note {
+    max-width: 12ch;   /* every note breaks into two lines at any phone width */
     font-size: var(--body-xs-size);
     letter-spacing: 0;
   }
