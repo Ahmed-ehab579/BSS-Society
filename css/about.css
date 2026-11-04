@@ -669,7 +669,7 @@
 
   .who__content {
     width: auto;
-    padding: var(--scale-400) 0 0;
+    padding: var(--scale-400) var(--scale-600) 0;   /* text sits inside the photo's edges */
   }
 }
 
@@ -694,7 +694,7 @@
 
   .who__content {
     gap: var(--scale-800);
-    padding-top: var(--scale-300);
+    padding: var(--scale-300) var(--scale-400) 0;
   }
 
   .who__text {

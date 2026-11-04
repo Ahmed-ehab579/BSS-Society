@@ -1,5 +1,5 @@
-/* Language picker: opens from the world icon in the header. A bottom sheet on phones (drag down to
-   dismiss); a centred panel that rises into place on larger screens. Built by js/language.js. */
+/* Language picker: opens from the world icon in the header. A bottom sheet on every screen: it only ever
+   slides up from below the screen and back down (drag down to dismiss). Built by js/language.js. */
 
 html.is-sheet-open {
   overflow: hidden;
@@ -13,10 +13,12 @@ html.is-sheet-open {
   width: 100%;
   max-width: none;
   height: 100%;
+  height: 100dvh;
   max-height: none;
   margin: 0;
   padding: 0;
   overflow: hidden;
+  overflow: clip;   /* hidden would still scroll up to the off-screen sheet when it takes focus */
   border: 0;
   background: none;
 }
@@ -27,7 +29,7 @@ html.is-sheet-open {
 
 .language-dialog[open] {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
 }
 
@@ -48,17 +50,16 @@ html.is-sheet-open {
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 460px;
-  max-width: calc(100% - 2 * var(--gutter));
-  max-height: min(640px, 88vh);
+  width: 560px;
+  max-width: 100%;
+  max-height: calc(92vh - var(--sheet-lift, 0px));
+  max-height: calc(92dvh - var(--sheet-lift, 0px));
+  margin-bottom: var(--sheet-lift, 0px);   /* above the on-screen keyboard (js/language.js) */
   overflow: hidden;
-  border-radius: var(--scale-600);
+  border-radius: var(--scale-600) var(--scale-600) 0 0;
   background: var(--color-page-bg);
-  box-shadow: var(--shadow-menu);
-  opacity: 0;
-  transform: translateY(56px);
-  transition: transform var(--motion-duration-sheet-out) var(--motion-ease-expand),
-    opacity var(--motion-duration-sheet-out) var(--motion-ease-expand);
+  transform: translateY(100%);
+  transition: transform var(--motion-duration-sheet-out) var(--motion-ease-expand);
 }
 
 .language-sheet:focus {
@@ -66,10 +67,8 @@ html.is-sheet-open {
 }
 
 .language-dialog.is-open .language-sheet {
-  opacity: 1;
   transform: none;
-  transition: transform var(--motion-duration-sheet) var(--motion-ease-sheet),
-    opacity var(--motion-duration-sheet) var(--motion-ease-sheet);
+  transition: transform var(--motion-duration-sheet) var(--motion-ease-sheet);
 }
 
 .language-sheet.is-dragging {
@@ -81,19 +80,30 @@ html.is-sheet-open {
   flex-shrink: 0;
   align-items: center;
   justify-content: space-between;
-  padding: var(--scale-500) var(--scale-400) var(--scale-300) var(--scale-600);
+  padding: var(--scale-600) var(--scale-200) var(--scale-200) var(--scale-500);
+  cursor: grab;
+  touch-action: none;   /* the header drags the sheet instead of scrolling */
 }
 
-/* Drag handle: phones only */
+.language-sheet.is-dragging .language-sheet__head {
+  cursor: grabbing;
+}
+
 .language-sheet__grabber {
-  display: none;
+  position: absolute;
+  top: var(--scale-200);
+  left: calc(50% - 20px);
+  width: 40px;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--color-neutral-300);
 }
 
 .language-sheet__title {
   margin: 0;
   color: var(--color-heading);
-  font-size: var(--h5-size);
-  line-height: var(--h5-line);
+  font-size: 22px;
+  line-height: 30px;
   font-weight: var(--h5-weight);
 }
 
@@ -117,7 +127,7 @@ html.is-sheet-open {
 .language-search {
   position: relative;
   flex-shrink: 0;
-  margin: 0 var(--scale-600) var(--scale-300);
+  margin: 0 var(--scale-400) var(--scale-300);
 }
 
 .language-search__icon {
@@ -177,12 +187,12 @@ html.is-sheet-open {
   display: none;
 }
 
-/* Rows. The list keeps the height of all six, so the sheet doesn't jump while searching. */
+/* Rows. The list keeps one height, so the sheet doesn't jump while searching. */
 .language-list {
-  flex: 0 1 348px;
+  flex: 0 1 408px;
   min-height: 0;
   margin: 0;
-  padding: 0 var(--scale-300) var(--scale-300);
+  padding: 0 var(--scale-200) var(--scale-200);
   overflow-y: auto;
   overscroll-behavior: contain;
   list-style: none;
@@ -211,11 +221,7 @@ html.is-sheet-open {
   transition: background-color var(--motion-duration-hover) var(--motion-ease);
 }
 
-.language-row[aria-disabled="true"] {
-  cursor: default;
-}
-
-.language-row.is-current {
+.language-row.is-selected {
   background: var(--surface-cards);
 }
 
@@ -247,11 +253,6 @@ html.is-sheet-open {
   line-height: var(--body-xs-line);
 }
 
-.language-row[aria-disabled="true"] .language-row__name {
-  color: var(--color-text-body);
-  font-weight: var(--body-weight);
-}
-
 .language-row__status {
   flex-shrink: 0;
   color: var(--color-text-body);
@@ -260,14 +261,43 @@ html.is-sheet-open {
 }
 
 .language-row__check {
+  display: none;
   flex-shrink: 0;
   width: 20px;
   height: 20px;
 }
 
+.language-row.is-selected .language-row__check {
+  display: block;
+}
+
+.language-row.is-selected .language-row__status {
+  display: none;
+}
+
+/* Confirm stays in view while the list scrolls */
+.language-sheet__foot {
+  flex-shrink: 0;
+  padding: var(--scale-200) var(--scale-400) calc(var(--scale-400) + env(safe-area-inset-bottom));
+  border-top: var(--scale-12) solid var(--color-neutral-200);
+}
+
+.language-sheet__hint {
+  min-height: var(--body-xs-line);   /* room is kept, so the sheet doesn't move when it appears */
+  margin: 0 0 var(--scale-200);
+  color: var(--color-text-body);
+  font-size: var(--body-xs-size);
+  line-height: var(--body-xs-line);
+  text-align: center;
+}
+
+.language-sheet__confirm {
+  width: 100%;
+}
+
 /* Nothing found: same height as the list */
 .language-empty {
-  flex: 0 1 348px;
+  flex: 0 1 408px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -323,67 +353,9 @@ html.is-sheet-open {
 }
 
 @media (hover: hover) {
-  .language-row:not([aria-disabled="true"]):not(.is-current):hover,
+  .language-row:not(.is-selected):hover,
   .language-sheet__close:hover {
     background: var(--surface-cards);
-  }
-}
-
-/* Phones: a bottom sheet. --sheet-lift raises it above the on-screen keyboard (js/language.js). */
-@media (max-width: 767px) {
-  .language-dialog[open] {
-    align-items: flex-end;
-  }
-
-  .language-sheet {
-    width: 100%;
-    max-width: none;
-    max-height: calc(92vh - var(--sheet-lift, 0px));
-    max-height: calc(92dvh - var(--sheet-lift, 0px));
-    margin-bottom: var(--sheet-lift, 0px);
-    padding-bottom: env(safe-area-inset-bottom);
-    border-radius: var(--scale-600) var(--scale-600) 0 0;
-    opacity: 1;
-    transform: translateY(100%);
-    transition: transform var(--motion-duration-sheet-out) var(--motion-ease-expand);
-  }
-
-  .language-dialog.is-open .language-sheet {
-    transition: transform var(--motion-duration-sheet) var(--motion-ease-sheet);
-  }
-
-  .language-sheet__head {
-    padding: var(--scale-600) var(--scale-200) var(--scale-200) var(--scale-500);
-    cursor: grab;
-    touch-action: none;   /* the header drags the sheet instead of scrolling */
-  }
-
-  .language-sheet.is-dragging .language-sheet__head {
-    cursor: grabbing;
-  }
-
-  .language-sheet__grabber {
-    position: absolute;
-    top: var(--scale-200);
-    left: calc(50% - 20px);
-    display: block;
-    width: 40px;
-    height: 4px;
-    border-radius: var(--radius-pill);
-    background: var(--color-neutral-300);
-  }
-
-  .language-sheet__title {
-    font-size: 22px;
-    line-height: 30px;
-  }
-
-  .language-search {
-    margin-inline: var(--scale-400);
-  }
-
-  .language-list {
-    padding-inline: var(--scale-200);
   }
 }
 

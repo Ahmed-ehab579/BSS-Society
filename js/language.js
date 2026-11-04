@@ -1,6 +1,7 @@
-// Language picker on the world icon. The dialog element gives the focus trap, the inert page, Esc and the
-// Android back gesture. Only English exists so far: the other languages are listed as coming soon, and
-// setting `available: true` here is all a new one needs to become choosable.
+// Language picker on the world icon: a sheet that slides up from the bottom of the screen. Tap a language,
+// then Confirm. The dialog element gives the focus trap, the inert page, Esc and the Android back gesture.
+// Only English exists so far, so choosing another one says so and the site stays in English. A language
+// marked `available: true` here is treated as a real choice.
 (function () {
   const toggle = document.querySelector(".language-toggle");
   if (!toggle || typeof HTMLDialogElement === "undefined") return;
@@ -19,35 +20,46 @@
       terms: "arabic ar arabe arabisch egypt masr misr saudi uae العربية عربي عربية 阿拉伯语 अरबी" },
     { code: "fr", name: "Français", english: "French", flag: "fr",
       terms: "french fr francais france frances 法语 फ़्रेंच फ्रेंच فرنسي فرنسية" },
+    { code: "bn", name: "বাংলা", english: "Bengali", flag: "bd", terms: "bengali bangla bn bangladesh বাংলা বাঙালি" },
+    { code: "pt", name: "Português", english: "Portuguese", flag: "br", terms: "portuguese portugues pt brazil brasil portugal" },
+    { code: "ru", name: "Русский", english: "Russian", flag: "ru", terms: "russian ru russia русский россия روسي" },
+    { code: "ur", name: "اردو", english: "Urdu", flag: "pk", terms: "urdu ur pakistan اردو" },
+    { code: "id", name: "Bahasa Indonesia", english: "Indonesian", flag: "id", terms: "indonesian bahasa id indonesia" },
+    { code: "de", name: "Deutsch", english: "German", flag: "de", terms: "german deutsch de germany allemand" },
+    { code: "ja", name: "日本語", english: "Japanese", flag: "jp", terms: "japanese nihongo ja japan 日本語 日本" },
+    { code: "tr", name: "Türkçe", english: "Turkish", flag: "tr", terms: "turkish turkce tr turkey turkiye تركي" },
+    { code: "ko", name: "한국어", english: "Korean", flag: "kr", terms: "korean hangul ko korea 한국어 한국" },
+    { code: "vi", name: "Tiếng Việt", english: "Vietnamese", flag: "vn", terms: "vietnamese tieng viet vi vietnam" },
+    { code: "it", name: "Italiano", english: "Italian", flag: "it", terms: "italian italiano it italy" },
+    { code: "th", name: "ไทย", english: "Thai", flag: "th", terms: "thai th thailand ไทย" },
+    { code: "sw", name: "Kiswahili", english: "Swahili", flag: "tz", terms: "swahili kiswahili sw tanzania kenya" },
+    { code: "ha", name: "Hausa", flag: "ng", terms: "hausa ha nigeria" },
   ];
-  const CURRENT = "en";
+  let current = "en";    // the language the site is in
+  let selected = current; // the row picked in the sheet, until Confirm
   const DISMISS_DISTANCE = 110;   // px dragged down that closes the sheet
   const DISMISS_SPEED = 0.6;      // px per ms: a quick flick closes it from any distance
+  const KEYBOARD_MIN = 120;       // px of lost height that means a keyboard, not a toolbar
 
   const root = document.documentElement;
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const phone = window.matchMedia("(max-width: 767px)");
   const canHover = window.matchMedia("(hover: hover)");
   const CROSS = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
 
   // Case, accents and Arabic or Hindi marks don't matter: "espanol" finds Español
   const normalize = (text) => text.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase().trim();
 
-  const rows = LANGUAGES.map((language) => {
-    const unavailable = !language.available;
-    const current = language.code === CURRENT;
-    return `<li data-code="${language.code}">
-      <button class="language-row${current ? " is-current" : ""}" type="button"${current ? ' aria-current="true"' : ""}${unavailable ? ' aria-disabled="true"' : ""}>
+  const rows = LANGUAGES.map((language) => `<li role="presentation" data-code="${language.code}">
+      <button class="language-row" type="button" role="radio" aria-checked="false" tabindex="-1">
         <img class="language-row__flag" src="assets/flags/${language.flag}.svg" width="32" height="24" alt="">
         <span class="language-row__names">
           <span class="language-row__name" lang="${language.code}" dir="auto">${language.name}</span>
           ${language.english ? `<span class="language-row__english">${language.english}</span>` : ""}
         </span>
-        ${current ? '<img class="language-row__check" src="assets/icons/check.svg" width="20" height="20" alt="">' : ""}
-        ${unavailable ? '<span class="language-row__status">Coming soon</span>' : ""}
+        ${language.available ? "" : '<span class="language-row__status">Coming soon</span>'}
+        <img class="language-row__check" src="assets/icons/check.svg" width="20" height="20" alt="">
       </button>
-    </li>`;
-  }).join("");
+    </li>`).join("");
 
   const dialog = document.createElement("dialog");
   dialog.className = "language-dialog";
@@ -65,13 +77,17 @@
         <input class="language-search__input" type="text" inputmode="search" enterkeyhint="search" placeholder="Search languages" aria-label="Search languages" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
         <button class="language-search__clear" type="button" aria-label="Clear search" hidden>${CROSS}</button>
       </div>
-      <ul class="language-list" role="list">${rows}</ul>
+      <ul class="language-list" role="radiogroup" aria-labelledby="language-title">${rows}</ul>
       <div class="language-empty" hidden>
         <p class="language-empty__title"></p>
         <p class="language-empty__text">Try the name in English or in your own language.</p>
         <button class="language-empty__clear" type="button">Clear search</button>
       </div>
-      <p class="visually-hidden" role="status"></p>
+      <div class="language-sheet__foot">
+        <p class="language-sheet__hint" role="status"></p>
+        <button class="btn btn--large btn--primary language-sheet__confirm" type="button">Confirm</button>
+      </div>
+      <p class="visually-hidden" role="status" data-search-status></p>
     </div>`;
   document.body.append(dialog);
 
@@ -83,7 +99,8 @@
   const list = dialog.querySelector(".language-list");
   const empty = dialog.querySelector(".language-empty");
   const emptyTitle = dialog.querySelector(".language-empty__title");
-  const status = dialog.querySelector('[role="status"]');
+  const status = dialog.querySelector("[data-search-status]");
+  const hint = dialog.querySelector(".language-sheet__hint");
   const items = [...list.children];
   let closeTimer = null;
 
@@ -92,6 +109,28 @@
     language,
     words: normalize(`${language.name} ${language.english || ""} ${language.terms}`).split(/\s+/),
   }));
+
+  // Marks the picked row, and says so plainly when that language isn't ready yet
+  function select(code) {
+    selected = code;
+    items.forEach((item) => {
+      const row = item.querySelector(".language-row");
+      const isSelected = item.dataset.code === code;
+      row.classList.toggle("is-selected", isSelected);
+      row.setAttribute("aria-checked", String(isSelected));
+    });
+    const language = LANGUAGES.find((entry) => entry.code === code);
+    hint.textContent = language.available ? "" : `${language.english || language.name} is coming soon. The site stays in English for now.`;
+    tabStop();
+  }
+
+  // One Tab stop for the list, the arrow keys do the rest
+  function tabStop() {
+    const rowsNow = visibleRows();
+    const stop = rowsNow.find((row) => row.classList.contains("is-selected")) || rowsNow[0];
+    items.forEach((item) => { item.querySelector(".language-row").tabIndex = -1; });
+    if (stop) stop.tabIndex = 0;
+  }
 
   const visibleRows = () => items.filter((item) => !item.hidden).map((item) => item.querySelector(".language-row"));
 
@@ -110,6 +149,7 @@
     if (query) status.textContent = found.length ? `${found.length} ${found.length === 1 ? "language" : "languages"} found` : "No languages found";
     else status.textContent = "";
     list.scrollTop = 0;
+    tabStop();
   }
 
   function clearSearch() {
@@ -118,12 +158,13 @@
     input.focus();
   }
 
-  // Raises the sheet above the on-screen keyboard
+  // Raises the sheet above the on-screen keyboard. Only for a real keyboard: browser toolbars also change
+  // the visible height, and following those would make the sheet jump.
   function fitKeyboard() {
     const view = window.visualViewport;
     if (!view) return;
-    const lift = Math.max(0, Math.round(window.innerHeight - view.height - view.offsetTop));
-    sheet.style.setProperty("--sheet-lift", `${lift}px`);
+    const lift = Math.round(window.innerHeight - view.height - view.offsetTop);
+    sheet.style.setProperty("--sheet-lift", `${document.activeElement === input && lift > KEYBOARD_MIN ? lift : 0}px`);
   }
 
   function open() {
@@ -131,7 +172,9 @@
     clearTimeout(closeTimer);
     if (root.classList.contains("is-menu-open")) document.querySelector(".menu-toggle").click();
     root.classList.add("is-sheet-open");
+    select(current);
     dialog.showModal();
+    dialog.scrollTop = 0;
     toggle.setAttribute("aria-expanded", "true");
     fitKeyboard();
     window.visualViewport?.addEventListener("resize", fitKeyboard);
@@ -153,6 +196,7 @@
     backdrop.style.removeProperty("opacity");
     input.value = "";
     filter();
+    select(current);
   }
 
   function close() {
@@ -171,10 +215,18 @@
   clearButton.addEventListener("click", clearSearch);
   dialog.querySelector(".language-empty__clear").addEventListener("click", clearSearch);
   input.addEventListener("input", filter);
+  input.addEventListener("focus", fitKeyboard);
+  input.addEventListener("blur", fitKeyboard);
 
   list.addEventListener("click", (event) => {
-    const row = event.target.closest(".language-row");
-    if (row && row.getAttribute("aria-disabled") !== "true") close();
+    const item = event.target.closest("[data-code]");
+    if (item) select(item.dataset.code);
+  });
+
+  // A language that isn't ready leaves the site as it is; the hint has already said so
+  dialog.querySelector(".language-sheet__confirm").addEventListener("click", () => {
+    if (LANGUAGES.find((language) => language.code === selected).available) current = selected;
+    close();
   });
 
   // Back gesture on Android, and Esc where keydown doesn't reach us
@@ -203,11 +255,11 @@
     }
   });
 
-  // Drag the top of the sheet down to dismiss it (phones)
+  // Drag the top of the sheet down to dismiss it 
   let drag = null;
 
   head.addEventListener("pointerdown", (event) => {
-    if (!phone.matches || event.target.closest("button") || !dialog.classList.contains("is-open")) return;
+    if (event.target.closest("button") || !dialog.classList.contains("is-open")) return;
     drag = { startY: event.clientY, lastY: event.clientY, lastTime: event.timeStamp, speed: 0 };
     head.setPointerCapture(event.pointerId);
     sheet.classList.add("is-dragging");
