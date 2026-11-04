@@ -195,10 +195,60 @@
 /* ---- Our books journey: four steps zig-zagging down, joined by dashed lines. On hover a photo for
    the step fades in on the side away from the text (Figma 1214:1347, 1214:1367) -------------------- */
 
+.journey__track {
+  position: relative;
+  margin-top: 96px;                 /* room for the path coming down from the heading */
+}
+
 .journey__steps {
-  margin: var(--scale-1100) 0 0;
+  margin: 0;
   padding: 0;
   list-style: none;
+}
+
+/* The path (js/about.js): a light dashed line, with the same line in dark uncovered as the page scrolls */
+.journey-path {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.journey-path path {
+  fill: none;
+  stroke-linecap: round;
+}
+
+.journey-path__base,
+.journey-path__fill {
+  stroke-width: 2.5;
+  stroke-dasharray: 16 14;
+}
+
+.journey-path__base {
+  stroke: var(--color-neutral-300);
+}
+
+.journey-path__fill {
+  stroke: var(--color-text-on-light);
+}
+
+.journey-path__reveal {
+  stroke: #fff;
+  stroke-width: 10;
+  stroke-linecap: butt;
+  stroke-dasharray: 1 2;            /* with pathLength 1: js/about.js moves the offset from 1 to 0 */
+}
+
+/* Steps the path has not reached yet are quieter */
+.journey-step__number {
+  transition: color var(--motion-duration-hover) var(--motion-ease);
+}
+
+.has-path .journey-step:not(.is-reached) .journey-step__number {
+  color: var(--color-neutral-300);
 }
 
 .journey-step {
@@ -207,11 +257,11 @@
   gap: var(--scale-900);
   min-height: 304px;                /* the component's height, so the photo has room */
   padding-top: var(--scale-400);
-  padding-left: 10%;                /* Figma: steps 1 and 3 start at 130 / 1280 */
+  padding-left: 5%;
 }
 
 .journey-step--right {
-  padding-left: 49%;                /* steps 2 and 4 start at 630 / 1280 */
+  padding-left: 52%;
 }
 
 .journey-step + .journey-step {
@@ -284,23 +334,6 @@
     opacity: 1;
     transform: none;
   }
-}
-
-/* Dashed connector from the previous step (Figma vectors 8 and 9): it runs from under the left step
-   to the right one, and is mirrored on the way back */
-.journey-step + .journey-step::before {
-  content: "";
-  position: absolute;
-  top: -173px;
-  left: 32.4%;
-  width: 33.4%;
-  height: 157px;
-  background: url("../assets/icons/about-connector.svg") no-repeat center / 100% 100%;
-  pointer-events: none;
-}
-
-.journey-step + .journey-step:not(.journey-step--right)::before {
-  transform: scaleX(-1);
 }
 
 .journey-step__number {
@@ -529,16 +562,6 @@
     margin-top: var(--scale-1100);
   }
 
-  .journey-step + .journey-step::before,
-  .journey-step + .journey-step:not(.journey-step--right)::before {
-    top: calc(-1 * var(--scale-1100) + var(--scale-200));
-    left: 45px;
-    width: 0;
-    height: calc(var(--scale-1100) - var(--scale-400));
-    border-left: 1.5px dashed var(--color-text-on-light);
-    background: none;
-    transform: none;
-  }
 }
 
 @media (max-width: 1023px) {
@@ -641,8 +664,8 @@
     border-radius: 16px;
   }
 
-  .journey__steps {
-    margin-top: var(--scale-900);
+  .journey__track {
+    margin-top: var(--scale-1000);
   }
 
   .journey-step {
@@ -653,11 +676,6 @@
     width: 60px;
     font-size: 48px;
     letter-spacing: -1px;
-  }
-
-  .journey-step + .journey-step::before,
-  .journey-step + .journey-step:not(.journey-step--right)::before {
-    left: 30px;
   }
 
   .journey-step__body {
@@ -712,7 +730,8 @@
 @media (prefers-reduced-motion: reduce) {
   .apart-card__art,
   .commitment .benefit-card__text,
-  .journey-step__photo {
+  .journey-step__photo,
+  .journey-step__number {
     transition: none;
   }
 }
