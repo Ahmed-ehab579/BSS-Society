@@ -96,6 +96,7 @@
         }
       });
       counter.style.setProperty("--step", active);
+      steps.forEach((step, i) => step.classList.toggle("is-active", i === active));
       return;
     }
     const line = window.scrollY + middle;
