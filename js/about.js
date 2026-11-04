@@ -139,7 +139,7 @@
     return window.scrollY + card.top + card.height / 2 - window.innerHeight / 2;
   });
 
-  const paged = () => stacked.matches && !reducedMotion.matches && !document.documentElement.classList.contains("is-menu-open");
+  const paged = () => stacked.matches && !reducedMotion.matches && !document.documentElement.matches(".is-menu-open, .is-sheet-open");
 
   // Inside the section, with a card still to go in this direction. The section starts half a screen
   // early, so a scroll coming from above lands on the first card rather than past it.
