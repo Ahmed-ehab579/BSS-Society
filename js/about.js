@@ -214,3 +214,20 @@
   if (document.fonts) document.fonts.ready.then(layout);
   if ("ResizeObserver" in window) new ResizeObserver(layout).observe(track);
 })();
+
+// "What sets us apart": on phones and touch screens a card takes its hover state the first time it
+// reaches the middle of the screen, and keeps it. The CSS limits the effect to those screens.
+(function () {
+  const cards = document.querySelectorAll(".apart-card");
+  if (!cards.length || !("IntersectionObserver" in window)) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add("is-reached");
+      observer.unobserve(entry.target);
+    });
+  }, { rootMargin: "-50% 0px -50% 0px" });   // a line across the middle of the screen
+
+  cards.forEach((card) => observer.observe(card));
+})();
