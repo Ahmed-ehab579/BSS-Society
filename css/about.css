@@ -577,13 +577,22 @@
     min-height: 0;
     padding: 0;
     overflow: hidden;
-    border: 0.3px solid var(--color-neutral-400);
+    border: 0.3px solid var(--color-brand-500);
     border-radius: var(--scale-500);
     background: var(--surface-preview);
+    transition: background-color var(--motion-duration-art) var(--motion-ease-expand),
+      box-shadow var(--motion-duration-art) var(--motion-ease-expand);
+  }
+
+  /* The card in the middle of the screen: darker and lifted. Shadow only, no movement, so the card
+     keeps its exact position for the scroll stops in js/about.js. */
+  .journey-step.is-active {
+    background: var(--surface-cards-hovered-neutral);
+    box-shadow: var(--shadow-menu);
   }
 
   .journey-step + .journey-step {
-    margin-top: var(--scale-600);
+    margin-top: var(--scale-900);
   }
 
   /* The photo fills the top of the card and fades down toward the text */
@@ -779,6 +788,7 @@
   .apart-card__art,
   .commitment .benefit-card__text,
   .journey-step__photo,
+  .journey-step,
   .journey-step__number,
   .journey__counter-strip {
     transition: none;
