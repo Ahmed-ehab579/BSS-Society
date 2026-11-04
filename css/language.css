@@ -79,7 +79,6 @@ html.is-sheet-open {
 .language-sheet__head {
   display: flex;
   flex-shrink: 0;
-  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   padding: var(--scale-500) var(--scale-400) var(--scale-300) var(--scale-600);
@@ -354,7 +353,7 @@ html.is-sheet-open {
   }
 
   .language-sheet__head {
-    padding: var(--scale-200) var(--scale-200) var(--scale-200) var(--scale-500);
+    padding: var(--scale-600) var(--scale-200) var(--scale-200) var(--scale-500);
     cursor: grab;
     touch-action: none;   /* the header drags the sheet instead of scrolling */
   }
@@ -364,12 +363,12 @@ html.is-sheet-open {
   }
 
   .language-sheet__grabber {
+    position: absolute;
+    top: var(--scale-200);
+    left: calc(50% - 20px);
     display: block;
-    flex: 0 0 100%;
     width: 40px;
-    max-width: 40px;
     height: 4px;
-    margin: 0 auto var(--scale-200) calc(50% - 20px - var(--scale-200));
     border-radius: var(--radius-pill);
     background: var(--color-neutral-300);
   }

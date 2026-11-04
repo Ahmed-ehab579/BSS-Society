@@ -15,8 +15,8 @@
       terms: "hindi hi hindustani india indien हिन्दी हिंदी भारत 印地语 هندي هندية" },
     { code: "es", name: "Español", english: "Spanish", flag: "es",
       terms: "spanish es espanol castellano spain mexico espagnol 西班牙语 स्पेनिश اسباني اسبانية" },
-    { code: "ar", name: "العربية", english: "Arabic", flag: "ae",
-      terms: "arabic ar arabe arabisch egypt saudi uae العربية عربي عربية 阿拉伯语 अरबी" },
+    { code: "ar", name: "العربية", english: "Arabic", flag: "eg",
+      terms: "arabic ar arabe arabisch egypt masr misr saudi uae العربية عربي عربية 阿拉伯语 अरबी" },
     { code: "fr", name: "Français", english: "French", flag: "fr",
       terms: "french fr francais france frances 法语 फ़्रेंच फ्रेंच فرنسي فرنسية" },
   ];
