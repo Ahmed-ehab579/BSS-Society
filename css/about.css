@@ -192,7 +192,8 @@
   }
 }
 
-/* ---- Our books journey: four steps zig-zagging down, joined by dashed lines ------------------- */
+/* ---- Our books journey: four steps zig-zagging down, joined by dashed lines. On hover a photo for
+   the step fades in on the side away from the text (Figma 1214:1347, 1214:1367) -------------------- */
 
 .journey__steps {
   margin: var(--scale-1100) 0 0;
@@ -204,6 +205,8 @@
   position: relative;
   display: flex;
   gap: var(--scale-900);
+  min-height: 304px;                /* the component's height, so the photo has room */
+  padding-top: var(--scale-400);
   padding-left: 10%;                /* Figma: steps 1 and 3 start at 130 / 1280 */
 }
 
@@ -212,7 +215,75 @@
 }
 
 .journey-step + .journey-step {
-  margin-top: 190px;
+  margin-top: 160px;
+}
+
+/* Runs out to the panel's edge and melts into it toward the text. Hidden until the row is hovered:
+   the fade and a very slight settle keep the change soft. */
+.journey-step__photo {
+  --panel-pad: var(--scale-1000);   /* .section-panel padding */
+  position: absolute;
+  top: 0;
+  right: calc(-1 * var(--panel-pad));
+  bottom: 0;
+  z-index: 0;
+  width: calc(46% + var(--panel-pad));
+  overflow: hidden;
+  opacity: 0;
+  transform: scale(1.03);
+  transform-origin: 100% 50%;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 32%);
+  mask-image: linear-gradient(to right, transparent, #000 32%);
+  pointer-events: none;
+  transition: opacity var(--motion-duration-art) var(--motion-ease-expand),
+    transform var(--motion-duration-art) var(--motion-ease-expand);
+}
+
+.journey-step--right .journey-step__photo {
+  right: auto;
+  left: calc(-1 * var(--panel-pad));
+  transform-origin: 0 50%;
+  -webkit-mask-image: linear-gradient(to left, transparent, #000 32%);
+  mask-image: linear-gradient(to left, transparent, #000 32%);
+}
+
+.journey-step__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.journey-step__photo--flip img {
+  transform: scaleX(-1);
+}
+
+/* The light wash over the photo from the component */
+.journey-step__photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.journey-step__number,
+.journey-step__body {
+  position: relative;
+  z-index: 1;
+}
+
+@media (hover: hover) {
+  .journey-step:hover .journey-step__photo {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Touch screens have no hover: the photo is always there */
+@media (hover: none) {
+  .journey-step__photo {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* Dashed connector from the previous step (Figma vectors 8 and 9): it runs from under the left step
@@ -423,7 +494,35 @@
 @media (max-width: 1099px) {
   .journey-step,
   .journey-step--right {
+    flex-wrap: wrap;
+    min-height: 0;
+    padding-top: 0;
     padding-left: 0;
+  }
+
+  /* Stacked: the photo sits above its step and fades down toward the text */
+  .journey-step__photo,
+  .journey-step--right .journey-step__photo {
+    position: relative;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    flex: 0 0 100%;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    margin-bottom: calc(-1 * var(--scale-500));
+    border-radius: var(--scale-500) var(--scale-500) 0 0;
+    opacity: 1;
+    transform: none;
+    transition: none;
+    -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent);
+    mask-image: linear-gradient(to bottom, #000 62%, transparent);
+  }
+
+  .journey-step__body {
+    flex: 1;
+    min-width: 0;
   }
 
   .journey-step + .journey-step {
@@ -612,7 +711,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .apart-card__art,
-  .commitment .benefit-card__text {
+  .commitment .benefit-card__text,
+  .journey-step__photo {
     transition: none;
   }
 }
