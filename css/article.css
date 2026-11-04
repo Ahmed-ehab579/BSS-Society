@@ -118,7 +118,7 @@
   font-size: var(--h1-size);
   line-height: var(--h1-line);
   font-weight: 350;                    /* lighter than the H1 token (500), per design review */
-  margin-block: -13px;                 /* H1 line (88px) is taller than the Figma 62px lockup */
+  margin-block: -17px;                 /* H1 line (96px) is taller than the Figma 62px lockup */
 }
 
 .article-hero__meta {

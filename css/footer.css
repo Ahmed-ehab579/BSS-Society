@@ -97,16 +97,18 @@
 
 .newsletter__input::placeholder {
   color: var(--color-text-on-dark);
-  opacity: 1;
+  opacity: 0.6;   /* a hint, quieter than typed text; still about 7:1 on the footer */
 }
 
+/* Focus thickens the field's own stroke: the outline sits on top of the border, so there is one line */
 .newsletter__input:focus-visible {
   outline: 2px solid var(--color-text-on-dark);
-  outline-offset: 2px;
+  outline-offset: calc(-1 * var(--border-md));
 }
 
 .newsletter__input[aria-invalid="true"] {
   border-color: var(--color-error-on-dark);
+  outline-color: var(--color-error-on-dark);
 }
 
 .newsletter__error {

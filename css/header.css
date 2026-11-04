@@ -17,7 +17,6 @@
 .site-header__inner {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding-bottom: 11px;
 }
 
@@ -28,6 +27,7 @@
   width: 132.814px;
   height: 59.215px;
   flex-shrink: 0;
+  margin-right: auto;
 }
 
 .brand__symbol {
@@ -160,6 +160,38 @@
   }
 }
 
+/* World icon (language): after Contact Us on desktop. In menu mode it stays in the header bar beside
+   the menu button, so it sits in the same place with the menu closed or open. */
+.language-toggle {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin: 0 -10px 0 var(--scale-200);   /* the icon, not its tap area, lines up with the page edge */
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--motion-duration-hover) var(--motion-ease);
+}
+
+.language-toggle img {
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+
+@media (hover: hover) {
+  .language-toggle:hover {
+    background: var(--surface-cards);
+  }
+}
+
+.language-toggle:focus-visible,
 .site-nav__link:focus-visible,
 .menu-toggle:focus-visible {
   outline: 2px solid var(--border-color-on-light);
@@ -178,7 +210,13 @@
     overflow: hidden;
   }
 
+  .language-toggle {
+    order: 1;
+    margin: 0;
+  }
+
   .menu-toggle {
+    order: 2;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -253,12 +291,9 @@
     gap: 0;
   }
 
-  /* Menu links: larger than the desktop nav, easier to read and tap */
   .site-nav__link {
     justify-content: center;
-    height: 56px;
-    font-size: 22px;
-    line-height: 30px;
+    height: 48px;
   }
 
   /* Contact Us: full width, large button sizing, same outline style */
@@ -294,6 +329,7 @@
   .site-nav,
   .site-nav__link::after,
   .site-nav__indicator,
+  .language-toggle,
   .menu-icon__bar,
   .menu-backdrop {
     transition: none !important;

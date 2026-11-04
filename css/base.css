@@ -545,13 +545,15 @@ textarea.field__input {
   opacity: 1;
 }
 
+/* Focus thickens the field's own stroke: the outline sits on top of the border, so there is one line */
 .field__input:focus-visible {
   outline: 2px solid var(--border-color-on-light);
-  outline-offset: 2px;
+  outline-offset: -1px;
 }
 
 .field__input[aria-invalid="true"] {
   border-color: var(--color-error);
+  outline-color: var(--color-error);
 }
 
 .field__error {
