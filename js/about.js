@@ -121,6 +121,89 @@
     if (moving) frame = requestAnimationFrame(animate);
   }
 
+  // One scroll, one card (phones and tablets): any single wheel scroll or swipe inside this section
+  // glides to the next card, centring it level with the number. At the first and last card the
+  // page scrolls on normally, so nobody gets stuck. People who prefer reduced motion keep free scrolling.
+  const GLIDE = 650;        // ms for one card
+  const GESTURE_GAP = 160;  // ms of quiet that ends a wheel gesture (trackpads keep sending events)
+  const SWIPE = 24;         // px a finger must travel to count as a swipe
+  const TOLERANCE = 4;
+  let gliding = false;
+  let lastWheel = 0;
+  let touchY = null;
+  let touchTaken = false;
+
+  const cardStops = () => steps.map((step) => {
+    const card = step.getBoundingClientRect();
+    return window.scrollY + card.top + card.height / 2 - window.innerHeight / 2;
+  });
+
+  const paged = () => stacked.matches && !reducedMotion.matches && !document.documentElement.classList.contains("is-menu-open");
+
+  // Inside the section, with a card still to go in this direction. The section starts half a screen
+  // early, so a scroll coming from above lands on the first card rather than past it.
+  function inPagedArea(direction) {
+    const stops = cardStops();
+    const y = window.scrollY;
+    const first = stops[0];
+    const last = stops[stops.length - 1];
+    const reach = window.innerHeight / 2;
+    return direction > 0 ? y >= first - reach && y < last - TOLERANCE : y <= last + reach && y > first + TOLERANCE;
+  }
+
+  function glideTo(direction) {
+    const stops = cardStops();
+    const y = window.scrollY;
+    const target = direction > 0 ? stops.find((stop) => stop > y + TOLERANCE) : [...stops].reverse().find((stop) => stop < y - TOLERANCE);
+    if (target === undefined) return;
+    gliding = true;
+    const start = performance.now();
+    const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
+    const step = (now) => {
+      const t = Math.min(1, (now - start) / GLIDE);
+      window.scrollTo(0, y + (target - y) * ease(t));
+      if (t < 1) requestAnimationFrame(step);
+      else {
+        gliding = false;
+        update();   // the number always lands on the card that ends up centred
+      }
+    };
+    requestAnimationFrame(step);
+  }
+
+  window.addEventListener("wheel", (event) => {
+    if (!paged() || !event.deltaY) return;
+    const direction = Math.sign(event.deltaY);
+    const now = performance.now();
+    const newGesture = now - lastWheel > GESTURE_GAP;
+    lastWheel = now;
+    if (!gliding && !inPagedArea(direction)) return;
+    event.preventDefault();
+    if (newGesture && !gliding) glideTo(direction);
+  }, { passive: false });
+
+  window.addEventListener("touchstart", (event) => {
+    touchY = event.touches.length === 1 ? event.touches[0].clientY : null;
+    touchTaken = false;
+  }, { passive: true });
+
+  window.addEventListener("touchmove", (event) => {
+    if (touchY === null || !paged() || !event.cancelable) return;
+    const direction = Math.sign(touchY - event.touches[0].clientY);
+    if (!direction) return;
+    if (touchTaken || gliding || inPagedArea(direction)) {
+      touchTaken = true;
+      event.preventDefault();
+    }
+  }, { passive: false });
+
+  window.addEventListener("touchend", (event) => {
+    if (touchY === null) return;
+    const travel = touchY - event.changedTouches[0].clientY;
+    if (touchTaken && !gliding && Math.abs(travel) >= SWIPE) glideTo(Math.sign(travel));
+    touchY = null;
+  }, { passive: true });
+
   section.classList.add("has-path");
   layout();
   window.addEventListener("scroll", update, { passive: true });
