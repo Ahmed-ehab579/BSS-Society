@@ -1,0 +1,397 @@
+/* Language picker: opens from the world icon in the header. A bottom sheet on phones (drag down to
+   dismiss); a centred panel that rises into place on larger screens. Built by js/language.js. */
+
+html.is-sheet-open {
+  overflow: hidden;
+  scrollbar-gutter: stable;   /* the page doesn't jump sideways when the scrollbar goes */
+}
+
+.language-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  background: none;
+}
+
+.language-dialog::backdrop {
+  background: none;   /* the fading backdrop below replaces the browser's */
+}
+
+.language-dialog[open] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.language-dialog__backdrop {
+  position: absolute;
+  inset: 0;
+  background: var(--backdrop);
+  opacity: 0;
+  transition: opacity var(--motion-duration-sheet-out) var(--motion-ease);
+}
+
+.language-dialog.is-open .language-dialog__backdrop {
+  opacity: 1;
+  transition-duration: var(--motion-duration-sheet);
+}
+
+.language-sheet {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 460px;
+  max-width: calc(100% - 2 * var(--gutter));
+  max-height: min(640px, 88vh);
+  overflow: hidden;
+  border-radius: var(--scale-600);
+  background: var(--color-page-bg);
+  box-shadow: var(--shadow-menu);
+  opacity: 0;
+  transform: translateY(56px);
+  transition: transform var(--motion-duration-sheet-out) var(--motion-ease-expand),
+    opacity var(--motion-duration-sheet-out) var(--motion-ease-expand);
+}
+
+.language-sheet:focus {
+  outline: none;
+}
+
+.language-dialog.is-open .language-sheet {
+  opacity: 1;
+  transform: none;
+  transition: transform var(--motion-duration-sheet) var(--motion-ease-sheet),
+    opacity var(--motion-duration-sheet) var(--motion-ease-sheet);
+}
+
+.language-sheet.is-dragging {
+  transition: none !important;
+}
+
+.language-sheet__head {
+  display: flex;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--scale-500) var(--scale-400) var(--scale-300) var(--scale-600);
+}
+
+/* Drag handle: phones only */
+.language-sheet__grabber {
+  display: none;
+}
+
+.language-sheet__title {
+  margin: 0;
+  color: var(--color-heading);
+  font-size: var(--h5-size);
+  line-height: var(--h5-line);
+  font-weight: var(--h5-weight);
+}
+
+.language-sheet__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--color-text-on-light);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--motion-duration-hover) var(--motion-ease);
+}
+
+/* Search */
+.language-search {
+  position: relative;
+  flex-shrink: 0;
+  margin: 0 var(--scale-600) var(--scale-300);
+}
+
+.language-search__icon {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  width: 22px;
+  height: 22px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.language-search__input {
+  width: 100%;
+  height: 48px;
+  margin: 0;
+  padding: 0 48px 0 44px;
+  border: var(--border-md) solid var(--color-neutral-300);
+  border-radius: var(--radius-pill);
+  background: var(--surface-action-outline);
+  color: var(--color-text-on-light);
+  font-family: inherit;
+  font-size: var(--body-m-size);   /* 16px: smaller makes iPhones zoom in on focus */
+  line-height: var(--body-m-line);
+}
+
+.language-search__input::placeholder {
+  color: var(--color-field-placeholder);
+  opacity: 1;
+}
+
+.language-search__input:focus-visible {
+  border-color: var(--border-color-on-light);
+  outline: 2px solid var(--border-color-on-light);
+  outline-offset: -1px;
+}
+
+.language-search__clear {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--color-text-on-light);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.language-search__clear[hidden] {
+  display: none;
+}
+
+/* Rows. The list keeps the height of all six, so the sheet doesn't jump while searching. */
+.language-list {
+  flex: 0 1 348px;
+  min-height: 0;
+  margin: 0;
+  padding: 0 var(--scale-300) var(--scale-300);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  list-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.language-list[hidden] {
+  display: none;
+}
+
+.language-row {
+  display: flex;
+  align-items: center;
+  gap: var(--scale-400);
+  width: 100%;
+  min-height: 56px;
+  padding: var(--scale-200) var(--scale-300);
+  border: 0;
+  border-radius: var(--scale-300);
+  background: none;
+  color: var(--color-text-on-light);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--motion-duration-hover) var(--motion-ease);
+}
+
+.language-row[aria-disabled="true"] {
+  cursor: default;
+}
+
+.language-row.is-current {
+  background: var(--surface-cards);
+}
+
+.language-row__flag {
+  flex-shrink: 0;
+  width: 32px;
+  height: 24px;
+  border-radius: 4px;
+  box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.16);
+}
+
+.language-row__names {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.language-row__name {
+  color: var(--color-heading);
+  font-size: var(--body-m-size);
+  line-height: 22px;
+  font-weight: 500;
+}
+
+.language-row__english {
+  color: var(--color-text-body);
+  font-size: var(--body-xs-size);
+  line-height: var(--body-xs-line);
+}
+
+.language-row[aria-disabled="true"] .language-row__name {
+  color: var(--color-text-body);
+  font-weight: var(--body-weight);
+}
+
+.language-row__status {
+  flex-shrink: 0;
+  color: var(--color-text-body);
+  font-size: var(--body-xs-size);
+  line-height: var(--body-xs-line);
+}
+
+.language-row__check {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+
+/* Nothing found: same height as the list */
+.language-empty {
+  flex: 0 1 348px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--scale-200);
+  min-height: 0;
+  padding: var(--scale-400) var(--scale-600) var(--scale-800);
+  text-align: center;
+}
+
+.language-empty[hidden] {
+  display: none;
+}
+
+.language-empty__title {
+  max-width: 100%;
+  margin: 0;
+  overflow-wrap: anywhere;
+  color: var(--color-heading);
+  font-size: var(--body-m-size);
+  line-height: var(--body-m-line);
+  font-weight: 500;
+}
+
+.language-empty__text {
+  margin: 0;
+  color: var(--color-text-body);
+  font-size: var(--body-s-size);
+  line-height: var(--body-s-line);
+}
+
+.language-empty__clear {
+  margin-top: var(--scale-200);
+  padding: var(--scale-200) var(--scale-400);
+  border: 0;
+  background: none;
+  color: var(--color-text-on-light);
+  font-family: inherit;
+  font-size: var(--body-s-size);
+  line-height: var(--body-s-line);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.language-row:focus-visible,
+.language-sheet__close:focus-visible,
+.language-search__clear:focus-visible,
+.language-empty__clear:focus-visible {
+  outline: 2px solid var(--border-color-on-light);
+  outline-offset: -2px;
+}
+
+@media (hover: hover) {
+  .language-row:not([aria-disabled="true"]):not(.is-current):hover,
+  .language-sheet__close:hover {
+    background: var(--surface-cards);
+  }
+}
+
+/* Phones: a bottom sheet. --sheet-lift raises it above the on-screen keyboard (js/language.js). */
+@media (max-width: 767px) {
+  .language-dialog[open] {
+    align-items: flex-end;
+  }
+
+  .language-sheet {
+    width: 100%;
+    max-width: none;
+    max-height: calc(92vh - var(--sheet-lift, 0px));
+    max-height: calc(92dvh - var(--sheet-lift, 0px));
+    margin-bottom: var(--sheet-lift, 0px);
+    padding-bottom: env(safe-area-inset-bottom);
+    border-radius: var(--scale-600) var(--scale-600) 0 0;
+    opacity: 1;
+    transform: translateY(100%);
+    transition: transform var(--motion-duration-sheet-out) var(--motion-ease-expand);
+  }
+
+  .language-dialog.is-open .language-sheet {
+    transition: transform var(--motion-duration-sheet) var(--motion-ease-sheet);
+  }
+
+  .language-sheet__head {
+    padding: var(--scale-200) var(--scale-200) var(--scale-200) var(--scale-500);
+    cursor: grab;
+    touch-action: none;   /* the header drags the sheet instead of scrolling */
+  }
+
+  .language-sheet.is-dragging .language-sheet__head {
+    cursor: grabbing;
+  }
+
+  .language-sheet__grabber {
+    display: block;
+    flex: 0 0 100%;
+    width: 40px;
+    max-width: 40px;
+    height: 4px;
+    margin: 0 auto var(--scale-200) calc(50% - 20px - var(--scale-200));
+    border-radius: var(--radius-pill);
+    background: var(--color-neutral-300);
+  }
+
+  .language-sheet__title {
+    font-size: 22px;
+    line-height: 30px;
+  }
+
+  .language-search {
+    margin-inline: var(--scale-400);
+  }
+
+  .language-list {
+    padding-inline: var(--scale-200);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .language-dialog__backdrop,
+  .language-sheet,
+  .language-row {
+    transition: none !important;
+  }
+}

@@ -1,5 +1,5 @@
 // Site header: hide on scroll down, reveal on scroll up or when scrolling stops.
-// Mobile menu toggle with backdrop. World icon: language menu.
+// Mobile menu toggle with backdrop.
 (function () {
   const header = document.querySelector(".site-header");
   if (!header) return;
@@ -18,58 +18,7 @@
     return header.classList.contains("is-menu-open");
   }
 
-  // Language menu. The six most spoken languages, by native name. Only English exists so far, so the
-  // others are listed but can't be chosen yet.
-  const LANGUAGES = [
-    { code: "en", name: "English" },
-    { code: "zh", name: "中文" },
-    { code: "hi", name: "हिन्दी" },
-    { code: "es", name: "Español" },
-    { code: "ar", name: "العربية" },
-    { code: "fr", name: "Français" },
-  ];
-  const languageToggle = header.querySelector(".language-toggle");
-  const languageMenu = document.createElement("div");
-  languageMenu.className = "language-menu";
-  languageMenu.id = "language-menu";
-  languageMenu.innerHTML = `
-    <ul class="language-menu__list">
-      ${LANGUAGES.map(({ code, name }) => code === "en"
-        ? `<li><button class="language-menu__item is-current" type="button" lang="${code}" aria-current="true">${name}<img src="assets/icons/check.svg" width="16" height="16" alt=""></button></li>`
-        : `<li><span class="language-menu__item is-unavailable" lang="${code}">${name}</span></li>`).join("")}
-    </ul>
-    <p class="language-menu__note">More languages coming soon</p>`;
-  languageToggle.after(languageMenu);
-  languageToggle.setAttribute("aria-expanded", "false");
-  languageToggle.setAttribute("aria-controls", languageMenu.id);
-
-  function isLanguageOpen() {
-    return languageMenu.classList.contains("is-open");
-  }
-
-  function setLanguage(open) {
-    languageMenu.classList.toggle("is-open", open);
-    languageToggle.setAttribute("aria-expanded", String(open));
-    if (open) {
-      setMenu(false);
-      header.classList.remove("is-hidden");
-      languageMenu.querySelector("button").focus({ preventScroll: true });
-    }
-  }
-
-  languageToggle.addEventListener("click", () => setLanguage(!isLanguageOpen()));
-
-  languageMenu.querySelector("button").addEventListener("click", () => {
-    setLanguage(false);
-    languageToggle.focus();
-  });
-
-  document.addEventListener("click", (event) => {
-    if (isLanguageOpen() && !languageMenu.contains(event.target) && !languageToggle.contains(event.target)) setLanguage(false);
-  });
-
   function onScroll() {
-    if (isLanguageOpen()) setLanguage(false);
     const y = window.scrollY;
     const delta = y - lastY;
 
@@ -90,10 +39,7 @@
     toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
     // Closed dropdown links must not be reachable by keyboard.
     nav.inert = menuQuery.matches && !open;
-    if (open) {
-      header.classList.remove("is-hidden");
-      setLanguage(false);
-    }
+    if (open) header.classList.remove("is-hidden");
   }
 
   window.addEventListener("scroll", onScroll, { passive: true });
@@ -107,10 +53,7 @@
   });
 
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && isLanguageOpen()) {
-      setLanguage(false);
-      languageToggle.focus();
-    } else if (event.key === "Escape" && isMenuOpen()) {
+    if (event.key === "Escape" && isMenuOpen()) {
       setMenu(false);
       toggle.focus();
     }

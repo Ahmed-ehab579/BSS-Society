@@ -164,6 +164,9 @@
   --motion-duration-art: 600ms;        /* card illustrations (faster than the 1020ms in Figma, by request) */
   --motion-ease-expand: cubic-bezier(0.65, 0, 0.35, 1);   /* even ease-in-out, same pace both ways */
   --motion-ease: cubic-bezier(0.2, 0, 0, 1);
+  --motion-duration-sheet: 440ms;      /* language sheet sliding up */
+  --motion-duration-sheet-out: 300ms;  /* and away: leaving is quicker than arriving */
+  --motion-ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);   /* fast start, long soft landing */
   --motion-duration-link: 150ms;       /* Footer Link note: underline fades in over 150ms */
 }
 

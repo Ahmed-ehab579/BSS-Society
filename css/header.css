@@ -97,7 +97,7 @@
   justify-content: center;
   height: 24px;
   color: var(--color-text);
-  font-size: var(--body-m-size);
+  font-size: var(--body-l-size);
   line-height: var(--body-m-line);
   font-weight: var(--body-weight);
   white-space: nowrap;
@@ -149,6 +149,17 @@
     opacity var(--motion-duration) var(--motion-ease);
 }
 
+/* Small desktops: tighter spacing so the links fit beside the logo */
+@media (min-width: 900px) and (max-width: 1099px) {
+  .site-nav {
+    gap: var(--scale-500);
+  }
+
+  .site-nav__links {
+    gap: var(--scale-500);
+  }
+}
+
 @media (min-width: 900px) {
   .site-nav__indicator.is-visible {
     opacity: 1;
@@ -159,83 +170,6 @@
   .site-nav__indicator {
     display: none;
   }
-}
-
-/* Language menu: drops from the world icon, against the right edge of the page */
-.language-menu {
-  position: absolute;
-  top: calc(100% - var(--scale-100));
-  right: var(--gutter);
-  z-index: 1;
-  width: 232px;
-  padding: var(--scale-200);
-  border: var(--scale-12) solid var(--color-neutral-200);
-  border-radius: var(--scale-400);
-  background: var(--surface-action-outline);
-  box-shadow: var(--shadow-menu);
-  opacity: 0;
-  transform: translateY(-8px);
-  visibility: hidden;
-  transition: opacity var(--motion-duration) var(--motion-ease),
-    transform var(--motion-duration) var(--motion-ease),
-    visibility 0s linear var(--motion-duration);
-}
-
-.language-menu.is-open {
-  opacity: 1;
-  transform: none;
-  visibility: visible;
-  transition: opacity var(--motion-duration) var(--motion-ease),
-    transform var(--motion-duration) var(--motion-ease),
-    visibility 0s;
-}
-
-.language-menu__list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.language-menu__item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  min-height: 44px;
-  padding: var(--scale-200) var(--scale-300);
-  border: 0;
-  border-radius: var(--scale-200);
-  background: none;
-  color: var(--color-text);
-  font-family: inherit;
-  font-size: var(--body-m-size);
-  line-height: var(--body-m-line);
-  text-align: left;
-}
-
-.language-menu__item.is-current {
-  background: var(--surface-cards);
-  font-weight: var(--label-weight);
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.language-menu__item.is-current:focus-visible {
-  outline: 2px solid var(--border-color-on-light);
-  outline-offset: -2px;
-}
-
-.language-menu__item.is-unavailable {
-  color: var(--color-field-placeholder);
-}
-
-.language-menu__note {
-  margin: var(--scale-100) 0 0;
-  padding: var(--scale-200) var(--scale-300) var(--scale-100);
-  border-top: var(--scale-12) solid var(--color-neutral-200);
-  color: var(--color-text-body);
-  font-size: var(--body-xs-size);
-  line-height: var(--body-xs-line);
 }
 
 /* World icon (language): after Contact Us on desktop. In menu mode it stays in the header bar beside
@@ -408,7 +342,6 @@
   .site-nav__link::after,
   .site-nav__indicator,
   .language-toggle,
-  .language-menu,
   .menu-icon__bar,
   .menu-backdrop {
     transition: none !important;
