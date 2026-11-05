@@ -24,14 +24,14 @@
   color: var(--color-heading);
 }
 
-/* Desktop hero heading: 53/72, wrapper 558px (shrinks with the container) */
+/* Desktop hero heading: 53/78, wrapper 558px (shrinks with the container) */
 @media (min-width: 1100px) {
   .intro__heading {
     flex: 0 1 558px;
     min-width: 0;
     max-width: 558px;
     font-size: 53px;
-    line-height: 72px;
+    line-height: 78px;
   }
 }
 
