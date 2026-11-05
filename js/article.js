@@ -47,17 +47,18 @@
     if (frame === null) frame = requestAnimationFrame(update);
   }
 
+  // A locked topic has to be unlocked from the path first ("Unlock this article anyway"). Checked before
+  // anything starts listening, so nothing runs on a page that is about to leave.
+  if (P && !P.info(topicId).unlocked) {
+    window.location.replace("start-here.html");
+    return;
+  }
+
   window.addEventListener("scroll", request, { passive: true });
   window.addEventListener("resize", request);
   new ResizeObserver(request).observe(document.body);
 
   if (!P) { update(); return; }
-
-  // A locked topic has to be unlocked from the path first ("Unlock this article anyway").
-  if (!P.info(topicId).unlocked) {
-    window.location.replace("start-here.html");
-    return;
-  }
 
   P.start(topicId);   // opened = in progress (blue pin); only finishing completes it
 
