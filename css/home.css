@@ -429,8 +429,8 @@
 /* Explore pill: only the width changes, so the right edge and arrow stay fixed (as on Start here).
    The padding centres the arrow in the closed circle. */
 .topic-card__cta {
-  --cta-size: 48px;
-  --cta-expanded: 126px;
+  --cta-size: 52px;
+  --cta-expanded: 142px;
   --cta-inset: 25px;
   position: absolute;
   right: var(--cta-inset);
@@ -438,10 +438,10 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: var(--scale-200);
+  gap: 10px;
   width: var(--cta-size);
   height: var(--cta-size);
-  padding-inline: 9.4px;
+  padding-inline: 10.5px;
   overflow: hidden;
   border: 1.5px solid var(--color-text-on-dark);
   border-radius: var(--radius-pill);
@@ -453,9 +453,9 @@
 
 .topic-card__cta-label {
   flex: none;
-  width: 64px;
-  font-size: 18px;
-  line-height: 20.5px;
+  width: 70px;
+  font-size: 19.702px;
+  line-height: 22.496px;
   font-weight: var(--h5-weight);
   white-space: nowrap;
   opacity: 0;
@@ -464,8 +464,8 @@
 
 .topic-card__cta img {
   flex: none;
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
 }
 
 .topic-card:has(:focus-visible) .topic-card__cta {
@@ -628,42 +628,10 @@
   }
 }
 
-/* Phones: the photo, then the four benefits in two rows of two. Titles keep two lines, so the
-   descriptions start level across a row. */
-@media (max-width: 767px) {
+/* Two benefit columns get cramped on small phones */
+@media (max-width: 559px) {
   .new-muslim__benefits {
-    gap: var(--scale-300);
-  }
-
-  .new-muslim .benefit-card {
-    gap: var(--scale-300);
-    padding: var(--scale-400);
-    border-radius: 16px;
-  }
-
-  .new-muslim .benefit-card__icon {
-    width: 40px;
-    height: 40px;
-  }
-
-  .new-muslim .benefit-card__content {
-    gap: var(--scale-200);
-  }
-
-  .new-muslim .benefit-card__title {
-    min-height: 40px;
-    font-size: 15px;
-    line-height: 20px;
-    font-weight: 600;
-  }
-
-  .new-muslim .benefit-card__title br {
-    display: none;
-  }
-
-  .new-muslim .benefit-card__text {
-    font-size: 13px;
-    line-height: 19px;
+    grid-template-columns: 1fr;
   }
 }
 

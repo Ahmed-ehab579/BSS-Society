@@ -43,7 +43,7 @@
   .about-title {
     flex-basis: auto;
     font-size: clamp(42px, 3.8vw, 53px);
-    line-height: 1.36;
+    line-height: 1.47;
   }
 
   .about-title + .intro__text {
