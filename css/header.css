@@ -308,6 +308,18 @@
     height: 48px;
   }
 
+  /* The dropdown has no sliding underline, so the active link shows the same line under its text */
+  .site-nav__link.is-active {
+    width: fit-content;
+    margin-inline: auto;
+  }
+
+  .site-nav__link.is-active::after {
+    bottom: 7px;
+    opacity: 1;
+    transform: none;
+  }
+
   /* Contact Us: full width, large button sizing, same outline style */
   .site-nav__cta {
     width: 100%;
