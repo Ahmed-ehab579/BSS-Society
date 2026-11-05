@@ -308,16 +308,9 @@
     height: 48px;
   }
 
-  /* The dropdown has no sliding underline, so the active link shows the same line under its text */
+  /* No underline in the dropdown: the active link is simply bold */
   .site-nav__link.is-active {
-    width: fit-content;
-    margin-inline: auto;
-  }
-
-  .site-nav__link.is-active::after {
-    bottom: 7px;
-    opacity: 1;
-    transform: none;
+    font-weight: 700;
   }
 
   /* Contact Us: full width, large button sizing, same outline style */
