@@ -196,6 +196,14 @@
   color: var(--tone);
 }
 
+/* The primary button that closes each section: a step above the Large button */
+.section-cta {
+  height: 64px;
+  padding: var(--scale-400) var(--scale-800);
+  font-size: 18px;
+  line-height: 26px;
+}
+
 /* Start Here (panel styles: .section-panel) */
 .start__content {
   display: flex;
@@ -297,10 +305,12 @@
     width: 100%;
   }
 
-  /* Section CTAs keep the regular mobile size and pressed feedback */
+  /* Section CTAs: a smaller step of the desktop size, and pressed feedback */
   .section-cta {
-    height: 48px;
-    padding: var(--scale-300) var(--scale-600);
+    height: 56px;
+    padding: var(--scale-300) var(--scale-800);
+    font-size: var(--label-l-size);
+    line-height: var(--label-l-line);
   }
 
   .section-cta:active .btn__arrow-track {
@@ -429,8 +439,8 @@
 /* Explore pill: only the width changes, so the right edge and arrow stay fixed (as on Start here).
    The padding centres the arrow in the closed circle. */
 .topic-card__cta {
-  --cta-size: 52px;
-  --cta-expanded: 142px;
+  --cta-size: 48px;
+  --cta-expanded: 126px;
   --cta-inset: 25px;
   position: absolute;
   right: var(--cta-inset);
@@ -438,10 +448,10 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 10px;
+  gap: var(--scale-200);
   width: var(--cta-size);
   height: var(--cta-size);
-  padding-inline: 10.5px;
+  padding-inline: 9.4px;
   overflow: hidden;
   border: 1.5px solid var(--color-text-on-dark);
   border-radius: var(--radius-pill);
@@ -453,9 +463,9 @@
 
 .topic-card__cta-label {
   flex: none;
-  width: 70px;
-  font-size: 19.702px;
-  line-height: 22.496px;
+  width: 64px;
+  font-size: 18px;
+  line-height: 20.5px;
   font-weight: var(--h5-weight);
   white-space: nowrap;
   opacity: 0;
@@ -464,8 +474,8 @@
 
 .topic-card__cta img {
   flex: none;
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
 }
 
 .topic-card:has(:focus-visible) .topic-card__cta {
