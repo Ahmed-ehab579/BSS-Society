@@ -20,15 +20,6 @@
   gap: var(--scale-400);
 }
 
-.carousel__toggle [data-icon="play"],
-.carousel__toggle[data-state="paused"] [data-icon="pause"] {
-  display: none;
-}
-
-.carousel__toggle[data-state="paused"] [data-icon="play"] {
-  display: block;
-}
-
 .icon-btn--prev img {
   transform: scaleX(-1);
 }

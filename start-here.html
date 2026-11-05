@@ -13,8 +13,9 @@
   <link rel="stylesheet" href="css/language.css?v=3">
   <link rel="stylesheet" href="css/intro.css?v=4">
   <link rel="stylesheet" href="css/start-here.css?v=44">
-  <link rel="stylesheet" href="css/topics.css">
+  <link rel="stylesheet" href="css/topics.css?v=2">
   <link rel="stylesheet" href="css/footer.css?v=2">
+  <link rel="stylesheet" href="css/carousel.css">
 </head>
 <body>
   <header class="site-header">
@@ -165,10 +166,6 @@
 
           <div class="carousel" data-carousel role="region" aria-roledescription="carousel" aria-label="Topics you might be interested in">
             <div class="carousel__controls">
-              <button class="icon-btn carousel__toggle" type="button" data-carousel-toggle data-state="playing" aria-label="Pause carousel">
-                <img src="assets/icons/pause.svg" width="28" height="28" alt="" data-icon="pause">
-                <img src="assets/icons/play.svg" width="28" height="28" alt="" data-icon="play">
-              </button>
               <button class="icon-btn icon-btn--prev" type="button" data-carousel-prev aria-label="Previous topic">
                 <img src="assets/icons/arrow-right.svg" width="28" height="28" alt="">
               </button>
@@ -256,6 +253,14 @@
                 </article>
               </div>
             </div>
+            <div class="carousel__bar">
+              <button class="carousel__toggle" type="button" data-carousel-toggle data-state="playing" aria-label="Pause carousel">
+                <img src="assets/icons/carousel-pause.svg" width="20" height="20" alt="" data-icon="pause">
+                <img src="assets/icons/carousel-play.svg" width="20" height="20" alt="" data-icon="play">
+                <img src="assets/icons/carousel-replay.svg" width="20" height="20" alt="" data-icon="replay">
+              </button>
+              <div class="carousel__dots" role="group" aria-label="Choose a card" data-carousel-dots></div>
+            </div>
           </div>
         </div>
       </div>
@@ -328,7 +333,7 @@
   <script src="js/language.js?v=4"></script>
   <script src="js/progress.js?v=12"></script>
   <script src="js/journey.js?v=29"></script>
-  <script src="js/carousel.js?v=2"></script>
+  <script src="js/carousel.js?v=3"></script>
   <script src="js/forms.js"></script>
 </body>
 </html>

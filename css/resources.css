@@ -2,6 +2,7 @@
    Shared by the article and book pages. */
 .resources {
   --resources-radius: 20px;
+  --carousel-surface: var(--surface-action-outline);   /* the panel is already Surface/Cards */
   margin-top: 129px;
   padding: 65px var(--scale-500) 64px;
   border-top: var(--border-md) solid var(--color-neutral-100);
@@ -43,15 +44,6 @@
   display: flex;
   justify-content: flex-end;
   gap: var(--scale-400);
-}
-
-.carousel__toggle [data-icon="play"],
-.carousel__toggle[data-state="paused"] [data-icon="pause"] {
-  display: none;
-}
-
-.carousel__toggle[data-state="paused"] [data-icon="play"] {
-  display: block;
 }
 
 .icon-btn--prev img {
