@@ -64,42 +64,21 @@
   setMenu(false);
 })();
 
-// In-page navigation: smooth scrolling to sections (offset by the fixed header
-// through scroll-margin-top) and the active header link for the current section.
+// Header links: every link opens a page, so the active one never changes while on a page. Also the
+// smooth scroll for in-page links (offset by the fixed header through scroll-margin-top).
 (function () {
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const navLinks = [...document.querySelectorAll(".site-nav__link")];
-  const SETTLE_DELAY = 150; // ms without scroll events before a click-scroll counts as finished
 
   const pagePath = (path) => path.replace(/index\.html$/, "");
   const isThisPage = (link) =>
     link.origin === location.origin && pagePath(link.pathname) === pagePath(location.pathname);
-  // The link for the current page itself (Home on the homepage, Start here on its own page), or for a
-  // sub-page the section link its markup marks active (New muslim on the step pages).
-  const homeLink = navLinks.find((link) => !link.hash && isThisPage(link))
-    || navLinks.find((link) => !link.hash && link.classList.contains("is-active"));
+  // The link for this page, or for pages with no link of their own the section their markup marks
+  // active (New muslim on the step pages, Start here on articles).
+  const activeLink = navLinks.find(isThisPage) || navLinks.find((link) => link.classList.contains("is-active")) || null;
 
-  // Sections in page order, each with its header link (null when it has none, e.g. Contact).
-  const sections = [...document.querySelectorAll("main section[id]")].map((section) => ({
-    section,
-    link: navLinks.find((link) => link.hash === `#${section.id}`) || null,
-  }));
-
-  let lockedLink;
-  let settleTimer;
-  let frame;
-
-  function setActive(active) {
-    navLinks.forEach((link) => {
-      const isActive = link === active;
-      link.classList.toggle("is-active", isActive);
-      if (link !== homeLink) {
-        if (isActive) link.setAttribute("aria-current", "location");
-        else link.removeAttribute("aria-current");
-      }
-    });
-    moveIndicator(active);
-  }
+  navLinks.forEach((link) => link.classList.toggle("is-active", link === activeLink));
+  if (activeLink && !activeLink.hasAttribute("aria-current")) activeLink.setAttribute("aria-current", "page");
 
   // One underline for the whole nav (desktop) that slides to the active link. Clicking a link to
   // another page slides it there first, then opens the page with the underline already in place; other
@@ -129,7 +108,7 @@
     }
   }
 
-  const startLink = navLinks.find((link) => link.classList.contains("is-active")) || null;
+  const startLink = activeLink;
   let fromLink = null;
   try {
     const label = sessionStorage.getItem(LAST_KEY);
@@ -155,7 +134,7 @@
   const desktopNav = window.matchMedia("(min-width: 900px)");
   let leaving = false;
   navLinks.forEach((link) => link.addEventListener("click", (event) => {
-    if (link.hash || isThisPage(link) || event.defaultPrevented || event.button !== 0 ||
+    if (isThisPage(link) || event.defaultPrevented || event.button !== 0 ||
       event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     try { sessionStorage.setItem(LAST_KEY, link.dataset.label); } catch (error) { /* storage unavailable */ }
     if (!desktopNav.matches || reduceMotion.matches || link === indicatorLink) return;
@@ -172,7 +151,7 @@
   window.addEventListener("pageshow", (event) => {
     if (!event.persisted) return;
     leaving = false;
-    moveIndicator(navLinks.find((link) => link.classList.contains("is-active")) || null, { instant: true });
+    moveIndicator(activeLink, { instant: true });
   });
 
   // Remember where the underline was when leaving for another page
@@ -184,43 +163,7 @@
     } catch (error) { /* storage unavailable */ }
   });
 
-
-  // Active section: the last one whose top has passed a line a third of the
-  // way down the visible area below the header.
-  function currentLink() {
-    const header = document.querySelector(".site-header");
-    const line = header.offsetHeight + (window.innerHeight - header.offsetHeight) / 3;
-    let active = homeLink;
-    sections.forEach(({ section, link }) => {
-      if (section.getBoundingClientRect().top <= line) active = link;
-    });
-    return active;
-  }
-
-  function update() {
-    frame = null;
-    if (!lockedLink) setActive(currentLink());
-  }
-
-  // A click-triggered scroll keeps the clicked link active until scrolling settles.
-  function release() {
-    lockedLink = null;
-    update();
-  }
-
-  window.addEventListener("scroll", () => {
-    if (lockedLink) {
-      clearTimeout(settleTimer);
-      settleTimer = setTimeout(release, SETTLE_DELAY);
-    } else if (!frame) {
-      frame = requestAnimationFrame(update);
-    }
-  }, { passive: true });
-
-  window.addEventListener("resize", () => {
-    moveIndicator(indicatorLink, { instant: true });
-    if (!frame) frame = requestAnimationFrame(update);
-  });
+  window.addEventListener("resize", () => moveIndicator(indicatorLink, { instant: true }));
 
   document.addEventListener("click", (event) => {
     const link = event.target.closest("a[href]");
@@ -235,15 +178,5 @@
     if (target === document.body) window.scrollTo({ top: 0, behavior });
     else target.scrollIntoView({ behavior, block: "start" });
     history.pushState(null, "", link.hash || pagePath(location.pathname));
-
-    const entry = target === document.body ? { link: homeLink } : sections.find((s) => s.section === target);
-    if (entry) {
-      lockedLink = entry.link;
-      setActive(lockedLink);
-      clearTimeout(settleTimer);
-      settleTimer = setTimeout(release, SETTLE_DELAY * 4); // in case no scroll is needed
-    }
   });
-
-  update();
 })();
