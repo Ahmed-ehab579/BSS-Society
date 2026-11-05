@@ -363,8 +363,8 @@
   --text-left: 24.9px;
   --text-width: min(254.494px, 100% - 2 * var(--text-left));
   position: relative;
-  flex: 0 0 332px;
-  height: 461px;
+  flex: 0 0 300px;
+  height: 417px;
   overflow: hidden;
   border-radius: 26.957px;
   color: var(--color-text-on-dark);
@@ -414,86 +414,87 @@
   color: var(--color-topic-text);
 }
 
-/* Explore pill (Button: Default circle / expand). One inset all round (the text's left margin):
-   closed it is a 52px circle in the bottom-right corner; opened (hover, keyboard focus, touch) it
-   spans the card between equal side margins, with "Explore" and the arrow centred together. The
-   label's width and the gap grow from 0 as it opens. */
+/* Explore pill: only the width changes, so the right edge and arrow stay fixed (as on Start here).
+   The padding centres the arrow in the closed circle. */
 .topic-card__cta {
-  --cta-size: 52px;
+  --cta-size: 48px;
+  --cta-expanded: 126px;
+  --cta-inset: 25px;
   position: absolute;
-  right: var(--text-left);
-  bottom: var(--text-left);
+  right: var(--cta-inset);
+  bottom: var(--cta-inset);
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0;
+  justify-content: flex-end;
+  gap: var(--scale-200);
   width: var(--cta-size);
   height: var(--cta-size);
-  padding-inline: 0;
+  padding-inline: 9.4px;
   overflow: hidden;
-  border: 1.624px solid var(--color-text-on-dark);
+  border: 1.5px solid var(--color-text-on-dark);
   border-radius: var(--radius-pill);
   background: rgba(59, 59, 59, 0);
   color: var(--color-text-on-dark);
   transition: width var(--motion-duration-hover) var(--motion-ease),
-    gap var(--motion-duration-hover) var(--motion-ease),
     background-color var(--motion-duration-hover) var(--motion-ease);
 }
 
 .topic-card__cta-label {
   flex: none;
-  max-width: 0;
-  overflow: hidden;
-  font-size: 19.702px;
-  line-height: 22.496px;
+  width: 64px;
+  font-size: 18px;
+  line-height: 20.5px;
   font-weight: var(--h5-weight);
   white-space: nowrap;
   opacity: 0;
-  transition: max-width var(--motion-duration-hover) var(--motion-ease),
-    opacity var(--motion-duration-hover) var(--motion-ease);
+  transition: opacity var(--motion-duration-hover) var(--motion-ease);
 }
 
 .topic-card__cta img {
   flex: none;
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
 }
 
-.topic-card:focus-within .topic-card__cta {
-  width: calc(100% - 2 * var(--text-left));
-  gap: 10.188px;
+.topic-card:has(:focus-visible) .topic-card__cta {
+  width: var(--cta-expanded);
   background: rgba(59, 59, 59, 0.26);
 }
 
-.topic-card:focus-within .topic-card__cta-label {
-  max-width: 70px;
+.topic-card:has(:focus-visible) .topic-card__cta-label {
   opacity: 1;
 }
 
 @media (hover: hover) {
   .topic-card:hover .topic-card__cta {
-    width: calc(100% - 2 * var(--text-left));
-    gap: 10.188px;
+    width: var(--cta-expanded);
     background: rgba(59, 59, 59, 0.26);
   }
 
   .topic-card:hover .topic-card__cta-label {
-    max-width: 70px;
     opacity: 1;
   }
 }
 
-/* Touch and other non-hover input: opened by default */
+/* Touch and other non-hover input: stays open across the card */
 @media (hover: none) {
   .topic-card__cta {
+    justify-content: center;
     width: calc(100% - 2 * var(--text-left));
-    gap: 10.188px;
+    padding-inline: 0;
     background: rgba(59, 59, 59, 0.26);
   }
 
   .topic-card__cta-label {
-    max-width: 70px;
+    width: 70px;
+    font-size: 19.702px;
+    line-height: 22.496px;
     opacity: 1;
+  }
+
+  .topic-card__cta img {
+    width: 28px;
+    height: 28px;
   }
 }
 
@@ -606,7 +607,7 @@
   }
 
   .topic-card__cta {
-    --cta-size: 48px;
+    --cta-inset: 20px;
   }
 
   .topic-card__text {

@@ -12,10 +12,10 @@
   <link rel="stylesheet" href="css/header.css?v=9">
   <link rel="stylesheet" href="css/language.css?v=3">
   <link rel="stylesheet" href="css/benefit-card.css">
-  <link rel="stylesheet" href="css/home.css?v=11">
+  <link rel="stylesheet" href="css/home.css?v=12">
   <link rel="stylesheet" href="css/contact.css">
   <link rel="stylesheet" href="css/footer.css?v=2">
-  <link rel="stylesheet" href="css/carousel.css">
+  <link rel="stylesheet" href="css/carousel.css?v=2">
 </head>
 <body>
   <header class="site-header">
@@ -119,7 +119,7 @@
           </div>
 
           <div class="start__cards">
-            <a class="guide-card" href="#">
+            <a class="guide-card" href="start-here.html">
               <div class="guide-card__content">
                 <h3 class="text-h4">Follow <br>a guided path</h3>
                 <p class="text-body-l guide-card__text">tart with carefully selected books, articles, and videos in an order that makes the basics easier to understand.</p>
@@ -128,7 +128,7 @@
                 <img src="assets/images/card-mosque.jpg" width="329" height="288" alt="" loading="lazy">
               </div>
             </a>
-            <a class="guide-card" href="#">
+            <a class="guide-card" href="library.html">
               <div class="guide-card__content">
                 <h3 class="text-h4">Explore by topic that matter</h3>
                 <p class="text-body-l guide-card__text">Choose a subject such as God, the Qur’an, Prophet Muhammad, or everyday Muslim life, and find related resources in the library.</p>
@@ -185,7 +185,7 @@
                     <h3 class="text-h4 topic-card__title">Belief &amp; Faith</h3>
                     <p class="text-body-m topic-card__desc">Understanding God, purpose, and the foundations of Islamic belief.</p>
                   </div>
-                  <!-- Explore pill: becomes the card's single link once Library topic pages exist -->
+                  <a class="topic-card__link" href="library.html?category=belief" draggable="false" aria-label="Explore Belief &amp; Faith"></a>
                   <span class="topic-card__cta" aria-hidden="true">
                     <span class="topic-card__cta-label">Explore</span>
                     <img src="assets/icons/arrow-up-right-explore.svg" width="26.9436" height="26.9436" alt="">
@@ -200,7 +200,7 @@
                     <h3 class="text-h4 topic-card__title">The Qur’an</h3>
                     <p class="text-body-m topic-card__desc">Exploring the Qur’an, its message, and how Muslims engage with it.</p>
                   </div>
-                  <!-- Explore pill: becomes the card's single link once Library topic pages exist -->
+                  <a class="topic-card__link" href="library.html?category=quran" draggable="false" aria-label="Explore The Qur’an"></a>
                   <span class="topic-card__cta" aria-hidden="true">
                     <span class="topic-card__cta-label">Explore</span>
                     <img src="assets/icons/arrow-up-right-explore.svg" width="26.9436" height="26.9436" alt="">
@@ -215,7 +215,7 @@
                     <h3 class="text-h4 topic-card__title">Prophet Muhammad</h3>
                     <p class="text-body-m topic-card__desc">Learning from his life, character, and the message he shared.</p>
                   </div>
-                  <!-- Explore pill: becomes the card's single link once Library topic pages exist -->
+                  <a class="topic-card__link" href="library.html?category=prophet" draggable="false" aria-label="Explore Prophet Muhammad"></a>
                   <span class="topic-card__cta" aria-hidden="true">
                     <span class="topic-card__cta-label">Explore</span>
                     <img src="assets/icons/arrow-up-right-explore.svg" width="26.9436" height="26.9436" alt="">
@@ -230,7 +230,7 @@
                     <h3 class="text-h4 topic-card__title">Women in Islam</h3>
                     <p class="text-body-m topic-card__desc">How islam honored women 1400 years ago, and gave her her rights</p>
                   </div>
-                  <!-- Explore pill: becomes the card's single link once Library topic pages exist -->
+                  <a class="topic-card__link" href="library.html?category=women" draggable="false" aria-label="Explore Women in Islam"></a>
                   <span class="topic-card__cta" aria-hidden="true">
                     <span class="topic-card__cta-label">Explore</span>
                     <img src="assets/icons/arrow-up-right-explore.svg" width="26.9436" height="26.9436" alt="">
@@ -245,7 +245,7 @@
                     <h3 class="text-h4 topic-card__title">Life &amp; Questions</h3>
                     <p class="text-body-m topic-card__desc">Thoughtful resources about family, women, daily life, and common questions.</p>
                   </div>
-                  <!-- Explore pill: becomes the card's single link once Library topic pages exist -->
+                  <a class="topic-card__link" href="library.html?category=life" draggable="false" aria-label="Explore Life &amp; Questions"></a>
                   <span class="topic-card__cta" aria-hidden="true">
                     <span class="topic-card__cta-label">Explore</span>
                     <img src="assets/icons/arrow-up-right-explore.svg" width="26.9436" height="26.9436" alt="">
@@ -441,7 +441,7 @@
   <script src="js/base.js"></script>
   <script src="js/header.js?v=7"></script>
   <script src="js/language.js?v=4"></script>
-  <script src="js/carousel.js?v=3"></script>
+  <script src="js/carousel.js?v=4"></script>
   <script src="js/forms.js"></script>
 </body>
 </html>
