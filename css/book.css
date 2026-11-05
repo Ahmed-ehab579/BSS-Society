@@ -24,9 +24,18 @@
   aspect-ratio: 567 / 647;
   margin: 0;
   overflow: hidden;
-  border: var(--scale-12) solid var(--color-neutral-400);
   border-radius: var(--book-radius);
   background: var(--surface-cards);
+}
+
+/* The stroke sits above the photo: a border behind it disappears in the rounded corners */
+.book__cover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: var(--border-md) solid var(--color-neutral-400);
+  border-radius: inherit;
+  pointer-events: none;
 }
 
 .book__cover img {
@@ -380,7 +389,8 @@
   }
 
   .book__cover {
-    position: static;
+    position: relative;
+    top: auto;
     width: min(100%, 480px);
     margin-inline: auto;
   }
