@@ -1,5 +1,7 @@
-// Language picker on the world icon: a sheet that slides up from the bottom of the screen. Tap a language,
-// then Confirm. The dialog element gives the focus trap, the inert page, Esc and the Android back gesture.
+// Language picker on the world icon. Phones: a sheet that slides up from the bottom of the screen; tap a
+// language, then Confirm. The modal dialog gives the focus trap, the inert page, Esc and the Android back
+// gesture. Wider screens: a dropdown under the icon that leaves the page usable, and a click on a language
+// applies it straight away.
 // Only English exists so far, so choosing another one says so and the site stays in English. A language
 // marked `available: true` here is treated as a real choice.
 (function () {
@@ -44,6 +46,9 @@
   const root = document.documentElement;
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const canHover = window.matchMedia("(hover: hover)");
+  const wideScreen = window.matchMedia("(min-width: 768px)");
+  const DROPDOWN_GAP = 8;         // px between the icon and the dropdown
+  const DROPDOWN_CLOSE = 150;     // ms, matches --motion-duration-link in css/language.css
   const CROSS = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
 
   // Case, accents and Arabic or Hindi marks don't matter: "espanol" finds Español
@@ -103,6 +108,7 @@
   const hint = dialog.querySelector(".language-sheet__hint");
   const items = [...list.children];
   let closeTimer = null;
+  let isDropdown = false;
 
   const search = LANGUAGES.map((language) => ({
     item: items.find((item) => item.dataset.code === language.code),
@@ -162,7 +168,7 @@
   // the visible height, and following those would make the sheet jump.
   function fitKeyboard() {
     const view = window.visualViewport;
-    if (!view) return;
+    if (!view || isDropdown) return;
     const lift = Math.round(window.innerHeight - view.height - view.offsetTop);
     sheet.style.setProperty("--sheet-lift", `${document.activeElement === input && lift > KEYBOARD_MIN ? lift : 0}px`);
   }
@@ -171,9 +177,19 @@
     if (dialog.open) return;
     clearTimeout(closeTimer);
     if (root.classList.contains("is-menu-open")) document.querySelector(".menu-toggle").click();
-    root.classList.add("is-sheet-open");
+    isDropdown = wideScreen.matches;
+    dialog.classList.toggle("is-dropdown", isDropdown);
     select(current);
-    dialog.showModal();
+    if (isDropdown) {
+      placeDropdown();
+      dialog.show();
+      document.addEventListener("pointerdown", closeFromOutside);
+      window.addEventListener("scroll", closeWithoutFocus, { passive: true });
+      window.addEventListener("resize", placeDropdown);
+    } else {
+      root.classList.add("is-sheet-open");
+      dialog.showModal();
+    }
     dialog.scrollTop = 0;
     toggle.setAttribute("aria-expanded", "true");
     fitKeyboard();
@@ -185,11 +201,29 @@
     dialog.classList.add("is-open");
   }
 
-  function finish() {
+  // Under the icon, its right edge lined up with the icon's
+  function placeDropdown() {
+    const icon = toggle.getBoundingClientRect();
+    dialog.style.setProperty("--dropdown-top", `${Math.round(icon.bottom + DROPDOWN_GAP)}px`);
+    dialog.style.setProperty("--dropdown-right", `${Math.round(root.clientWidth - icon.right)}px`);
+  }
+
+  function closeFromOutside(event) {
+    if (!sheet.contains(event.target) && !toggle.contains(event.target)) closeWithoutFocus();
+  }
+
+  function closeWithoutFocus() {
+    close({ returnFocus: false });
+  }
+
+  function finish(returnFocus = true) {
     window.visualViewport?.removeEventListener("resize", fitKeyboard);
     window.visualViewport?.removeEventListener("scroll", fitKeyboard);
+    document.removeEventListener("pointerdown", closeFromOutside);
+    window.removeEventListener("scroll", closeWithoutFocus);
+    window.removeEventListener("resize", placeDropdown);
     dialog.close();
-    toggle.focus({ preventScroll: true });   // Safari doesn't focus a tapped button by itself
+    if (returnFocus) toggle.focus({ preventScroll: true });   // Safari doesn't focus a tapped button by itself
     root.classList.remove("is-sheet-open");
     toggle.setAttribute("aria-expanded", "false");
     sheet.style.removeProperty("transform");
@@ -199,19 +233,24 @@
     select(current);
   }
 
-  function close() {
+  function close({ returnFocus = true } = {}) {
     if (!dialog.open || !dialog.classList.contains("is-open")) return;
     dialog.classList.remove("is-open");
     sheet.classList.remove("is-dragging");
     sheet.style.removeProperty("transform");
     backdrop.style.removeProperty("opacity");
     const duration = parseFloat(getComputedStyle(root).getPropertyValue("--motion-duration-sheet-out"));
-    closeTimer = setTimeout(finish, reducedMotion.matches ? 0 : duration);
+    const time = isDropdown ? DROPDOWN_CLOSE : duration;
+    closeTimer = setTimeout(() => finish(returnFocus), reducedMotion.matches ? 0 : time);
   }
 
-  toggle.addEventListener("click", open);
-  backdrop.addEventListener("click", close);
-  dialog.querySelector(".language-sheet__close").addEventListener("click", close);
+  toggle.addEventListener("click", () => {
+    if (dialog.classList.contains("is-open")) close();
+    else open();
+  });
+  backdrop.addEventListener("click", () => close());
+  dialog.querySelector(".language-sheet__close").addEventListener("click", () => close());
+  wideScreen.addEventListener("change", () => close({ returnFocus: false }));   // the two layouts differ
   clearButton.addEventListener("click", clearSearch);
   dialog.querySelector(".language-empty__clear").addEventListener("click", clearSearch);
   input.addEventListener("input", filter);
@@ -220,7 +259,17 @@
 
   list.addEventListener("click", (event) => {
     const item = event.target.closest("[data-code]");
-    if (item) select(item.dataset.code);
+    if (!item) return;
+    select(item.dataset.code);
+    if (isDropdown && LANGUAGES.find((language) => language.code === selected).available) {
+      current = selected;
+      close();
+    }
+  });
+
+  // Tabbing out of the dropdown closes it
+  dialog.addEventListener("focusout", (event) => {
+    if (isDropdown && event.relatedTarget && !dialog.contains(event.relatedTarget)) closeWithoutFocus();
   });
 
   // A language that isn't ready leaves the site as it is; the hint has already said so

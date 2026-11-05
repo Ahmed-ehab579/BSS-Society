@@ -23,6 +23,10 @@
   color: var(--color-heading);
 }
 
+.hero__break {
+  display: none;
+}
+
 .hero__intro {
   display: flex;
   flex-direction: column;
@@ -77,7 +81,11 @@
     gap: var(--scale-600);
   }
 
-  .hero__intro {
+  .hero__break {
+  display: none;
+}
+
+.hero__intro {
     width: auto;
     gap: var(--scale-800);
     padding-top: 0;
@@ -101,6 +109,10 @@
   .hero__heading {
     font-size: 36px;
     line-height: 52px;
+  }
+
+  .hero__break {
+    display: inline;
   }
 
   .hero__text {
@@ -585,7 +597,7 @@
 
 @media (max-width: 767px) {
   .library__content {
-    gap: var(--scale-800);
+    gap: var(--scale-1000);
   }
 
   .carousel {

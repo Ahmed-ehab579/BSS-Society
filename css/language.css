@@ -1,5 +1,6 @@
-/* Language picker: opens from the world icon in the header. A bottom sheet on every screen: it only ever
-   slides up from below the screen and back down (drag down to dismiss). Built by js/language.js. */
+/* Language picker: opens from the world icon in the header. Built by js/language.js.
+   Phones: a bottom sheet that slides up from below the screen (drag down to dismiss).
+   Wider screens: a dropdown under the icon (.is-dropdown, at the end of this file). */
 
 html.is-sheet-open {
   overflow: hidden;
@@ -359,9 +360,91 @@ html.is-sheet-open {
   }
 }
 
+/* Dropdown: stays beside the page instead of covering it. Picking a language applies it straight away,
+   so there is no title, close button or Confirm; a click outside, Esc or scrolling closes it. */
+.language-dialog.is-dropdown {
+  inset: var(--dropdown-top, 0) var(--dropdown-right, 0) auto auto;
+  display: block;
+  width: 340px;
+  max-width: calc(100vw - 2 * var(--scale-400));
+  height: auto;
+  overflow: visible;
+}
+
+.is-dropdown .language-dialog__backdrop,
+.is-dropdown .language-sheet__head,
+.is-dropdown .language-sheet__confirm {
+  display: none;
+}
+
+.is-dropdown .language-sheet {
+  width: 100%;
+  max-height: min(520px, calc(100vh - var(--dropdown-top, 0px) - var(--scale-400)));
+  margin: 0;
+  padding-top: var(--scale-300);
+  border: var(--border-md) solid var(--color-neutral-100);
+  border-radius: var(--scale-400);
+  box-shadow: var(--shadow-menu);
+  opacity: 0;
+  transform: translateY(-6px);
+  transform-origin: top right;
+  transition: opacity var(--motion-duration-link) var(--motion-ease),
+    transform var(--motion-duration-link) var(--motion-ease);
+}
+
+.language-dialog.is-dropdown.is-open .language-sheet {
+  opacity: 1;
+  transform: none;
+  transition: opacity var(--motion-duration) var(--motion-ease),
+    transform var(--motion-duration) var(--motion-ease);
+}
+
+.is-dropdown .language-search {
+  margin-inline: var(--scale-300);
+}
+
+.is-dropdown .language-search__input {
+  height: 44px;
+}
+
+.is-dropdown .language-search__clear {
+  width: 40px;
+  height: 40px;
+}
+
+.is-dropdown .language-list {
+  flex: 1 1 auto;
+}
+
+.is-dropdown .language-empty {
+  flex: 0 0 240px;
+}
+
+.is-dropdown .language-row {
+  min-height: 48px;
+  gap: var(--scale-300);
+}
+
+/* The note for a language that isn't ready, only when there is one */
+.is-dropdown .language-sheet__foot {
+  padding: 0;
+  border: 0;
+}
+
+.is-dropdown .language-sheet__hint {
+  min-height: 0;
+  margin: 0;
+}
+
+.is-dropdown .language-sheet__hint:not(:empty) {
+  padding: var(--scale-200) var(--scale-400) var(--scale-300);
+  border-top: var(--scale-12) solid var(--color-neutral-200);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .language-dialog__backdrop,
   .language-sheet,
+  .language-dialog.is-dropdown.is-open .language-sheet,
   .language-row {
     transition: none !important;
   }
