@@ -210,8 +210,15 @@
   cursor: default;
 }
 
+/* The button's link covers the whole card, so a click anywhere opens it */
 .resource-card__action[href] {
   cursor: pointer;
+}
+
+.resource-card__action[href]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
 }
 
 .resource-card__action .btn__arrow-clip,

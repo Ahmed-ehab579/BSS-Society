@@ -21,7 +21,7 @@
 
 .resources__head {
   padding-bottom: var(--scale-500);
-  border-bottom: var(--border-md) solid var(--color-neutral-400);
+  border-bottom: var(--border-md) solid var(--color-neutral-200);
 }
 
 .resources__heading {
@@ -209,7 +209,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--scale-200) var(--scale-400);
+  padding: var(--scale-300) var(--scale-400);
   border-radius: 999px;
   background: var(--surface-action-primary);
   font-size: var(--label-s-size);

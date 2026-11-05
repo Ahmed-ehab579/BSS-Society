@@ -1,6 +1,7 @@
 // Moving card rows. One card leads for a few seconds while its dot fills, then the row glides on to the
 // next. After one full round it comes to rest on the first card and the button offers Replay, so nothing
-// moves forever. Pausing, the dots, the arrows, swiping or keyboard focus hand control to the visitor.
+// moves forever. Pausing, the dots, the arrows, swiping or keyboard focus hand control to the visitor,
+// and a swipe carries on from the finger at the speed it left, slowing into place.
 // The slide set is cloned once so the row loops without a visible jump; clones are hidden from screen
 // readers and keyboard focus.
 document.querySelectorAll("[data-carousel]").forEach((root) => {
@@ -12,9 +13,13 @@ document.querySelectorAll("[data-carousel]").forEach((root) => {
   const dotsBox = root.querySelector("[data-carousel-dots]");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-  const WAIT = 6000;          // ms each card leads
+  const WAIT = 5000;          // ms each card leads
   const GLIDE = 700;          // ms to move on to the next card
   const DRAG_THRESHOLD = 6;   // px before a pointer move counts as a swipe
+  const FLICK = 0.25;         // px per ms: a release this fast moves on, however short the swipe
+  const SETTLE_MIN = 220;     // ms, the shortest and longest a released card takes to settle
+  const SETTLE_MAX = 420;
+  const STILL = 80;           // ms without movement before release: the finger had stopped
 
   // Clones copy attributes in markup order, so slide images list loading="lazy"
   // before src; otherwise each clone starts an eager download.
@@ -48,16 +53,17 @@ document.querySelectorAll("[data-carousel]").forEach((root) => {
   let state = reduceMotion.matches ? "paused" : "playing";   // playing, paused or ended
   let waited = 0;            // ms the current card has led
   let moved = 0;             // cards passed in this round
-  let hoverHold = false;
   let inView = false;
   let isStatic = false;      // every card fits, so there is nothing to move
   let anim = null;
   let drag = null;
   let suppressClick = false;
+  let lastWidth = 0;
   let raf = null;
   let lastTime = null;
 
   const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
+  const easeOut = (t) => 1 - (1 - t) ** 3;
   const wrap = (value, size) => ((value % size) + size) % size;
   const activeDot = () => dots[wrap(index, slides.length)];
 
@@ -77,6 +83,8 @@ document.querySelectorAll("[data-carousel]").forEach((root) => {
   }
 
   function measure() {
+    if (viewport.clientWidth === lastWidth) return;   // only the height changed: leave a swipe alone
+    lastWidth = viewport.clientWidth;
     const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
     root.classList.remove("is-static");
     step = slides[0].getBoundingClientRect().width + gap;
@@ -96,7 +104,7 @@ document.querySelectorAll("[data-carousel]").forEach((root) => {
   }
 
   function isCounting() {
-    return state === "playing" && !hoverHold && inView && !document.hidden && !isStatic;
+    return state === "playing" && inView && !document.hidden && !isStatic;
   }
 
   function frame(now) {
@@ -104,8 +112,8 @@ document.querySelectorAll("[data-carousel]").forEach((root) => {
     lastTime = now;
 
     if (anim) {
-      const t = anim.duration ? Math.min(1, (now - anim.start) / anim.duration) : 1;
-      offset = anim.from + (anim.to - anim.from) * easeInOut(t);
+      const t = anim.duration ? Math.min(1, Math.max(0, now - anim.start) / anim.duration) : 1;
+      offset = anim.from + (anim.to - anim.from) * anim.ease(t);
       if (t === 1) anim = null;
       render();
     } else if (!drag && isCounting()) {
@@ -126,14 +134,15 @@ document.querySelectorAll("[data-carousel]").forEach((root) => {
     if (raf === null) raf = requestAnimationFrame(frame);
   }
 
-  function glideTo(target) {
+  function glideTo(target, duration = GLIDE, ease = easeInOut) {
     index = target;
     waited = 0;
     anim = {
       from: offset,
       to: index * step,
       start: performance.now(),
-      duration: reduceMotion.matches ? 0 : GLIDE,
+      duration: reduceMotion.matches ? 0 : duration,
+      ease,
     };
     showDot();
     kick();
@@ -190,21 +199,13 @@ document.querySelectorAll("[data-carousel]").forEach((root) => {
     setState("playing");
   });
 
-  // Desktop hover only holds the timer, so a card can be read without losing the place.
-  root.addEventListener("pointerenter", (e) => {
-    if (e.pointerType === "mouse") hoverHold = true;
-  });
-  root.addEventListener("pointerleave", (e) => {
-    if (e.pointerType === "mouse") {
-      hoverHold = false;
-      kick();
-    }
-  });
-
-  // Keyboard focus entering the row pauses it, except on the row's own controls.
+  // Keyboard focus on a card pauses the row and brings that card into place. The browser's own
+  // scroll-into-view is undone first, since the row moves by transform.
   root.addEventListener("focusin", (e) => {
-    if (root.contains(e.relatedTarget) || e.target.closest(".carousel__bar")) return;
-    if (e.target.matches(":focus-visible") && state === "playing") setState("paused");
+    const slide = slides.findIndex((item) => item.contains(e.target));
+    if (slide === -1 || !e.target.matches(":focus-visible")) return;
+    viewport.scrollLeft = 0;
+    goTo(slide);
   });
 
   // Swipe / drag: takes over from the timer, then snaps to a card.
@@ -223,30 +224,41 @@ document.querySelectorAll("[data-carousel]").forEach((root) => {
       drag.active = true;
       drag.start = offset;
       drag.x = e.clientX;
+      drag.time = e.timeStamp;
+      drag.speed = 0;
       anim = null;
       takeOver();
       viewport.setPointerCapture(drag.id);
       root.classList.add("is-dragging");
       return;
     }
-    offset = drag.start - (e.clientX - drag.x);
+    const next = drag.start - (e.clientX - drag.x);
+    const dt = e.timeStamp - drag.time;
+    if (dt > 0) {
+      drag.speed = drag.speed * 0.6 + ((next - offset) / dt) * 0.4;   // smoothed, px per ms
+      drag.time = e.timeStamp;
+    }
+    offset = next;
     render();
   });
 
   function endDrag(e) {
     if (!drag || e.pointerId !== drag.id) return;
     if (drag.active) {
+      const speed = e.timeStamp - drag.time > STILL ? 0 : drag.speed;
       const dragged = offset - drag.start;
-      const threshold = step * 0.15;
-      let target = offset / step;
-      if (dragged > threshold) target = Math.ceil(target);
-      else if (dragged < -threshold) target = Math.floor(target);
-      else target = Math.round(target);
+      const position = offset / step;
+      let target = Math.round(position);
+      if (Math.abs(speed) >= FLICK) target = speed > 0 ? Math.ceil(position) : Math.floor(position);
+      else if (Math.abs(dragged) > step * 0.15) target = dragged > 0 ? Math.ceil(position) : Math.floor(position);
       root.classList.remove("is-dragging");
       drag = null;
       suppressClick = true;
       setTimeout(() => { suppressClick = false; }, 400);
-      glideTo(target);
+      // No ease-in: the card leaves the finger at the speed it was moving, then slows into place
+      const distance = Math.abs(target * step - offset);
+      const time = Math.abs(speed) > 0.01 ? (3 * distance) / Math.abs(speed) : SETTLE_MAX;
+      glideTo(target, Math.min(SETTLE_MAX, Math.max(SETTLE_MIN, time)), easeOut);
     } else {
       drag = null;
     }
@@ -254,6 +266,9 @@ document.querySelectorAll("[data-carousel]").forEach((root) => {
 
   viewport.addEventListener("pointerup", endDrag);
   viewport.addEventListener("pointercancel", endDrag);
+
+  // Card links stay swipeable: the browser must not start dragging the link itself.
+  viewport.addEventListener("dragstart", (e) => e.preventDefault());
 
   // A swipe must not also activate a card link under the pointer.
   viewport.addEventListener("click", (e) => {

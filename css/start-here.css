@@ -629,6 +629,18 @@ a.journey-card:focus-visible .journey-card__go {
     pointer-events: auto;
   }
 
+  /* Anywhere on the card reads it again; Mark as Unread stays its own button */
+  .journey-card__done-panel .btn--primary::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+
+  .journey-card__done-panel .btn--secondary {
+    position: relative;
+    z-index: 1;
+  }
+
   .journey-card.is-completed:hover .journey-card__body,
   .journey-card.is-completed:hover .journey-card__media {
     opacity: 0;

@@ -14,6 +14,26 @@
   display: none;
 }
 
+/* A card's link covers the whole card; dragging the row still works from anywhere on it */
+.topic-card__link {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-drag: none;
+}
+
+.topic-card__link:focus-visible {
+  outline: var(--border-lg) solid var(--color-text-on-dark);
+  outline-offset: -6px;
+}
+
+.carousel.is-dragging a {
+  cursor: grabbing;
+}
+
 .carousel__toggle {
   position: relative;
   flex: none;

@@ -134,12 +134,12 @@
   height: 23.2px;
 }
 
-.topic-card:focus-within .topic-card__cta {
+.topic-card:has(:focus-visible) .topic-card__cta {
   width: var(--cta-expanded);
   background: rgba(59, 59, 59, 0.26);
 }
 
-.topic-card:focus-within .topic-card__cta-label {
+.topic-card:has(:focus-visible) .topic-card__cta-label {
   opacity: 1;
 }
 
