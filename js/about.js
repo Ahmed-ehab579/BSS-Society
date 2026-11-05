@@ -231,3 +231,44 @@
 
   cards.forEach((card) => observer.observe(card));
 })();
+
+// "Who we are" stats: the numbers count up from zero once, when they first come into view. The real
+// values stay in the HTML for search engines, and for anyone without JavaScript or who prefers less motion.
+(function () {
+  const stats = document.querySelector("[data-stats]");
+  if (!stats || !("IntersectionObserver" in window)) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  const DURATION = 1600;
+  const easeOut = (t) => 1 - (1 - t) ** 3;   // quick at first, settles gently on the number
+  const counters = [...stats.querySelectorAll("[data-count]")].map((element) => ({
+    element,
+    target: Number(element.textContent),
+  }));
+
+  function run() {
+    counters.forEach(({ element }) => {
+      element.style.minWidth = `${element.getBoundingClientRect().width}px`;
+      element.textContent = "0";
+    });
+    const start = performance.now();
+    const step = (now) => {
+      const progress = Math.min(1, (now - start) / DURATION);
+      counters.forEach(({ element, target }) => {
+        element.textContent = String(Math.round(target * easeOut(progress)));
+      });
+      if (progress < 1) requestAnimationFrame(step);
+      else counters.forEach(({ element }) => element.style.removeProperty("min-width"));
+    };
+    requestAnimationFrame(step);
+  }
+
+  // Waits until most of the row is visible, so nobody misses the start
+  const observer = new IntersectionObserver(([entry]) => {
+    if (!entry.isIntersecting) return;
+    observer.disconnect();
+    run();
+  }, { threshold: 0.6 });
+
+  observer.observe(stats);
+})();
