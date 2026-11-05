@@ -560,6 +560,10 @@ a.journey-card:focus-visible .journey-card__go {
   }
 }
 
+.journey-card__locked-actions .btn--secondary:active {
+  background: var(--surface-action-outline-pressed);
+}
+
 
 /* Completed card (Figma: green wash with a check icon; hover shows the message and two actions) */
 .journey-card.is-completed {

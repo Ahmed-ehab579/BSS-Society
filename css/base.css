@@ -240,28 +240,17 @@ a {
   height: 24px;
 }
 
-/* Hover states: pointer devices only, so taps don't leave them stuck on. On touch, pressing a
-   button only darkens it (:active below); the arrow slide is kept for pointer devices. */
+/* Button states.
+   Primary: hover only runs the arrow slide, the colour stays; pressing darkens the background.
+   Outline: empty by default, green on hover, a darker green when pressed.
+   Hover applies to pointer devices only, so taps don't leave it stuck on. */
 @media (hover: hover) {
-  .btn--secondary:hover {
-    background: var(--surface-action-outline-hovered);
-    border-color: var(--border-color-on-light);
-    color: var(--color-text-on-light);
-  }
-
-  .btn--primary.btn--large:hover {
-    background: var(--surface-action-primary-hovered);
-  }
-
-  .btn--primary.btn--large:hover .btn__arrow-track,
-  .btn--primary.btn--large:active .btn__arrow-track {
+  .btn--primary:hover .btn__arrow-track,
+  .btn--primary:active .btn__arrow-track {
     transform: translateY(-35px);
   }
 
-  .btn--primary.btn--regular:hover {
-    background: var(--surface-action-primary-hovered);
-  }
-
+  .btn--secondary:hover,
   .btn--secondary-on-dark:hover {
     background: var(--surface-action-outline-hovered);
     border-color: var(--border-color-on-light);
@@ -269,24 +258,20 @@ a {
   }
 }
 
-.btn--secondary:active {
-  background: var(--surface-action-outline-hovered);
-  border-color: var(--border-color-on-light);
-  color: var(--color-text-on-light);
+.btn--primary:active {
+  background: var(--surface-action-primary-pressed);
 }
 
-.btn--primary.btn--large:active {
-  background: var(--surface-action-primary-hovered);
-}
-
+.btn--secondary:active,
 .btn--secondary-on-dark:active {
-  background: var(--surface-action-outline-hovered);
+  background: var(--surface-action-outline-pressed);
   border-color: var(--border-color-on-light);
   color: var(--color-text-on-light);
 }
 
-.btn--primary.btn--regular:active {
-  background: var(--surface-action-primary-hovered);
+/* The press answers quickly; letting go eases back at the button's normal pace */
+.btn:active {
+  transition-duration: var(--motion-duration-link);
 }
 
 /* Actions / Icon Button (40 × 40) */

@@ -162,6 +162,11 @@
   letter-spacing: -0.46px;
 }
 
+/* An extra line break for the narrowest phones */
+.stat__break {
+  display: none;
+}
+
 .stat__note {
   margin: 18px 0 0;
   font-size: 13px;
@@ -711,7 +716,7 @@
 
   /* Figma 2178:2863: same layout, scaled to the phone. Small text stays at a readable size. */
   .stats {
-    grid-template-columns: repeat(3, auto);
+    grid-template-columns: repeat(3, max-content);
     gap: 0;
   }
 
@@ -729,17 +734,18 @@
     letter-spacing: -0.32px;
   }
 
-  /* Every note takes the same number of lines: two here, three on narrower phones */
+  /* The lines are set by hand (breaks in the HTML), so each column hugs its widest line and the
+     first and last columns meet the edges of the text above. Two lines here, three on narrower phones. */
   .stat__note {
-    max-width: 120px;
-    margin: var(--scale-300) auto 0;
+    margin: var(--scale-300) 0 0;
     font-size: 11px;
     letter-spacing: 0.2px;
+    white-space: nowrap;
   }
 
   @media (max-width: 429px) {
-    .stat__note {
-      max-width: 78px;
+    .stat__break {
+      display: inline;
     }
   }
 
@@ -758,23 +764,37 @@
     border-radius: 16px;
   }
 
-  /* Stacking cards: each one pins under the header and the next slides over it, while the covered
-     card shrinks and dims into a deck. js/about.js adds .is-stacked and sets the values; without it,
-     or with reduced motion, this stays a plain list. */
-  .commitment__cards.is-stacked {
-    --stack-peek: var(--scale-300);   /* how much of each covered card shows above the next */
-    display: flex;
-    flex-direction: column;
+  /* Stacking cards: the whole section stops 20px from the top of the screen, and the cards rise over
+     one another inside it while the covered ones shrink and dim. js/about.js adds .is-stacked and sets
+     the values; without it, or with reduced motion, this stays a plain list. */
+  .commitment.is-stacked {
+    min-height: var(--stack-section-height);
   }
 
-  .commitment__cards.is-stacked .benefit-card {
+  .commitment.is-stacked .section-panel {
     position: sticky;
-    top: calc(var(--header-height) + var(--scale-400) + var(--card-index) * var(--stack-peek));
-    min-height: var(--stack-card-height);
-    transform: scale(var(--card-scale, 1));
+    top: var(--stack-pin-top);
+  }
+
+  .commitment.is-stacked .commitment__cards {
+    position: relative;
+    display: block;
+    height: var(--stack-height);
+  }
+
+  .commitment.is-stacked .benefit-card {
+    position: absolute;
+    inset: 0 0 auto;
+    height: var(--stack-card-height);
+    transform: translateY(var(--card-y, 0px)) scale(var(--card-scale, 1));
     transform-origin: top center;
     filter: brightness(var(--card-dim, 1));
     will-change: transform;
+  }
+
+  /* The header steps aside while the section is held, or it would cover the top of it */
+  .is-header-away .site-header:not(.is-menu-open) {
+    transform: translateY(-100%);
   }
 
   .about-intro {
