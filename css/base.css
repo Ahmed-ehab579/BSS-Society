@@ -550,6 +550,38 @@ textarea.field__input {
   line-height: var(--body-xs-line);
 }
 
+/* Skeleton loading (js/skeleton.js): a soft shimmer in a photo's place until the photo has arrived */
+.is-skeleton {
+  background-color: var(--surface-cards);
+  background-image: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, 0.5) 50%, transparent 70%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+.is-skeleton > img:not([src$=".svg"]) {
+  opacity: 0;
+}
+
+.is-fading-in {
+  animation: skeleton-fade 320ms var(--motion-ease);
+}
+
+@keyframes skeleton-shimmer {
+  from { background-position: 150% 0; }
+  to { background-position: -50% 0; }
+}
+
+@keyframes skeleton-fade {
+  from { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .is-skeleton,
+  .is-fading-in {
+    animation: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .btn,
   .btn__arrow-track,

@@ -1,6 +1,6 @@
 // Smooth scrolling on every device: the page glides and slows to a stop instead of moving in steps.
 // Mouse wheels and trackpads ease towards where the wheel asked to go. On touch screens the page follows
-// the finger exactly, then carries on from the finger's speed when it lifts, so it never feels detached.
+// the finger exactly, then glides on with the same feel as the wheel when it lifts.
 // Off for anyone who asked for reduced motion. Sideways swipes, lists that scroll by themselves, pull to
 // refresh and open menus or dialogs are left to the browser. Keyboard and scrollbar use stops a glide.
 // Loaded last, so a page's own wheel and touch handling (js/about.js) goes first.
@@ -8,7 +8,8 @@
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
   const WHEEL_SPEED = 6;    // how quickly the page catches up, per second: lower is slower
-  const TOUCH_SPEED = 2.4;  // the same after a swipe, so the page coasts for longer
+  const TOUCH_SPEED = 5;    // the same after a swipe: close to the wheel, so both feel alike
+  const THROW = 480;        // ms of the finger's speed a swipe carries on for: how far the page travels
   const SETTLE = 0.5;       // px from the target that counts as arrived
   const DRIFT = 3;          // px off our own position that means something else moved the page
   const LINE = 16;          // px per wheel line
@@ -120,7 +121,7 @@
     event.preventDefault();
     const elapsed = event.timeStamp - touch.lastTime;
     if (elapsed > 0) {
-      touch.velocity = touch.velocity * 0.7 + ((touch.lastY - y) / elapsed) * 0.3;   // px per ms, smoothed
+      touch.velocity = touch.velocity * 0.4 + ((touch.lastY - y) / elapsed) * 0.6;   // px per ms, smoothed
       touch.lastY = y;
       touch.lastTime = event.timeStamp;
     }
@@ -134,7 +135,7 @@
     const velocity = event.timeStamp - ended.lastTime > STILL ? 0 : ended.velocity;
     if (Math.abs(velocity) < FLING_MIN) return;
     speed = TOUCH_SPEED;
-    target = clamp(position + (velocity * 1000) / TOUCH_SPEED);   // starts at the finger's own speed
+    target = clamp(position + velocity * THROW);
     glide();
   }
 

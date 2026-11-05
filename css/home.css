@@ -198,7 +198,7 @@
 
 /* The primary button that closes each section: a step above the Large button */
 .section-cta {
-  height: 64px;
+  height: 60px;
   padding: var(--scale-400) var(--scale-800);
   font-size: 18px;
   line-height: 26px;
@@ -307,7 +307,7 @@
 
   /* Section CTAs: a smaller step of the desktop size, and pressed feedback */
   .section-cta {
-    height: 56px;
+    height: 52px;
     padding: var(--scale-300) var(--scale-800);
     font-size: var(--label-l-size);
     line-height: var(--label-l-line);
