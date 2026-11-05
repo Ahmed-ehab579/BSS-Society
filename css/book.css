@@ -1,0 +1,478 @@
+/* Book details page (Figma 1245:1759): cover, details and related resources (resources.css).
+   Colours, type and elevation come from css/tokens.css; only layout measurements are local. */
+.book-page {
+  --book-radius: 20px;
+  padding-top: calc(var(--header-height) + 57px);
+}
+
+.book-shell {
+  max-width: calc(1280px + 2 * var(--gutter));
+}
+
+.book {
+  display: grid;
+  grid-template-columns: minmax(0, 567fr) minmax(0, 600fr);
+  gap: 105px;
+  align-items: start;
+}
+
+/* ---- Cover: stays in view while the longer details column scrolls ---------------------------- */
+
+.book__cover {
+  position: sticky;
+  top: calc(var(--header-height) + var(--scale-400));
+  aspect-ratio: 567 / 647;
+  margin: 0;
+  overflow: hidden;
+  border: var(--scale-12) solid var(--color-neutral-400);
+  border-radius: var(--book-radius);
+  background: var(--surface-cards);
+}
+
+.book__cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--motion-duration-art) var(--motion-ease);
+}
+
+/* The image failed to load: the frame keeps its size and shows the title */
+.book__cover-fallback {
+  display: none;
+}
+
+.book__cover.is-missing img {
+  display: none;
+}
+
+.book__cover.is-missing .book__cover-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: var(--scale-900);
+  font-size: var(--h6-size);
+  line-height: var(--h6-line);
+  font-weight: var(--h5-weight);
+  text-align: center;
+  color: var(--color-text-on-light);
+}
+
+/* ---- Details -------------------------------------------------------------------------------- */
+
+.book__details {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.book__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "tag actions"
+    "title actions"
+    "author author";
+  column-gap: var(--scale-300);
+  padding-bottom: var(--scale-700, 30px);
+  border-bottom: var(--scale-12) solid var(--color-neutral-400);
+}
+
+.book__tag {
+  grid-area: tag;
+  justify-self: start;
+  margin: 2px 0 0;
+  padding: var(--scale-100) 14px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-cards);
+  font-size: var(--label-s-size);
+  line-height: 16px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  color: var(--color-heading);
+}
+
+.book__title {
+  grid-area: title;
+  margin: var(--scale-400) 0 0;
+  font-size: var(--h3-size);
+  line-height: 54px;
+  font-weight: var(--h3-weight);
+  letter-spacing: -1.35px;
+  color: var(--color-heading);
+  overflow-wrap: anywhere;
+}
+
+.book__author {
+  grid-area: author;
+  margin: var(--scale-300) 0 0;
+  font-size: 15px;
+  line-height: 30px;
+  font-weight: 500;
+  color: var(--color-text-body);
+}
+
+/* Share and save */
+.book__actions {
+  position: relative;
+  grid-area: actions;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.book__icon-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--surface-cards);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--motion-duration) var(--motion-ease),
+    transform var(--motion-duration) var(--motion-ease);
+}
+
+.book__icon-btn:active {
+  background: var(--surface-cards-hovered-neutral);
+  transform: scale(0.93);
+}
+
+.book__icon-btn:focus-visible {
+  outline: var(--border-lg) solid var(--border-color-on-light);
+  outline-offset: 3px;
+}
+
+/* Saved swaps the outline for a filled bookmark */
+[data-book-save] img {
+  transition: opacity var(--motion-duration) var(--motion-ease);
+}
+
+[data-book-save] [data-icon="on"] {
+  position: absolute;
+  opacity: 0;
+}
+
+[data-book-save][aria-pressed="true"] [data-icon="on"] {
+  opacity: 1;
+}
+
+[data-book-save][aria-pressed="true"] [data-icon="off"] {
+  opacity: 0;
+}
+
+[data-book-save].is-popping {
+  animation: book-pop 320ms var(--motion-ease);
+}
+
+@keyframes book-pop {
+  45% { transform: scale(1.12); }
+}
+
+/* Short confirmation beside the button that was pressed */
+.book__note {
+  position: absolute;
+  top: var(--note-top, 0);
+  right: calc(100% + var(--scale-200));
+  z-index: 2;
+  height: 32px;
+  margin: 6px 0 0;
+  padding: 0 var(--scale-300);
+  border-radius: var(--radius-pill);
+  background: var(--surface-action-primary);
+  font-size: var(--label-s-size);
+  line-height: 32px;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--color-text-on-dark);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(6px);
+  transition: opacity var(--motion-duration) var(--motion-ease),
+    transform var(--motion-duration) var(--motion-ease);
+}
+
+.book__note.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Summary and audience */
+.book__section {
+  margin-top: 56px;
+}
+
+.book__section--audience {
+  margin-top: 44px;
+}
+
+.book__heading {
+  font-size: 19px;
+  line-height: var(--h6-line);
+  font-weight: 500;
+  letter-spacing: 0.65px;
+  text-transform: uppercase;
+  color: var(--color-heading);
+}
+
+.book__summary {
+  max-width: 533px;
+  margin: var(--scale-200) 0 0;
+  font-size: var(--body-m-size);
+  line-height: var(--body-xl-line);
+  color: var(--color-text-body);
+}
+
+.book__audience {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--scale-600) var(--scale-800);
+  margin: var(--scale-500) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--body-s-size);
+  line-height: var(--body-s-line);
+  color: var(--color-text-body);
+}
+
+.book__audience li {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  column-gap: var(--scale-300);
+}
+
+.book__audience li::before {
+  content: "";
+  width: 18px;
+  height: 22px;
+  background: url("../assets/icons/check-list.svg") center / 12.6px auto no-repeat;
+}
+
+/* Download and listen */
+.book__cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--scale-400) 26px;
+  margin-top: 55px;
+}
+
+.book__cta .btn {
+  gap: 10px;
+}
+
+.book__cta .btn img {
+  flex: none;
+}
+
+.book__download {
+  transition: transform var(--motion-duration-hover) var(--motion-ease);
+}
+
+.book__size {
+  font-size: var(--label-s-size);
+  font-weight: 500;
+  color: var(--color-neutral-200);
+}
+
+/* Shown only if a button has no file behind it yet */
+.book__unavailable {
+  flex-basis: 100%;
+  max-height: 0;
+  margin: 0;
+  overflow: hidden;
+  font-size: var(--body-s-size);
+  line-height: var(--body-s-line);
+  color: var(--color-text-body);
+  opacity: 0;
+  transition: max-height var(--motion-duration-hover) var(--motion-ease),
+    opacity var(--motion-duration-hover) var(--motion-ease);
+}
+
+.book__unavailable.is-visible {
+  max-height: 88px;
+  opacity: 1;
+}
+
+.book-page .resources {
+  margin-top: 139px;
+}
+
+/* ---- Hover: pointer devices only ------------------------------------------------------------ */
+
+@media (hover: hover) {
+  .book__cover:hover img {
+    transform: scale(1.02);
+  }
+
+  .book__icon-btn:hover {
+    background: var(--surface-cards-hovered-neutral);
+  }
+
+  .book__cta .btn:hover .book__download {
+    transform: translateY(2px);
+  }
+
+  .book-page .resource-card__link {
+    transition: transform var(--motion-duration-hover) var(--motion-ease),
+      box-shadow var(--motion-duration-hover) var(--motion-ease);
+  }
+
+  .book-page .resource-card__link:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-card-hover);
+  }
+}
+
+/* ---- Arrival: the page settles in once, then lower parts appear as they scroll into view ----- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .book__cover,
+  .book__head,
+  .book__details > .book__section:first-of-type {
+    animation: book-rise 640ms var(--motion-ease) both;
+  }
+
+  .book__head {
+    animation-delay: 90ms;
+  }
+
+  .book__details > .book__section:first-of-type {
+    animation-delay: 180ms;
+  }
+
+  @keyframes book-rise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+  }
+
+  /* js/book.js sets .will-reveal, so everything stays visible without JavaScript */
+  .will-reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 640ms var(--motion-ease), transform 640ms var(--motion-ease);
+  }
+
+  .will-reveal.is-revealed {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---- Responsive ----------------------------------------------------------------------------- */
+
+@media (max-width: 1239px) {
+  .book {
+    gap: var(--scale-900);
+  }
+}
+
+@media (max-width: 899px) {
+  .book {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--scale-800);
+  }
+
+  .book__cover {
+    position: static;
+    width: min(100%, 480px);
+    margin-inline: auto;
+  }
+}
+
+@media (max-width: 767px) {
+  .book-page {
+    padding-top: calc(var(--header-height) + var(--scale-600));
+  }
+
+  .book__cover {
+    border-radius: 16px;
+  }
+
+  .book__head {
+    grid-template-areas:
+      "tag actions"
+      "title title"
+      "author author";
+    align-items: center;
+    padding-bottom: var(--scale-500);
+  }
+
+  .book__tag {
+    margin-top: 0;
+  }
+
+  .book__title {
+    font-size: 28px;
+    line-height: 40px;
+    letter-spacing: -0.64px;
+  }
+
+  .book__author {
+    margin-top: var(--scale-200);
+  }
+
+  .book__actions {
+    flex-direction: row;
+    gap: var(--scale-200);
+  }
+
+  .book__icon-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  .book__note {
+    top: 0;
+  }
+
+  .book__section {
+    margin-top: var(--scale-800);
+  }
+
+  .book__heading {
+    font-size: var(--label-l-size);
+    line-height: var(--label-l-line);
+  }
+
+  .book__audience {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--scale-300);
+    margin-top: var(--scale-300);
+  }
+
+  .book__cta {
+    gap: var(--scale-300);
+    margin-top: var(--scale-800);
+  }
+
+  .book__cta .btn {
+    flex: 1 1 auto;
+  }
+
+  .book-page .resources {
+    margin-top: 72px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .book__cover img,
+  .book__icon-btn,
+  [data-book-save] img,
+  .book__note,
+  .book__download,
+  .book__unavailable,
+  .book-page .resource-card__link {
+    transition: none;
+  }
+
+  [data-book-save].is-popping {
+    animation: none;
+  }
+}
