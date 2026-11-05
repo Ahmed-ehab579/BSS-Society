@@ -1,0 +1,137 @@
+/* Carousel control: a round play / pause button beside a pill of dots. The current dot stretches and
+   fills while its card waits, so people can see the next move coming (js/carousel.js). Shared by every
+   moving card row. Set --carousel-surface where the row sits on Surface/Cards. */
+.carousel__bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--scale-300);
+}
+
+.carousel.is-static .carousel__bar,
+.carousel.is-static .carousel__controls,
+.carousel.is-static .carousel__track > [aria-hidden="true"] {
+  display: none;
+}
+
+.carousel__toggle {
+  position: relative;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--carousel-surface, var(--surface-cards));
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--motion-duration) var(--motion-ease),
+    transform var(--motion-duration) var(--motion-ease);
+}
+
+.carousel__toggle img {
+  position: absolute;
+  inset: 12px;
+  width: 20px;
+  height: 20px;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity var(--motion-duration) var(--motion-ease),
+    transform var(--motion-duration) var(--motion-ease);
+}
+
+.carousel__toggle[data-state="playing"] [data-icon="pause"],
+.carousel__toggle[data-state="paused"] [data-icon="play"],
+.carousel__toggle[data-state="ended"] [data-icon="replay"] {
+  opacity: 1;
+  transform: none;
+}
+
+.carousel__toggle:active {
+  transform: scale(0.94);
+}
+
+.carousel__dots {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  padding-inline: var(--scale-200);
+  border-radius: var(--radius-pill);
+  background: var(--carousel-surface, var(--surface-cards));
+}
+
+.carousel__dot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-width: 24px;
+  padding: 0 9px;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.carousel__dot span {
+  position: relative;
+  display: block;
+  width: 6px;
+  height: 6px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--color-brand-500) 45%, transparent);
+  transition: width 380ms var(--motion-ease), background-color var(--motion-duration) var(--motion-ease);
+}
+
+.carousel__dot[aria-current="true"] span {
+  width: 28px;
+}
+
+/* The fill: js/carousel.js sets --progress from 0 to 1 while the card waits */
+.carousel__dot span::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--color-brand-500);
+  opacity: 0;
+  transform: scaleX(var(--progress, 0));
+  transform-origin: left;
+}
+
+.carousel__dot[aria-current="true"] span::after {
+  opacity: 1;
+}
+
+.carousel__toggle:focus-visible,
+.carousel__dot:focus-visible {
+  outline: var(--border-lg) solid var(--border-color-on-light);
+  outline-offset: -2px;
+  border-radius: var(--radius-pill);
+}
+
+@media (hover: hover) {
+  .carousel__toggle:hover {
+    background: var(--surface-cards-hovered-neutral);
+  }
+
+  .carousel__dot:hover span {
+    background: var(--color-brand-500);
+  }
+}
+
+@media (max-width: 767px) {
+  /* Swiping and the dots take over from the arrows on phones */
+  .carousel__controls {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carousel__toggle,
+  .carousel__toggle img,
+  .carousel__dot span {
+    transition: none;
+  }
+}
