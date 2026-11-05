@@ -210,6 +210,10 @@
   cursor: default;
 }
 
+.resource-card__action[href] {
+  cursor: pointer;
+}
+
 .resource-card__action .btn__arrow-clip,
 .resource-card__action .btn__arrow-track img {
   width: var(--arrow);

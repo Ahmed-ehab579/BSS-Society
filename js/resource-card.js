@@ -40,8 +40,8 @@
             <h4 class="resource-card__title" dir="${item.dir}">${escape(item.title)}</h4>
             <p class="resource-card__desc" dir="${item.dir}">${escape(item.text)}</p>
           </div>
-          <!-- No destination yet: the action becomes a link once the resource pages exist. -->
-          <a class="btn btn--primary resource-card__action" aria-label="${type.action}: ${escape(item.title)}">
+          <!-- Only books have a page so far: the other actions become links once their pages exist. -->
+          <a class="btn btn--primary resource-card__action" ${item.format === "book" ? 'href="book.html"' : ""} aria-label="${type.action}: ${escape(item.title)}">
             ${type.action}
             <span class="btn__arrow-clip" aria-hidden="true">
               <span class="btn__arrow-track">

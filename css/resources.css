@@ -1,0 +1,262 @@
+/* Related resources: panel, heading, auto-scrolling carousel (js/carousel.js) and resource cards.
+   Shared by the article and book pages. */
+.resources {
+  --resources-radius: 20px;
+  margin-top: 129px;
+  padding: 65px var(--scale-500) 64px;
+  border-top: var(--border-md) solid var(--color-neutral-100);
+  border-radius: var(--resources-radius);
+  background: var(--surface-cards);
+}
+
+.resources__inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--scale-800);
+  max-width: 1240px;
+  margin-inline: auto;
+  padding-inline: var(--scale-1000);
+}
+
+.resources__head {
+  padding-bottom: var(--scale-500);
+  border-bottom: var(--border-md) solid var(--color-neutral-400);
+}
+
+.resources__heading {
+  font-size: var(--h4-size);
+  line-height: var(--h4-line);
+  font-weight: var(--label-weight);
+  letter-spacing: var(--label-uppercase-tracking);
+  text-transform: uppercase;
+  color: var(--color-text-on-light);
+}
+
+/* Auto-scrolling carousel: same behaviour as the Library carousel (js/carousel.js) */
+.carousel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--scale-600);
+}
+
+.carousel__controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--scale-400);
+}
+
+.carousel__toggle [data-icon="play"],
+.carousel__toggle[data-state="paused"] [data-icon="pause"] {
+  display: none;
+}
+
+.carousel__toggle[data-state="paused"] [data-icon="play"] {
+  display: block;
+}
+
+.icon-btn--prev img {
+  transform: scaleX(-1);
+}
+
+.resources .icon-btn {
+  background: var(--surface-action-outline);   /* the panel is already Surface/Cards */
+}
+
+@media (hover: hover) {
+  .resources .icon-btn:hover {
+    background: var(--surface-cards-hovered);
+  }
+}
+
+.resources .icon-btn:active {
+  background: var(--surface-cards-hovered);
+}
+
+.resources__viewport {
+  padding: var(--scale-200) 0;
+  overflow: hidden;
+  touch-action: pan-y;
+  cursor: grab;
+}
+
+.carousel.is-dragging .resources__viewport {
+  cursor: grabbing;
+}
+
+.resources__track {
+  display: flex;
+  align-items: stretch;
+  gap: var(--scale-800);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  will-change: transform;
+}
+
+.resource-card {
+  flex: 0 0 231px;
+  display: flex;
+}
+
+.resource-card__link {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 380px;
+  overflow: hidden;
+  border: var(--scale-12) solid var(--border-color-on-light);
+  border-radius: var(--resources-radius);
+  background: var(--color-page-bg);
+  box-shadow: var(--shadow-sm);
+}
+
+.resource-card__media {
+  position: relative;
+  flex: none;
+  height: 166px;
+  overflow: hidden;
+  background: var(--surface-cards);
+}
+
+.resource-card__media > img:first-child {
+  position: absolute;
+  left: 0;
+  top: var(--img-top);
+  width: 100%;
+  height: var(--img-h);
+  max-width: none;
+  object-fit: cover;
+}
+
+.resource-card__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--backdrop) 50%, transparent);
+  pointer-events: none;
+}
+
+.resource-card__play {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  z-index: 1;
+  width: 76px;
+  height: 76px;
+  max-width: none;
+}
+
+.resource-card__status {
+  position: absolute;
+  top: var(--scale-300);
+  right: var(--scale-300);
+  z-index: 1;
+  padding: 0 var(--scale-200);
+  border: var(--scale-12) solid var(--color-neutral-300);
+  border-radius: 999px;
+  background: var(--color-neutral-200);
+  font-size: var(--label-s-size);
+  line-height: var(--label-s-line);
+  font-weight: var(--label-weight);
+  color: var(--color-text-on-light);
+}
+
+.resource-card__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--scale-600);
+  padding: var(--scale-400);
+}
+
+.resource-card__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--scale-200);
+}
+
+.resource-card__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--scale-100);
+  padding: 0 var(--scale-200);
+  border: var(--scale-12) solid var(--color-neutral-300);
+  border-radius: 999px;
+  background: var(--surface-action-outline);
+  font-size: var(--label-s-size);
+  line-height: var(--label-s-line);
+  font-weight: var(--label-weight);
+  color: var(--color-text-on-light);
+}
+
+.resource-card__tag img {
+  width: 10px;
+  height: 10px;
+}
+
+.resource-card__title {
+  font-size: var(--label-l-size);
+  line-height: var(--label-l-line);
+  font-weight: var(--label-weight);
+  color: var(--color-text-on-light);
+}
+
+.resource-card__desc {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: var(--body-xs-size);
+  line-height: var(--body-xs-line);
+  color: var(--color-text-body);
+}
+
+.resource-card__cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--scale-200) var(--scale-400);
+  border-radius: 999px;
+  background: var(--surface-action-primary);
+  font-size: var(--label-s-size);
+  line-height: var(--label-s-line);
+  font-weight: var(--label-weight);
+  color: var(--color-text-on-dark);
+  transition: background-color var(--motion-duration) var(--motion-ease);
+}
+
+.resource-card__link:active .resource-card__cta {
+  background: var(--surface-action-primary-pressed);
+}
+
+.resource-card__link:focus-visible,
+.resources__viewport:focus-visible {
+  outline: var(--border-lg) solid var(--border-color-on-light);
+  outline-offset: 3px;
+}
+
+@media (max-width: 1099px) {
+  .resources__inner {
+    padding-inline: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .resources {
+    margin-top: 72px;
+    padding: var(--scale-900) var(--scale-400);
+  }
+
+  .resources__heading {
+    font-size: var(--h6-size);
+    line-height: var(--h6-line);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .resource-card__cta {
+    transition: none;
+  }
+}
