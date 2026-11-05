@@ -99,12 +99,22 @@
       const box = link.getBoundingClientRect();
       const origin = list.getBoundingClientRect();   // exact sub-pixel position inside the nav list
       indicator.style.width = `${box.width}px`;
-      indicator.style.transform = `translate(${box.left - origin.left}px, ${box.bottom - origin.top + 4}px)`;
+      indicator.style.transform = `translate(${box.left - origin.left}px, ${box.bottom - origin.top + 7}px)`;
     }
     indicator.classList.toggle("is-visible", Boolean(link));
     if (instant) {
       indicator.getBoundingClientRect();   // apply the jump before transitions come back
       indicator.style.transition = "";
+    }
+  }
+
+  // The bold moves with the underline, so one link fades up as the other fades down
+  function markActive(link, { instant = false } = {}) {
+    if (instant) navLinks.forEach((item) => { item.style.transition = "none"; });
+    navLinks.forEach((item) => item.classList.toggle("is-active", item === link));
+    if (instant) {
+      list?.getBoundingClientRect();
+      navLinks.forEach((item) => { item.style.transition = ""; });
     }
   }
 
@@ -121,9 +131,13 @@
   ]);
   if (fromLink && startLink && fromLink !== startLink && !reduceMotion.matches) {
     moveIndicator(fromLink, { instant: true });
+    markActive(fromLink, { instant: true });
     fontsIn.then(() => {
       moveIndicator(fromLink, { instant: true });
-      requestAnimationFrame(() => requestAnimationFrame(() => moveIndicator(indicatorLink === fromLink ? startLink : indicatorLink)));
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        moveIndicator(indicatorLink === fromLink ? startLink : indicatorLink);
+        markActive(startLink);
+      }));
     });
   } else {
     moveIndicator(startLink, { instant: true });
@@ -141,6 +155,7 @@
     event.preventDefault();
     leaving = true;
     moveIndicator(link);
+    markActive(link);
     let gone = false;
     const go = () => { if (!gone) { gone = true; window.location.href = link.href; } };
     indicator.addEventListener("transitionend", go, { once: true });
@@ -152,6 +167,7 @@
     if (!event.persisted) return;
     leaving = false;
     moveIndicator(activeLink, { instant: true });
+    markActive(activeLink, { instant: true });
   });
 
   // Remember where the underline was when leaving for another page

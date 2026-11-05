@@ -488,25 +488,15 @@
   }
 }
 
-/* Touch and other non-hover input: stays open across the card */
+/* Touch and other non-hover input: open by default */
 @media (hover: none) {
   .topic-card__cta {
-    justify-content: center;
-    width: calc(100% - 2 * var(--text-left));
-    padding-inline: 0;
+    width: var(--cta-expanded);
     background: rgba(59, 59, 59, 0.26);
   }
 
   .topic-card__cta-label {
-    width: 70px;
-    font-size: 19.702px;
-    line-height: 22.496px;
     opacity: 1;
-  }
-
-  .topic-card__cta img {
-    width: 28px;
-    height: 28px;
   }
 }
 
@@ -638,10 +628,42 @@
   }
 }
 
-/* Two benefit columns get cramped on small phones */
-@media (max-width: 559px) {
+/* Phones: the photo, then the four benefits in two rows of two. Titles keep two lines, so the
+   descriptions start level across a row. */
+@media (max-width: 767px) {
   .new-muslim__benefits {
-    grid-template-columns: 1fr;
+    gap: var(--scale-300);
+  }
+
+  .new-muslim .benefit-card {
+    gap: var(--scale-300);
+    padding: var(--scale-400);
+    border-radius: 16px;
+  }
+
+  .new-muslim .benefit-card__icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .new-muslim .benefit-card__content {
+    gap: var(--scale-200);
+  }
+
+  .new-muslim .benefit-card__title {
+    min-height: 40px;
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 600;
+  }
+
+  .new-muslim .benefit-card__title br {
+    display: none;
+  }
+
+  .new-muslim .benefit-card__text {
+    font-size: 13px;
+    line-height: 19px;
   }
 }
 
