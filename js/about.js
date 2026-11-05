@@ -272,3 +272,78 @@
 
   observer.observe(stats);
 })();
+
+// "Our commitment" on phones: stacking cards. Each card pins under the header and the next slides over
+// it; the covered cards shrink and dim with the scroll, so the motion follows the finger. The CSS does the
+// pinning (.is-stacked). Left as a plain list with reduced motion, or when a card would not fit the screen.
+(function () {
+  const list = document.querySelector(".commitment__cards");
+  if (!list) return;
+
+  const cards = [...list.querySelectorAll(".benefit-card")];
+  const phone = window.matchMedia("(max-width: 767px)");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const SCALE_STEP = 0.04;   // smaller per card lying on top
+  const DIM_STEP = 0.02;     // and darker
+  const SPACE_BELOW = 16;
+  let stacked = false;
+  let frame = null;
+  let width = 0;
+  let pins = [];
+  let travel = 1;
+
+  function setup() {
+    width = window.innerWidth;
+    list.classList.remove("is-stacked");
+    list.style.removeProperty("--stack-card-height");
+    cards.forEach((card) => {
+      ["--card-index", "--card-scale", "--card-dim"].forEach((name) => card.style.removeProperty(name));
+    });
+    stacked = false;
+    if (!phone.matches || reducedMotion.matches) return;
+
+    const tallest = Math.max(...cards.map((card) => card.offsetHeight));
+    cards.forEach((card, i) => card.style.setProperty("--card-index", i));
+    list.style.setProperty("--stack-card-height", `${tallest}px`);
+    list.classList.add("is-stacked");
+
+    pins = cards.map((card) => parseFloat(getComputedStyle(card).top));
+    if (pins[pins.length - 1] + tallest + SPACE_BELOW > window.innerHeight) {   // a landscape phone, say
+      list.classList.remove("is-stacked");
+      list.style.removeProperty("--stack-card-height");
+      return;
+    }
+    const gap = parseFloat(getComputedStyle(list).rowGap) || 0;
+    travel = tallest + gap - (pins[1] - pins[0]);
+    stacked = true;
+    paint();
+  }
+
+  function paint() {
+    frame = null;
+    if (!stacked) return;
+    // How far each card has slid over the one before it, 0 to 1
+    const covering = cards.map((card, i) => {
+      const left = (card.getBoundingClientRect().top - pins[i]) / travel;
+      return i === 0 ? 0 : Math.min(1, Math.max(0, 1 - left));
+    });
+    cards.forEach((card, i) => {
+      const depth = covering.slice(i + 1).reduce((sum, value) => sum + value, 0);
+      card.style.setProperty("--card-scale", (1 - depth * SCALE_STEP).toFixed(4));
+      card.style.setProperty("--card-dim", (1 - depth * DIM_STEP).toFixed(4));
+    });
+  }
+
+  setup();
+  window.addEventListener("scroll", () => {
+    if (stacked && !frame) frame = requestAnimationFrame(paint);
+  }, { passive: true });
+  // Phones fire resize when the address bar hides, so only a real width change measures again
+  window.addEventListener("resize", () => {
+    if (window.innerWidth !== width) setup();
+  });
+  phone.addEventListener("change", setup);
+  reducedMotion.addEventListener("change", setup);
+  window.addEventListener("load", setup);
+  if (document.fonts) document.fonts.ready.then(setup);
+})();
