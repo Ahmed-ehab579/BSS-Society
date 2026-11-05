@@ -14,7 +14,7 @@
   --color-brand-500: #3b3b3b;          /* Brand color/primery/500 (d) */
   --color-wordmark: #282828;
   --surface-action-primary: #3b3b3b;   /* Surface/Action/Primery/Default */
-  --surface-action-primary-hovered: #232323; /* Surface/Action/Primery/Hovered */
+  --surface-action-primary-pressed: #232323; /* Surface/Action/Primery/Hovered, used for the pressed state */
   --surface-cards: #e8e5dc;            /* Surface/Cards/Default, Brand color/Dominent/550 (sh) */
   --surface-cards-hovered: #d5e3ca;    /* Surface/Cards/Hovered */
   --surface-cards-locked-overlay: rgba(232, 229, 220, 0.89); /* Surface/Cards/Locked overlay */
@@ -32,6 +32,7 @@
   --color-benefit-border: #333333;
   --surface-action-outline: #f7f5ef;   /* Surface/Action/Outline/Default */
   --surface-action-outline-hovered: #aac795; /* Surface/Action/Outline/Hovered */
+  --surface-action-outline-pressed: #94b47d; /* the same green, one step darker (not in Figma yet) */
   --backdrop: rgba(0, 0, 0, 0.4);      /* Surface/Backdrop */
   --border-color-on-light: #3b3b3b;    /* Border/Color/On-light */
   --border-color-on-dark: #fdfcfb;     /* Border/Color/On-dark */

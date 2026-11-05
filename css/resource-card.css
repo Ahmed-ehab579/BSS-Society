@@ -233,11 +233,8 @@
   }
 
   /* The button reacts only to its own hover, as on the homepage */
-  .resource-card__action:hover {
-    background: var(--surface-action-primary-hovered);
-  }
-
-  .resource-card__action:hover .btn__arrow-track {
+  .resource-card__action:hover .btn__arrow-track,
+  .resource-card__action:active .btn__arrow-track {
     transform: translateY(calc(-1 * (var(--arrow) + 11px)));
   }
 }

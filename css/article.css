@@ -767,10 +767,8 @@
   transition: background-color var(--motion-duration) var(--motion-ease);
 }
 
-@media (hover: hover) {
-  .resource-card__link:hover .resource-card__cta {
-    background: var(--surface-action-primary-hovered);
-  }
+.resource-card__link:active .resource-card__cta {
+  background: var(--surface-action-primary-pressed);
 }
 
 /* Help button: follows the reader down the article and stops at its end (sticky rail);

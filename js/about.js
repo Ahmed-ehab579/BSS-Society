@@ -273,48 +273,72 @@
   observer.observe(stats);
 })();
 
-// "Our commitment" on phones: stacking cards. Each card pins under the header and the next slides over
-// it; the covered cards shrink and dim with the scroll, so the motion follows the finger. The CSS does the
-// pinning (.is-stacked). Left as a plain list with reduced motion, or when a card would not fit the screen.
+// "Our commitment" on phones: stacking cards. The whole section stops 20px from the top of the screen
+// (higher if it is taller than the screen, so the cards stay in view), then each card rises from below
+// and lands on the last, which shrinks and dims into a deck. It all follows the scroll, and the page moves
+// on once the last card lands. Stays a plain list with reduced motion, or if the cards can't fit the screen.
 (function () {
-  const list = document.querySelector(".commitment__cards");
-  if (!list) return;
+  const section = document.querySelector(".commitment");
+  if (!section) return;
 
+  const panel = section.querySelector(".section-panel");
+  const list = section.querySelector(".commitment__cards");
   const cards = [...list.querySelectorAll(".benefit-card")];
+  const header = document.querySelector(".site-header");
+  const root = document.documentElement;
   const phone = window.matchMedia("(max-width: 767px)");
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const PIN = 20;            // space above the section while it is held
+  const PEEK = 12;           // how much of each covered card shows above the next
+  const BELOW_SCREEN = 80;   // cards wait this far under the screen, clear of a hiding address bar
+  const HOLD = 60;           // scroll left after the last card lands, before the page moves on
   const SCALE_STEP = 0.04;   // smaller per card lying on top
   const DIM_STEP = 0.02;     // and darker
-  const SPACE_BELOW = 16;
+  const SECTION_VARS = ["--stack-section-height", "--stack-pin-top", "--stack-height", "--stack-card-height"];
+  const CARD_VARS = ["--card-y", "--card-scale", "--card-dim"];
+
+  const clamp = (value) => Math.min(1, Math.max(0, value));
   let stacked = false;
   let frame = null;
   let width = 0;
-  let pins = [];
-  let travel = 1;
+  let pinTop = 0;
+  let paddingTop = 0;
+  let tallest = 0;
+  let moves = [];
+  let run = 0;
+
+  function reset() {
+    stacked = false;
+    section.classList.remove("is-stacked");
+    root.classList.remove("is-header-away");
+    SECTION_VARS.forEach((name) => section.style.removeProperty(name));
+    cards.forEach((card) => CARD_VARS.forEach((name) => card.style.removeProperty(name)));
+  }
 
   function setup() {
     width = window.innerWidth;
-    list.classList.remove("is-stacked");
-    list.style.removeProperty("--stack-card-height");
-    cards.forEach((card) => {
-      ["--card-index", "--card-scale", "--card-dim"].forEach((name) => card.style.removeProperty(name));
-    });
-    stacked = false;
+    reset();
     if (!phone.matches || reducedMotion.matches) return;
 
-    const tallest = Math.max(...cards.map((card) => card.offsetHeight));
-    cards.forEach((card, i) => card.style.setProperty("--card-index", i));
-    list.style.setProperty("--stack-card-height", `${tallest}px`);
-    list.classList.add("is-stacked");
+    tallest = Math.max(...cards.map((card) => card.offsetHeight));
+    const height = tallest + PEEK * (cards.length - 1);
+    if (height + PIN * 2 > window.innerHeight) return;   // a landscape phone, say
 
-    pins = cards.map((card) => parseFloat(getComputedStyle(card).top));
-    if (pins[pins.length - 1] + tallest + SPACE_BELOW > window.innerHeight) {   // a landscape phone, say
-      list.classList.remove("is-stacked");
-      list.style.removeProperty("--stack-card-height");
-      return;
-    }
-    const gap = parseFloat(getComputedStyle(list).rowGap) || 0;
-    travel = tallest + gap - (pins[1] - pins[0]);
+    section.style.setProperty("--stack-card-height", `${tallest}px`);
+    section.style.setProperty("--stack-height", `${height}px`);
+    section.classList.add("is-stacked");
+
+    const panelHeight = panel.offsetHeight;
+    const listTop = list.getBoundingClientRect().top - panel.getBoundingClientRect().top;
+    pinTop = Math.min(PIN, window.innerHeight - panelHeight - PIN);
+    paddingTop = parseFloat(getComputedStyle(section).paddingTop) || 0;
+
+    const start = window.innerHeight - pinTop - listTop + BELOW_SCREEN;
+    moves = cards.map((card, i) => start - i * PEEK);
+    run = moves.slice(1).reduce((sum, move) => sum + move, HOLD);
+
+    section.style.setProperty("--stack-pin-top", `${pinTop}px`);
+    section.style.setProperty("--stack-section-height", `${paddingTop + panelHeight + run}px`);
     stacked = true;
     paint();
   }
@@ -322,13 +346,24 @@
   function paint() {
     frame = null;
     if (!stacked) return;
-    // How far each card has slid over the one before it, 0 to 1
-    const covering = cards.map((card, i) => {
-      const left = (card.getBoundingClientRect().top - pins[i]) / travel;
-      return i === 0 ? 0 : Math.min(1, Math.max(0, 1 - left));
+    const top = section.getBoundingClientRect().top + paddingTop;
+    const scrolled = pinTop - top;
+    root.classList.toggle("is-header-away", top < header.offsetHeight + PIN && scrolled < run);
+
+    // Each card waits for the one before it, then takes its own share of the scroll
+    let used = 0;
+    const left = cards.map((card, i) => {
+      if (i === 0) return 0;
+      const share = 1 - clamp((scrolled - used) / moves[i]);
+      used += moves[i];
+      return share * moves[i];
     });
+    // A card only counts as covering once it actually overlaps the deck
+    const covering = left.map((distance, i) => (i === 0 ? 0 : clamp(1 - distance / tallest)));
+
     cards.forEach((card, i) => {
       const depth = covering.slice(i + 1).reduce((sum, value) => sum + value, 0);
+      card.style.setProperty("--card-y", `${i * PEEK + left[i]}px`);
       card.style.setProperty("--card-scale", (1 - depth * SCALE_STEP).toFixed(4));
       card.style.setProperty("--card-dim", (1 - depth * DIM_STEP).toFixed(4));
     });
