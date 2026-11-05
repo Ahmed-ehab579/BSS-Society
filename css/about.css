@@ -711,8 +711,8 @@
 
   /* Figma 2178:2863: same layout, scaled to the phone. Small text stays at a readable size. */
   .stats {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--scale-200);
+    grid-template-columns: repeat(3, auto);
+    gap: 0;
   }
 
   .stat__value {
@@ -756,6 +756,25 @@
 
   .benefit-card {
     border-radius: 16px;
+  }
+
+  /* Stacking cards: each one pins under the header and the next slides over it, while the covered
+     card shrinks and dims into a deck. js/about.js adds .is-stacked and sets the values; without it,
+     or with reduced motion, this stays a plain list. */
+  .commitment__cards.is-stacked {
+    --stack-peek: var(--scale-300);   /* how much of each covered card shows above the next */
+    display: flex;
+    flex-direction: column;
+  }
+
+  .commitment__cards.is-stacked .benefit-card {
+    position: sticky;
+    top: calc(var(--header-height) + var(--scale-400) + var(--card-index) * var(--stack-peek));
+    min-height: var(--stack-card-height);
+    transform: scale(var(--card-scale, 1));
+    transform-origin: top center;
+    filter: brightness(var(--card-dim, 1));
+    will-change: transform;
   }
 
   .about-intro {
