@@ -33,7 +33,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  border: var(--border-md) solid var(--color-neutral-400);
+  border: var(--border-md) solid var(--color-neutral-200);
   border-radius: inherit;
   pointer-events: none;
 }
@@ -42,7 +42,6 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform var(--motion-duration-art) var(--motion-ease);
 }
 
 /* The image failed to load: the frame keeps its size and shows the title */
@@ -311,13 +310,49 @@
   margin-top: 139px;
 }
 
+/* Related resources here: closer, slightly larger cards and smaller arrows */
+.book-page .resources__track {
+  gap: var(--scale-400);
+}
+
+.book-page .resource-card {
+  flex-basis: 256px;
+}
+
+.book-page .resource-card__link {
+  min-height: 416px;
+}
+
+.book-page .resource-card__media {
+  height: 184px;
+}
+
+.book-page .resource-card__play {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.book-page .resource-card__cta {
+  height: 42px;
+  padding-block: 0;
+  font-size: var(--label-m-size);
+  line-height: var(--label-m-line);
+}
+
+.book-page .resources .icon-btn {
+  width: 32px;
+  height: 32px;
+}
+
+.book-page .resources .icon-btn img {
+  width: 20px;
+  height: 20px;
+}
+
 /* ---- Hover: pointer devices only ------------------------------------------------------------ */
 
 @media (hover: hover) {
-  .book__cover:hover img {
-    transform: scale(1.02);
-  }
-
   .book__icon-btn:hover {
     background: var(--surface-cards-hovered-neutral);
   }
@@ -344,6 +379,11 @@
   .book__head,
   .book__details > .book__section:first-of-type {
     animation: book-rise 640ms var(--motion-ease) both;
+  }
+
+  /* Only until it has settled: a held animation would keep the sticky cover on its own layer */
+  .book__cover {
+    animation-fill-mode: backwards;
   }
 
   .book__head {
@@ -472,7 +512,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .book__cover img,
   .book__icon-btn,
   [data-book-save] img,
   .book__note,
