@@ -89,6 +89,10 @@
 /* States: default regular; hover bold; active (current section) bold with
    a thin underline. The weight switches instantly; ::before reserves the
    bold width so nothing shifts. */
+.site-nav {
+  --nav-duration: 450ms;   /* the underline sliding and the link weights changing, together */
+}
+
 .site-nav__link {
   position: relative;
   display: flex;
@@ -97,10 +101,11 @@
   justify-content: center;
   height: 24px;
   color: var(--color-text);
-  font-size: var(--body-l-size);
+  font-size: var(--body-m-size);
   line-height: var(--body-m-line);
   font-weight: var(--body-weight);
   white-space: nowrap;
+  transition: font-weight var(--nav-duration) var(--motion-ease-expand);   /* eases along with the underline */
 }
 
 .site-nav__link::before {
@@ -115,7 +120,7 @@
   content: "";
   position: absolute;
   right: 0;
-  bottom: -5px;   /* 3px more room between the text and the underline */
+  bottom: -8px;
   left: 0;
   height: var(--border-md);
   background: currentColor;
@@ -144,8 +149,8 @@
   background: var(--color-text);
   opacity: 0;
   pointer-events: none;
-  transition: transform 450ms var(--motion-ease-expand),
-    width 450ms var(--motion-ease-expand),
+  transition: transform var(--nav-duration) var(--motion-ease-expand),
+    width var(--nav-duration) var(--motion-ease-expand),
     opacity var(--motion-duration) var(--motion-ease);
 }
 
@@ -306,6 +311,7 @@
   .site-nav__link {
     justify-content: center;
     height: 48px;
+    font-size: var(--body-l-size);
   }
 
   /* No underline in the dropdown: the active link is simply bold */

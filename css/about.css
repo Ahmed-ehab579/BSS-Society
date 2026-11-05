@@ -43,7 +43,7 @@
   .about-title {
     flex-basis: auto;
     font-size: clamp(42px, 3.8vw, 53px);
-    line-height: 1.66;
+    line-height: 1.36;
   }
 
   .about-title + .intro__text {
@@ -124,9 +124,8 @@
 /* Stats (Figma 2178:2830): three centred columns, number, unit, then a short note */
 .stats {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 158px));
+  grid-template-columns: repeat(3, max-content);   /* each column hugs its text; the first and last meet the edges */
   justify-content: space-between;
-  max-width: 726px;
   margin: 0;
   color: var(--color-heading);
   text-align: center;
@@ -174,7 +173,7 @@
   font-weight: 500;
   letter-spacing: 0.47px;
   text-transform: capitalize;
-  text-wrap: balance;
+  white-space: nowrap;   /* the lines are set by hand in the HTML */
 }
 
 /* ---- Our commitment: the homepage's Benefit Cards, four in a row ---------------------------- */
@@ -241,11 +240,11 @@
 }
 
 .journey-path__base {
-  stroke: var(--color-neutral-300);
+  stroke: var(--color-neutral-200);
 }
 
 .journey-path__fill {
-  stroke: var(--color-text-on-light);
+  stroke: color-mix(in srgb, var(--color-text-on-light) 72%, var(--color-page-bg));
 }
 
 .journey-path__reveal {
@@ -715,11 +714,6 @@
   }
 
   /* Figma 2178:2863: same layout, scaled to the phone. Small text stays at a readable size. */
-  .stats {
-    grid-template-columns: repeat(3, max-content);
-    gap: 0;
-  }
-
   .stat__value {
     font-size: 44px;
     letter-spacing: -0.88px;
@@ -734,13 +728,11 @@
     letter-spacing: -0.32px;
   }
 
-  /* The lines are set by hand (breaks in the HTML), so each column hugs its widest line and the
-     first and last columns meet the edges of the text above. Two lines here, three on narrower phones. */
+  /* Two lines here, three on narrower phones */
   .stat__note {
     margin: var(--scale-300) 0 0;
     font-size: 11px;
     letter-spacing: 0.2px;
-    white-space: nowrap;
   }
 
   @media (max-width: 429px) {
