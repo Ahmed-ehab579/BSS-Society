@@ -200,15 +200,17 @@
 }
 
 /* Related materials: the Library cards in a moving row (js/carousel.js), on the same darker panel as
-   Related Resources on the book page (css/resources.css). Its content keeps the overlay's edge. */
+   Related Resources on the book page (css/resources.css). The panel shares the edges of the content
+   above it, and the row shows whole cards. */
 .preview__related {
   --carousel-surface: var(--surface-action-outline);
-  --related-inset: var(--scale-400);
+  --related-padding: var(--scale-800);
+  --related-cards: 4;
   display: flex;
   flex-direction: column;
   gap: var(--scale-800);
-  margin: 0 var(--related-inset) var(--related-inset);
-  padding: var(--scale-1000) calc(var(--preview-gutter) - var(--related-inset));
+  margin: 0 var(--preview-gutter) var(--scale-1000);
+  padding: var(--scale-900) var(--related-padding);
   border-radius: 20px;
   background: var(--surface-cards);
 }
@@ -277,7 +279,7 @@
 }
 
 .preview__related .resource-card {
-  flex: 0 0 256px;
+  flex: 0 0 calc((100% - (var(--related-cards) - 1) * var(--scale-400)) / var(--related-cards));
   background: var(--color-page-bg);
 }
 
@@ -755,6 +757,12 @@
   .preview--video .book {
     gap: var(--scale-800);
   }
+
+  .preview__related {
+    --related-padding: var(--scale-600);
+    --related-cards: 3;
+    margin-bottom: var(--scale-800);
+  }
 }
 
 @media (max-width: 899px) {
@@ -771,6 +779,10 @@
 
   .preview--book .book__cover {
     width: min(100%, 360px);
+  }
+
+  .preview__related {
+    --related-cards: 2;
   }
 }
 
@@ -798,9 +810,9 @@
   }
 
   .preview__related {
-    --related-inset: 0px;
+    --related-padding: var(--preview-gutter);
     gap: var(--scale-600);
-    margin-bottom: 0;
+    margin: 0;
     padding-block: var(--scale-900) calc(var(--scale-900) + env(safe-area-inset-bottom));
     border-radius: 20px 20px 0 0;
   }
