@@ -69,7 +69,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  border: 0.3px solid var(--color-neutral-300);
+  border: 0.3px solid var(--color-neutral-400);
   border-radius: inherit;
   pointer-events: none;
 }
@@ -439,7 +439,14 @@
 }
 
 .book-page .resources {
-  margin-top: 96px;
+  margin-top: 120px;
+}
+
+@media (min-width: 768px) {
+  .book-page .resources__heading {
+    font-size: var(--h5-size);
+    line-height: var(--h5-line);
+  }
 }
 
 /* Related resources here: closer, slightly larger cards and smaller arrows */
