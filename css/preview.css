@@ -141,7 +141,7 @@
 .preview .book {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
   gap: var(--preview-gutter);
-  padding: var(--scale-200) var(--preview-gutter) 96px;
+  padding: var(--scale-200) var(--preview-gutter) 136px;
 }
 
 .preview .book__cover,
