@@ -2,7 +2,7 @@
 // State lives in localStorage (this mockup has no accounts); every read and write is guarded
 // so the pages still work, for the current visit only, when storage is blocked.
 (function () {
-  const KEY = "bss.journey.v1";
+  const KEY = "bss.journey.v2";   // v1 counted articles opened from the Library as started
   const START_PCT = 12;   // reading further than this marks a topic "in progress"
 
   // Photos come from the project's own assets; `focus` is the object-position used when the photo is

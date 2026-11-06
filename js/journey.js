@@ -79,11 +79,11 @@
       step.dataset.turn = topic.inSequence ? "now" : "later";
       slot.innerHTML = !topic.unlocked ? locked(topic, P.topic(recommended ? recommended.id : topic.id - 1)) : topic.status === "completed" ? completed(topic) : available(topic);
 
-      // Pin above the card: colours come from data-status / data-turn in CSS; the card whose turn it is
-      // (and that is not started) gets pulse waves. Only touched when it changes, so the animation is not restarted.
+      // Pin above the card: colours come from data-status / data-turn in CSS; the card whose turn it is,
+      // started or not, gets pulse waves. Only touched when it changes, so the animation is not restarted.
       const item = step.querySelector(".journey__item");
       const pin = item.querySelector(".journey__pin");
-      const pulses = topic.unlocked && topic.inSequence && topic.status === "not-started";
+      const pulses = topic.unlocked && topic.inSequence && topic.status !== "completed";
       if (pulses && !pin.firstElementChild) {
         pin.innerHTML = '<span class="pin-pulse" aria-hidden="true"></span><span class="pin-pulse pin-pulse--late" aria-hidden="true"></span>';
       } else if (!pulses && pin.firstElementChild) {
