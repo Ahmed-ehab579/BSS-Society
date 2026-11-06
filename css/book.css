@@ -69,7 +69,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  border: var(--border-md) solid var(--color-neutral-200);
+  border: 0.3px solid var(--color-neutral-300);
   border-radius: inherit;
   pointer-events: none;
 }

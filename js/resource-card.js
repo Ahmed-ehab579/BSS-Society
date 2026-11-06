@@ -7,7 +7,7 @@
   // One entry per material type (Figma 984:2777): badge text and icon, action label, how the media is
   // shown ("photo" fills the frame, "book" sits on a light board) and the icon laid over it.
   const TYPES = {
-    book: { badge: "Book", icon: "assets/icons/badge-book.svg", iconSize: [10.5322, 10.97], action: "Preview", media: "book" },
+    book: { badge: "Book", icon: "assets/icons/badge-book.svg", iconSize: [10.5322, 10.97], action: "See details", media: "book" },
     audio: { badge: "Audio book", icon: "assets/icons/badge-audio.svg", iconSize: [15.303, 12.7575], action: "Listen", media: "book", overlay: "audio" },
     article: { badge: "Article", icon: "assets/icons/badge-article.svg", iconSize: [10.5322, 10.97], action: "Read article", media: "photo" },
     video: { badge: "Video", icon: "assets/icons/badge-video.svg", iconSize: [10.5325, 10.9704], action: "Watch", media: "photo", overlay: "play" },

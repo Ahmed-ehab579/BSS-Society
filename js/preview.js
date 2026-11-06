@@ -160,11 +160,13 @@
     const player = `<div class="preview__media">
       ${coverHtml(item)}
       <div class="player${tracks.length ? "" : " is-empty"}" data-player>
-        <p class="player__now" data-player-now aria-live="polite"></p>
+        <div class="player__top">
+          <p class="player__now" data-player-now aria-live="polite"></p>
+          <button class="player__speed" type="button" data-player-speed aria-label="Playback speed: normal">1×</button>
+        </div>
         <input class="player__seek" type="range" min="0" max="1000" value="0" step="1" aria-label="Seek">
         <div class="player__times">
           <span data-player-time>0:00</span>
-          <button class="player__speed" type="button" data-player-speed aria-label="Playback speed: normal">1×</button>
           <span class="player__length" data-player-length>--:--</span>
         </div>
         <div class="player__controls">
@@ -591,7 +593,7 @@
     const picks = [...sameTopic, ...others.filter((other) => !sameTopic.includes(other))].slice(0, RELATED_COUNT);
     if (picks.length < 3) return "";
     return `<section class="preview__related" aria-labelledby="preview-related">
-      <h3 class="book__heading" id="preview-related">Related materials</h3>
+      <h3 class="preview__related-heading" id="preview-related">Related materials</h3>
       <div class="carousel" data-carousel role="region" aria-roledescription="carousel" aria-label="Related materials">
         <div class="carousel__controls">
           <button class="icon-btn icon-btn--prev" type="button" data-carousel-prev aria-label="Previous material">
