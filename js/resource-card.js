@@ -37,7 +37,7 @@
     }
     const open = `<button class="btn btn--primary resource-card__action" type="button" data-preview-open ${label}>${type.action}</button>`;
     if (item.format !== "book") return open;
-    return `<div class="resource-card__actions">${open}<button class="resource-card__download" type="button" data-preview-download aria-label="Download PDF: ${title}">${DOWNLOAD_ICON}</button></div>`;
+    return `<div class="resource-card__actions">${open}<button class="resource-card__download download-fill" type="button" data-preview-download aria-label="Download PDF: ${title}"><span class="download-icon">${DOWNLOAD_ICON}${window.BSSDownload.CHECK_ICON}</span></button></div>`;
   }
 
   function resourceCardHtml(item) {

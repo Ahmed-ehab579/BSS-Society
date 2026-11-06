@@ -324,6 +324,101 @@
   color: var(--color-neutral-200);
 }
 
+/* Download buttons (js/download-fill.js): green fills in from the left, the icon draws into a checkmark,
+   then the green fades and the button is itself again */
+.download-fill {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.download-fill::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--surface-action-outline-hovered);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.download-fill.is-loading::before {
+  transform: none;
+  transition: transform 1100ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.download-fill.is-resetting::before {
+  opacity: 0;
+  transition: opacity 420ms var(--motion-ease);
+}
+
+/* The text and icon turn dark as the light green reaches them */
+.btn--primary.download-fill {
+  transition: color 420ms var(--motion-ease);
+}
+
+.btn--primary.download-fill.is-loading:not(.is-resetting) {
+  color: var(--color-text-on-light);
+  transition-delay: 200ms;
+}
+
+.download-fill.is-loading:not(.is-resetting) .book__size {
+  color: inherit;
+}
+
+/* The card's outline button is already green on hover: clear it so the fill can be seen */
+.resource-card__download.download-fill.is-loading {
+  background: transparent;
+}
+
+.download-icon {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+}
+
+.download-icon > :first-child {
+  transition: opacity 240ms var(--motion-ease), filter 420ms var(--motion-ease),
+    transform var(--motion-duration-hover) var(--motion-ease);
+}
+
+.btn--primary.is-loading:not(.is-resetting) .download-icon > :first-child {
+  filter: brightness(0.23);
+}
+
+.download-fill.is-done .download-icon > :first-child {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+.download-check {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition: opacity 240ms var(--motion-ease);
+}
+
+.download-check path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.download-fill.is-done .download-check,
+.download-fill.is-done .download-check path {
+  opacity: 1;
+  stroke-dashoffset: 0;
+}
+
+.download-fill.is-done .download-check path {
+  transition: stroke-dashoffset 380ms var(--motion-ease);
+}
+
+.download-fill.is-resetting .download-check path {
+  stroke-dashoffset: 0;
+}
+
 /* Shown only if a button has no file behind it yet */
 .book__unavailable {
   flex-basis: 100%;
@@ -554,6 +649,14 @@
   .book__unavailable,
   .book-page .resource-card__link {
     transition: none;
+  }
+
+  .download-fill,
+  .download-fill::before,
+  .download-icon > :first-child,
+  .download-check,
+  .download-check path {
+    transition: none !important;
   }
 
   [data-book-save].is-popping {

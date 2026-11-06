@@ -93,6 +93,7 @@
         return;
       }
       unavailable.classList.remove("is-visible");
+      if (kind === "download" && !window.BSSDownload.play(button)) return;
       const link = document.createElement("a");
       link.href = src;
       if (kind === "download") link.download = "";

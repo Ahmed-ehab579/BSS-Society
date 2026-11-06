@@ -28,6 +28,7 @@
   const RESTART_NEAR_START = 3;  // seconds into a track after which "previous" restarts it first
   const NOTE_TIME = 2400;      // ms a confirmation stays up
   const CLOSE_TIME = 260;      // ms, matches css/preview.css
+  const VIDEO_WAIT = 5000;     // ms a press waits for the video before showing YouTube's own player
   const SKIP = 15;             // seconds the skip buttons and lock-screen controls move
   const SPEEDS = [1, 1.25, 1.5, 2];
   const TOPICS = { belief: "Belief & Faith", quran: "The Qur’an", prophet: "Prophet Muhammad", women: "Women in Islam", life: "Life & Questions" };
@@ -101,8 +102,8 @@
 
   function downloadHtml(item) {
     const size = sourceFor(item, "pdf") && SAMPLES.pdfSize ? ` <span class="book__size">(${escape(SAMPLES.pdfSize)})</span>` : "";
-    return linkHtml(item, "pdf", "btn btn--regular btn--primary",
-      `<img class="book__download" src="assets/icons/download.svg" width="16" height="16" alt="">Download PDF${size}`);
+    return linkHtml(item, "pdf", "btn btn--regular btn--primary download-fill",
+      `<span class="download-icon"><img class="book__download" src="assets/icons/download.svg" width="16" height="16" alt="">${window.BSSDownload.CHECK_ICON}</span>Download PDF${size}`);
   }
 
   function detailsHtml(item, type, cta, extra = "") {
@@ -201,8 +202,6 @@
     return `<article class="book">${player}${detailsHtml(item, type, cta, outcomesHtml() + chapters)}</article>`;
   }
 
-  // The YouTube player only loads when someone presses play: a much lighter overlay, and no YouTube
-  // cookies for people who never watch.
   function youtubeId(link) {
     const found = /(?:youtu\.be\/|[?&]v=|embed\/|shorts\/)([\w-]{11})/.exec(link);
     return found ? found[1] : "";
@@ -220,6 +219,80 @@
     const cta = linkHtml(item, "youtube", "btn btn--regular btn--secondary",
       '<img src="assets/icons/youtube.svg" width="22" height="22" alt="">Watch on YouTube');
     return `<article class="book">${media}${detailsHtml(item, type, cta, outcomesHtml())}</article>`;
+  }
+
+  // ---- The video ---------------------------------------------------------------------------------
+
+  let youtubeApi = null;
+
+  function loadYouTubeApi() {
+    youtubeApi ||= new Promise((resolve, reject) => {
+      window.onYouTubeIframeAPIReady = () => resolve(window.YT);
+      const script = document.createElement("script");
+      script.src = "https://www.youtube.com/iframe_api";
+      script.onerror = () => {
+        youtubeApi = null;
+        reject();
+      };
+      document.head.append(script);
+    });
+    return youtubeApi;
+  }
+
+  // YouTube's player loads with the overlay, hidden under our picture and play button. Once it's ready, a
+  // click goes through the picture to YouTube's own play button: browsers only trust a press made inside
+  // the player, so that is what starts the video first time, with no black screen while it loads. A press
+  // before it's ready, or from the keyboard, asks the player to start, and the picture lifts either way.
+  function setUpVideo(item) {
+    const box = scroller.querySelector("[data-video]");
+    const id = box && youtubeId(sourceFor(item, "youtube"));
+    if (!id) return;
+    let player = null;
+    let ready = false;
+    let wanted = false;
+    let waitTimer = null;
+
+    const frame = document.createElement("iframe");
+    frame.src = `https://www.youtube-nocookie.com/embed/${id}?rel=0&playsinline=1&enablejsapi=1&origin=${encodeURIComponent(location.origin)}`;
+    frame.title = item.title;
+    frame.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+    frame.referrerPolicy = "strict-origin-when-cross-origin";   // YouTube refuses to play without it
+    box.prepend(frame);
+
+    const lift = () => {
+      clearTimeout(waitTimer);
+      box.classList.remove("is-waiting");
+      box.classList.add("is-playing");
+    };
+
+    box.querySelector("[data-video-play]").addEventListener("click", () => {
+      wanted = true;
+      box.classList.add("is-waiting");
+      if (ready) player.playVideo();
+      clearTimeout(waitTimer);
+      waitTimer = setTimeout(lift, VIDEO_WAIT);
+    });
+
+    loadYouTubeApi().then((YT) => {
+      if (!frame.isConnected) return;
+      player = new YT.Player(frame, {
+        events: {
+          onReady() {
+            ready = true;
+            box.classList.add("is-ready");
+            if (wanted) player.playVideo();
+          },
+          onStateChange({ data }) {
+            if (data === YT.PlayerState.PLAYING || data === YT.PlayerState.BUFFERING) lift();
+          },
+        },
+      });
+    }).catch(lift);   // no script from YouTube: its own player, in the frame, still works
+
+    teardown = () => {
+      clearTimeout(waitTimer);
+      player?.destroy?.();
+    };
   }
 
   // ---- The player: on the page, and on the lock screen through the Media Session API ----------------
@@ -560,6 +633,7 @@
     scroller.scrollTop = 0;
     scroller.querySelector("[data-preview-save]").setAttribute("aria-pressed", String(readSaved().includes(item.key)));
     setUpPlayer(item);
+    setUpVideo(item);
     const row = scroller.querySelector("[data-carousel]");
     if (row) stopRelated = BSS.startCarousel(row);
     if (message) showNote(message);
@@ -644,19 +718,8 @@
     else if (target.closest("[data-preview-share]")) share(target.closest("button"));
     else if (target.closest("[data-preview-save]")) toggleSave(target.closest("button"));
     else if (target.closest("[data-preview-missing]")) showNote(MISSING[target.closest("[data-preview-missing]").dataset.previewMissing]);
-    else if (target.closest("[data-video-play]")) {
-      const id = youtubeId(sourceFor(current, "youtube"));
-      if (!id) {
-        showNote(MISSING.youtube);
-        return;
-      }
-      const frame = document.createElement("iframe");
-      frame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1`;
-      frame.title = current.title;
-      frame.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
-      frame.referrerPolicy = "strict-origin-when-cross-origin";   // YouTube refuses to play without it
-      scroller.querySelector("[data-video]").replaceChildren(frame);
-    }
+    else if (target.closest("[data-video-play]") && !youtubeId(sourceFor(current, "youtube"))) showNote(MISSING.youtube);
+    else if (target.closest("a.download-fill") && !window.BSSDownload.play(target.closest("a"))) event.preventDefault();
   });
 
   // Cards: the button's area covers the whole card. The download icon saves the file straight away.
@@ -676,6 +739,7 @@
       open(item, { from, message: MISSING.pdf });
       return;
     }
+    if (!window.BSSDownload.play(event.target.closest("[data-preview-download]"))) return;
     const link = document.createElement("a");
     link.href = address;
     link.download = "";
