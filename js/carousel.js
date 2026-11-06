@@ -87,7 +87,7 @@ function startCarousel(root) {
     lastWidth = viewport.clientWidth;
     const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
     root.classList.remove("is-static");
-    step = slides[0].getBoundingClientRect().width + gap;
+    step = parseFloat(getComputedStyle(slides[0]).width) + gap;   // not its on-screen size: an opening overlay scales it
     setWidth = step * slides.length;
     isStatic = setWidth - gap <= viewport.clientWidth;
     root.classList.toggle("is-static", isStatic);
