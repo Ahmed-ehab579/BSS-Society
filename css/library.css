@@ -1052,12 +1052,16 @@
 
   .resource-grid[data-layout="two"] .resource-card__action,
   .resource-grid[data-layout="list"] .resource-card__action {
-    --arrow: 16px;
     gap: var(--scale-100);
     height: 36px;
     padding: 0 var(--scale-200);
     font-size: 13px;
     line-height: 18px;
+  }
+
+  .resource-grid[data-layout="two"] .resource-card__download,
+  .resource-grid[data-layout="list"] .resource-card__download {
+    width: 44px;
   }
 
   /* One a row: the desktop card at full width, a little shorter */

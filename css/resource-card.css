@@ -195,12 +195,9 @@
   line-clamp: 3;
 }
 
-/* The site's primary button with its sliding arrow (as on the homepage), 44px tall: the
-   recommended minimum touch target */
 /* Medium (regular, 48px) size of the site's primary button on desktop and one-a-row cards; the
    denser phone layouts use a 36px version (above the 24px WCAG minimum target) */
 .resource-card__action {
-  --arrow: 20px;
   width: 100%;
   height: 48px;
   margin-top: auto;
@@ -241,10 +238,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  aspect-ratio: 1;
+  width: 60px;
   padding: 0;
   border: var(--border-md) solid var(--border-color-on-light);
-  border-radius: 50%;
+  border-radius: var(--radius-pill);
   background: transparent;
   color: var(--color-text-on-light);
   cursor: pointer;
@@ -265,12 +262,6 @@
 .resource-card__download:focus-visible {
   outline: var(--border-lg) solid var(--border-color-on-light);
   outline-offset: 2px;
-}
-
-.resource-card__action .btn__arrow-clip,
-.resource-card__action .btn__arrow-track img {
-  width: var(--arrow);
-  height: var(--arrow);
 }
 
 /* Hover: the card lifts a little, darkens to the hover surface and its media comes slightly forward */
@@ -297,11 +288,6 @@
     transform: translateY(2px);
   }
 
-  /* The button reacts only to its own hover, as on the homepage */
-  .resource-card__action:hover .btn__arrow-track,
-  .resource-card__action:active .btn__arrow-track {
-    transform: translateY(calc(-1 * (var(--arrow) + 11px)));
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

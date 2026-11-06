@@ -387,7 +387,6 @@
   }
 
   .topic-panel__track .resource-card__action {
-    --arrow: 18px;
     height: 40px;
     padding: var(--scale-200) var(--scale-400);
     font-size: var(--label-m-size);

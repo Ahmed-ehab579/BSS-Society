@@ -27,21 +27,15 @@
     return item.key;
   }
 
-  const ARROW = `<span class="btn__arrow-clip" aria-hidden="true">
-              <span class="btn__arrow-track">
-                <img src="assets/icons/arrow-up-right.svg" width="24" height="24" alt="">
-                <img src="assets/icons/arrow-up-right.svg" width="24" height="24" alt="">
-              </span>
-            </span>`;
   const DOWNLOAD_ICON = '<svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3v10m0 0 4-4m-4 4L6 9M3.500 16.500h13"/></svg>';
 
   // Articles open the article page. The others open a preview (js/preview.js); books add a quick download.
   function actionsHtml(item, type, title) {
     const label = `aria-label="${type.action}: ${title}"`;
     if (item.format === "article") {
-      return `<a class="btn btn--primary resource-card__action" href="${ARTICLE_URL}" ${label}>${type.action}${ARROW}</a>`;
+      return `<a class="btn btn--primary resource-card__action" href="${ARTICLE_URL}" ${label}>${type.action}</a>`;
     }
-    const open = `<button class="btn btn--primary resource-card__action" type="button" data-preview-open ${label}>${type.action}${ARROW}</button>`;
+    const open = `<button class="btn btn--primary resource-card__action" type="button" data-preview-open ${label}>${type.action}</button>`;
     if (item.format !== "book") return open;
     return `<div class="resource-card__actions">${open}<button class="resource-card__download" type="button" data-preview-download aria-label="Download PDF: ${title}">${DOWNLOAD_ICON}</button></div>`;
   }
@@ -86,4 +80,5 @@
   window.BSS.resourceCardHtml = resourceCardHtml;
   window.BSS.registerResources = (list) => list.forEach(register);
   window.BSS.resourceItem = (key) => items.get(key);
+  window.BSS.resourceItems = () => [...items.values()];
 })();

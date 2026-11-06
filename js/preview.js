@@ -31,19 +31,26 @@
   const SKIP = 15;             // seconds the skip buttons and lock-screen controls move
   const SPEEDS = [1, 1.25, 1.5, 2];
   const TOPICS = { belief: "Belief & Faith", quran: "The Qur’an", prophet: "Prophet Muhammad", women: "Women in Islam", life: "Life & Questions" };
-  const LANGUAGES = { en: "English", ar: "Arabic" };
   const MISSING = {
     pdf: "The PDF isn’t available yet. It will be here to download soon.",
     tracks: "The audio isn’t available yet. It will be here to listen to soon.",
     soundcloud: "The SoundCloud link isn’t available yet.",
     youtube: "The video isn’t available yet. It will be here to watch soon.",
   };
-  const AUDIENCE = [
-    "Anyone meeting this topic for the first time",
-    "Readers who want a calm, clear explanation",
-    "Students looking for a trusted starting point",
-    "People with questions who prefer plain language",
+  const AUTHOR = "Shaykh Dr. Tariq Al-Hashimi";   // sample, until each item carries its own author
+  const OUTCOMES = [
+    "A clear picture of the topic’s main ideas",
+    "Confidence to explain them in your own words",
+    "Answers to the questions people ask most",
+    "A trusted next step for going deeper",
   ];
+  // Sample text after each item's own description, until each item carries its full summary
+  const MORE_SUMMARY = {
+    book: "Written in plain language and built around short chapters, it takes you from the first questions to a confident understanding, one idea at a time. Each chapter ends with key points to remember, so you can stop and return whenever you need to.",
+    audio: "Told in a calm voice and divided into short chapters, it fits easily into a walk, a commute or a quiet moment. Listen straight through, or go directly to the chapter you need and carry on later from where you stopped.",
+    video: "Using simple examples and clear explanations, it gives you a solid starting point in a short time. It needs no background knowledge, and it works well on its own or as an introduction before reading further.",
+  };
+  const RELATED_COUNT = 6;
 
   const root = document.documentElement;
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -61,6 +68,9 @@
           <img src="assets/icons/arrow-left.svg" width="22" height="22" alt="">
           <span>${backLabel}</span>
         </button>
+        <button class="preview__close" type="button" data-preview-close aria-label="Close">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
       </div>
       <div class="preview__scroll"></div>
     </div>`;
@@ -72,30 +82,20 @@
 
   let current = null;       // the open item
   let opener = null;        // gets focus back on closing
-  let pushed = false;       // this overlay added a history entry
+  let depth = 0;            // history entries these previews added
+  let leaving = false;
+  let stopRelated = null;   // stops the related row's timer
   let closeTimer = null;
   let noteTimer = null;
   let teardown = null;      // stops the audio when the overlay closes
 
   const sourceFor = (item, key) => item[key] || SAMPLES[key] || "";
 
-  function factsHtml(item, type, extra) {
-    const facts = [
-      ["Type", type.badge],
-      ["Topic", TOPICS[item.category]],
-      ["Level", item.level && item.level[0].toUpperCase() + item.level.slice(1)],
-      ["Language", LANGUAGES[item.language]],
-      ["Length", extra],
-    ].filter(([, value]) => value);
-    return `<dl class="preview__facts">${facts.map(([term, value]) =>
-      `<div><dt>${term}</dt><dd>${escape(value)}</dd></div>`).join("")}</dl>`;
-  }
-
   // An address opens as a link; without one the button explains instead of pretending
-  function linkHtml(item, kind, className, inner) {
+  function linkHtml(item, kind, className, inner, newTab = false) {
     const address = sourceFor(item, kind);
     if (!address) return `<button class="${className}" type="button" data-preview-missing="${kind}">${inner}</button>`;
-    const how = kind === "pdf" ? "download" : 'target="_blank" rel="noopener"';
+    const how = kind === "pdf" && !newTab ? "download" : 'target="_blank" rel="noopener"';
     return `<a class="${className}" href="${escape(address)}" ${how}>${inner}</a>`;
   }
 
@@ -105,12 +105,13 @@
       `<img class="book__download" src="assets/icons/download.svg" width="16" height="16" alt="">Download PDF${size}`);
   }
 
-  function detailsHtml(item, type, cta, extra = "", length = "") {
+  function detailsHtml(item, type, cta, extra = "") {
     const topic = TOPICS[item.category];
     return `<div class="book__details">
       <header class="book__head">
         <p class="book__tag">${escape(type.badge)}${topic ? ` · ${escape(topic)}` : ""}</p>
         <h2 class="book__title" id="preview-title" dir="${item.dir || "auto"}">${escape(item.title)}</h2>
+        <p class="book__author">By ${escape(item.author || AUTHOR)}</p>
         <div class="book__actions">
           <button class="book__icon-btn" type="button" data-preview-share aria-label="Share">
             <img src="assets/icons/share.svg" width="14.4" height="16" alt="">
@@ -125,9 +126,9 @@
       <section class="book__section">
         <h3 class="book__heading">Summary</h3>
         <p class="book__summary" dir="${item.dir || "auto"}">${escape(item.text)}</p>
+        ${item.dir === "rtl" ? "" : `<p class="book__summary">${MORE_SUMMARY[item.format]}</p>`}
       </section>
       ${extra}
-      ${factsHtml(item, type, length)}
       <div class="book__cta">${cta}<p class="book__unavailable" role="status"></p></div>
     </div>`;
   }
@@ -140,11 +141,12 @@
   }
 
   function bookHtml(item, type) {
-    const audience = `<section class="book__section book__section--audience">
-      <h3 class="book__heading">Who it’s for</h3>
-      <ul class="book__audience">${AUDIENCE.map((line) => `<li>${line}</li>`).join("")}</ul>
+    const outcomes = `<section class="book__section book__section--audience">
+      <h3 class="book__heading">What you’ll get after reading</h3>
+      <ul class="book__audience">${OUTCOMES.map((line) => `<li>${line}</li>`).join("")}</ul>
     </section>`;
-    return `<article class="book">${coverHtml(item)}${detailsHtml(item, type, downloadHtml(item), audience)}</article>`;
+    const cta = downloadHtml(item) + linkHtml(item, "pdf", "btn btn--regular btn--secondary", "Read sample", true);
+    return `<article class="book">${coverHtml(item)}${detailsHtml(item, type, cta, outcomes)}</article>`;
   }
 
   function audioHtml(item, type) {
@@ -177,10 +179,9 @@
             ${icon('<path d="M18 5a1 1 0 1 0-2 0v5.700L6.500 4.400A1 1 0 0 0 5 5.200v13.600a1 1 0 0 0 1.500.8L16 13.300V19a1 1 0 1 0 2 0V5Z"/>')}
           </button>
         </div>
-        <audio preload="metadata"></audio>
+        <audio preload="metadata" playsinline></audio>
       </div>
     </div>`;
-    const total = tracks.reduce((sum, track) => sum + (track.length || 0), 0);
     const chapters = tracks.length ? `<section class="book__section">
       <h3 class="book__heading">Chapters <span class="tracks__count">${tracks.length}</span></h3>
       <ol class="tracks">${tracks.map((track, index) => `<li>
@@ -193,7 +194,7 @@
     </section>` : "";
     const cta = downloadHtml(item) + linkHtml(item, "soundcloud", "btn btn--regular btn--secondary",
       '<img src="assets/icons/soundcloud.svg" width="30" height="30" alt="">Listen on SoundCloud');
-    return `<article class="book">${player}${detailsHtml(item, type, cta, chapters, total ? formatLength(total) : "")}</article>`;
+    return `<article class="book">${player}${detailsHtml(item, type, cta, chapters)}</article>`;
   }
 
   // The YouTube player only loads when someone presses play: a much lighter overlay, and no YouTube
@@ -227,10 +228,6 @@
     const rest = String(whole % 60).padStart(2, "0");
     return hours ? `${hours}:${minutes.padStart(2, "0")}:${rest}` : `${minutes}:${rest}`;
   }
-
-  const formatLength = (seconds) => (seconds < 3600
-    ? `${Math.max(1, Math.round(seconds / 60))} min`
-    : `${Math.floor(seconds / 3600)} h ${Math.round((seconds % 3600) / 60)} min`);
 
   function readPlaces() {
     try {
@@ -510,27 +507,80 @@
 
   // ---- Opening and closing -----------------------------------------------------------------------
 
-  function open(item, { from = null, remember = true, message = "" } = {}) {
-    if (dialog.open) return;
-    clearTimeout(closeTimer);
+  // Same topic first, then the other materials; articles open their own page from here
+  function relatedHtml(item) {
+    const others = BSS.resourceItems().filter((other) => other.key !== item.key && (other.dir || "auto") === (item.dir || "auto"));
+    const sameTopic = others.filter((other) => other.category && other.category === item.category);
+    const picks = [...sameTopic, ...others.filter((other) => !sameTopic.includes(other))].slice(0, RELATED_COUNT);
+    if (picks.length < 3) return "";
+    return `<section class="preview__related" aria-labelledby="preview-related">
+      <h3 class="book__heading" id="preview-related">Related materials</h3>
+      <div class="carousel" data-carousel role="region" aria-roledescription="carousel" aria-label="Related materials">
+        <div class="carousel__controls">
+          <button class="icon-btn icon-btn--prev" type="button" data-carousel-prev aria-label="Previous material">
+            <img src="assets/icons/arrow-right.svg" width="28" height="28" alt="">
+          </button>
+          <button class="icon-btn" type="button" data-carousel-next aria-label="Next material">
+            <img src="assets/icons/arrow-right.svg" width="28" height="28" alt="">
+          </button>
+        </div>
+        <div class="carousel__viewport">
+          <ul class="carousel__track">${picks.map(BSS.resourceCardHtml).join("")}</ul>
+        </div>
+        <div class="carousel__bar">
+          <button class="carousel__toggle" type="button" data-carousel-toggle data-state="playing" aria-label="Pause carousel">
+            <img src="assets/icons/carousel-pause.svg" width="20" height="20" alt="" data-icon="pause">
+            <img src="assets/icons/carousel-play.svg" width="20" height="20" alt="" data-icon="play">
+            <img src="assets/icons/carousel-replay.svg" width="20" height="20" alt="" data-icon="replay">
+          </button>
+          <div class="carousel__dots" role="group" aria-label="Choose a card" data-carousel-dots></div>
+        </div>
+      </div>
+    </section>`;
+  }
+
+  function clearContent() {
+    teardown?.();
+    teardown = null;
+    stopRelated?.();
+    stopRelated = null;
+  }
+
+  function show(item, message) {
+    clearContent();
     const type = BSS.RESOURCE_TYPES[item.format];
     current = item;
-    opener = from;
-    dialog.className = `preview preview--${item.format}`;
-    scroller.innerHTML = { book: bookHtml, audio: audioHtml, video: videoHtml }[item.format](item, type);
+    dialog.classList.remove("preview--book", "preview--audio", "preview--video");
+    dialog.classList.add(`preview--${item.format}`);
+    scroller.innerHTML = { book: bookHtml, audio: audioHtml, video: videoHtml }[item.format](item, type) + relatedHtml(item);
     scroller.scrollTop = 0;
     scroller.querySelector("[data-preview-save]").setAttribute("aria-pressed", String(readSaved().includes(item.key)));
     setUpPlayer(item);
-    if (remember) {
-      history.pushState({ preview: item.key }, "", `#preview=${item.key}`);
-      pushed = true;
+    const row = scroller.querySelector("[data-carousel]");
+    if (row) stopRelated = BSS.startCarousel(row);
+    if (message) showNote(message);
+  }
+
+  function remember(item) {
+    history.pushState({ preview: item.key }, "", `#preview=${item.key}`);
+    depth += 1;
+  }
+
+  function open(item, { from = null, address = true, message = "" } = {}) {
+    clearTimeout(closeTimer);
+    if (address) remember(item);
+    if (dialog.open) {
+      show(item, message);            // a related card: the overlay stays, its content changes
+      sheet.focus({ preventScroll: true });
+      return;
     }
+    opener = from;
+    show(item, message);
     root.classList.add("is-sheet-open");
     dialog.showModal();
     sheet.focus({ preventScroll: true });
     sheet.getBoundingClientRect();   // start from the closed position
     dialog.classList.add("is-open");
-    if (message) showNote(message);
   }
 
   function finish() {
@@ -544,32 +594,38 @@
   function close() {
     if (!dialog.open || !dialog.classList.contains("is-open")) return;
     dialog.classList.remove("is-open");
-    teardown?.();
-    teardown = null;
+    clearContent();
     closeTimer = setTimeout(finish, reduceMotion.matches ? 0 : CLOSE_TIME);
   }
 
-  // Back arrow, Esc and the backdrop leave the same way as the browser's back button
+  const addressItem = () => {
+    const found = /^#preview=(\w+)$/.exec(location.hash);
+    return found && BSS.resourceItem(found[1]);
+  };
+
+  // Back arrow, close icon, Esc and the backdrop all return to where the visitor was before any preview
   function leave() {
-    if (pushed) {
-      history.back();
+    if (depth) {
+      leaving = true;
+      history.go(-depth);
       return;
     }
     history.replaceState(null, "", location.pathname + location.search);
     close();
   }
 
+  // The browser's back button steps back through the previews opened from related cards
   window.addEventListener("popstate", () => {
-    pushed = false;
-    if (dialog.open) close();
-    else openFromAddress();
+    depth = Math.max(0, depth - 1);
+    const item = addressItem();
+    if (leaving) {
+      leaving = false;
+      depth = 0;
+      if (item) history.replaceState(null, "", location.pathname + location.search);
+      close();
+    } else if (!item) close();
+    else open(item, { address: false });
   });
-
-  function openFromAddress() {
-    const found = /^#preview=(\w+)$/.exec(location.hash);
-    const item = found && BSS.resourceItem(found[1]);
-    if (item) open(item, { remember: false });
-  }
 
   dialog.addEventListener("cancel", (event) => {
     event.preventDefault();
@@ -593,7 +649,7 @@
       frame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1`;
       frame.title = current.title;
       frame.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
-      frame.allowFullscreen = true;
+      frame.referrerPolicy = "strict-origin-when-cross-origin";   // YouTube refuses to play without it
       scroller.querySelector("[data-video]").replaceChildren(frame);
     }
   });
@@ -625,11 +681,11 @@
   window.addEventListener("pageshow", (event) => {
     if (event.persisted && dialog.open) {
       dialog.classList.remove("is-open");
-      teardown?.();
-      teardown = null;
+      clearContent();
       finish();
     }
   });
 
-  openFromAddress();
+  const linked = addressItem();
+  if (linked) open(linked, { address: false });
 })();

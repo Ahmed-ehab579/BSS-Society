@@ -4,7 +4,7 @@
 // and a swipe carries on from the finger at the speed it left, slowing into place.
 // The slide set is cloned once so the row loops without a visible jump; clones are hidden from screen
 // readers and keyboard focus.
-document.querySelectorAll("[data-carousel]").forEach((root) => {
+function startCarousel(root) {
   const viewport = root.querySelector(".carousel__viewport");
   const track = root.querySelector(".carousel__track");
   const prevBtn = root.querySelector("[data-carousel-prev]");
@@ -279,19 +279,36 @@ document.querySelectorAll("[data-carousel]").forEach((root) => {
   }, true);
 
   // The first card's time only starts once the row is really on screen.
-  new IntersectionObserver((entries) => {
+  const views = new IntersectionObserver((entries) => {
     inView = entries[0].isIntersecting;
     kick();
-  }, { threshold: 0.4 }).observe(root);
+  }, { threshold: 0.4 });
+  views.observe(root);
 
   document.addEventListener("visibilitychange", kick);
-
-  reduceMotion.addEventListener("change", (e) => {
+  const reducedChange = (e) => {
     if (e.matches && state === "playing") setState("paused");
-  });
+  };
 
-  new ResizeObserver(measure).observe(viewport);
+  reduceMotion.addEventListener("change", reducedChange);
+
+  const resizes = new ResizeObserver(measure);
+  resizes.observe(viewport);
 
   measure();
   setState(state);
-});
+
+  // For rows that come and go (js/preview.js)
+  return function stopCarousel() {
+    if (raf !== null) cancelAnimationFrame(raf);
+    raf = null;
+    resizes.disconnect();
+    views.disconnect();
+    document.removeEventListener("visibilitychange", kick);
+    reduceMotion.removeEventListener("change", reducedChange);
+  };
+}
+
+window.BSS = window.BSS || {};
+window.BSS.startCarousel = startCarousel;
+document.querySelectorAll("[data-carousel]").forEach(startCarousel);
