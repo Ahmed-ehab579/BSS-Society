@@ -2,7 +2,7 @@
 // Images already in the browser's cache skip it, and a failed image leaves the slot's own fallback.
 // Styles: css/base.css. New images (Library results, journey cards) are picked up as they are added.
 (function () {
-  const SLOTS = ".hero__media, .guide-card__media, .new-muslim__photo, .topic-card__bg, .resource-card__media, .resource-card__frame, .book__cover, .journey-card__media, .who__media, .article-hero, .topic-preview";
+  const SLOTS = ".hero__media, .guide-card__media, .new-muslim__photo, .topic-card__bg, .resource-card__media, .resource-card__frame, .book__cover, .journey-card__media, .who__media, .article-hero, .topic-preview, .preview__video";
 
   function watch(image) {
     const slot = image.parentElement;

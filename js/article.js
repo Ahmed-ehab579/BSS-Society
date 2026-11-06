@@ -7,7 +7,15 @@
   if (!bar || !article || !sections.length) return;
 
   // Which topic is this? article.html?topic=N (1-6), defaulting to the first.
-  const requested = Number(new URLSearchParams(window.location.search).get("topic"));
+  const params = new URLSearchParams(window.location.search);
+  const requested = Number(params.get("topic"));
+
+  // Opened from a Library card: the way back goes to the Library
+  if (params.get("from") === "library") {
+    const back = document.querySelector(".article-back");
+    back.href = "library.html";
+    back.querySelector("span").textContent = "Back to the library";
+  }
   const topicId = P && P.topic(requested) ? requested : 1;
 
   const label = document.querySelector("[data-topic-label]");
