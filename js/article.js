@@ -10,8 +10,10 @@
   const params = new URLSearchParams(window.location.search);
   const requested = Number(params.get("topic"));
 
-  // Opened from a Library card: the way back goes to the Library
-  if (params.get("from") === "library") {
+  // Opened from a Library card: the way back goes to the Library, and reading here doesn't start the
+  // Start here path, so someone who browsed the Library still meets it from the beginning
+  const fromLibrary = params.get("from") === "library";
+  if (fromLibrary) {
     const back = document.querySelector(".article-back");
     back.href = "library.html";
     back.querySelector("span").textContent = "Back to the library";
@@ -68,13 +70,13 @@
 
   if (!P) { update(); return; }
 
-  P.start(topicId);   // opened = in progress (blue pin); only finishing completes it
+  if (!fromLibrary) P.start(topicId);   // opened = in progress; only finishing completes it
 
   /* ---- Saved reading progress: "in progress" once the reader is past the first stretch ---- */
   let savedStep = 0;
   function saveProgress() {
     const step = Math.floor((scrolled * 100) / 5) * 5;    // write in 5% steps, not on every scroll event
-    if (step > savedStep) {
+    if (step > savedStep && !fromLibrary) {
       savedStep = step;
       P.setProgress(topicId, step);
     }

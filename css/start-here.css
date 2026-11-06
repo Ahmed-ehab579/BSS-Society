@@ -44,7 +44,7 @@
   --line-active: #5c5c5c;              /* connector once both cards are available */
   --pin-done-ring: #c5d5b2;            /* Figma 970:2563 "Done": completed articles */
   --pin-done-dot: #6e8e49;
-  --pin-turn-dot: #88b653;             /* Figma 970:2563 "Start here": the card whose turn it is (pulses) */
+  --pin-turn-dot: #88b653;             /* Figma 970:2563 "Start here": the card whose turn it is, also "Continue" (pulses) */
   --pin-idle-ring: #dbdbdb;            /* locked indicator: locked, unlocked early, or in progress but not its turn */
   --pin-turn-ring: var(--surface-cards);        /* Figma 970:2563 "Start here" ring */
   --pin-idle-dot: #9f9f9f;
@@ -171,9 +171,9 @@
 }
 
 /* Pin states (Figma 970:2563):
-   completed = light green ring + dark green dot; its turn and not started = bright green dot that pulses;
-   everything else = the locked indicator (gray dot on a darker ring): locked cards, cards unlocked early
-   (even once opened and not finished) and an in-progress card, until it is that card's turn. */
+   completed = light green ring + dark green dot; its turn, "Start here" or "Continue" = bright green dot
+   that pulses; everything else = the locked indicator (gray dot on a darker ring): locked cards and cards
+   unlocked early, even once opened and not finished, until it is that card's turn. */
 .journey__step[data-status="completed"] .journey__pin {
   background: var(--pin-done-ring);
 }
@@ -182,11 +182,11 @@
   background: var(--pin-done-dot);
 }
 
-.journey__step[data-status="not-started"][data-turn="now"] .journey__pin {
+.journey__step[data-turn="now"]:not([data-status="completed"]) .journey__pin {
   background: var(--pin-turn-ring);
 }
 
-.journey__step[data-status="not-started"][data-turn="now"] .journey__pin::before {
+.journey__step[data-turn="now"]:not([data-status="completed"]) .journey__pin::before {
   background: var(--pin-turn-dot);
 }
 
