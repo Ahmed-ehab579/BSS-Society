@@ -6,17 +6,26 @@
   const BSS = window.BSS;
   if (!BSS || !BSS.resourceItem) return;
 
-  // Real content goes here. Every button works by itself once its address is filled in; until then it
-  // says plainly that the file isn't available. An item can carry its own pdf, audio, soundcloud or youtube.
+  // Sample content, shared by every card for now. An item can carry its own pdf, tracks, soundcloud or
+  // youtube. An audio book is a list of tracks: `length` is in seconds, so the list can show each track's
+  // time and the total before anything has loaded.
   const SAMPLES = {
-    pdf: "",          // e.g. "assets/samples/book.pdf"
-    pdfSize: "",      // e.g. "4.2 MB"
-    audio: "",        // e.g. "assets/samples/audio.mp3"
-    soundcloud: "",   // the full SoundCloud link
-    youtube: "",      // the full YouTube link
+    pdf: "assets/samples/book-sample.pdf",
+    pdfSize: "87 KB",
+    tracks: [
+      { title: "Introduction", src: "assets/samples/audio-sample.mp3", length: 38 },
+      { title: "Chapter 1", src: "assets/samples/audio-sample.mp3", length: 38 },
+      { title: "Chapter 2", src: "assets/samples/audio-sample.mp3", length: 38 },
+      { title: "Chapter 3", src: "assets/samples/audio-sample.mp3", length: 38 },
+      { title: "Closing words", src: "assets/samples/audio-sample.mp3", length: 38 },
+    ],
+    soundcloud: "https://soundcloud.com/theoasisinitiative/sets/famous-women-in-islam",
+    youtube: "https://www.youtube.com/watch?v=O-3_Cki7QmY",
   };
 
   const SAVED_KEY = "bss.saved.v1";
+  const PLACE_KEY = "bss.audio.place.v1";   // where each audio book was left, to carry on from there
+  const RESTART_NEAR_START = 3;  // seconds into a track after which "previous" restarts it first
   const NOTE_TIME = 2400;      // ms a confirmation stays up
   const CLOSE_TIME = 260;      // ms, matches css/preview.css
   const SKIP = 15;             // seconds the skip buttons and lock-screen controls move
@@ -25,7 +34,7 @@
   const LANGUAGES = { en: "English", ar: "Arabic" };
   const MISSING = {
     pdf: "The PDF isn’t available yet. It will be here to download soon.",
-    audio: "The audio isn’t available yet. It will be here to listen to soon.",
+    tracks: "The audio isn’t available yet. It will be here to listen to soon.",
     soundcloud: "The SoundCloud link isn’t available yet.",
     youtube: "The video isn’t available yet. It will be here to watch soon.",
   };
@@ -70,12 +79,13 @@
 
   const sourceFor = (item, key) => item[key] || SAMPLES[key] || "";
 
-  function factsHtml(item, type) {
+  function factsHtml(item, type, extra) {
     const facts = [
       ["Type", type.badge],
       ["Topic", TOPICS[item.category]],
       ["Level", item.level && item.level[0].toUpperCase() + item.level.slice(1)],
       ["Language", LANGUAGES[item.language]],
+      ["Length", extra],
     ].filter(([, value]) => value);
     return `<dl class="preview__facts">${facts.map(([term, value]) =>
       `<div><dt>${term}</dt><dd>${escape(value)}</dd></div>`).join("")}</dl>`;
@@ -95,7 +105,7 @@
       `<img class="book__download" src="assets/icons/download.svg" width="16" height="16" alt="">Download PDF${size}`);
   }
 
-  function detailsHtml(item, type, cta, extra = "") {
+  function detailsHtml(item, type, cta, extra = "", length = "") {
     const topic = TOPICS[item.category];
     return `<div class="book__details">
       <header class="book__head">
@@ -117,7 +127,7 @@
         <p class="book__summary" dir="${item.dir || "auto"}">${escape(item.text)}</p>
       </section>
       ${extra}
-      ${factsHtml(item, type)}
+      ${factsHtml(item, type, length)}
       <div class="book__cta">${cta}<p class="book__unavailable" role="status"></p></div>
     </div>`;
   }
@@ -138,31 +148,52 @@
   }
 
   function audioHtml(item, type) {
+    const tracks = sourceFor(item, "tracks") || [];
     const icon = (path) => `<svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true">${path}</svg>`;
     const player = `<div class="preview__media">
       ${coverHtml(item)}
-      <div class="player${sourceFor(item, "audio") ? "" : " is-empty"}" data-player>
+      <div class="player${tracks.length ? "" : " is-empty"}" data-player>
+        <p class="player__now" data-player-now aria-live="polite"></p>
         <input class="player__seek" type="range" min="0" max="1000" value="0" step="1" aria-label="Seek">
-        <div class="player__times"><span data-player-time>0:00</span><span data-player-length>--:--</span></div>
-        <div class="player__controls">
+        <div class="player__times">
+          <span data-player-time>0:00</span>
           <button class="player__speed" type="button" data-player-speed aria-label="Playback speed: normal">1×</button>
+          <span class="player__length" data-player-length>--:--</span>
+        </div>
+        <div class="player__controls">
+          <button class="player__step" type="button" data-player-step="-1" aria-label="Previous chapter">
+            ${icon('<path d="M6 5a1 1 0 0 1 2 0v5.700l9.500-6.300A1 1 0 0 1 19 5.200v13.600a1 1 0 0 1-1.500.8L8 13.300V19a1 1 0 0 1-2 0V5Z"/>')}
+          </button>
           <button class="player__skip" type="button" data-player-skip="-${SKIP}" aria-label="Back ${SKIP} seconds">
             <span aria-hidden="true">${SKIP}</span>${icon('<path d="M12 5V2L7 6l5 4V7a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8Z"/>')}
           </button>
           <button class="player__play" type="button" data-player-play aria-label="Play">
-            ${icon('<path class="player__icon-play" d="M8 5.5v13a1 1 0 0 0 1.5.86l11-6.5a1 1 0 0 0 0-1.72l-11-6.5A1 1 0 0 0 8 5.5Z"/><path class="player__icon-pause" d="M7 5h3.5a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm6.500 0H17a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-3.500a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"/>')}
+            ${icon('<path class="player__icon-play" d="M8 5.500v13a1 1 0 0 0 1.500.86l11-6.500a1 1 0 0 0 0-1.720l-11-6.500A1 1 0 0 0 8 5.500Z"/><path class="player__icon-pause" d="M7 5h3.500a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm6.500 0H17a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-3.500a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"/>')}
           </button>
           <button class="player__skip" type="button" data-player-skip="${SKIP}" aria-label="Forward ${SKIP} seconds">
             <span aria-hidden="true">${SKIP}</span>${icon('<path d="M12 5V2l5 4-5 4V7a6 6 0 1 0 6 6h2a8 8 0 1 1-8-8Z"/>')}
           </button>
-          <span class="player__spacer" aria-hidden="true"></span>
+          <button class="player__step" type="button" data-player-step="1" aria-label="Next chapter">
+            ${icon('<path d="M18 5a1 1 0 1 0-2 0v5.700L6.500 4.400A1 1 0 0 0 5 5.200v13.600a1 1 0 0 0 1.500.8L16 13.300V19a1 1 0 1 0 2 0V5Z"/>')}
+          </button>
         </div>
         <audio preload="metadata"></audio>
       </div>
     </div>`;
+    const total = tracks.reduce((sum, track) => sum + (track.length || 0), 0);
+    const chapters = tracks.length ? `<section class="book__section">
+      <h3 class="book__heading">Chapters <span class="tracks__count">${tracks.length}</span></h3>
+      <ol class="tracks">${tracks.map((track, index) => `<li>
+        <button class="tracks__row" type="button" data-track="${index}">
+          <span class="tracks__number"><span>${index + 1}</span><i class="tracks__bars" aria-hidden="true"><b></b><b></b><b></b></i></span>
+          <span class="tracks__title">${escape(track.title)}</span>
+          <span class="tracks__time">${formatTime(track.length)}</span>
+        </button>
+      </li>`).join("")}</ol>
+    </section>` : "";
     const cta = downloadHtml(item) + linkHtml(item, "soundcloud", "btn btn--regular btn--secondary",
       '<img src="assets/icons/soundcloud.svg" width="30" height="30" alt="">Listen on SoundCloud');
-    return `<article class="book">${player}${detailsHtml(item, type, cta)}</article>`;
+    return `<article class="book">${player}${detailsHtml(item, type, cta, chapters, total ? formatLength(total) : "")}</article>`;
   }
 
   // The YouTube player only loads when someone presses play: a much lighter overlay, and no YouTube
@@ -197,6 +228,18 @@
     return hours ? `${hours}:${minutes.padStart(2, "0")}:${rest}` : `${minutes}:${rest}`;
   }
 
+  const formatLength = (seconds) => (seconds < 3600
+    ? `${Math.max(1, Math.round(seconds / 60))} min`
+    : `${Math.floor(seconds / 3600)} h ${Math.round((seconds % 3600) / 60)} min`);
+
+  function readPlaces() {
+    try {
+      return JSON.parse(localStorage.getItem(PLACE_KEY)) || {};
+    } catch (error) {
+      return {};
+    }
+  }
+
   function setUpPlayer(item) {
     const box = scroller.querySelector("[data-player]");
     if (!box) return;
@@ -204,11 +247,17 @@
     const seek = box.querySelector(".player__seek");
     const time = box.querySelector("[data-player-time]");
     const length = box.querySelector("[data-player-length]");
+    const now = box.querySelector("[data-player-now]");
     const play = box.querySelector("[data-player-play]");
     const speed = box.querySelector("[data-player-speed]");
-    const source = sourceFor(item, "audio");
+    const rows = [...scroller.querySelectorAll("[data-track]")];
+    const tracks = sourceFor(item, "tracks") || [];
+    let index = 0;
     let dragging = false;
     let speedIndex = 0;
+    let resumeAt = 0;
+    let lastSaved = 0;
+    let active = true;       // clearing the player on close must not overwrite the saved place
 
     function showPosition() {
       const ratio = audio.duration ? audio.currentTime / audio.duration : 0;
@@ -222,23 +271,86 @@
       navigator.mediaSession.setPositionState({ duration: audio.duration, playbackRate: audio.playbackRate, position: audio.currentTime });
     }
 
+    function showLockScreenTrack() {
+      if (!("mediaSession" in navigator)) return;
+      const art = new URL(item.image, location.href).href;
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: tracks[index].title,
+        artist: "Best Speech Society",
+        album: item.title,
+        artwork: [{ src: art, sizes: "512x512" }],
+      });
+    }
+
+    function savePlace() {
+      if (!active) return;
+      const places = readPlaces();
+      places[item.key] = { track: index, time: Math.floor(audio.currentTime) };
+      try {
+        localStorage.setItem(PLACE_KEY, JSON.stringify(places));
+      } catch (error) { /* storage unavailable: it simply starts from the top next time */ }
+    }
+
+    // Puts a track in the player. Its speed carries over, so a chosen pace stays through the book.
+    function load(next, { startAt = 0, autoplay = false } = {}) {
+      index = next;
+      resumeAt = startAt;
+      audio.src = tracks[index].src;
+      audio.playbackRate = SPEEDS[speedIndex];
+      seek.value = 0;
+      now.textContent = `${index + 1} of ${tracks.length} · ${tracks[index].title}`;
+      length.textContent = formatTime(tracks[index].length);
+      showPosition();
+      time.textContent = formatTime(startAt);
+      rows.forEach((row, rowIndex) => {
+        if (rowIndex === index) row.setAttribute("aria-current", "true");
+        else row.removeAttribute("aria-current");
+      });
+      box.querySelector('[data-player-step="-1"]').disabled = false;
+      box.querySelector('[data-player-step="1"]').disabled = index === tracks.length - 1;
+      showLockScreenTrack();
+      if (autoplay) start();
+    }
+
+    function start() {
+      audio.play().catch(() => showNote("The audio couldn’t start. Please try again."));
+    }
+
     function skip(by) {
       audio.currentTime = Math.max(0, Math.min(audio.duration || 0, audio.currentTime + by));
     }
 
-    function showMissing() {
-      showNote(MISSING.audio);
+    function nextTrack() {
+      if (index < tracks.length - 1) load(index + 1, { autoplay: !audio.paused });
     }
 
-    play.addEventListener("click", () => {
-      if (!source) showMissing();
-      else if (audio.paused) audio.play().catch(() => showNote("The audio couldn’t start. Please try again."));
-      else audio.pause();
-    });
+    // Like every audio player: "previous" restarts the track, and goes back only from its first seconds
+    function previousTrack() {
+      if (audio.currentTime > RESTART_NEAR_START || index === 0) audio.currentTime = 0;
+      else load(index - 1, { autoplay: !audio.paused });
+    }
 
-    box.querySelectorAll("[data-player-skip]").forEach((button) => button.addEventListener("click", () => {
-      if (source) skip(Number(button.dataset.playerSkip));
-      else showMissing();
+    const needsAudio = (action) => () => {
+      if (tracks.length) action();
+      else showNote(MISSING.tracks);
+    };
+
+    play.addEventListener("click", needsAudio(() => {
+      if (audio.paused) start();
+      else audio.pause();
+    }));
+
+    box.querySelectorAll("[data-player-skip]").forEach((button) => button.addEventListener("click", needsAudio(() => {
+      skip(Number(button.dataset.playerSkip));
+    })));
+
+    box.querySelector('[data-player-step="-1"]').addEventListener("click", needsAudio(previousTrack));
+    box.querySelector('[data-player-step="1"]').addEventListener("click", needsAudio(nextTrack));
+
+    rows.forEach((row, rowIndex) => row.addEventListener("click", () => {
+      if (rowIndex !== index) load(rowIndex, { autoplay: true });
+      else if (audio.paused) start();
+      else audio.pause();
     }));
 
     speed.addEventListener("click", () => {
@@ -263,9 +375,17 @@
 
     audio.addEventListener("loadedmetadata", () => {
       length.textContent = formatTime(audio.duration);
+      if (resumeAt && resumeAt < audio.duration - 1) audio.currentTime = resumeAt;
+      resumeAt = 0;
       showPosition();
     });
-    audio.addEventListener("timeupdate", showPosition);
+    audio.addEventListener("timeupdate", () => {
+      showPosition();
+      if (Math.abs(audio.currentTime - lastSaved) > 5) {
+        lastSaved = audio.currentTime;
+        savePlace();
+      }
+    });
     audio.addEventListener("seeked", showLockScreenPosition);
     audio.addEventListener("ratechange", showLockScreenPosition);
     audio.addEventListener("error", () => showNote("The audio couldn’t load. Please try again later."));
@@ -279,32 +399,50 @@
       setPlaying(true);
       showLockScreenPosition();
     });
-    audio.addEventListener("pause", () => setPlaying(false));
-    audio.addEventListener("ended", () => {
+    audio.addEventListener("pause", () => {
       setPlaying(false);
-      audio.currentTime = 0;
+      savePlace();
     });
 
-    if ("mediaSession" in navigator && source) {
-      const session = navigator.mediaSession;
-      const art = new URL(item.image, location.href).href;
-      session.metadata = new MediaMetadata({ title: item.title, artist: "Best Speech Society", album: "Library", artwork: [{ src: art, sizes: "512x512" }] });
-      session.setActionHandler("play", () => audio.play());
-      session.setActionHandler("pause", () => audio.pause());
-      session.setActionHandler("seekbackward", (event) => skip(-(event.seekOffset || SKIP)));
-      session.setActionHandler("seekforward", (event) => skip(event.seekOffset || SKIP));
-      session.setActionHandler("seekto", (event) => { audio.currentTime = event.seekTime; });
+    // The next chapter follows by itself; the last one ends back at the start of the book
+    audio.addEventListener("ended", () => {
+      if (index < tracks.length - 1) {
+        load(index + 1, { autoplay: true });
+        return;
+      }
+      setPlaying(false);
+      load(0);
+      savePlace();
+    });
+
+    const handlers = {
+      play: start,
+      pause: () => audio.pause(),
+      seekbackward: (event) => skip(-(event.seekOffset || SKIP)),
+      seekforward: (event) => skip(event.seekOffset || SKIP),
+      seekto: (event) => { audio.currentTime = event.seekTime; },
+      previoustrack: previousTrack,
+      nexttrack: nextTrack,
+    };
+
+    if (tracks.length) {
+      if ("mediaSession" in navigator) {
+        Object.entries(handlers).forEach(([action, handler]) => navigator.mediaSession.setActionHandler(action, handler));
+      }
+      const place = readPlaces()[item.key];
+      const known = place && tracks[place.track];
+      load(known ? place.track : 0, { startAt: known ? place.time : 0 });
     }
 
-    if (source) audio.src = source;
-
     teardown = () => {
+      if (tracks.length) savePlace();
+      active = false;
       audio.pause();
       audio.removeAttribute("src");
       audio.load();
       if (!("mediaSession" in navigator)) return;
       navigator.mediaSession.metadata = null;
-      ["play", "pause", "seekbackward", "seekforward", "seekto"].forEach((action) => navigator.mediaSession.setActionHandler(action, null));
+      Object.keys(handlers).forEach((action) => navigator.mediaSession.setActionHandler(action, null));
     };
   }
 
