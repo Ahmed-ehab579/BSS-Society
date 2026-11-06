@@ -251,6 +251,8 @@
 }
 
 .resource-card__download svg {
+  width: 24px;
+  height: 24px;
   transition: transform var(--motion-duration-hover) var(--motion-ease);
 }
 
