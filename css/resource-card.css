@@ -211,14 +211,60 @@
 }
 
 /* The button's link covers the whole card, so a click anywhere opens it */
-.resource-card__action[href] {
+.resource-card__action {
   cursor: pointer;
 }
 
-.resource-card__action[href]::after {
+.resource-card__action::after {
   content: "";
   position: absolute;
   inset: 0;
+}
+
+/* Book cards: Preview beside a quick download, which sits above the card-wide press area */
+.resource-card__actions {
+  display: flex;
+  gap: var(--scale-200);
+  margin-top: auto;
+}
+
+.resource-card__actions .resource-card__action {
+  flex: 1;
+  width: auto;
+  min-width: 0;
+}
+
+.resource-card__download {
+  position: relative;
+  z-index: 1;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  padding: 0;
+  border: var(--border-md) solid var(--border-color-on-light);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-text-on-light);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--motion-duration) var(--motion-ease),
+    transform var(--motion-duration) var(--motion-ease);
+}
+
+.resource-card__download svg {
+  transition: transform var(--motion-duration-hover) var(--motion-ease);
+}
+
+.resource-card__download:active {
+  background: var(--surface-action-outline-pressed);
+  transform: scale(0.95);
+}
+
+.resource-card__download:focus-visible {
+  outline: var(--border-lg) solid var(--border-color-on-light);
+  outline-offset: 2px;
 }
 
 .resource-card__action .btn__arrow-clip,
@@ -241,6 +287,14 @@
 
   .resource-card:hover .resource-card__book {
     transform: translateY(-4px) scale(1.04);
+  }
+
+  .resource-card__download:hover {
+    background: var(--surface-action-outline-hovered);
+  }
+
+  .resource-card__download:hover svg {
+    transform: translateY(2px);
   }
 
   /* The button reacts only to its own hover, as on the homepage */

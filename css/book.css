@@ -9,6 +9,34 @@
   max-width: calc(1280px + 2 * var(--gutter));
 }
 
+.book-back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--scale-200);
+  margin-bottom: var(--scale-500);
+  font-size: var(--label-m-size);
+  line-height: var(--label-m-line);
+  font-weight: 500;
+  color: var(--color-text-on-light);
+}
+
+.book-back img {
+  width: 22px;
+  height: 22px;
+  transition: transform var(--motion-duration-hover) var(--motion-ease);
+}
+
+.book-back:focus-visible {
+  outline: var(--border-lg) solid var(--border-color-on-light);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) {
+  .book-back:hover img {
+    transform: translateX(-3px);
+  }
+}
+
 .book {
   display: grid;
   grid-template-columns: minmax(0, 567fr) minmax(0, 600fr);

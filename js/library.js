@@ -120,6 +120,7 @@
 
   const root = document.querySelector("[data-results]");
   if (!root) return;
+  window.BSS.registerResources(RESOURCES);   // a shared preview link can open any item, shown or not
 
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => [...document.querySelectorAll(selector)];
