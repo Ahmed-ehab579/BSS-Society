@@ -141,7 +141,7 @@
 .preview .book {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
   gap: var(--preview-gutter);
-  padding: var(--scale-200) var(--preview-gutter) var(--scale-1100);
+  padding: var(--scale-200) var(--preview-gutter) 96px;
 }
 
 .preview .book__cover,
@@ -216,8 +216,8 @@
 .preview__related-heading {
   padding-bottom: var(--scale-500);
   border-bottom: var(--border-md) solid var(--color-neutral-200);
-  font-size: var(--h4-size);
-  line-height: var(--h4-line);
+  font-size: var(--h5-size);
+  line-height: var(--h5-line);
   font-weight: var(--label-weight);
   letter-spacing: var(--label-uppercase-tracking);
   text-transform: uppercase;
@@ -307,6 +307,7 @@
 .player {
   margin-top: var(--scale-300);
   padding: var(--scale-500) var(--scale-500) var(--scale-400);
+  border: 0.3px solid var(--color-neutral-400);   /* the same stroke as the cover above it */
   border-radius: var(--book-radius);
   background: var(--surface-cards);
 }
@@ -820,7 +821,7 @@
   .preview .book,
   .preview--video .book {
     gap: var(--scale-500);
-    padding: var(--scale-100) var(--preview-gutter) var(--scale-800);
+    padding: var(--scale-100) var(--preview-gutter) var(--scale-1100);
   }
 
   .preview .book__title {
