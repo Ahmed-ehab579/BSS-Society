@@ -140,13 +140,17 @@
     </figure>`;
   }
 
-  function bookHtml(item, type) {
-    const outcomes = `<section class="book__section book__section--audience">
-      <h3 class="book__heading">What you’ll get after reading</h3>
+  // One heading for every format: the list is the same promise, however the material is taken in
+  function outcomesHtml() {
+    return `<section class="book__section">
+      <h3 class="book__heading">What you’ll gain</h3>
       <ul class="book__audience">${OUTCOMES.map((line) => `<li>${line}</li>`).join("")}</ul>
     </section>`;
+  }
+
+  function bookHtml(item, type) {
     const cta = downloadHtml(item) + linkHtml(item, "pdf", "btn btn--regular btn--secondary", "Read sample", true);
-    return `<article class="book">${coverHtml(item)}${detailsHtml(item, type, cta, outcomes)}</article>`;
+    return `<article class="book">${coverHtml(item)}${detailsHtml(item, type, cta, outcomesHtml())}</article>`;
   }
 
   function audioHtml(item, type) {
@@ -194,7 +198,7 @@
     </section>` : "";
     const cta = downloadHtml(item) + linkHtml(item, "soundcloud", "btn btn--regular btn--secondary",
       '<img src="assets/icons/soundcloud.svg" width="30" height="30" alt="">Listen on SoundCloud');
-    return `<article class="book">${player}${detailsHtml(item, type, cta, chapters)}</article>`;
+    return `<article class="book">${player}${detailsHtml(item, type, cta, outcomesHtml() + chapters)}</article>`;
   }
 
   // The YouTube player only loads when someone presses play: a much lighter overlay, and no YouTube
@@ -215,7 +219,7 @@
     </div>`;
     const cta = linkHtml(item, "youtube", "btn btn--regular btn--secondary",
       '<img src="assets/icons/youtube.svg" width="22" height="22" alt="">Watch on YouTube');
-    return `<article class="book">${media}${detailsHtml(item, type, cta)}</article>`;
+    return `<article class="book">${media}${detailsHtml(item, type, cta, outcomesHtml())}</article>`;
   }
 
   // ---- The player: on the page, and on the lock screen through the Media Session API ----------------
@@ -578,6 +582,7 @@
     show(item, message);
     root.classList.add("is-sheet-open");
     dialog.showModal();
+    scroller.scrollTop = 0;          // a closed dialog can't scroll, so this has to wait until it's open
     sheet.focus({ preventScroll: true });
     sheet.getBoundingClientRect();   // start from the closed position
     dialog.classList.add("is-open");

@@ -2,6 +2,7 @@
    (css/book.css). 90% of the screen on desktop; a full-screen sheet on phones. */
 .preview {
   --book-radius: 20px;
+  --preview-gutter: var(--scale-1100);   /* the bar, the details and the related row share one edge */
   position: fixed;
   inset: 0;
   z-index: 150;
@@ -75,7 +76,7 @@
   align-items: center;
   justify-content: space-between;
   height: 64px;
-  padding-inline: var(--scale-400);
+  padding-inline: calc(var(--preview-gutter) - var(--scale-200));
 }
 
 .preview__close {
@@ -84,6 +85,7 @@
   justify-content: center;
   width: 44px;
   height: 44px;
+  margin-right: calc(-1 * var(--scale-100));
   padding: 0;
   border: 0;
   border-radius: 50%;
@@ -138,14 +140,20 @@
 
 .preview .book {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-  gap: var(--scale-1100);
-  padding: var(--scale-200) var(--scale-1100) var(--scale-800);
+  gap: var(--preview-gutter);
+  padding: var(--scale-200) var(--preview-gutter) var(--scale-1000);
 }
 
 .preview .book__cover,
 .preview__media {
   position: sticky;
   top: var(--scale-200);
+}
+
+/* Beside the player only their shared wrapper sticks, so the cover never slides over the controls */
+.preview__media .book__cover {
+  position: relative;
+  top: auto;
 }
 
 .preview .book__cover {
@@ -167,33 +175,18 @@
 }
 
 .preview .book__title {
-  margin-top: var(--scale-300);
   font-size: var(--h4-size);
   line-height: 42px;
   letter-spacing: -0.6px;
 }
 
 .preview .book__head {
-  padding-bottom: var(--scale-500);
   border-bottom-color: var(--color-neutral-200);
-}
-
-.preview .book__section {
-  margin-top: var(--scale-800);
 }
 
 .preview .book__heading {
   font-size: var(--label-l-size);
-}
-
-.preview .book__audience {
-  gap: var(--scale-300) var(--scale-600);
-  margin-top: var(--scale-300);
-}
-
-.preview .book__cta {
-  gap: var(--scale-300);
-  margin-top: var(--scale-800);
+  line-height: var(--label-l-line);
 }
 
 /* The YouTube icon is drawn white for the dark footer */
@@ -214,23 +207,27 @@
   --carousel-surface: var(--surface-cards);
   display: flex;
   flex-direction: column;
-  gap: var(--scale-500);
-  margin: 0 var(--scale-1100);
-  padding: var(--scale-800) 0 var(--scale-1100);
+  gap: var(--scale-300);
+  margin: 0 var(--preview-gutter);
+  padding: var(--scale-900) 0 var(--scale-1000);
   border-top: var(--scale-12) solid var(--color-neutral-200);
 }
 
 .preview__related .carousel {
   display: flex;
   flex-direction: column;
-  gap: var(--scale-500);
+  gap: var(--scale-200);
+}
+
+.preview__related .carousel__bar {
+  margin-top: var(--scale-200);
 }
 
 .preview__related .carousel__controls {
   display: flex;
   justify-content: flex-end;
   gap: var(--scale-200);
-  margin-top: calc(-1 * var(--scale-1000));
+  margin-top: calc(-1 * var(--scale-900));   /* in line with the heading */
 }
 
 .preview__related .icon-btn {
@@ -392,7 +389,7 @@
   align-items: center;
   justify-content: center;
   gap: var(--scale-200);
-  margin-top: var(--scale-100);
+  margin-top: var(--scale-200);
 }
 
 .player__play,
@@ -498,7 +495,7 @@
 }
 
 .tracks {
-  margin: var(--scale-200) 0 0;
+  margin: var(--scale-300) 0 0;
   padding: 0;
   list-style: none;
 }
@@ -613,6 +610,10 @@
   gap: var(--scale-1000);
 }
 
+.preview--video .book__audience {
+  grid-template-columns: minmax(0, 1fr);   /* the narrow column reads better as one list */
+}
+
 .preview__video {
   position: relative;
   aspect-ratio: 16 / 9;
@@ -685,16 +686,12 @@
 }
 
 @media (max-width: 1099px) {
-  .preview .book,
-  .preview--video .book {
-    gap: var(--scale-800);
-    padding-inline: var(--scale-800);
-    padding-bottom: var(--scale-800);
+  .preview {
+    --preview-gutter: var(--scale-800);
   }
 
-  .preview__related {
-    margin-inline: var(--scale-800);
-    padding-bottom: var(--scale-800);
+  .preview--video .book {
+    gap: var(--scale-800);
   }
 }
 
@@ -726,13 +723,16 @@
     transition: transform 240ms var(--motion-ease);
   }
 
+  .preview {
+    --preview-gutter: var(--scale-400);
+  }
+
   .preview__bar {
     height: 56px;
-    padding-inline: var(--scale-100);
   }
 
   .preview__related {
-    margin-inline: var(--scale-400);
+    padding-top: var(--scale-800);
     padding-bottom: calc(var(--scale-800) + env(safe-area-inset-bottom));
   }
 
@@ -747,21 +747,13 @@
   .preview .book,
   .preview--video .book {
     gap: var(--scale-500);
-    padding: var(--scale-100) var(--scale-400) calc(var(--scale-800) + env(safe-area-inset-bottom));
+    padding: var(--scale-100) var(--preview-gutter) var(--scale-800);
   }
 
   .preview .book__title {
     font-size: var(--h6-size);
     line-height: 32px;
     letter-spacing: -0.3px;
-  }
-
-  .preview .book__section {
-    margin-top: var(--scale-600);
-  }
-
-  .preview .book__audience {
-    grid-template-columns: minmax(0, 1fr);
   }
 
   .preview .book__cta {
