@@ -758,6 +758,52 @@
   }
 }
 
+/* ---- material.html: the same content as its own page, under the site header ---------------------- */
+
+.material-page {
+  padding-top: calc(var(--header-height) + 57px);
+}
+
+.material-shell {
+  max-width: calc(1240px + 2 * var(--gutter));
+}
+
+.preview--page {
+  --preview-gutter: 0px;
+  position: static;
+  z-index: auto;
+  display: block;
+  height: auto;
+  overflow: visible;
+}
+
+.preview--page .book {
+  gap: var(--scale-1100);
+  padding: 0 0 var(--scale-1100);
+}
+
+@media (min-width: 900px) {
+  .preview--page .book__cover,
+  .preview--page .preview__media {
+    top: calc(var(--header-height) + var(--scale-400));   /* sticks under the site header */
+  }
+}
+
+.preview--page .preview__related {
+  margin: 0 0 var(--scale-1100);
+}
+
+.material-missing {
+  padding-block: var(--scale-1100);
+  font-size: var(--body-m-size);
+  line-height: var(--body-m-line);
+  color: var(--color-text-body);
+}
+
+.material-missing a {
+  text-decoration: underline;
+}
+
 @media (max-width: 1099px) {
   .preview {
     --preview-gutter: var(--scale-800);
@@ -883,10 +929,13 @@
     background: var(--surface-cards);
   }
 
-  .preview .book__tag-type img {
-    display: block;
-    width: auto;
-    height: 11px;
+  /* Phones show the topic only */
+  .preview .book__tag-type {
+    display: none;
+  }
+
+  .preview .book__tag:not(:has(.book__tag-topic)) {
+    display: none;
   }
 
   .preview .book__tag-topic::before {
@@ -942,9 +991,14 @@
     border-bottom: var(--scale-12) solid var(--color-neutral-200);
   }
 
+  /* A 30% shade keeps the white play icon readable on any photo */
+  .preview__video-play {
+    background: rgba(0, 0, 0, 0.3);
+  }
+
   .preview__video-play img {
-    width: 84px;
-    height: 84px;
+    width: 96px;
+    height: 96px;
   }
 
   /* Related materials: the same panel as "Explore the articles resources" (css/resources.css) */
@@ -970,15 +1024,40 @@
   }
 
   .preview__related .carousel__track {
-    gap: var(--scale-800);
+    gap: var(--scale-600);
   }
 
+  /* 8px wider than the article page's cards; the body's padding takes the 8px, so the buttons keep
+     their size, and the photo reaches 2px further up and to each side */
   .preview__related .resource-card {
-    flex: 0 0 231px;
+    flex: 0 0 239px;
+  }
+
+  .preview__related .resource-card__media {
+    padding: 12px 12px 0;
   }
 
   .preview__related .resource-card__frame {
-    height: 150px;
+    height: 152px;
+  }
+
+  .preview__related .resource-card__body {
+    padding-inline: var(--scale-500);
+  }
+
+  /* material.html on phones */
+  .material-page {
+    padding-top: calc(var(--header-height) + var(--scale-600));
+  }
+
+  .preview--page .book,
+  .preview--page.preview--video .book {
+    gap: var(--scale-600);
+    padding: 0;
+  }
+
+  .preview--page .preview__related {
+    margin: 72px 0 var(--scale-1000);
   }
 }
 
