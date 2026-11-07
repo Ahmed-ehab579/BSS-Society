@@ -1047,8 +1047,14 @@
 
   /* 8px wider than the article page's cards; the body's padding takes the 8px, so the buttons keep
      their size, and the photo reaches 2px further up and to each side */
+  /* The Library's phone card colours */
   .preview__related .resource-card {
     flex: 0 0 239px;
+    background: var(--surface-resource-card);
+  }
+
+  .preview__related .resource-card:active {
+    background: var(--surface-resource-card-pressed);
   }
 
   .preview__related .resource-card__media {
