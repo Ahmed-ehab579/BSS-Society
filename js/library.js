@@ -6,7 +6,7 @@
   const PAGE_SIZE = 12;         // full rows in both the three-column (desktop) and two-column (phone) grids
   const SEARCH_DELAY = 200;     // ms after the last keystroke before the results update
   const VIEW_KEY = "bss.library.view.v3";   // v3: the default changed to one card a row
-  const VIEWS = ["one", "two", "list"];   // phone layouts: 1 card a row, 2 a row, list (desktop is always the grid)
+  const VIEWS = ["one", "list"];   // phone layouts: 1 card a row or a list (desktop is always the grid)
 
   // Filters in their on-screen order. `all` is the label of the "no filter" option in the menus;
   // `short` is the text shown in the pill when it is shorter than the menu label.

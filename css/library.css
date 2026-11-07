@@ -975,14 +975,10 @@
     height: 44px;
   }
 
-  /* Phone layouts (chosen with the switch): two a row (default), one a row, or a list */
-  .resource-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--scale-400) var(--scale-300);
-  }
-
+  /* Phone layouts (chosen with the switch): one a row (default) or a list */
   .resource-grid[data-layout="one"] {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: minmax(0, 340px);
+    justify-content: center;
     gap: var(--scale-600);
   }
 
@@ -991,66 +987,6 @@
     gap: var(--scale-300);
   }
 
-  /* Two a row: smaller type and spacing so the cards stay readable at ~150px */
-  .resource-grid[data-layout="two"] .resource-card {
-    border-radius: var(--scale-400);
-  }
-
-  .resource-grid[data-layout="two"] .resource-card__media {
-    padding: var(--scale-200) var(--scale-200) 0;
-  }
-
-  .resource-grid[data-layout="two"] .resource-card__frame {
-    height: auto;
-    aspect-ratio: 1;
-    border-radius: 10px;
-  }
-
-  .resource-grid[data-layout="two"] .resource-card__badge {
-    top: 6px;
-    right: 6px;
-    padding: 1px 7px;
-    gap: 3px;
-    font-size: 11px;
-    line-height: 16px;
-  }
-
-  .resource-grid[data-layout="two"] .resource-card__badge img {
-    height: 9px;
-  }
-
-  .resource-grid[data-layout="two"] .resource-card__play {
-    --play-size: 76px;
-  }
-
-  .resource-grid[data-layout="two"] .resource-card__listen {
-    --listen-size: 48px;
-  }
-
-  /* Same rhythm as the desktop sample, scaled down: more air above the title than below it */
-  .resource-grid[data-layout="two"] .resource-card__body {
-    gap: var(--scale-400);
-    padding: var(--scale-400) var(--scale-300) var(--scale-300);
-  }
-
-  .resource-grid[data-layout="two"] .resource-card__text {
-    gap: var(--scale-200);
-  }
-
-  .resource-grid[data-layout="two"] .resource-card__title {
-    font-size: 15px;
-    line-height: 20px;
-    font-weight: var(--label-weight);
-  }
-
-  .resource-grid[data-layout="two"] .resource-card__desc {
-    font-size: 13px;
-    line-height: 18px;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-  }
-
-  .resource-grid[data-layout="two"] .resource-card__action,
   .resource-grid[data-layout="list"] .resource-card__action {
     gap: var(--scale-100);
     height: 36px;
@@ -1059,50 +995,19 @@
     line-height: 18px;
   }
 
-  .resource-grid[data-layout="two"] .resource-card__download,
   .resource-grid[data-layout="list"] .resource-card__download {
     width: 44px;
   }
 
-  /* Two a row is the tightest fit: the download gives way so "See details" stays on the button */
-  .resource-grid[data-layout="two"] .resource-card__download {
-    width: 36px;
-  }
-
-  .resource-grid[data-layout="two"] .resource-card__download svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  .resource-grid[data-layout="two"] .resource-card__actions .resource-card__action {
-    padding-inline: var(--scale-100);
-  }
-
-  /* The smallest phones: the two buttons stack rather than cut the label */
-  @media (max-width: 359px) {
-    .resource-grid[data-layout="two"] .resource-card__actions {
-      flex-direction: column;
-    }
-
-    .resource-grid[data-layout="two"] .resource-card__actions .resource-card__action {
-      flex: none;
-    }
-
-    .resource-grid[data-layout="two"] .resource-card__download {
-      width: 100%;
-      height: 36px;
-    }
-  }
-
-  /* One a row: the desktop card at full width, a little shorter */
+  /* One a row: the desktop card, a little narrower and shorter, with a larger title */
   .resource-grid[data-layout="one"] .resource-card__frame {
     height: auto;
     aspect-ratio: 4 / 3;
   }
 
   .resource-grid[data-layout="one"] .resource-card__title {
-    font-size: var(--h6-size);
-    line-height: var(--h6-line);
+    font-size: var(--h5-size);
+    line-height: var(--h5-line);
     font-weight: 500;
   }
 
