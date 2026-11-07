@@ -977,7 +977,7 @@
 
   /* Phone layouts (chosen with the switch): one a row (default) or a list */
   .resource-grid[data-layout="one"] {
-    grid-template-columns: min(320px, 100% - 20px);
+    grid-template-columns: min(300px, 100% - 40px);
     justify-content: center;
     gap: var(--scale-600);
   }
@@ -1006,7 +1006,7 @@
   }
 
   .resource-grid[data-layout="one"] .resource-card__title {
-    font-size: 21px;
+    font-size: var(--h6-size);
     line-height: var(--h6-line);
     font-weight: 500;
   }
