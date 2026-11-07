@@ -2,6 +2,8 @@
 // to decide, in the book details layout (css/book.css, css/preview.css). 90% of the screen on desktop, the
 // full screen on phones. Articles have no preview: their card opens the article. The overlay has its own
 // address (#preview=...), so it can be shared, and the phone's back gesture closes it.
+// On phones a card opens the material's own page instead (material.html?id=..., with the site header and
+// footer); the same code fills that page.
 (function () {
   const BSS = window.BSS;
   if (!BSS || !BSS.resourceItem) return;
@@ -57,6 +59,9 @@
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const escape = (text) => String(text).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
   const backLabel = location.pathname.includes("library") ? "Back to library" : "Back";
+  const page = document.querySelector("[data-material-page]");   // material.html: the page itself
+  const phone = window.matchMedia("(max-width: 767px)");
+  const pageAddress = (item) => `material.html?id=${item.key}&from=${location.pathname.includes("new-muslim") ? "new-muslim" : "library"}`;
 
   const dialog = document.createElement("dialog");
   dialog.className = "preview";
@@ -75,10 +80,11 @@
       </div>
       <div class="preview__scroll"></div>
     </div>`;
-  document.body.append(dialog);
+  if (!page) document.body.append(dialog);
 
   const sheet = dialog.querySelector(".preview__sheet");
-  const scroller = dialog.querySelector(".preview__scroll");
+  const scroller = page || dialog.querySelector(".preview__scroll");
+  const host = page || dialog;
   const backdrop = dialog.querySelector(".preview__backdrop");
 
   let current = null;       // the open item
@@ -629,8 +635,8 @@
     clearContent();
     const type = BSS.RESOURCE_TYPES[item.format];
     current = item;
-    dialog.classList.remove("preview--book", "preview--audio", "preview--video");
-    dialog.classList.add(`preview--${item.format}`);
+    host.classList.remove("preview--book", "preview--audio", "preview--video");
+    host.classList.add(`preview--${item.format}`);
     scroller.innerHTML = { book: bookHtml, audio: audioHtml, video: videoHtml }[item.format](item, type) + relatedHtml(item);
     scroller.scrollTop = 0;
     scroller.querySelector("[data-preview-save]").setAttribute("aria-pressed", String(readSaved().includes(item.key)));
@@ -714,7 +720,7 @@
   });
   backdrop.addEventListener("click", leave);
 
-  dialog.addEventListener("click", (event) => {
+  host.addEventListener("click", (event) => {
     const target = event.target;
     if (target.closest("[data-preview-close]")) leave();
     else if (target.closest("[data-preview-share]")) share(target.closest("button"));
@@ -733,7 +739,10 @@
     event.preventDefault();
     const from = event.target.closest("button");
     if (!event.target.closest("[data-preview-download]")) {
-      open(item, { from });
+      // From one material page to another the address is replaced, so "Back to library" stays one step
+      if (page) location.replace(`material.html?id=${item.key}&from=${new URLSearchParams(location.search).get("from") || "library"}`);
+      else if (phone.matches) location.href = pageAddress(item);
+      else open(item, { from });
       return;
     }
     const address = sourceFor(item, "pdf");
@@ -748,6 +757,35 @@
     link.click();
   });
 
+  // material.html: the item from the address, a way back to where the visitor came from
+  function showPage() {
+    const params = new URLSearchParams(location.search);
+    // Opened from a New Muslim step: that page's items (some share a title with Library items)
+    if (params.get("from") === "new-muslim") {
+      BSS.NEW_MUSLIM_STEPS?.forEach((step) => step.topics.forEach((topic) => BSS.registerResources(topic.resources)));
+    }
+    const item = BSS.resourceItem(params.get("id") || "");
+    const back = document.querySelector("[data-material-back]");
+    const fromNewMuslim = params.get("from") === "new-muslim";
+    back.querySelector("span").textContent = fromNewMuslim ? "Back" : "Back to library";
+    if (fromNewMuslim) back.href = "new-muslim.html";
+    let cameFromSite = false;
+    try {
+      cameFromSite = new URL(document.referrer).origin === location.origin;
+    } catch (error) {}
+    back.addEventListener("click", (event) => {
+      if (!cameFromSite || history.length < 2) return;
+      event.preventDefault();
+      history.back();   // keeps the Library's filters and scroll position
+    });
+    if (!item) {
+      page.innerHTML = `<p class="material-missing">This material isn’t available. <a href="library.html">Browse the library</a></p>`;
+      return;
+    }
+    document.title = `${item.title} — Best Speech Society`;
+    show(item);
+  }
+
   // Back to this page from the browser's cache with the overlay still open
   window.addEventListener("pageshow", (event) => {
     if (event.persisted && dialog.open) {
@@ -757,6 +795,12 @@
     }
   });
 
+  if (page) {
+    showPage();
+    return;
+  }
+
   const linked = addressItem();
-  if (linked) open(linked, { address: false });
+  if (linked && phone.matches) location.replace(pageAddress(linked));
+  else if (linked) open(linked, { address: false });
 })();
