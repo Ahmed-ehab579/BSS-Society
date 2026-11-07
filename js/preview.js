@@ -110,7 +110,7 @@
     const topic = TOPICS[item.category];
     return `<div class="book__details">
       <header class="book__head">
-        <p class="book__tag">${escape(type.badge)}${topic ? ` · ${escape(topic)}` : ""}</p>
+        <p class="book__tag"><span class="book__tag-type"><img src="${type.icon}" width="${type.iconSize[0]}" height="${type.iconSize[1]}" alt="">${escape(type.badge)}</span>${topic ? `<span class="book__tag-topic">${escape(topic)}</span>` : ""}</p>
         <h2 class="book__title" id="preview-title" dir="${item.dir || "auto"}">${escape(item.title)}</h2>
         <p class="book__author">By ${escape(item.author || AUTHOR)}</p>
         <div class="book__actions">
@@ -200,7 +200,7 @@
       </li>`).join("")}</ol>
     </section>` : "";
     const cta = downloadHtml(item) + linkHtml(item, "soundcloud", "btn btn--regular btn--secondary",
-      '<img src="assets/icons/soundcloud.svg" width="30" height="30" alt="">Listen on SoundCloud');
+      '<img src="assets/icons/soundcloud.svg" width="30" height="30" alt=""><span class="book__cta-long">Listen on </span>SoundCloud');
     return `<article class="book">${player}${detailsHtml(item, type, cta, outcomesHtml() + chapters)}</article>`;
   }
 

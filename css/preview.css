@@ -170,6 +170,15 @@
   align-self: start;
 }
 
+/* One pill on larger screens ("Video · Belief & Faith"); two on phones, the type with its icon */
+.preview .book__tag-type img {
+  display: none;
+}
+
+.preview .book__tag-topic::before {
+  content: " · ";
+}
+
 .preview .book__title {
   font-size: var(--h4-size);
   line-height: 42px;
@@ -786,35 +795,165 @@
   }
 }
 
-/* Phones: a full-screen sheet that slides up, so the player and buttons have room */
+/* Phones: its own page rather than a sheet over the Library. Back to library at the top; then the media,
+   the title with share and save beside it, the type and topic, and the buttons side by side. Spacing
+   follows the proximity steps in css/book.css. */
 @media (max-width: 767px) {
+  .preview {
+    --preview-gutter: var(--scale-400);
+  }
+
+  .preview__backdrop {
+    display: none;
+  }
+
   .preview__sheet {
     width: 100%;
     height: 100%;
     border-radius: 0;
-    opacity: 1;
-    transform: translateY(100%);
-    transition: transform 240ms var(--motion-ease);
+    box-shadow: none;
+    transform: none;
+    transition: opacity 200ms var(--motion-ease);
   }
 
-  .preview {
-    --preview-gutter: var(--scale-400);
+  .preview.is-open .preview__sheet {
+    transition: opacity 200ms var(--motion-ease);
   }
 
   .preview__bar {
     height: 56px;
   }
 
+  /* A page goes back; it doesn't close */
   .preview__close {
-    margin-right: calc(-1 * var(--scale-100));
+    display: none;
   }
 
-  .preview__related {
-    --related-padding: var(--preview-gutter);
+  .preview .book,
+  .preview--video .book {
     gap: var(--scale-600);
+    padding: var(--scale-100) var(--preview-gutter) 0;
+  }
+
+  /* Title and its icons, the author under it, then the type and topic */
+  .preview .book__head {
+    grid-template-areas:
+      "title actions"
+      "author author"
+      "tag tag";
+    grid-template-rows: auto;
+    align-items: start;
+    column-gap: var(--scale-400);
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .preview .book__title {
     margin: 0;
-    padding-block: var(--scale-900) calc(var(--scale-900) + env(safe-area-inset-bottom));
-    border-radius: 20px 20px 0 0;
+    font-size: var(--h5-size);
+    line-height: var(--h5-line);
+    font-weight: var(--h6-weight);
+    letter-spacing: -0.4px;
+  }
+
+  .preview .book__actions {
+    margin-top: -5px;   /* centred on the title's first line */
+  }
+
+  .preview .book__author {
+    margin-top: var(--scale-100);
+  }
+
+  .preview .book__tag {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--scale-200);
+    margin-top: var(--scale-300);
+    padding: 0;
+    background: none;
+  }
+
+  .preview .book__tag-type,
+  .preview .book__tag-topic {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--scale-100);
+    padding: var(--scale-100) var(--scale-300);
+    border-radius: var(--radius-pill);
+    background: var(--surface-cards);
+  }
+
+  .preview .book__tag-type img {
+    display: block;
+    width: auto;
+    height: 11px;
+  }
+
+  .preview .book__tag-topic::before {
+    content: none;
+  }
+
+  /* The buttons come up under the title, before the divider; the main one on the right */
+  .preview .book__cta {
+    order: 1;
+    flex-direction: row-reverse;
+    margin-top: var(--scale-600);
+    padding-bottom: var(--scale-600);
+    border-bottom: var(--scale-12) solid var(--color-neutral-200);
+  }
+
+  .preview .book__section {
+    order: 2;
+    margin-top: var(--scale-800);
+  }
+
+  .preview .book__head + .book__section {
+    margin-top: var(--scale-600);
+  }
+
+  .preview .book__cta .btn {
+    flex: 1 1 0;
+    min-width: 0;
+    height: 48px;
+    padding-inline: var(--scale-300);
+    gap: var(--scale-200);
+    font-size: var(--label-m-size);
+    line-height: var(--label-m-line);
+    white-space: nowrap;
+  }
+
+  .preview .book__cta .btn img[src$="soundcloud.svg"] {
+    width: 24px;
+    height: 24px;
+  }
+
+  .preview .book__size,
+  .preview .book__cta-long {
+    display: none;
+  }
+
+  /* Video: the play button is the action, so there is no YouTube button; the divider moves up */
+  .preview--video .book__cta {
+    display: none;
+  }
+
+  .preview--video .book__head {
+    padding-bottom: var(--scale-600);
+    border-bottom: var(--scale-12) solid var(--color-neutral-200);
+  }
+
+  .preview__video-play img {
+    width: 84px;
+    height: 84px;
+  }
+
+  /* Related materials: the same panel as "Explore the articles resources" (css/resources.css) */
+  .preview__related {
+    gap: var(--scale-800);
+    margin: 72px var(--preview-gutter) calc(var(--scale-400) + env(safe-area-inset-bottom));
+    padding: var(--scale-900) var(--scale-400);
+    border-top: var(--border-md) solid var(--color-neutral-100);
+    border-radius: 20px;
   }
 
   .preview__related-heading {
@@ -822,38 +961,24 @@
     line-height: var(--h6-line);
   }
 
+  .preview__related .carousel {
+    gap: var(--scale-600);
+  }
+
   .preview__related .carousel__controls {
     display: none;
   }
 
+  .preview__related .carousel__track {
+    gap: var(--scale-800);
+  }
+
   .preview__related .resource-card {
-    flex-basis: calc(100% - 56px);
+    flex: 0 0 231px;
   }
 
-  .preview .book,
-  .preview--video .book {
-    gap: var(--scale-500);
-    padding: var(--scale-100) var(--preview-gutter) var(--scale-1100);
-  }
-
-  .preview .book__title {
-    font-size: var(--h6-size);
-    line-height: 32px;
-    letter-spacing: -0.3px;
-  }
-
-  .preview .book__cta {
-    flex-direction: column;
-  }
-
-  .preview .book__cta .btn {
-    width: 100%;
-    height: 52px;
-  }
-
-  .preview__video-play img {
-    width: 84px;
-    height: 84px;
+  .preview__related .resource-card__frame {
+    height: 150px;
   }
 }
 
