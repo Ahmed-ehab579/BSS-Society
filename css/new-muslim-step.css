@@ -366,7 +366,7 @@
 
   .topic-panel__track .resource-card__body {
     gap: var(--scale-500);
-    padding: var(--scale-500) var(--scale-300) var(--scale-300);
+    padding: var(--scale-500) 10px 10px;   /* the photo's inset, so text lines up with it */
   }
 
   .topic-panel__track .resource-card__text {

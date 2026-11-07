@@ -107,8 +107,8 @@
   background: none;
   color: var(--color-text-on-light);
   font-family: inherit;
-  font-size: var(--label-m-size);
-  line-height: var(--label-m-line);
+  font-size: var(--label-l-size);
+  line-height: var(--label-l-line);
   font-weight: 500;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -116,8 +116,8 @@
 }
 
 .preview__back img {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   transition: transform var(--motion-duration-hover) var(--motion-ease);
 }
 
@@ -293,12 +293,29 @@
 }
 
 .preview__related .resource-card__frame {
-  height: 170px;
+  height: 175px;
+}
+
+/* Photos sit a little lower here, and their play and listen icons are 20% smaller */
+.preview__related .resource-card__frame--photo {
+  box-shadow: 0 4.5px 7.2px rgba(0, 0, 0, 0.28);
+}
+
+.preview__related .resource-card__frame--book {
+  box-shadow: 0 1.8px 4.5px 0.9px rgba(0, 0, 0, 0.11);
+}
+
+.preview__related .resource-card__play {
+  --play-size: 90px;
+}
+
+.preview__related .resource-card__listen {
+  --listen-size: 58px;
 }
 
 .preview__related .resource-card__body {
   gap: var(--scale-500);
-  padding: var(--scale-500) var(--scale-400) var(--scale-400);
+  padding: var(--scale-500) 14px 14px;   /* the photo's inset, so text lines up with it */
 }
 
 .preview__related .resource-card__title {
@@ -946,7 +963,7 @@
   .preview .book__cta {
     order: 1;
     flex-direction: row-reverse;
-    margin-top: var(--scale-600);
+    margin-top: var(--scale-800);
     padding-bottom: var(--scale-600);
     border-bottom: var(--scale-12) solid var(--color-neutral-200);
   }
@@ -1024,7 +1041,7 @@
   }
 
   .preview__related .carousel__track {
-    gap: var(--scale-600);
+    gap: var(--scale-500);
   }
 
   /* 8px wider than the article page's cards; the body's padding takes the 8px, so the buttons keep
@@ -1038,11 +1055,11 @@
   }
 
   .preview__related .resource-card__frame {
-    height: 152px;
+    height: 157px;
   }
 
   .preview__related .resource-card__body {
-    padding-inline: var(--scale-500);
+    padding: var(--scale-500) 12px 12px;   /* the photo's inset */
   }
 
   /* material.html on phones */
