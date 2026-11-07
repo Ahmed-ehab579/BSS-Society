@@ -1063,6 +1063,11 @@
     padding: var(--scale-500) 12px 12px;   /* the photo's inset */
   }
 
+  /* The book cover spans the page, so its edges line up with the back arrow and the logo */
+  .preview--book .book__cover {
+    width: 100%;
+  }
+
   /* material.html on phones */
   .material-page {
     padding-top: calc(var(--header-height) + var(--scale-600));
