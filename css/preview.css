@@ -924,7 +924,7 @@
   }
 
   .preview .book__author {
-    margin-top: var(--scale-100);
+    margin-top: 6px;
   }
 
   .preview .book__tag {
