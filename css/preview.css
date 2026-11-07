@@ -925,6 +925,7 @@
 
   .preview .book__author {
     margin-top: 6px;
+    font-weight: 400;   /* lighter than the title; the colour stays dark enough to read easily */
   }
 
   .preview .book__tag {
