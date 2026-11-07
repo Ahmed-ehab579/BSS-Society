@@ -503,8 +503,8 @@
 
 .resource-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 270px));
-  justify-content: center;
+  /* Four cards fill the row, so its edges line up with the heading and Sort above */
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--scale-900);
   margin: 0;
   padding: 0;
@@ -800,9 +800,15 @@
 
 /* ---- Responsive -------------------------------------------------------------------------------- */
 
-@media (max-width: 1099px) {
+@media (max-width: 1279px) {
   .resource-grid {
-    grid-template-columns: repeat(2, minmax(0, 270px));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 999px) {
+  .resource-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
