@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="css/header.css?v=10">
   <link rel="stylesheet" href="css/language.css?v=4">
   <link rel="stylesheet" href="css/footer.css?v=2">
-  <link rel="stylesheet" href="css/article.css?v=11">
+  <link rel="stylesheet" href="css/article.css?v=12">
   <link rel="stylesheet" href="css/resources.css?v=3">
   <link rel="stylesheet" href="css/carousel.css?v=3">
 </head>
@@ -67,7 +67,7 @@
         <div class="article-hero__content">
           <h1 class="article-hero__title">What’s the purpose of life</h1>
           <div class="article-hero__meta">
-            <p class="article-hero__summary">While technically true, this solitary English word frequently carries cold, authoritarian connotations</p>
+            <p class="article-hero__summary">Islam’s answer begins with one idea: you were created on purpose, by a Creator who knows you. This topic explores what that purpose is, and how it brings meaning, direction and peace to everyday life.</p>
             <p class="article-hero__time"><img src="assets/icons/book.svg" width="29" height="29.3333" alt="">5 min read</p>
           </div>
         </div>
@@ -81,15 +81,16 @@
             <span class="article-crumbs__current" aria-current="page" data-topic-label>Topic 01</span>
           </nav>
 
-          <!-- Static player: no audio is attached yet. -->
-          <div class="audio-player" role="group" aria-label="Listen to this article">
-            <button class="audio-player__play" type="button" aria-label="Play audio"><img src="assets/icons/play-audio.svg" width="44.4743" height="44.4743" alt=""></button>
-            <p class="audio-player__label"><span class="audio-player__title">Listen</span><span class="audio-player__length">• 6 min</span></p>
+          <!-- The article read aloud (sample track for now): js/article.js -->
+          <div class="audio-player" role="group" aria-label="Listen to this article" data-audio-player>
+            <audio src="assets/samples/audio-sample.mp3" preload="metadata" data-audio></audio>
+            <button class="audio-player__play" type="button" aria-label="Play audio" data-audio-play><img src="assets/icons/play-audio.svg" width="44.4743" height="44.4743" alt=""></button>
+            <p class="audio-player__label"><span class="audio-player__title">Listen</span><span class="audio-player__length" data-audio-length>• 1 min</span></p>
             <div class="audio-player__timeline">
-              <div class="audio-player__bar" role="progressbar" aria-label="Playback position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="23"><span style="width: 22.9%"></span></div>
-              <span class="audio-player__time">01:45</span>
+              <div class="audio-player__bar" role="slider" tabindex="0" aria-label="Playback position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="0:00" data-audio-bar><span style="width: 0%"></span></div>
+              <span class="audio-player__time" data-audio-time>0:00</span>
             </div>
-            <button class="audio-player__speed" type="button" aria-label="Playback speed">1.0x</button>
+            <button class="audio-player__speed" type="button" aria-label="Playback speed: normal" data-audio-speed>1.0x</button>
           </div>
         </div>
 
@@ -331,10 +332,20 @@
   </footer>
 
   <script src="js/base.js"></script>
+  <script>
+    // Opened from the Library: the header marks the Library, not the Start here path
+    if (new URLSearchParams(location.search).get("from") === "library") {
+      document.querySelectorAll(".site-nav__link").forEach((link) => {
+        const library = link.getAttribute("href") === "library.html";
+        link.classList.toggle("is-active", library);
+        if (library) link.setAttribute("aria-current", "true"); else link.removeAttribute("aria-current");
+      });
+    }
+  </script>
   <script src="js/header.js?v=8"></script>
   <script src="js/language.js?v=5"></script>
   <script src="js/progress.js?v=13"></script>
-  <script src="js/article.js?v=11"></script>
+  <script src="js/article.js?v=12"></script>
   <script src="js/carousel.js?v=6"></script>
   <script src="js/smooth-scroll.js?v=4"></script>
   <script src="js/skeleton.js"></script>
