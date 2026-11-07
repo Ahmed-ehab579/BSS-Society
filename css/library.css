@@ -1006,11 +1006,11 @@
   }
 
   .resource-grid[data-layout="one"] .resource-card__play {
-    --play-size: 84px;
+    --play-size: 96px;
   }
 
   .resource-grid[data-layout="one"] .resource-card__listen {
-    --listen-size: 54px;
+    --listen-size: 62px;
   }
 
   .resource-grid[data-layout="one"] .resource-card__title {
