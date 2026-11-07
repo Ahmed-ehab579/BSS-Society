@@ -977,7 +977,7 @@
 
   /* Phone layouts (chosen with the switch): one a row (default) or a list */
   .resource-grid[data-layout="one"] {
-    grid-template-columns: min(300px, 100% - 40px);
+    grid-template-columns: min(280px, 100% - 60px);
     justify-content: center;
     gap: var(--scale-600);
   }
@@ -1003,6 +1003,14 @@
   .resource-grid[data-layout="one"] .resource-card__frame {
     height: auto;
     aspect-ratio: 4 / 3;
+  }
+
+  .resource-grid[data-layout="one"] .resource-card__play {
+    --play-size: 84px;
+  }
+
+  .resource-grid[data-layout="one"] .resource-card__listen {
+    --listen-size: 54px;
   }
 
   .resource-grid[data-layout="one"] .resource-card__title {
