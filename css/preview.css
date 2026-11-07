@@ -898,12 +898,12 @@
     padding: var(--scale-100) var(--preview-gutter) 0;
   }
 
-  /* Title and its icons, the author under it, then the type and topic */
+  /* The topic above the title, the title with its icons, then the author */
   .preview .book__head {
     grid-template-areas:
+      "tag tag"
       "title actions"
-      "author author"
-      "tag tag";
+      "author author";
     grid-template-rows: auto;
     align-items: start;
     column-gap: var(--scale-400);
@@ -912,7 +912,7 @@
   }
 
   .preview .book__title {
-    margin: 0;
+    margin: var(--scale-200) 0 0;
     font-size: var(--h5-size);
     line-height: var(--h5-line);
     font-weight: var(--h6-weight);
@@ -920,7 +920,7 @@
   }
 
   .preview .book__actions {
-    margin-top: -5px;   /* centred on the title's first line */
+    margin-top: 3px;   /* centred on the title's first line */
   }
 
   .preview .book__author {
@@ -931,7 +931,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: var(--scale-200);
-    margin-top: var(--scale-300);
+    margin-top: 0;
     padding: 0;
     background: none;
   }
