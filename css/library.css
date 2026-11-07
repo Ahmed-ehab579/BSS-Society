@@ -503,12 +503,32 @@
 
 .resource-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 283px));
+  grid-template-columns: repeat(3, minmax(0, 260px));
   justify-content: center;
   gap: var(--scale-900);
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+/* Above phones: a smaller card, title and play icon (phone layouts set their own below) */
+@media (min-width: 768px) {
+  .resource-grid .resource-card__frame {
+    height: 220px;
+  }
+
+  .resource-grid .resource-card__title {
+    font-size: var(--h6-size);
+    line-height: var(--h6-line);
+  }
+
+  .resource-grid .resource-card__play {
+    --play-size: 96px;
+  }
+
+  .resource-grid .resource-card__listen {
+    --listen-size: 62px;
+  }
 }
 
 .resource-grid[hidden] {
@@ -782,7 +802,7 @@
 
 @media (max-width: 1099px) {
   .resource-grid {
-    grid-template-columns: repeat(2, minmax(0, 283px));
+    grid-template-columns: repeat(2, minmax(0, 260px));
   }
 }
 
