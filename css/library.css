@@ -503,7 +503,7 @@
 
 .resource-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 260px));
+  grid-template-columns: repeat(3, minmax(0, 270px));
   justify-content: center;
   gap: var(--scale-900);
   margin: 0;
@@ -802,7 +802,7 @@
 
 @media (max-width: 1099px) {
   .resource-grid {
-    grid-template-columns: repeat(2, minmax(0, 260px));
+    grid-template-columns: repeat(2, minmax(0, 270px));
   }
 }
 
