@@ -179,6 +179,7 @@
 
 @media (max-width: 767px) {
   :root {
-    --surface-resource-card: #f5f2eb;
+    --surface-resource-card: #dedace;   /* the old pressed colour; pressed is darker, below */
+    --surface-resource-card-pressed: #d2cdc0;
   }
 }
