@@ -181,3 +181,100 @@
   P.onChange(evaluate);
   update();
 })();
+
+// Article audio: play / pause, position (click, drag or arrow keys), time and speed
+(function () {
+  const box = document.querySelector("[data-audio-player]");
+  if (!box) return;
+  const audio = box.querySelector("[data-audio]");
+  const play = box.querySelector("[data-audio-play]");
+  const icon = play.querySelector("img");
+  const bar = box.querySelector("[data-audio-bar]");
+  const fill = bar.firstElementChild;
+  const time = box.querySelector("[data-audio-time]");
+  const length = box.querySelector("[data-audio-length]");
+  const speed = box.querySelector("[data-audio-speed]");
+  const SPEEDS = [1, 1.25, 1.5, 2];
+  const STEP = 5;   // seconds an arrow key moves
+
+  const clock = (seconds) => {
+    const s = Math.max(0, Math.floor(seconds || 0));
+    return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+  };
+
+  function show() {
+    const share = audio.duration ? audio.currentTime / audio.duration : 0;
+    fill.style.width = `${share * 100}%`;
+    bar.setAttribute("aria-valuenow", String(Math.round(share * 100)));
+    bar.setAttribute("aria-valuetext", clock(audio.currentTime));
+    time.textContent = clock(audio.currentTime);
+  }
+
+  audio.addEventListener("loadedmetadata", () => {
+    length.textContent = `• ${Math.max(1, Math.round(audio.duration / 60))} min`;
+    show();
+  });
+  audio.addEventListener("timeupdate", show);
+  audio.addEventListener("play", () => {
+    icon.src = "assets/icons/pause-audio.svg";
+    play.setAttribute("aria-label", "Pause audio");
+  });
+  audio.addEventListener("pause", () => {
+    icon.src = "assets/icons/play-audio.svg";
+    play.setAttribute("aria-label", "Play audio");
+  });
+
+  play.addEventListener("click", () => {
+    if (audio.paused) audio.play().catch(() => {});
+    else audio.pause();
+  });
+
+  speed.addEventListener("click", () => {
+    const next = SPEEDS[(SPEEDS.indexOf(audio.playbackRate) + 1) % SPEEDS.length];
+    audio.playbackRate = next;
+    speed.textContent = next === 1 ? "1.0x" : `${next}x`;
+    speed.setAttribute("aria-label", `Playback speed: ${next === 1 ? "normal" : `${next} times`}`);
+  });
+
+  const seekTo = (clientX) => {
+    if (!audio.duration) return;
+    const rect = bar.getBoundingClientRect();
+    audio.currentTime = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width)) * audio.duration;
+    show();
+  };
+  bar.addEventListener("pointerdown", (event) => {
+    bar.setPointerCapture(event.pointerId);
+    seekTo(event.clientX);
+  });
+  bar.addEventListener("pointermove", (event) => {
+    if (bar.hasPointerCapture(event.pointerId)) seekTo(event.clientX);
+  });
+  bar.addEventListener("keydown", (event) => {
+    const by = { ArrowRight: STEP, ArrowUp: STEP, ArrowLeft: -STEP, ArrowDown: -STEP }[event.key];
+    if (!by || !audio.duration) return;
+    event.preventDefault();
+    audio.currentTime = Math.min(audio.duration, Math.max(0, audio.currentTime + by));
+    show();
+  });
+})();
+
+// Help button: rides at the bottom of the screen, but never higher than the first section's heading
+(function () {
+  const rail = document.querySelector(".help-rail");
+  const heading = document.querySelector(".article-section__heading");
+  if (!rail || !heading) return;
+  const fab = rail.querySelector(".help-fab");
+  let frame = null;
+
+  function place() {
+    frame = null;
+    rail.style.transform = "";
+    const gap = heading.getBoundingClientRect().top - fab.getBoundingClientRect().top;
+    if (gap > 0) rail.style.transform = `translateY(${gap}px)`;
+  }
+
+  const request = () => { frame ||= requestAnimationFrame(place); };
+  window.addEventListener("scroll", request, { passive: true });
+  window.addEventListener("resize", request);
+  place();
+})();
