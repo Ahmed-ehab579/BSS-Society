@@ -817,6 +817,7 @@
   .library-panel {
     gap: var(--scale-900);
     padding: var(--scale-600) var(--scale-400);
+    background: var(--surface-cards);   /* solid, like the Related materials panel, instead of the fade */
   }
 
   .library-panel__heading {

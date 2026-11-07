@@ -587,7 +587,7 @@
   /* The arrow is drawn 4px inside its box: this lines the arrow up with the photo and the logo */
   .book-back {
     margin-left: -4px;
-    margin-bottom: var(--scale-400);   /* 4px closer to the photo */
+    margin-bottom: 6px;   /* close to the photo it leads back from */
   }
 
   .book__head {
