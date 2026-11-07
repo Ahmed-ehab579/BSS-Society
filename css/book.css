@@ -22,15 +22,15 @@
   align-items: center;
   gap: var(--scale-200);
   margin-bottom: var(--scale-500);
-  font-size: var(--label-m-size);
-  line-height: var(--label-m-line);
+  font-size: var(--label-l-size);
+  line-height: var(--label-l-line);
   font-weight: 500;
   color: var(--color-text-on-light);
 }
 
 .book-back img {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   transition: transform var(--motion-duration-hover) var(--motion-ease);
 }
 
@@ -582,6 +582,11 @@
 
   .book__cover {
     border-radius: 16px;
+  }
+
+  /* The arrow is drawn 4px inside its box: this lines the arrow up with the photo and the logo */
+  .book-back {
+    margin-left: -4px;
   }
 
   .book__head {

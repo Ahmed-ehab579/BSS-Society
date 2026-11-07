@@ -162,7 +162,7 @@
   flex-direction: column;
   justify-content: space-between;
   gap: var(--scale-800);
-  padding: var(--scale-800) var(--scale-400) var(--scale-400);
+  padding: var(--scale-800) 14px 14px;   /* the photo's inset (.resource-card__media), so text lines up with it */
 }
 
 .resource-card__text {

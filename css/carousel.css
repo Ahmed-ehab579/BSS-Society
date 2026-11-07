@@ -36,6 +36,7 @@
 
 .carousel__toggle {
   position: relative;
+  order: 1;   /* after the dots, on the right */
   flex: none;
   width: 44px;
   height: 44px;
