@@ -198,7 +198,7 @@
   gap: var(--scale-600);
   height: 73px;
   padding: var(--scale-300) var(--scale-800);
-  border: 0.3px solid var(--color-neutral-400);
+  border: 0.3px solid var(--border-color-media);
   border-radius: 999px;
   background: var(--surface-cards);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.05);   /* lifted a little */
@@ -308,8 +308,9 @@
   color: var(--color-neutral-400);
 }
 
-/* Time left: shown under the bar on phones */
-.audio-player__total {
+/* The length under the bar and the 15-second skips: phones only */
+.audio-player__total,
+.audio-player__skip {
   display: none;
 }
 
@@ -784,58 +785,58 @@
     padding-inline: 0;
   }
 
-  /* Phones: a compact card, like the "listen to this article" players of news apps. Play, the label
-     and the speed on one row; under them a full-width bar with the time played and the time left. */
+  /* Phones: the same player as the audio book pages (css/preview.css .player). What's playing and the
+     speed on top, the bar with the time played and the length, then back 15, play and forward 15. */
   .audio-player {
     display: grid;
-    grid-template-columns: 48px minmax(0, 1fr) auto;
+    grid-template-columns: 1fr 44px 60px 44px 1fr;
     grid-template-areas:
-      "play label speed"
-      "line line line";
+      "label label label speed speed"
+      "line line line line line"
+      ". back play fwd .";
     align-items: center;
-    row-gap: var(--scale-400);
-    column-gap: var(--scale-300);
+    column-gap: var(--scale-200);
+    row-gap: 0;
     height: auto;
-    padding: var(--scale-400);
+    padding: var(--scale-500) var(--scale-500) var(--scale-400);
     border-radius: 20px;
-  }
-
-  .audio-player__play {
-    grid-area: play;
-    width: 48px;
-    height: 48px;
+    box-shadow: none;
   }
 
   .audio-player__label {
     grid-area: label;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0;
+    gap: var(--scale-100);
+    min-width: 0;
+    margin-bottom: var(--scale-200);
+  }
+
+  .audio-player__title,
+  .audio-player__length {
+    font-size: var(--body-s-size);
+    line-height: var(--body-s-line);
+    font-weight: 500;
   }
 
   .audio-player__title {
-    font-size: var(--label-l-size);
-    line-height: var(--label-l-line);
+    color: var(--color-heading);
   }
 
   .audio-player__length {
-    font-size: var(--label-s-size);
-    line-height: var(--label-s-line);
     color: var(--color-text-body);
-  }
-
-  .audio-player__dot {
-    display: none;
   }
 
   .audio-player .audio-player__speed {
     grid-area: speed;
-    min-width: 48px;
+    justify-self: end;
+    min-width: 44px;
     height: 32px;
-    padding: 0 var(--scale-300);
+    margin-bottom: var(--scale-200);
+    padding: 0 var(--scale-200);
     border-radius: var(--radius-pill);
     background: var(--surface-action-outline);
     color: var(--color-text-on-light);
+    font-size: var(--label-s-size);
+    font-variant-numeric: tabular-nums;
   }
 
   .audio-player__timeline {
@@ -851,7 +852,19 @@
   .audio-player__bar {
     grid-area: bar;
     width: auto;
-    height: 6px;
+    height: 4px;
+    margin-block: 8px 0;
+  }
+
+  .audio-player__thumb {
+    width: 14px;
+    height: 14px;
+    background: var(--surface-action-primary);
+    box-shadow: none;
+  }
+
+  .audio-player__bar:active .audio-player__thumb {
+    transform: translate(-50%, -50%) scale(1.25);
   }
 
   .audio-player__time,
@@ -870,6 +883,53 @@
   .audio-player__total {
     display: block;
     grid-area: total;
+  }
+
+  .audio-player__play {
+    grid-area: play;
+    width: 60px;
+    height: 60px;
+    margin-top: var(--scale-200);
+  }
+
+  .audio-player__skip {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin-top: var(--scale-200);
+    border-radius: 50%;
+    color: var(--color-text-on-light);
+  }
+
+  .audio-player__skip--back {
+    grid-area: back;
+  }
+
+  .audio-player__skip--fwd {
+    grid-area: fwd;
+  }
+
+  .audio-player__skip svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .audio-player__skip span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 9px;
+    line-height: 1;
+    font-weight: 700;
+    transform: translate(-50%, -32%);
+  }
+
+  .audio-player__play:active,
+  .audio-player__skip:active {
+    transform: scale(0.93);
   }
 
   .article-section__heading {
