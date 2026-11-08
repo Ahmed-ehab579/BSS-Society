@@ -757,6 +757,7 @@
     line-height: 38px;
     font-weight: 500;
     letter-spacing: -0.5px;
+    max-width: 300px;   /* two lines on every phone width */
   }
 
   .article-hero__meta {
@@ -767,9 +768,9 @@
 
   .article-hero__summary {
     width: auto;
-    max-width: 80%;
-    font-size: var(--body-s-size);
-    line-height: var(--body-s-line);
+    max-width: 270px;   /* three lines on every phone width */
+    font-size: var(--body-m-size);
+    line-height: 24px;
     font-weight: 500;
     color: var(--color-neutral-200);   /* solid light grey: a step back from the white title */
   }
@@ -798,7 +799,7 @@
 
   .article {
     margin-top: 56px;
-    gap: var(--scale-900);
+    gap: 56px;   /* clear space between topics */
   }
 
   .article__head,
