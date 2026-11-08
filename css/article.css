@@ -313,9 +313,10 @@
   color: var(--color-neutral-400);
 }
 
-/* The length under the bar and the 15-second skips: phones only */
+/* The length under the bar, the 15-second skips and the scrolling title: phones only */
 .audio-player__total,
-.audio-player__skip {
+.audio-player__skip,
+.audio-player__marquee {
   display: none;
 }
 
@@ -826,11 +827,34 @@
     box-shadow: none;
   }
 
+  /* The article's title rolls slowly from right to left in place of "Listen"; the edges fade so the
+     text slides in and out softly. The two copies make the loop seamless. */
   .audio-player__label {
+    display: none;
+  }
+
+  .audio-player__marquee {
     grid-area: label;
-    gap: var(--scale-100);
+    display: block;
     min-width: 0;
-    margin-bottom: var(--scale-200);
+    margin: 0 0 var(--scale-200);
+    overflow: hidden;
+    font-size: var(--body-s-size);
+    line-height: var(--body-s-line);
+    font-weight: 500;
+    color: var(--color-heading);
+    white-space: nowrap;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 12px, #000 calc(100% - 16px), transparent);
+    mask-image: linear-gradient(to right, transparent, #000 12px, #000 calc(100% - 16px), transparent);
+  }
+
+  .audio-player__marquee-track {
+    display: inline-flex;
+    animation: audio-title-roll 16s linear infinite;
+  }
+
+  .audio-player__marquee-track > span {
+    padding-right: var(--scale-1000);
   }
 
   .audio-player__title,
@@ -1039,5 +1063,21 @@
 @media (max-width: 767px) {
   .article-related.preview--page .preview__related {
     margin: 0 0 var(--scale-1000);   /* the help rail above holds the 72px gap */
+  }
+}
+
+@keyframes audio-title-roll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* No movement for people who ask for less: the title shows once, cut with an ellipsis */
+@media (prefers-reduced-motion: reduce) {
+  .audio-player__marquee-track {
+    animation: none;
+  }
+
+  .audio-player__marquee-track > span + span {
+    display: none;
   }
 }
