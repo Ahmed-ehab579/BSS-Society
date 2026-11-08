@@ -335,7 +335,7 @@
 .player {
   margin-top: var(--scale-300);
   padding: var(--scale-500) var(--scale-500) var(--scale-400);
-  border: 0.3px solid var(--color-neutral-400);   /* the same stroke as the cover above it */
+  border: 0.3px solid var(--border-color-media);   /* the same stroke as the cover above it */
   border-radius: var(--book-radius);
   background: var(--surface-cards);
 }
