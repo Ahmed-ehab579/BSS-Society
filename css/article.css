@@ -954,6 +954,11 @@
     line-height: var(--h5-line);
   }
 
+  /* The small label belongs to the heading under it: 8px apart, not the section's 24px */
+  .article-section__label + .article-section__heading {
+    margin-top: calc(var(--scale-200) - var(--scale-600));
+  }
+
   .article-section__body {
     font-size: var(--body-l-size);
     line-height: var(--body-l-line);
