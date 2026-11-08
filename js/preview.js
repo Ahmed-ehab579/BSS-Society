@@ -61,7 +61,8 @@
   const backLabel = location.pathname.includes("library") ? "Back to library" : "Back";
   const page = document.querySelector("[data-material-page]");   // material.html: the page itself
   const phone = window.matchMedia("(max-width: 767px)");
-  const pageAddress = (item) => `material.html?id=${item.key}&from=${location.pathname.includes("new-muslim") ? "new-muslim" : "library"}`;
+  const FROM = location.pathname.includes("new-muslim") ? "new-muslim" : location.pathname.includes("article") ? "article" : "library";
+  const pageAddress = (item) => `material.html?id=${item.key}&from=${FROM}`;
 
   const dialog = document.createElement("dialog");
   dialog.className = "preview";
@@ -97,6 +98,7 @@
   let teardown = null;      // stops the audio when the overlay closes
 
   const sourceFor = (item, key) => item[key] || SAMPLES[key] || "";
+  BSS.relatedSectionHtml = (picks, options) => relatedSectionHtml(picks, options);
 
   // An address opens as a link; without one the button explains instead of pretending
   function linkHtml(item, kind, className, inner, newTab = false) {
@@ -598,8 +600,13 @@
     const sameTopic = others.filter((other) => other.category && other.category === item.category);
     const picks = [...sameTopic, ...others.filter((other) => !sameTopic.includes(other))].slice(0, RELATED_COUNT);
     if (picks.length < 3) return "";
-    return `<section class="preview__related" aria-labelledby="preview-related">
-      <h3 class="preview__related-heading" id="preview-related">Related materials</h3>
+    return relatedSectionHtml(picks);
+  }
+
+  // The Related materials panel: also used by the article page (js/article.js) for its resources
+  function relatedSectionHtml(picks, { heading = "Related materials", id = "preview-related", level = 3 } = {}) {
+    return `<section class="preview__related" aria-labelledby="${id}">
+      <h${level} class="preview__related-heading" id="${id}">${heading}</h${level}>
       <div class="carousel" data-carousel role="region" aria-roledescription="carousel" aria-label="Related materials">
         <div class="carousel__controls">
           <button class="icon-btn icon-btn--prev" type="button" data-carousel-prev aria-label="Previous material">
@@ -766,9 +773,12 @@
     }
     const item = BSS.resourceItem(params.get("id") || "");
     const back = document.querySelector("[data-material-back]");
-    const fromNewMuslim = params.get("from") === "new-muslim";
-    back.querySelector("span").textContent = fromNewMuslim ? "Back" : "Back to library";
-    if (fromNewMuslim) back.href = "new-muslim.html";
+    const from = params.get("from");
+    const fromNewMuslim = from === "new-muslim";
+    if (from === "new-muslim" || from === "article") {
+      back.querySelector("span").textContent = "Back";
+      back.href = fromNewMuslim ? "new-muslim.html" : "article.html";
+    }
     let cameFromSite = false;
     try {
       cameFromSite = new URL(document.referrer).origin === location.origin;

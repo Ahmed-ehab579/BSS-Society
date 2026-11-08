@@ -191,6 +191,7 @@
   const icon = play.querySelector("img");
   const bar = box.querySelector("[data-audio-bar]");
   const fill = bar.firstElementChild;
+  const thumb = bar.querySelector(".audio-player__thumb");
   const time = box.querySelector("[data-audio-time]");
   const length = box.querySelector("[data-audio-length]");
   const speed = box.querySelector("[data-audio-speed]");
@@ -205,6 +206,7 @@
   function show() {
     const share = audio.duration ? audio.currentTime / audio.duration : 0;
     fill.style.width = `${share * 100}%`;
+    thumb.style.left = `${share * 100}%`;
     bar.setAttribute("aria-valuenow", String(Math.round(share * 100)));
     bar.setAttribute("aria-valuetext", clock(audio.currentTime));
     time.textContent = clock(audio.currentTime);
@@ -278,3 +280,15 @@
   window.addEventListener("resize", request);
   place();
 })();
+
+// "Explore this article's resources": Library cards (not articles) in the Related materials panel,
+// built by js/preview.js so a card opens the same details as in the Library
+document.addEventListener("DOMContentLoaded", () => {
+  const slot = document.querySelector("[data-article-related]");
+  const BSS = window.BSS;
+  if (!slot || !BSS || !BSS.relatedSectionHtml) return;
+  const english = BSS.resourceItems().filter((item) => item.format !== "article" && item.dir !== "rtl");
+  const picks = [...english.filter((item) => item.category === "belief"), ...english.filter((item) => item.category !== "belief")].slice(0, 6);
+  slot.innerHTML = BSS.relatedSectionHtml(picks, { heading: "Explore this article’s resources", id: "resources-heading", level: 2 });
+  BSS.startCarousel(slot.querySelector("[data-carousel]"));
+});

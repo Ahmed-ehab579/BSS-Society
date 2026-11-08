@@ -12,8 +12,10 @@
   <link rel="stylesheet" href="css/header.css?v=10">
   <link rel="stylesheet" href="css/language.css?v=4">
   <link rel="stylesheet" href="css/footer.css?v=2">
-  <link rel="stylesheet" href="css/article.css?v=12">
-  <link rel="stylesheet" href="css/resources.css?v=3">
+  <link rel="stylesheet" href="css/article.css?v=13">
+  <link rel="stylesheet" href="css/resource-card.css?v=8">
+  <link rel="stylesheet" href="css/book.css?v=11">
+  <link rel="stylesheet" href="css/preview.css?v=18">
   <link rel="stylesheet" href="css/carousel.css?v=3">
 </head>
 <body>
@@ -87,7 +89,7 @@
             <button class="audio-player__play" type="button" aria-label="Play audio" data-audio-play><img src="assets/icons/play-audio.svg" width="44.4743" height="44.4743" alt=""></button>
             <p class="audio-player__label"><span class="audio-player__title">Listen</span><span class="audio-player__length" data-audio-length>• 1 min</span></p>
             <div class="audio-player__timeline">
-              <div class="audio-player__bar" role="slider" tabindex="0" aria-label="Playback position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="0:00" data-audio-bar><span style="width: 0%"></span></div>
+              <div class="audio-player__bar" role="slider" tabindex="0" aria-label="Playback position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="0:00" data-audio-bar><span style="width: 0%"></span><i class="audio-player__thumb" aria-hidden="true"></i></div>
               <span class="audio-player__time" data-audio-time>0:00</span>
             </div>
             <button class="audio-player__speed" type="button" aria-label="Playback speed: normal" data-audio-speed>1.0x</button>
@@ -159,113 +161,8 @@
         </div>
       </div>
 
-      <section class="resources" aria-labelledby="resources-heading">
-        <div class="resources__inner">
-          <div class="resources__head">
-            <h2 class="resources__heading" id="resources-heading">Explore the articles resources</h2>
-          </div>
-          <div class="carousel" data-carousel role="region" aria-roledescription="carousel" aria-label="Related resources">
-            <div class="carousel__controls">
-              <button class="icon-btn icon-btn--prev" type="button" data-carousel-prev aria-label="Previous resource">
-                <img src="assets/icons/arrow-right.svg" width="28" height="28" alt="">
-              </button>
-              <button class="icon-btn" type="button" data-carousel-next aria-label="Next resource">
-                <img src="assets/icons/arrow-right.svg" width="28" height="28" alt="">
-              </button>
-            </div>
-            <div class="carousel__viewport resources__viewport">
-              <ul class="carousel__track resources__track" aria-live="off">
-                <li class="resource-card">
-                  <a class="resource-card__link" href="library.html?format=video">
-                    <div class="resource-card__media">
-                      <img src="assets/images/article-resource-1.jpg" width="736" height="1240" alt="" loading="lazy" style="--img-h: 165.19%; --img-top: -32.6%">
-                  <img class="resource-card__play" src="assets/icons/resource-play-overlay.svg" width="76.1055" height="76.1055" alt="" style="--x: 73.9px; --y: 48.0px">
-                    </div>
-                    <div class="resource-card__body">
-                      <div class="resource-card__text">
-                        <span class="resource-card__tag"><img src="assets/icons/resource-play.svg" width="9.67308" height="9.67308" alt="">Video</span>
-                        <h3 class="resource-card__title">Who is God in Islam?</h3>
-                        <p class="resource-card__desc">Contemplative visual inquiry analyzing divine transcendence, mercy, singularity of origin, and</p>
-                      </div>
-                      <span class="resource-card__cta">Watch Video</span>
-                    </div>
-                  </a>
-                </li>
-                <li class="resource-card">
-                  <a class="resource-card__link" href="library.html?format=article">
-                    <div class="resource-card__media">
-                      <img src="assets/images/article-hero.jpg" width="736" height="1104" alt="" loading="lazy" style="--img-h: 165.19%; --img-top: -32.6%">
-                    </div>
-                    <div class="resource-card__body">
-                      <div class="resource-card__text">
-                        <span class="resource-card__tag"><img src="assets/icons/resource-play.svg" width="9.67308" height="9.67308" alt="">Article</span>
-                        <h3 class="resource-card__title">Who is God in Islam?</h3>
-                        <p class="resource-card__desc">Contemplative visual inquiry analyzing divine transcendence, mercy, singularity of origin, and</p>
-                      </div>
-                      <span class="resource-card__cta">Watch Video</span>
-                    </div>
-                  </a>
-                </li>
-                <li class="resource-card">
-                  <a class="resource-card__link" href="library.html?format=article">
-                    <div class="resource-card__media">
-                      <img src="assets/images/article-resource-3.jpg" width="736" height="916" alt="" loading="lazy" style="--img-h: 165.19%; --img-top: -53.89%">
-                    </div>
-                    <div class="resource-card__body">
-                      <div class="resource-card__text">
-                        <span class="resource-card__tag"><img src="assets/icons/resource-play.svg" width="9.67308" height="9.67308" alt="">Article</span>
-                        <h3 class="resource-card__title">Who is God in Islam?</h3>
-                        <p class="resource-card__desc">Contemplative visual inquiry analyzing divine transcendence, mercy, singularity of origin, and</p>
-                      </div>
-                      <span class="resource-card__cta">Watch Video</span>
-                    </div>
-                  </a>
-                </li>
-                <li class="resource-card">
-                  <a class="resource-card__link" href="library.html?format=article">
-                    <div class="resource-card__media">
-                      <img src="assets/images/article-resource-4.jpg" width="736" height="1308" alt="" loading="lazy" style="--img-h: 246.75%; --img-top: -50.82%">
-                    </div>
-                    <div class="resource-card__body">
-                      <div class="resource-card__text">
-                        <span class="resource-card__tag"><img src="assets/icons/resource-play.svg" width="9.67308" height="9.67308" alt="">Article</span>
-                        <h3 class="resource-card__title">Who is God in Islam?</h3>
-                        <p class="resource-card__desc">Contemplative visual inquiry analyzing divine transcendence, mercy, singularity of origin, and</p>
-                      </div>
-                      <span class="resource-card__cta">Watch Video</span>
-                    </div>
-                  </a>
-                </li>
-                <li class="resource-card">
-                  <a class="resource-card__link" href="library.html?format=video">
-                    <div class="resource-card__media">
-                      <img src="assets/images/article-resource-1.jpg" width="736" height="1240" alt="" loading="lazy" style="--img-h: 165.19%; --img-top: -32.6%">
-                  <img class="resource-card__play" src="assets/icons/resource-play-overlay.svg" width="76.1055" height="76.1055" alt="" style="--x: 73.9px; --y: 48.0px">
-                  <span class="resource-card__status">Not started</span>
-                    </div>
-                    <div class="resource-card__body">
-                      <div class="resource-card__text">
-                        <span class="resource-card__tag"><img src="assets/icons/resource-play.svg" width="9.67308" height="9.67308" alt="">Video</span>
-                        <h3 class="resource-card__title">Who is God in Islam?</h3>
-                        <p class="resource-card__desc">Contemplative visual inquiry analyzing divine transcendence, mercy, singularity of origin, and</p>
-                      </div>
-                      <span class="resource-card__cta">Watch Video</span>
-                    </div>
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div class="carousel__bar">
-              <button class="carousel__toggle" type="button" data-carousel-toggle data-state="playing" aria-label="Pause carousel">
-                <img src="assets/icons/carousel-pause.svg" width="20" height="20" alt="" data-icon="pause">
-                <img src="assets/icons/carousel-play.svg" width="20" height="20" alt="" data-icon="play">
-                <img src="assets/icons/carousel-replay.svg" width="20" height="20" alt="" data-icon="replay">
-              </button>
-              <div class="carousel__dots" role="group" aria-label="Choose a card" data-carousel-dots></div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <!-- Library cards in the Related materials panel (js/article.js, js/preview.js) -->
+      <div class="preview preview--page article-related" data-article-related></div>
     </div>
   </main>
 
@@ -345,8 +242,12 @@
   <script src="js/header.js?v=8"></script>
   <script src="js/language.js?v=5"></script>
   <script src="js/progress.js?v=13"></script>
-  <script src="js/article.js?v=12"></script>
+  <script src="js/article.js?v=13"></script>
   <script src="js/carousel.js?v=6"></script>
+  <script src="js/download-fill.js"></script>
+  <script src="js/resource-card.js?v=7"></script>
+  <script src="js/library.js?v=11"></script>
+  <script src="js/preview.js?v=9"></script>
   <script src="js/smooth-scroll.js?v=4"></script>
   <script src="js/skeleton.js"></script>
 </body>
