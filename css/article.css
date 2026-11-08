@@ -168,6 +168,15 @@
   height: 18px;
 }
 
+/* The read time's second copy sits beside Listen on phones only */
+.article-hero__time--inline {
+  display: none;
+}
+
+.article-hero__actions {
+  flex-shrink: 0;
+}
+
 /* Listen: a glass pill with a white play button, as on news sites' "listen to this article" */
 .article-listen {
   display: flex;
@@ -221,6 +230,10 @@
 .article-listen__icon svg {
   width: 28px;
   height: 28px;
+}
+
+.article-listen__play {
+  transform: translateX(-2px);
 }
 
 .article-listen__pause,
@@ -849,20 +862,34 @@
   }
 
   /* Phones: the cover card of reading apps. The photo darkens towards the bottom, where the title and a
-     short summary sit beside a round Listen button; the read time is a chip in the top corner. */
+     short summary sit above the Listen pill (left) and the read time (right). */
   .article-hero {
-    min-height: 320px;   /* shorter now that only the title sits on it */
+    min-height: 460px;
     padding: var(--scale-600) var(--scale-500);
     border-radius: 20px;
   }
 
   .article-hero::before {
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.78) 0%, rgba(0, 0, 0, 0.5) 55%, rgba(0, 0, 0, 0.2) 100%);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.5) 55%, rgba(0, 0, 0, 0.2) 100%);
   }
 
+  /* Bottom right, on the Listen pill's row; on the narrowest phones it drops under the pill */
   .article-hero__time {
-    top: var(--scale-400);
-    right: var(--scale-400);
+    display: none;
+  }
+
+  .article-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--scale-300);
+    width: 100%;
+  }
+
+  .article-hero .article-hero__time--inline {
+    position: static;
+    display: flex;
     gap: 6px;
     padding: 4px var(--scale-300) 4px var(--scale-200);
     font-size: var(--label-s-size);
@@ -875,7 +902,9 @@
   }
 
   .article-hero__content {
-    gap: var(--scale-300);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--scale-500);
   }
 
   .article-hero__text {
@@ -893,55 +922,46 @@
 
   .article-hero__summary {
     width: auto;
-    max-width: 270px;
+    max-width: 270px;   /* three lines on every phone width */
     font-size: var(--body-m-size);
     line-height: 24px;
     font-weight: 500;
     color: var(--color-neutral-200);   /* solid light grey: a step back from the white title */
   }
 
-  /* Phones: the title alone, with Listen beside it */
-  .article-hero__summary {
+  .article-hero__summary-long {
     display: none;
   }
 
-  /* The round button with its label under it */
+  .article-hero__summary-short {
+    display: inline;
+  }
+
+  /* The same glass pill as on desktop, a little smaller */
   .article-listen {
-    flex-direction: column;
-    gap: 6px;
-    padding: 0;
-    border: 0;
-    background: none;
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-    font-size: var(--label-s-size);
-    line-height: var(--label-s-line);
+    gap: var(--scale-300);
+    padding: 6px var(--scale-400) 6px 6px;
+    font-size: var(--label-m-size);
+    line-height: var(--label-m-line);
   }
 
   .article-listen__icon {
-    width: 52px;
-    height: 52px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    width: 48px;
+    height: 48px;
   }
 
   .article-listen__icon svg {
-    width: 30px;
-    height: 30px;
+    width: 26px;
+    height: 26px;
   }
 
-  .article-listen__text {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    line-height: 16px;
-  }
-
-  .article-listen__sep {
+  /* Phones: the length moves out of the pill so it and the read time fit on one line */
+  .article-listen__length {
     display: none;
   }
 
   .article {
-    margin-top: 56px;
+    margin-top: var(--scale-500);   /* the breadcrumb sits 20px under the cover */
     gap: 56px;   /* clear space between topics */
   }
 
