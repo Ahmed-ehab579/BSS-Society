@@ -339,7 +339,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const length = button.querySelector("[data-listen-length]");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-  reveal.classList.add("is-folded");
+  reveal.classList.add("is-folded");   // already folded by the inline script in article.html
 
   function open() {
     reveal.classList.remove("is-folded");

@@ -219,8 +219,8 @@
 }
 
 .article-listen__icon svg {
-  width: 22px;
-  height: 22px;
+  width: 28px;
+  height: 28px;
 }
 
 .article-listen__pause,
@@ -851,7 +851,7 @@
   /* Phones: the cover card of reading apps. The photo darkens towards the bottom, where the title and a
      short summary sit beside a round Listen button; the read time is a chip in the top corner. */
   .article-hero {
-    min-height: 380px;
+    min-height: 320px;   /* shorter now that only the title sits on it */
     padding: var(--scale-600) var(--scale-500);
     border-radius: 20px;
   }
@@ -900,12 +900,9 @@
     color: var(--color-neutral-200);   /* solid light grey: a step back from the white title */
   }
 
-  .article-hero__summary-long {
+  /* Phones: the title alone, with Listen beside it */
+  .article-hero__summary {
     display: none;
-  }
-
-  .article-hero__summary-short {
-    display: inline;
   }
 
   /* The round button with its label under it */
@@ -925,6 +922,11 @@
     width: 52px;
     height: 52px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .article-listen__icon svg {
+    width: 30px;
+    height: 30px;
   }
 
   .article-listen__text {

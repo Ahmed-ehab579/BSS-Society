@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="css/header.css?v=10">
   <link rel="stylesheet" href="css/language.css?v=4">
   <link rel="stylesheet" href="css/footer.css?v=2">
-  <link rel="stylesheet" href="css/article.css?v=35">
+  <link rel="stylesheet" href="css/article.css?v=37">
   <link rel="stylesheet" href="css/resource-card.css?v=8">
   <link rel="stylesheet" href="css/book.css?v=13">
   <link rel="stylesheet" href="css/preview.css?v=20">
@@ -109,6 +109,8 @@
             <button class="audio-player__speed" type="button" aria-label="Playback speed: normal" data-audio-speed>1.0x</button>
           </div>
           </div>
+          <!-- Folded before the first paint, so the player never flashes open (js/article.js opens it) -->
+          <script>document.querySelector("[data-audio-reveal]").classList.add("is-folded");</script>
           </div>
         </div>
 
@@ -258,7 +260,7 @@
   <script src="js/header.js?v=8"></script>
   <script src="js/language.js?v=5"></script>
   <script src="js/progress.js?v=13"></script>
-  <script src="js/article.js?v=18"></script>
+  <script src="js/article.js?v=19"></script>
   <script src="js/carousel.js?v=6"></script>
   <script src="js/download-fill.js"></script>
   <script src="js/resource-card.js?v=7"></script>
