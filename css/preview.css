@@ -1081,7 +1081,7 @@
 
   .preview--page .book,
   .preview--page.preview--video .book {
-    gap: var(--scale-600);
+    gap: var(--scale-800);   /* the photo or player, then the title block */
     padding: 0;
   }
 
