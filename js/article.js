@@ -327,3 +327,57 @@ document.addEventListener("DOMContentLoaded", () => {
   card.addEventListener("pointerleave", () => tip.classList.remove("is-visible"));
   window.addEventListener("scroll", () => tip.classList.remove("is-visible"), { passive: true });
 })();
+
+// Listen on the cover: the player below stays folded away until it is pressed. The first press opens
+// it and starts the audio; after that the button plays and pauses, and mirrors the player's state.
+(function () {
+  const button = document.querySelector("[data-listen]");
+  const reveal = document.querySelector("[data-audio-reveal]");
+  const audio = document.querySelector("[data-audio]");
+  if (!button || !reveal || !audio) return;
+  const word = button.querySelector("[data-listen-word]");
+  const length = button.querySelector("[data-listen-length]");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  reveal.classList.add("is-folded");
+
+  function open() {
+    reveal.classList.remove("is-folded");
+    button.setAttribute("aria-expanded", "true");
+    // Bring the player into view once it has opened, without jumping if it is already on screen
+    setTimeout(() => {
+      const box = reveal.getBoundingClientRect();
+      if (box.bottom > window.innerHeight || box.top < 0) {
+        reveal.scrollIntoView({ block: "nearest", behavior: reduceMotion.matches ? "auto" : "smooth" });
+      }
+    }, reduceMotion.matches ? 0 : 440);
+  }
+
+  button.addEventListener("click", () => {
+    if (reveal.classList.contains("is-folded")) {
+      open();
+      audio.play().catch(() => {});
+    } else if (audio.paused) {
+      audio.play().catch(() => {});
+    } else {
+      audio.pause();
+    }
+  });
+
+  const show = () => {
+    const playing = !audio.paused && !audio.ended;
+    button.classList.toggle("is-playing", playing);
+    word.textContent = playing ? "Pause" : audio.currentTime > 0 && !audio.ended ? "Resume" : "Listen";
+    button.setAttribute("aria-label", playing ? "Pause the article audio" : "Listen to this article");
+  };
+  ["play", "pause", "ended"].forEach((name) => audio.addEventListener(name, show));
+  // Playing from anywhere (the player's own button) opens the player too
+  audio.addEventListener("play", () => {
+    if (reveal.classList.contains("is-folded")) open();
+  });
+  audio.addEventListener("loadedmetadata", () => {
+    length.textContent = `${Math.max(1, Math.round(audio.duration / 60))} min`;
+  });
+  if (audio.readyState >= 1) length.textContent = `${Math.max(1, Math.round(audio.duration / 60))} min`;
+  show();
+})();
