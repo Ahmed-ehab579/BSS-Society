@@ -168,8 +168,8 @@
   height: 18px;
 }
 
-/* The read time's second copy sits beside Listen on phones only */
-.article-hero__time--inline {
+/* The pill's own small player: phones only */
+.hero-player {
   display: none;
 }
 
@@ -873,27 +873,162 @@
     background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.5) 55%, rgba(0, 0, 0, 0.2) 100%);
   }
 
-  /* Bottom right, on the Listen pill's row; on the narrowest phones it drops under the pill */
+  /* Read time: the chip in the top corner */
   .article-hero__time {
-    display: none;
-  }
-
-  .article-hero__actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--scale-300);
-    width: 100%;
-  }
-
-  .article-hero .article-hero__time--inline {
-    position: static;
-    display: flex;
+    top: var(--scale-400);
+    right: var(--scale-400);
     gap: 6px;
     padding: 4px var(--scale-300) 4px var(--scale-200);
     font-size: var(--label-s-size);
     line-height: var(--label-s-line);
+  }
+
+  /* Listen grows into a small player, like the mini players of podcast and news apps: pressing it opens
+     the pill to the full width with pause, the progress, the time left and the speed; pausing folds it
+     back to the left with "Resume" and the time left. The player below the cover stays hidden. */
+  .article-hero__actions {
+    --pill-closed: 100%;   /* set by js/article.js to the closed pill's width */
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: var(--pill-closed);
+    min-height: 60px;
+    padding: 6px;
+    overflow: hidden;
+    border: var(--border-md) solid rgba(255, 255, 255, 0.35);
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.14);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+
+  /* Animated only after the first measure, so the page never loads mid-animation */
+  .article-hero__actions.is-ready {
+    transition: max-width 420ms var(--motion-ease);
+  }
+
+  .article-hero__actions.is-open {
+    max-width: 100%;
+  }
+
+  .article-listen {
+    flex-shrink: 0;
+    padding: 0 var(--scale-300) 0 0;
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    transition: padding 420ms var(--motion-ease);
+  }
+
+  .article-listen__text {
+    overflow: hidden;
+    transition: opacity 200ms var(--motion-ease);
+  }
+
+  .article-hero__actions.is-open .article-listen {
+    padding-right: 0;
+  }
+
+  .article-hero__actions.is-open .article-listen__text {
+    width: 0;
+    opacity: 0;
+  }
+
+  .hero-player {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: var(--scale-300);
+    min-width: 0;
+    width: 0;
+    padding-inline: var(--scale-300) 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 200ms var(--motion-ease), visibility 0s 200ms;
+  }
+
+  .article-hero__actions.is-open .hero-player {
+    width: auto;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 260ms 160ms var(--motion-ease), visibility 0s;
+  }
+
+  .hero-player__bar {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    height: 4px;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    touch-action: none;
+  }
+
+  .hero-player__bar::before {
+    content: "";
+    position: absolute;
+    inset: -14px 0;   /* a finger-sized target */
+  }
+
+  .hero-player__bar span {
+    display: block;
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--color-neutral-white);
+  }
+
+  .hero-player__bar i {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--color-neutral-white);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .hero-player__time {
+    flex-shrink: 0;
+    min-width: 38px;
+    font-size: var(--label-s-size);
+    line-height: var(--label-s-line);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-neutral-100);
+    text-align: right;
+  }
+
+  .hero-player__speed {
+    flex-shrink: 0;
+    min-width: 40px;
+    height: 32px;
+    margin-right: 4px;
+    padding: 0 var(--scale-200);
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--color-text-on-dark);
+    font: inherit;
+    font-size: var(--label-s-size);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
+  }
+
+  .hero-player__speed:active {
+    background: rgba(255, 255, 255, 0.3);
+  }
+
+  /* The full player below the cover is a desktop thing */
+  .audio-reveal {
+    display: none;
   }
 
   .article-hero__time img {
@@ -904,7 +1039,7 @@
   .article-hero__content {
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--scale-500);
+    gap: var(--scale-800);   /* text, then the Listen pill */
   }
 
   .article-hero__text {
@@ -937,10 +1072,9 @@
     display: inline;
   }
 
-  /* The same glass pill as on desktop, a little smaller */
-  .article-listen {
+  /* The same glass pill as on desktop, a little smaller (the pill's glass is on its wrapper here) */
+  .article-hero .article-listen {
     gap: var(--scale-300);
-    padding: 6px var(--scale-400) 6px 6px;
     font-size: var(--label-m-size);
     line-height: var(--label-m-line);
   }
@@ -955,7 +1089,7 @@
     height: 26px;
   }
 
-  /* Phones: the length moves out of the pill so it and the read time fit on one line */
+  /* Phones: the pill says "Listen to article"; when paused, "Resume" and the time left (js) */
   .article-listen__length {
     display: none;
   }

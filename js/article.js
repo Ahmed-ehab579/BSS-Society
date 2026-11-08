@@ -328,23 +328,40 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("scroll", () => tip.classList.remove("is-visible"), { passive: true });
 })();
 
-// Listen on the cover: the player below stays folded away until it is pressed. The first press opens
-// it and starts the audio; after that the button plays and pauses, and mirrors the player's state.
+// Listen on the cover.
+// Desktop: the player below stays folded away until Listen is pressed; the first press opens it and
+// starts the audio, then the button plays and pauses and mirrors the player.
+// Phones: the pill itself grows to the full width into a small player (pause, progress, time left,
+// speed) while it plays, and folds back to the left with "Resume" and the time left when paused.
 (function () {
   const button = document.querySelector("[data-listen]");
   const reveal = document.querySelector("[data-audio-reveal]");
   const audio = document.querySelector("[data-audio]");
   if (!button || !reveal || !audio) return;
+  const pill = document.querySelector("[data-hero-player]");
   const word = button.querySelector("[data-listen-word]");
   const length = button.querySelector("[data-listen-length]");
+  const bar = document.querySelector("[data-hero-bar]");
+  const fill = bar.querySelector("span");
+  const thumb = bar.querySelector("i");
+  const left = document.querySelector("[data-hero-time]");
+  const speed = document.querySelector("[data-hero-speed]");
+  const mainSpeed = document.querySelector("[data-audio-speed]");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const phone = window.matchMedia("(max-width: 767px)");
+  const SPEEDS = [1, 1.25, 1.5, 2];
+
+  const clock = (seconds) => {
+    const s = Math.max(0, Math.round(seconds || 0));
+    return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+  };
+  const minutes = () => `${Math.max(1, Math.round(audio.duration / 60))} min`;
 
   reveal.classList.add("is-folded");   // already folded by the inline script in article.html
 
-  function open() {
+  function openPlayerBelow() {
     reveal.classList.remove("is-folded");
     button.setAttribute("aria-expanded", "true");
-    // Bring the player into view once it has opened, without jumping if it is already on screen
     setTimeout(() => {
       const box = reveal.getBoundingClientRect();
       if (box.bottom > window.innerHeight || box.top < 0) {
@@ -353,9 +370,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }, reduceMotion.matches ? 0 : 440);
   }
 
+  // The closed pill is as wide as its content; open, it takes the row
+  function measureClosed() {
+    pill.style.setProperty("--pill-closed", `${button.scrollWidth + 14}px`);
+  }
+
+  function setPillOpen(open) {
+    pill.classList.toggle("is-open", open);
+    bar.tabIndex = open ? 0 : -1;
+    speed.tabIndex = open ? 0 : -1;
+  }
+
   button.addEventListener("click", () => {
-    if (reveal.classList.contains("is-folded")) {
-      open();
+    if (!phone.matches && reveal.classList.contains("is-folded")) {
+      openPlayerBelow();
       audio.play().catch(() => {});
     } else if (audio.paused) {
       audio.play().catch(() => {});
@@ -364,20 +392,92 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  const show = () => {
+  function show() {
     const playing = !audio.paused && !audio.ended;
+    const started = audio.currentTime > 0 && !audio.ended;
     button.classList.toggle("is-playing", playing);
-    word.textContent = playing ? "Pause" : audio.currentTime > 0 && !audio.ended ? "Resume" : "Listen to article";
-    button.setAttribute("aria-label", playing ? "Pause the article audio" : "Listen to this article");
-  };
+    if (playing) word.textContent = "Pause";
+    else if (started) word.textContent = phone.matches ? `Resume · -${clock(audio.duration - audio.currentTime)}` : "Resume";
+    else word.textContent = "Listen to article";
+    button.setAttribute("aria-label", playing ? "Pause the article audio" : started ? "Resume the article audio" : "Listen to this article");
+    if (phone.matches) {
+      setPillOpen(playing);
+      if (!playing) measureClosed();
+    }
+  }
+
+  function showPosition() {
+    const share = audio.duration ? audio.currentTime / audio.duration : 0;
+    fill.style.width = `${share * 100}%`;
+    thumb.style.left = `${share * 100}%`;
+    bar.setAttribute("aria-valuenow", String(Math.round(share * 100)));
+    bar.setAttribute("aria-valuetext", clock(audio.currentTime));
+    if (audio.duration) left.textContent = `-${clock(audio.duration - audio.currentTime)}`;
+  }
+
   ["play", "pause", "ended"].forEach((name) => audio.addEventListener(name, show));
-  // Playing from anywhere (the player's own button) opens the player too
+  audio.addEventListener("timeupdate", showPosition);
+  // Playing from the desktop player's own button opens it too
   audio.addEventListener("play", () => {
-    if (reveal.classList.contains("is-folded")) open();
+    if (!phone.matches && reveal.classList.contains("is-folded")) openPlayerBelow();
   });
-  audio.addEventListener("loadedmetadata", () => {
-    length.textContent = `${Math.max(1, Math.round(audio.duration / 60))} min`;
+  audio.addEventListener("ended", () => {
+    audio.currentTime = 0;
+    showPosition();
+    show();
   });
-  if (audio.readyState >= 1) length.textContent = `${Math.max(1, Math.round(audio.duration / 60))} min`;
+  const ready = () => {
+    length.textContent = minutes();
+    showPosition();
+    show();
+  };
+  audio.addEventListener("loadedmetadata", ready);
+  if (audio.readyState >= 1) ready();
+
+  // Seek on the pill's bar: tap or drag, arrow keys
+  const seekTo = (clientX) => {
+    if (!audio.duration) return;
+    const rect = bar.getBoundingClientRect();
+    audio.currentTime = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width)) * audio.duration;
+    showPosition();
+  };
+  bar.addEventListener("pointerdown", (event) => {
+    bar.setPointerCapture(event.pointerId);
+    seekTo(event.clientX);
+  });
+  bar.addEventListener("pointermove", (event) => {
+    if (bar.hasPointerCapture(event.pointerId)) seekTo(event.clientX);
+  });
+  bar.addEventListener("keydown", (event) => {
+    const by = { ArrowRight: 5, ArrowUp: 5, ArrowLeft: -5, ArrowDown: -5 }[event.key];
+    if (!by || !audio.duration) return;
+    event.preventDefault();
+    audio.currentTime = Math.min(audio.duration, Math.max(0, audio.currentTime + by));
+    showPosition();
+  });
+
+  // One speed for both players
+  speed.addEventListener("click", () => {
+    audio.playbackRate = SPEEDS[(SPEEDS.indexOf(audio.playbackRate) + 1) % SPEEDS.length];
+  });
+  audio.addEventListener("ratechange", () => {
+    const rate = audio.playbackRate;
+    speed.textContent = `${rate}x`;
+    speed.setAttribute("aria-label", `Playback speed: ${rate === 1 ? "normal" : `${rate} times`}`);
+    if (mainSpeed) {
+      mainSpeed.textContent = rate === 1 ? "1.0x" : `${rate}x`;
+      mainSpeed.setAttribute("aria-label", `Playback speed: ${rate === 1 ? "normal" : `${rate} times`}`);
+    }
+  });
+
+  // Crossing between phone and desktop sizes: each layout tidies the other's state
+  phone.addEventListener("change", () => {
+    if (!phone.matches) setPillOpen(false);
+    else measureClosed();
+    show();
+  });
+
+  measureClosed();
   show();
+  requestAnimationFrame(() => requestAnimationFrame(() => pill.classList.add("is-ready")));
 })();
