@@ -104,34 +104,22 @@
   object-fit: cover;
 }
 
-/* Bottom of the card: the title and summary on the left, the Listen button on the right, both resting on
-   the same baseline. Read time sits apart, top right, like the cover cards of reading apps. */
+/* Bottom of the card, top to bottom: the title, the summary, then the Listen pill on the left (the same
+   layout as phones). Read time sits apart, top right, like the cover cards of reading apps. */
 .article-hero__content {
   position: relative;
   z-index: 2;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: end;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   gap: var(--scale-800);
 }
 
-/* The title spans the card; the summary and the Listen pill share the row under it, so the pill can
-   grow without pushing the title onto another line */
 .article-hero__text {
-  display: contents;
-}
-
-.article-hero__title {
-  grid-column: 1 / -1;
-}
-
-.article-hero__summary {
-  grid-column: 1;
-}
-
-.article-hero__actions {
-  grid-column: 2;
-  justify-self: end;
+  display: flex;
+  flex-direction: column;
+  gap: var(--scale-800);
+  min-width: 0;
 }
 
 .article-hero__title {
@@ -269,7 +257,8 @@
   --pill-closed: 100%;   /* set by js/article.js to the closed pill's width */
   display: flex;
   align-items: center;
-  width: var(--pill-closed);   /* desktop animates the width; phones the max-width (below) */
+  width: 100%;
+  max-width: var(--pill-closed);
   min-height: 60px;
   padding: 6px;
   overflow: hidden;
@@ -282,11 +271,11 @@
 
 /* Animated only after the first measure, so the page never loads mid-animation */
 .article-hero__actions.is-ready {
-  transition: width 420ms var(--motion-ease), max-width 420ms var(--motion-ease);
+  transition: max-width 420ms var(--motion-ease);
 }
 
 .article-hero__actions.is-open {
-  width: 460px;   /* desktop: grows to the left, beside the summary */
+  max-width: 100%;   /* the full width of the card */
 }
 
 .article-listen {
@@ -1042,15 +1031,6 @@
     line-height: var(--label-s-line);
   }
 
-  .article-hero__actions {
-    width: 100%;
-    max-width: var(--pill-closed);
-  }
-
-  .article-hero__actions.is-open {
-    width: 100%;
-    max-width: 100%;   /* phones: the full row */
-  }
 
   .article-hero__time img {
     width: 14px;
