@@ -766,7 +766,7 @@
     font-size: var(--body-s-size);
     line-height: var(--body-s-line);
     font-weight: 500;
-    color: var(--color-neutral-white);
+    color: var(--color-neutral-200);   /* solid light grey: a step back from the white title */
   }
 
   .article-hero__summary-long {
