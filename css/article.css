@@ -126,6 +126,11 @@
   gap: var(--scale-600);
 }
 
+/* Phones get the short summary */
+.article-hero__summary-short {
+  display: none;
+}
+
 .article-hero__summary {
   width: 520px;
   max-width: 100%;
@@ -757,11 +762,23 @@
 
   .article-hero__summary {
     width: auto;
+    max-width: 80%;
     font-size: var(--body-s-size);
     line-height: var(--body-s-line);
+    font-weight: 500;
+    color: var(--color-neutral-white);
+  }
+
+  .article-hero__summary-long {
+    display: none;
+  }
+
+  .article-hero__summary-short {
+    display: inline;
   }
 
   .article-hero__time {
+    align-self: flex-end;
     align-items: center;
     gap: 6px;
     font-size: var(--label-m-size);
