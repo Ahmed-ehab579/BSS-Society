@@ -286,7 +286,7 @@
   background: none;
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
-  transition: padding 420ms var(--motion-ease);
+  /* No transition on the padding: the closed width is measured the moment the pill folds */
 }
 
 .article-listen__text {
