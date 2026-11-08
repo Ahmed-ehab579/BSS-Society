@@ -194,6 +194,7 @@
   const fill = bar.firstElementChild;
   const thumb = bar.querySelector(".audio-player__thumb");
   const time = box.querySelector("[data-audio-time]");
+  const left = box.querySelector("[data-audio-left]");
   const length = box.querySelector("[data-audio-length]");
   const speed = box.querySelector("[data-audio-speed]");
   const SPEEDS = [1, 1.25, 1.5, 2];
@@ -211,10 +212,11 @@
     bar.setAttribute("aria-valuenow", String(Math.round(share * 100)));
     bar.setAttribute("aria-valuetext", clock(audio.currentTime));
     time.textContent = clock(audio.currentTime);
+    if (left && audio.duration) left.textContent = `-${clock(audio.duration - audio.currentTime)}`;
   }
 
   audio.addEventListener("loadedmetadata", () => {
-    length.textContent = `• ${Math.max(1, Math.round(audio.duration / 60))} min`;
+    length.textContent = `${Math.max(1, Math.round(audio.duration / 60))} min`;
     show();
   });
   audio.addEventListener("timeupdate", show);

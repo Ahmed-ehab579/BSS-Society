@@ -308,6 +308,11 @@
   color: var(--color-neutral-400);
 }
 
+/* Time left: shown under the bar on phones */
+.audio-player__total {
+  display: none;
+}
+
 .audio-player__speed {
   flex-shrink: 0;
   padding: var(--scale-100) var(--scale-200);
@@ -413,6 +418,7 @@
 }
 
 .completion__text {
+  max-width: 280px;   /* shorter lines read more easily */
   font-size: var(--body-s-size);
   line-height: var(--body-s-line);
   color: var(--color-text-body);
@@ -748,27 +754,92 @@
     padding-inline: 0;
   }
 
+  /* Phones: a compact card, like the "listen to this article" players of news apps. Play, the label
+     and the speed on one row; under them a full-width bar with the time played and the time left. */
   .audio-player {
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr) auto;
+    grid-template-areas:
+      "play label speed"
+      "line line line";
+    align-items: center;
+    row-gap: var(--scale-400);
+    column-gap: var(--scale-300);
     height: auto;
-    gap: var(--scale-300) var(--scale-400);
-    padding: var(--scale-300) var(--scale-500);
-    border-radius: 36px;
+    padding: var(--scale-400);
+    border-radius: 20px;
+  }
+
+  .audio-player__play {
+    grid-area: play;
+    width: 48px;
+    height: 48px;
+  }
+
+  .audio-player__label {
+    grid-area: label;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  .audio-player__title {
+    font-size: var(--label-l-size);
+    line-height: var(--label-l-line);
+  }
+
+  .audio-player__length {
+    font-size: var(--label-s-size);
+    line-height: var(--label-s-line);
+    color: var(--color-text-body);
+  }
+
+  .audio-player__dot {
+    display: none;
+  }
+
+  .audio-player .audio-player__speed {
+    grid-area: speed;
+    min-width: 48px;
+    height: 32px;
+    padding: 0 var(--scale-300);
+    border-radius: var(--radius-pill);
+    background: var(--surface-action-outline);
+    color: var(--color-text-on-light);
   }
 
   .audio-player__timeline {
-    order: 4;
-    flex: 1 0 100%;
-    gap: var(--scale-300);
+    grid-area: line;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "bar bar"
+      "time total";
+    row-gap: var(--scale-200);
   }
 
   .audio-player__bar {
-    flex: 1 1 auto;
+    grid-area: bar;
     width: auto;
+    height: 6px;
   }
 
-  .audio-player__speed {
-    margin-left: auto;
+  .audio-player__time,
+  .audio-player__total {
+    padding: 0;
+    font-size: var(--label-s-size);
+    line-height: var(--label-s-line);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text-body);
+  }
+
+  .audio-player__time {
+    grid-area: time;
+  }
+
+  .audio-player__total {
+    display: block;
+    grid-area: total;
   }
 
   .article-section__heading {
