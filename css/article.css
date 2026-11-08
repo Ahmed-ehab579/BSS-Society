@@ -200,7 +200,7 @@
   padding: var(--scale-300) var(--scale-800);
   border: 0.3px solid var(--color-neutral-400);
   border-radius: 999px;
-  background: var(--surface-cards-hovered);   /* the light green */
+  background: var(--surface-cards);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.05);   /* lifted a little */
 }
 
@@ -266,7 +266,7 @@
   flex: 0 1 311px;
   height: 7px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--color-neutral-200);
 }
 
 .audio-player__bar::before {
@@ -587,7 +587,7 @@
   padding: 0 calc((61px - 14px) / 2 - var(--border-lg));
   border: var(--border-lg) solid var(--color-neutral-400);
   border-radius: 999px;
-  background: var(--color-neutral-white);
+  background: var(--surface-cards-hovered);   /* the light green */
   color: var(--color-text-on-light);
   font: inherit;
   font-size: var(--body-m-size);
