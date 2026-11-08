@@ -336,6 +336,11 @@
   gap: var(--scale-600);
 }
 
+/* The small label belongs to the heading under it: 8px apart, not the section's 24px */
+.article-section__label + .article-section__heading {
+  margin-top: calc(var(--scale-200) - var(--scale-600));
+}
+
 .article-section__label {
   font-size: var(--label-s-size);
   line-height: var(--label-s-line);
@@ -952,11 +957,6 @@
   .article-section__heading {
     font-size: var(--h5-size);
     line-height: var(--h5-line);
-  }
-
-  /* The small label belongs to the heading under it: 8px apart, not the section's 24px */
-  .article-section__label + .article-section__heading {
-    margin-top: calc(var(--scale-200) - var(--scale-600));
   }
 
   .article-section__body {
