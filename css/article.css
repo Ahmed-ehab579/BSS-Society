@@ -724,13 +724,28 @@
     height: 28px;
   }
 
+  /* Phones: the cover card of reading apps. The photo darkens towards the bottom, where the title, a
+     short summary and the read time sit at sizes made for a phone. */
   .article-hero {
-    min-height: 420px;
-    padding: 28px var(--scale-500);
+    min-height: 380px;
+    padding: var(--scale-600) var(--scale-500);
+    border-radius: 20px;
+  }
+
+  .article-hero::before {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.78) 0%, rgba(0, 0, 0, 0.5) 55%, rgba(0, 0, 0, 0.2) 100%);
+  }
+
+  .article-hero__content {
+    gap: var(--scale-300);
   }
 
   .article-hero__title {
     margin-block: 0;
+    font-size: var(--h4-size);
+    line-height: 38px;
+    font-weight: 500;
+    letter-spacing: -0.5px;
   }
 
   .article-hero__meta {
@@ -741,6 +756,21 @@
 
   .article-hero__summary {
     width: auto;
+    font-size: var(--body-s-size);
+    line-height: var(--body-s-line);
+  }
+
+  .article-hero__time {
+    align-items: center;
+    gap: 6px;
+    font-size: var(--label-m-size);
+    line-height: var(--label-m-line);
+    font-weight: 500;
+  }
+
+  .article-hero__time img {
+    width: 18px;
+    height: 18px;
   }
 
   .article {
@@ -852,15 +882,30 @@
     line-height: var(--body-l-line);
   }
 
+  /* Phones: centred, the check large on top, then the title, the line and the button */
   .completion {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    gap: 0;
     margin-inline: 0;
-    padding: var(--scale-500);
+    padding: var(--scale-800) var(--scale-600) var(--scale-600);
+    text-align: center;
+  }
+
+  .completion__icon {
+    width: 86px;
+    height: 86px;
+    margin-bottom: var(--scale-400);
+  }
+
+  .completion__text {
+    max-width: 280px;
+    margin: var(--scale-100) auto 0;
   }
 
   .completion__actions {
     width: 100%;
+    margin-top: var(--scale-600);
   }
 
   .topic-nav {
