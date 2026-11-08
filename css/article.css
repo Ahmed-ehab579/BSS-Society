@@ -79,7 +79,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  height: 601px;
+  height: 641px;
   padding: 0 50px 61px;
   overflow: hidden;
   border-radius: var(--article-radius);
@@ -112,7 +112,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--scale-800);
+  gap: var(--scale-1000);   /* the text, then the Listen pill */
 }
 
 .article-hero__text {
@@ -280,7 +280,7 @@
 
 .article-listen {
   flex-shrink: 0;
-  padding: 0 var(--scale-300) 0 0;
+  padding: 0 var(--scale-400) 0 0;
   border: 0;
   border-radius: var(--radius-pill);
   background: none;
