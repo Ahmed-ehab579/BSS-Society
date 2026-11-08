@@ -367,7 +367,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const show = () => {
     const playing = !audio.paused && !audio.ended;
     button.classList.toggle("is-playing", playing);
-    word.textContent = playing ? "Pause" : audio.currentTime > 0 && !audio.ended ? "Resume" : "Listen";
+    word.textContent = playing ? "Pause" : audio.currentTime > 0 && !audio.ended ? "Resume" : "Listen to article";
     button.setAttribute("aria-label", playing ? "Pause the article audio" : "Listen to this article");
   };
   ["play", "pause", "ended"].forEach((name) => audio.addEventListener(name, show));
