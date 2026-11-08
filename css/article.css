@@ -1695,3 +1695,249 @@
     transition: none;
   }
 }
+
+/* ---- Comprehension check (after "Mark as read") ---------------------------------------------- */
+/* Opens just under the completion card; one question, a follow-up only when something wasn't clear */
+.checkin {
+  display: grid;
+  grid-template-rows: 0fr;
+  margin: calc(var(--scale-300) - 57px) var(--scale-800) 0;   /* 12px under the card, not the article's 57px */
+  opacity: 0;
+  transition: grid-template-rows 380ms var(--motion-ease), opacity 260ms var(--motion-ease);
+}
+
+.checkin.is-open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.checkin[hidden] {
+  display: none;
+}
+
+.checkin__inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.checkin__step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--scale-300);
+  padding: var(--scale-600);
+  border: var(--border-md) solid var(--color-neutral-300);
+  border-radius: var(--scale-600);
+  background: var(--surface-cards);
+}
+
+.checkin__step[hidden] {
+  display: none;
+}
+
+.checkin__title {
+  font-size: var(--h6-size);
+  line-height: var(--h6-line);
+  font-weight: var(--h6-weight);
+  color: var(--color-heading);
+}
+
+.checkin__title:focus {
+  outline: none;
+}
+
+.checkin__text {
+  margin-top: calc(-1 * var(--scale-200));
+  font-size: var(--body-s-size);
+  line-height: var(--body-s-line);
+  color: var(--color-text-body);
+}
+
+.checkin__options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--scale-200);
+  margin-top: var(--scale-200);
+}
+
+.checkin__option,
+.checkin__chip {
+  border: var(--border-md) solid var(--color-neutral-300);
+  background: var(--surface-action-outline);
+  color: var(--color-heading);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--motion-duration) var(--motion-ease),
+    border-color var(--motion-duration) var(--motion-ease), transform var(--motion-duration) var(--motion-ease);
+}
+
+.checkin__option {
+  min-height: 48px;
+  padding: var(--scale-200) var(--scale-400);
+  border-radius: var(--scale-300);
+  font-size: var(--label-m-size);
+  line-height: var(--label-m-line);
+}
+
+@media (hover: hover) {
+  .checkin__option:hover,
+  .checkin__chip:hover {
+    background: var(--surface-cards-hovered);
+  }
+}
+
+.checkin__option:active,
+.checkin__chip:active {
+  transform: scale(0.98);
+}
+
+.checkin__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--scale-200);
+}
+
+.checkin__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: var(--scale-200) var(--scale-400);
+  border-radius: var(--radius-pill);
+  font-size: var(--label-s-size);
+  line-height: var(--label-s-line);
+  text-align: left;
+}
+
+.checkin__chip[aria-pressed="true"] {
+  border-color: var(--color-completed);
+  background: var(--surface-cards-hovered);
+}
+
+.checkin__chip[aria-pressed="true"]::before {
+  content: "";
+  width: 9px;
+  height: 5px;
+  border-left: 1.8px solid currentColor;
+  border-bottom: 1.8px solid currentColor;
+  transform: translateY(-2px) rotate(-45deg);
+}
+
+.checkin .field {
+  margin-top: var(--scale-200);
+}
+
+.checkin .field__input {
+  height: 88px;
+  min-height: 88px;
+}
+
+.checkin__error {
+  font-size: var(--body-xs-size);
+  line-height: var(--body-xs-line);
+  color: var(--color-error);
+}
+
+.checkin__error[hidden] {
+  display: none;
+}
+
+.checkin__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--scale-300) var(--scale-500);
+  margin-top: var(--scale-200);
+}
+
+.checkin__link,
+.checkin__skip {
+  padding: var(--scale-100) 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: var(--label-m-size);
+  line-height: var(--label-m-line);
+  font-weight: var(--label-weight);
+  color: var(--color-text-on-light);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.checkin__skip {
+  align-self: flex-end;
+  color: var(--color-text-body);
+  font-weight: 500;
+}
+
+.checkin__step--thanks {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--scale-400);
+  background: var(--surface-cards-hovered);
+}
+
+.checkin__heart {
+  flex: none;
+  color: var(--color-completed);
+}
+
+.checkin__note {
+  margin-top: var(--scale-200);
+  font-size: var(--body-xs-size);
+  line-height: var(--body-xs-line);
+  color: var(--color-text-body);
+}
+
+.checkin__option:focus-visible,
+.checkin__chip:focus-visible,
+.checkin__link:focus-visible,
+.checkin__skip:focus-visible {
+  outline: var(--border-lg) solid var(--border-color-on-light);
+  outline-offset: 2px;
+}
+
+@media (max-width: 767px) {
+  .checkin {
+    margin: calc(var(--scale-300) - 56px) 0 0;
+  }
+
+  /* Centred, like the completion card above it on phones */
+  .checkin__step {
+    padding: var(--scale-500);
+    text-align: center;
+  }
+
+  .checkin__chips {
+    justify-content: center;
+  }
+
+  .checkin__skip {
+    align-self: center;
+  }
+
+  .checkin__step--thanks {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .checkin__options {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .checkin__actions .btn {
+    width: 100%;
+  }
+
+  .checkin__actions {
+    flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .checkin {
+    transition: none;
+  }
+}

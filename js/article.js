@@ -149,11 +149,13 @@
     P.complete(topicId);
     evaluate();
     undoButton.focus();
+    document.dispatchEvent(new CustomEvent("bss:topic-complete", { detail: { topicId } }));   // the check-in below
   });
   undoButton.addEventListener("click", () => {
     P.markUnread(topicId);   // topics that depended on this one lock again (unless started or opened on purpose)
     evaluate();
     doneButton.focus();
+    document.dispatchEvent(new CustomEvent("bss:topic-unread", { detail: { topicId } }));
   });
 
   /* ---- Next topic card: dimmed until this topic is completed, then highlighted ---- */
@@ -498,9 +500,9 @@ document.addEventListener("DOMContentLoaded", () => {
     return found && found.querySelector(".article-section__heading").textContent.trim();
   }
 
-  function open() {
+  function open(chosen) {
     clearTimeout(closeTimer);
-    const section = sectionInView();
+    const section = typeof chosen === "string" ? chosen : sectionInView();
     context.hidden = !section;
     contextLabel.textContent = section || "";
     contextInput.value = section || "";
@@ -530,6 +532,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   opener.addEventListener("click", () => (panel.hidden ? open() : close()));
+  window.BSSHelp = { open };   // the check-in's "Ask our team" opens it with the unclear section attached
   document.querySelectorAll("[data-help-close]").forEach((el) => el.addEventListener("click", close));
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && !panel.hidden) close();
@@ -545,5 +548,128 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   window.addEventListener("resize", () => {
     if (!panel.hidden) makeRoom();
+  });
+})();
+
+// Comprehension check: right after "Mark as read", one question ("Did everything make sense?"). "Mostly"
+// or "Some parts didn't" asks which sections, with an optional note and a way to ask the team. Asked
+// once per topic; marking it unread clears the answer. Not connected to a service yet, so answers are
+// kept in this browser only, and the thank-you says so.
+(function () {
+  const box = document.querySelector("[data-checkin]");
+  if (!box) return;
+  const KEY = "bss.checkin.v1";
+  const steps = Object.fromEntries([...box.querySelectorAll("[data-checkin-step]")].map((el) => [el.dataset.checkinStep, el]));
+  const chips = box.querySelector("[data-checkin-sections]");
+  const note = box.querySelector("#checkin-note");
+  const error = box.querySelector("[data-checkin-error]");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let topic = null;
+  let answer = null;
+
+  const read = () => {
+    try {
+      return JSON.parse(localStorage.getItem(KEY)) || {};
+    } catch (e) {
+      return {};
+    }
+  };
+  const write = (all) => {
+    try {
+      localStorage.setItem(KEY, JSON.stringify(all));
+    } catch (e) { /* private mode: nothing kept */ }
+  };
+  const save = (entry) => write({ ...read(), [topic]: { ...entry, at: new Date().toISOString() } });
+
+  // One chip per section of this article
+  document.querySelectorAll(".article-section__heading").forEach((heading) => {
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "checkin__chip";
+    chip.setAttribute("aria-pressed", "false");
+    chip.textContent = heading.textContent.trim();
+    chips.append(chip);
+  });
+  chips.addEventListener("click", (event) => {
+    const chip = event.target.closest(".checkin__chip");
+    if (!chip) return;
+    chip.setAttribute("aria-pressed", String(chip.getAttribute("aria-pressed") !== "true"));
+    error.hidden = true;
+  });
+  note.addEventListener("input", () => { error.hidden = true; });
+  const picked = () => [...chips.querySelectorAll('[aria-pressed="true"]')].map((chip) => chip.textContent);
+
+  function showStep(name) {
+    Object.entries(steps).forEach(([key, el]) => { el.hidden = key !== name; });
+    steps[name].querySelector(".checkin__title").focus({ preventScroll: true });
+  }
+
+  function open() {
+    box.hidden = false;
+    box.getBoundingClientRect();   // start folded
+    box.classList.add("is-open");
+    showStep("ask");
+    setTimeout(() => {
+      const r = box.getBoundingClientRect();
+      if (r.bottom > window.innerHeight) box.scrollIntoView({ block: "nearest", behavior: reduceMotion.matches ? "auto" : "smooth" });
+    }, reduceMotion.matches ? 0 : 400);
+  }
+
+  function close() {
+    box.classList.remove("is-open");
+    setTimeout(() => { box.hidden = true; }, reduceMotion.matches ? 0 : 380);
+  }
+
+  function reset() {
+    answer = null;
+    note.value = "";
+    error.hidden = true;
+    chips.querySelectorAll(".checkin__chip").forEach((chip) => chip.setAttribute("aria-pressed", "false"));
+  }
+
+  document.addEventListener("bss:topic-complete", (event) => {
+    topic = event.detail.topicId;
+    if (read()[topic]) return;   // answered or skipped before
+    reset();
+    open();
+  });
+
+  document.addEventListener("bss:topic-unread", (event) => {
+    topic = event.detail.topicId;
+    const all = read();
+    delete all[topic];
+    write(all);
+    reset();
+    if (!box.hidden) close();
+  });
+
+  box.querySelectorAll("[data-answer]").forEach((button) => button.addEventListener("click", () => {
+    answer = button.dataset.answer;
+    if (answer === "clear") {
+      save({ answer });
+      showStep("thanks");
+    } else {
+      showStep("details");
+    }
+  }));
+
+  steps.details.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const sections = picked();
+    if (!sections.length && !note.value.trim()) {
+      error.hidden = false;
+      return;
+    }
+    save({ answer, sections, note: note.value.trim() });
+    showStep("thanks");
+  });
+
+  box.querySelectorAll("[data-checkin-skip]").forEach((button) => button.addEventListener("click", () => {
+    save({ answer: answer ? `${answer} (no details)` : "skipped" });
+    close();
+  }));
+
+  box.querySelector("[data-checkin-ask]").addEventListener("click", () => {
+    window.BSSHelp?.open(picked()[0]);
   });
 })();

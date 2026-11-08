@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="css/header.css?v=10">
   <link rel="stylesheet" href="css/language.css?v=4">
   <link rel="stylesheet" href="css/footer.css?v=2">
-  <link rel="stylesheet" href="css/article.css?v=50">
+  <link rel="stylesheet" href="css/article.css?v=52">
   <link rel="stylesheet" href="css/resource-card.css?v=8">
   <link rel="stylesheet" href="css/book.css?v=13">
   <link rel="stylesheet" href="css/preview.css?v=20">
@@ -158,6 +158,48 @@
           <div class="completion__actions">
             <button class="btn btn--primary btn--regular completion__done" type="button" data-complete disabled>Mark as read</button>
             <button class="completion__undo" type="button" data-unread hidden>Mark as unread</button>
+          </div>
+        </section>
+
+        <!-- Comprehension check, right after "Mark as read" (js/article.js). One question; a follow-up only
+             when something wasn't clear. Not connected to a service yet: answers stay in this browser. -->
+        <section class="checkin" aria-labelledby="checkin-title" data-checkin hidden>
+          <div class="checkin__inner">
+            <div class="checkin__step" data-checkin-step="ask">
+              <h3 class="checkin__title" id="checkin-title" tabindex="-1">Did everything make sense?</h3>
+              <p class="checkin__text">One tap helps us make every topic clearer.</p>
+              <div class="checkin__options" role="group" aria-labelledby="checkin-title">
+                <button class="checkin__option" type="button" data-answer="clear">Yes, it was all clear</button>
+                <button class="checkin__option" type="button" data-answer="mostly">Mostly</button>
+                <button class="checkin__option" type="button" data-answer="unclear">Some parts didn’t</button>
+              </div>
+              <button class="checkin__skip" type="button" data-checkin-skip>Skip</button>
+            </div>
+
+            <form class="checkin__step" data-checkin-step="details" novalidate hidden>
+              <h3 class="checkin__title" id="checkin-details-title" tabindex="-1">Which part was unclear?</h3>
+              <p class="checkin__text">Pick one or more, or tell us in your own words.</p>
+              <div class="checkin__chips" role="group" aria-labelledby="checkin-details-title" data-checkin-sections></div>
+              <div class="field">
+                <label class="field__label" for="checkin-note">What was confusing? (optional)</label>
+                <textarea class="field__input" id="checkin-note" name="note" placeholder="A word, an idea, a sentence…"></textarea>
+              </div>
+              <p class="checkin__error" role="alert" data-checkin-error hidden>Pick a part, or tell us what was confusing.</p>
+              <div class="checkin__actions">
+                <button class="btn btn--primary btn--regular" type="submit">Send feedback</button>
+                <button class="checkin__link" type="button" data-checkin-ask>Want an answer? Ask our team</button>
+              </div>
+              <button class="checkin__skip" type="button" data-checkin-skip>Skip</button>
+            </form>
+
+            <div class="checkin__step checkin__step--thanks" data-checkin-step="thanks" hidden>
+              <svg class="checkin__heart" viewBox="0 0 24 24" width="28" height="28" fill="none" aria-hidden="true"><path d="M12 20s-7-4.35-7-10a4 4 0 0 1 7-2.65A4 4 0 0 1 19 10c0 5.65-7 10-7 10Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+              <div>
+                <h3 class="checkin__title" id="checkin-thanks-title" tabindex="-1">Thanks for telling us</h3>
+                <p class="checkin__text">It helps us make every topic clearer.</p>
+                <p class="checkin__note">Feedback isn’t connected yet, so your answer stays in this browser.</p>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -322,7 +364,7 @@
   <script src="js/header.js?v=8"></script>
   <script src="js/language.js?v=5"></script>
   <script src="js/progress.js?v=13"></script>
-  <script src="js/article.js?v=27"></script>
+  <script src="js/article.js?v=28"></script>
   <script src="js/carousel.js?v=6"></script>
   <script src="js/download-fill.js"></script>
   <script src="js/resource-card.js?v=7"></script>
