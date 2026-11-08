@@ -169,6 +169,7 @@
     nextKicker.textContent = unlocked ? `Next topic • Step 0${nextTopic.id}` : completed ? "Finish the earlier topics to unlock" : "Complete this topic to unlock";
     next.classList.toggle("is-disabled", !unlocked);
     next.classList.toggle("is-recommended", unlocked && completed);
+    next.dataset.tip = completed ? "Finish the earlier topics first" : "Mark this topic as read to unlock the next one";
     if (unlocked) {
       next.href = `article.html?topic=${nextTopic.id}`;
       next.removeAttribute("aria-disabled");
@@ -292,3 +293,29 @@ document.addEventListener("DOMContentLoaded", () => {
   slot.innerHTML = BSS.relatedSectionHtml(picks, { heading: "Explore this article’s resources", id: "resources-heading", level: 2 });
   BSS.startCarousel(slot.querySelector("[data-carousel]"));
 });
+
+// Locked next topic: a short tip follows the pointer to say how to unlock it (mouse only; the card's
+// own text says the same for touch and screen readers)
+(function () {
+  const card = document.querySelector("[data-next]");
+  if (!card || !window.matchMedia("(hover: hover)").matches) return;
+  const tip = document.createElement("span");
+  tip.className = "topic-tip";
+  tip.setAttribute("aria-hidden", "true");
+  document.body.append(tip);
+
+  const move = (event) => {
+    tip.style.transform = `translate(${event.clientX + 14}px, ${event.clientY + 18}px)`;
+  };
+  card.addEventListener("pointerenter", (event) => {
+    if (!card.classList.contains("is-disabled") || event.pointerType !== "mouse") return;
+    tip.textContent = card.dataset.tip;
+    move(event);
+    tip.classList.add("is-visible");
+  });
+  card.addEventListener("pointermove", (event) => {
+    if (tip.classList.contains("is-visible")) move(event);
+  });
+  card.addEventListener("pointerleave", () => tip.classList.remove("is-visible"));
+  window.addEventListener("scroll", () => tip.classList.remove("is-visible"), { passive: true });
+})();
