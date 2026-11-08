@@ -198,10 +198,10 @@
   gap: var(--scale-600);
   height: 73px;
   padding: var(--scale-300) var(--scale-800);
-  border: var(--border-md) solid var(--color-neutral-100);
+  border: 0.3px solid var(--color-neutral-400);
   border-radius: 999px;
-  background: var(--surface-cards);
-  box-shadow: var(--shadow-sm);
+  background: var(--surface-cards-hovered);   /* the light green */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.05);   /* lifted a little */
 }
 
 .audio-player button {
@@ -256,16 +256,23 @@
   justify-content: space-between;
 }
 
+/* The track; a taller invisible band above and below makes it easy to grab */
 .audio-player__bar {
+  position: relative;
   cursor: pointer;
   touch-action: none;
   width: 311px;
   min-width: 60px;
   flex: 0 1 311px;
   height: 7px;
-  overflow: hidden;
   border-radius: 999px;
-  background: var(--color-neutral-200);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.audio-player__bar::before {
+  content: "";
+  position: absolute;
+  inset: -10px 0;
 }
 
 .audio-player__bar span {
@@ -273,6 +280,25 @@
   height: 100%;
   border-radius: 999px;
   background: var(--surface-action-primary);
+}
+
+/* The handle: a white dot with a green centre, lifted off the track */
+.audio-player__thumb {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--surface-action-outline-pressed) 0 4px, var(--color-neutral-white) 4.5px);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  transform: translate(-50%, -50%);
+  transition: transform var(--motion-duration) var(--motion-ease);
+  pointer-events: none;
+}
+
+.audio-player__bar:active .audio-player__thumb {
+  transform: translate(-50%, -50%) scale(1.15);
 }
 
 .audio-player__time {
@@ -736,5 +762,16 @@
   .help-fab__label,
   .help-fab__label > span {
     transition: opacity 150ms linear;
+  }
+}
+
+/* Explore this article's resources: the Related materials panel (css/preview.css) */
+.article-related .preview__related {
+  margin: 129px 0 var(--scale-1100);
+}
+
+@media (max-width: 767px) {
+  .article-related .preview__related {
+    margin: 72px 0 var(--scale-1000);
   }
 }
