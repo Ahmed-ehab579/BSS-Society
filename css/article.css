@@ -104,12 +104,22 @@
   object-fit: cover;
 }
 
+/* Bottom of the card: the title and summary on the left, the Listen button on the right, both resting on
+   the same baseline. Read time sits apart, top right, like the cover cards of reading apps. */
 .article-hero__content {
   position: relative;
   z-index: 2;
   display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--scale-800);
+}
+
+.article-hero__text {
+  display: flex;
   flex-direction: column;
   gap: var(--scale-800);
+  min-width: 0;
 }
 
 .article-hero__title {
@@ -119,39 +129,137 @@
   margin-block: -17px;                 /* H1 line (96px) is taller than the Figma 62px lockup */
 }
 
-.article-hero__meta {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: var(--scale-600);
-}
-
 /* Phones get the short summary */
 .article-hero__summary-short {
   display: none;
 }
 
 .article-hero__summary {
-  width: 520px;
+  width: 560px;                        /* three lines */
   max-width: 100%;
   font-size: var(--body-l-size);
   line-height: var(--body-l-line);
   color: var(--color-neutral-100);
 }
 
+/* Read time: a small glass chip in the top right corner */
 .article-hero__time {
+  position: absolute;
+  top: var(--scale-800);
+  right: 50px;   /* the card's side padding */
+  z-index: 2;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   gap: var(--scale-200);
-  flex-shrink: 0;
-  font-size: var(--body-m-size);
-  line-height: var(--body-m-line);
+  margin: 0;
+  padding: 6px var(--scale-400) 6px var(--scale-300);
+  border-radius: var(--radius-pill);
+  background: rgba(0, 0, 0, 0.32);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  font-size: var(--label-m-size);
+  line-height: var(--label-m-line);
+  font-weight: 500;
   white-space: nowrap;
 }
 
 .article-hero__time img {
-  width: 24px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
+}
+
+/* Listen: a glass pill with a white play button, as on news sites' "listen to this article" */
+.article-listen {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--scale-300);
+  padding: 6px var(--scale-500) 6px 6px;
+  border: var(--border-md) solid rgba(255, 255, 255, 0.35);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.14);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: var(--color-text-on-dark);
+  font: inherit;
+  font-size: var(--label-l-size);
+  line-height: var(--label-l-line);
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--motion-duration) var(--motion-ease),
+    transform var(--motion-duration) var(--motion-ease);
+}
+
+@media (hover: hover) {
+  .article-listen:hover {
+    background: rgba(255, 255, 255, 0.24);
+  }
+}
+
+.article-listen:active {
+  transform: scale(0.97);
+}
+
+.article-listen:focus-visible {
+  outline: var(--border-lg) solid var(--color-neutral-white);
+  outline-offset: 3px;
+}
+
+.article-listen__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--color-neutral-white);
+  color: var(--surface-action-primary);
+}
+
+.article-listen__icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.article-listen__pause,
+.article-listen.is-playing .article-listen__play {
+  display: none;
+}
+
+.article-listen.is-playing .article-listen__pause {
+  display: block;
+}
+
+.article-listen__length {
+  font-weight: 500;
+  color: var(--color-neutral-100);
+}
+
+/* The player stays folded away until Listen is pressed, then opens smoothly (js/article.js adds the
+   class, so without JavaScript the player is simply there) */
+.audio-reveal {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 420ms var(--motion-ease), opacity 320ms var(--motion-ease),
+    margin-top 420ms var(--motion-ease), visibility 0s;
+}
+
+.audio-reveal__inner {
+  min-height: 0;
+  margin: -6px;
+  padding: 6px;   /* room for the player's shadow and the bar's handle */
+  overflow: hidden;
+}
+
+.audio-reveal.is-folded {
+  grid-template-rows: 0fr;
+  margin-top: -27px;   /* takes back the gap above it in .article__head */
+  opacity: 0;
+  visibility: hidden;
+  transition: grid-template-rows 420ms var(--motion-ease), opacity 200ms var(--motion-ease),
+    margin-top 420ms var(--motion-ease), visibility 0s 420ms;
 }
 
 /* Reading column (760px incl. 32px side padding; topic cards run edge to edge) */
@@ -718,6 +826,10 @@
     padding: var(--scale-900) var(--scale-800);
   }
 
+  .article-hero__time {
+    right: var(--scale-800);
+  }
+
 }
 
 @media (max-width: 767px) {
@@ -736,8 +848,8 @@
     height: 28px;
   }
 
-  /* Phones: the cover card of reading apps. The photo darkens towards the bottom, where the title, a
-     short summary and the read time sit at sizes made for a phone. */
+  /* Phones: the cover card of reading apps. The photo darkens towards the bottom, where the title and a
+     short summary sit beside a round Listen button; the read time is a chip in the top corner. */
   .article-hero {
     min-height: 380px;
     padding: var(--scale-600) var(--scale-500);
@@ -748,7 +860,25 @@
     background: linear-gradient(to top, rgba(0, 0, 0, 0.78) 0%, rgba(0, 0, 0, 0.5) 55%, rgba(0, 0, 0, 0.2) 100%);
   }
 
+  .article-hero__time {
+    top: var(--scale-400);
+    right: var(--scale-400);
+    gap: 6px;
+    padding: 4px var(--scale-300) 4px var(--scale-200);
+    font-size: var(--label-s-size);
+    line-height: var(--label-s-line);
+  }
+
+  .article-hero__time img {
+    width: 14px;
+    height: 14px;
+  }
+
   .article-hero__content {
+    gap: var(--scale-300);
+  }
+
+  .article-hero__text {
     gap: var(--scale-300);
   }
 
@@ -761,15 +891,9 @@
     max-width: 300px;   /* two lines on every phone width */
   }
 
-  .article-hero__meta {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--scale-400);
-  }
-
   .article-hero__summary {
     width: auto;
-    max-width: 270px;   /* three lines on every phone width */
+    max-width: 270px;
     font-size: var(--body-m-size);
     line-height: 24px;
     font-weight: 500;
@@ -784,18 +908,34 @@
     display: inline;
   }
 
-  .article-hero__time {
-    align-self: flex-end;
-    align-items: center;
+  /* The round button with its label under it */
+  .article-listen {
+    flex-direction: column;
     gap: 6px;
-    font-size: var(--label-m-size);
-    line-height: var(--label-m-line);
-    font-weight: 500;
+    padding: 0;
+    border: 0;
+    background: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    font-size: var(--label-s-size);
+    line-height: var(--label-s-line);
   }
 
-  .article-hero__time img {
-    width: 18px;
-    height: 18px;
+  .article-listen__icon {
+    width: 52px;
+    height: 52px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .article-listen__text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 16px;
+  }
+
+  .article-listen__sep {
+    display: none;
   }
 
   .article {
@@ -1079,5 +1219,12 @@
 
   .audio-player__marquee-track > span + span {
     display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .audio-reveal,
+  .audio-reveal.is-folded {
+    transition: none;
   }
 }
