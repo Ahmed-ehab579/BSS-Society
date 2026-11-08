@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="css/header.css?v=10">
   <link rel="stylesheet" href="css/language.css?v=4">
   <link rel="stylesheet" href="css/footer.css?v=2">
-  <link rel="stylesheet" href="css/article.css?v=48">
+  <link rel="stylesheet" href="css/article.css?v=50">
   <link rel="stylesheet" href="css/resource-card.css?v=8">
   <link rel="stylesheet" href="css/book.css?v=13">
   <link rel="stylesheet" href="css/preview.css?v=20">
@@ -180,12 +180,66 @@
         </nav>
       </article>
         <div class="help-rail">
-          <button class="help-fab" type="button">
+          <button class="help-fab" type="button" aria-controls="help-panel" aria-expanded="false" aria-label="Ask a question about this article" data-help-open>
             <span class="help-fab__label"><span>Need a clarification</span></span>
             <img src="assets/icons/help-question.svg" width="13.9" height="24.4" alt="">
           </button>
         </div>
       </div>
+
+      <!-- Ask about this article: a side panel on desktop, a bottom sheet on phones (js/article.js).
+           Not connected to a service yet: the form validates and says nothing was sent. -->
+      <div class="help-scrim" data-help-close hidden></div>
+      <aside class="help-panel" id="help-panel" role="dialog" aria-modal="false" aria-labelledby="help-title" data-help-panel hidden>
+        <span class="help-panel__grip" aria-hidden="true"></span>
+        <header class="help-panel__head">
+          <h2 class="help-panel__title" id="help-title" tabindex="-1">Ask about this article</h2>
+          <button class="help-panel__close" type="button" aria-label="Close" data-help-close>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </button>
+        </header>
+        <div class="help-panel__body">
+          <p class="help-panel__intro">No question is too small. Our team reads every message and replies by email within 1 to 2 days.</p>
+
+          <section class="help-panel__group" aria-labelledby="help-common">
+            <h3 class="help-panel__label" id="help-common">Common questions</h3>
+            <details class="help-faq">
+              <summary>Does “Islam” really just mean submission?</summary>
+              <p>It comes from the root S-L-M, the same root as salām, peace. It means turning to God willingly, the way a heart finds rest, not giving in to force.</p>
+            </details>
+            <details class="help-faq">
+              <summary>What does Tawḥīd change in everyday life?</summary>
+              <p>Believing God is One means every person has the same worth and every part of life, work, family, rest, can be done for Him. It shapes how you treat people as much as how you pray.</p>
+            </details>
+            <details class="help-faq">
+              <summary>Do I need to know a lot before I start?</summary>
+              <p>No. One sincere question is enough to begin. You can learn step by step, at your own pace.</p>
+            </details>
+          </section>
+
+          <form class="help-form" data-validate novalidate aria-labelledby="help-ask">
+            <h3 class="help-panel__label" id="help-ask">Ask your own question</h3>
+            <p class="help-context" data-help-context hidden>
+              <span>About: <strong data-help-context-label></strong></span>
+              <button type="button" aria-label="Don’t attach this section" data-help-context-remove>
+                <svg width="12" height="12" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </button>
+            </p>
+            <input type="hidden" name="section" data-help-context-input>
+            <div class="field">
+              <label class="field__label" for="help-question">Your question</label>
+              <textarea class="field__input" id="help-question" name="question" placeholder="What would you like to understand better?" required></textarea>
+            </div>
+            <div class="field">
+              <label class="field__label" for="help-email">Email for the reply</label>
+              <input class="field__input" id="help-email" name="email" type="email" autocomplete="email" spellcheck="false" placeholder="email@example.com" required>
+            </div>
+            <button class="btn btn--primary btn--regular help-form__send" type="submit">Send question</button>
+            <p class="form-status help-form__status" role="status"></p>
+            <p class="help-form__note">We only use your email to reply to you.</p>
+          </form>
+        </div>
+      </aside>
 
       <!-- Library cards in the Related materials panel (js/article.js, js/preview.js) -->
       <div class="preview preview--page article-related" data-article-related></div>
@@ -268,12 +322,13 @@
   <script src="js/header.js?v=8"></script>
   <script src="js/language.js?v=5"></script>
   <script src="js/progress.js?v=13"></script>
-  <script src="js/article.js?v=24"></script>
+  <script src="js/article.js?v=27"></script>
   <script src="js/carousel.js?v=6"></script>
   <script src="js/download-fill.js"></script>
   <script src="js/resource-card.js?v=7"></script>
   <script src="js/library.js?v=11"></script>
   <script src="js/preview.js?v=9"></script>
+  <script src="js/forms.js"></script>
   <script src="js/smooth-scroll.js?v=4"></script>
   <script src="js/skeleton.js"></script>
 </body>

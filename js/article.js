@@ -460,3 +460,90 @@ document.addEventListener("DOMContentLoaded", () => {
   show();
   requestAnimationFrame(() => requestAnimationFrame(() => pill.classList.add("is-ready")));
 })();
+
+// Ask about this article: the help button opens a panel beside the article (desktop) or a bottom
+// sheet (phones). The section being read is attached to the question, and can be removed.
+(function () {
+  const panel = document.querySelector("[data-help-panel]");
+  const opener = document.querySelector("[data-help-open]");
+  if (!panel || !opener) return;
+  const scrim = document.querySelector(".help-scrim");
+  const title = panel.querySelector("#help-title");
+  const context = panel.querySelector("[data-help-context]");
+  const contextLabel = panel.querySelector("[data-help-context-label]");
+  const contextInput = panel.querySelector("[data-help-context-input]");
+  const root = document.documentElement;
+  const phone = window.matchMedia("(max-width: 767px)");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let closeTimer = null;
+  const article = document.querySelector(".article");
+
+  // Desktop: slide the article left just enough to clear the panel, so the text stays readable
+  function makeRoom() {
+    if (!article) return;
+    article.style.transform = "";
+    if (panel.hidden || phone.matches) return;
+    const clear = window.innerWidth - parseFloat(getComputedStyle(panel).right) - panel.offsetWidth - 32;   // where the panel ends up, not mid-slide
+    const shift = Math.max(0, article.getBoundingClientRect().right - clear);
+    article.style.transform = shift ? `translateX(${-Math.min(shift, article.getBoundingClientRect().left - 16)}px)` : "";
+  }
+
+  // The section whose heading the reader has scrolled to (none while still on the cover)
+  function sectionInView() {
+    const line = window.innerHeight * 0.45;
+    let found = null;
+    document.querySelectorAll(".article-section").forEach((section) => {
+      if (section.getBoundingClientRect().top < line) found = section;
+    });
+    return found && found.querySelector(".article-section__heading").textContent.trim();
+  }
+
+  function open() {
+    clearTimeout(closeTimer);
+    const section = sectionInView();
+    context.hidden = !section;
+    contextLabel.textContent = section || "";
+    contextInput.value = section || "";
+    panel.hidden = false;
+    scrim.hidden = false;
+    panel.getBoundingClientRect();   // start from the closed position
+    panel.classList.add("is-open");
+    scrim.classList.add("is-open");
+    opener.setAttribute("aria-expanded", "true");
+    if (phone.matches) root.classList.add("is-sheet-open");   // the page behind the sheet stays still
+    makeRoom();
+    title.focus({ preventScroll: true });
+  }
+
+  function close() {
+    if (panel.hidden) return;
+    panel.classList.remove("is-open");
+    scrim.classList.remove("is-open");
+    opener.setAttribute("aria-expanded", "false");
+    root.classList.remove("is-sheet-open");
+    if (article) article.style.transform = "";
+    closeTimer = setTimeout(() => {
+      panel.hidden = true;
+      scrim.hidden = true;
+    }, reduceMotion.matches ? 0 : 300);
+    opener.focus({ preventScroll: true });
+  }
+
+  opener.addEventListener("click", () => (panel.hidden ? open() : close()));
+  document.querySelectorAll("[data-help-close]").forEach((el) => el.addEventListener("click", close));
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !panel.hidden) close();
+  });
+  panel.querySelector("[data-help-context-remove]").addEventListener("click", () => {
+    context.hidden = true;
+    contextInput.value = "";
+    panel.querySelector("#help-question").focus();
+  });
+  phone.addEventListener("change", () => {
+    if (panel.hidden) return;
+    root.classList.toggle("is-sheet-open", phone.matches);
+  });
+  window.addEventListener("resize", () => {
+    if (!panel.hidden) makeRoom();
+  });
+})();
