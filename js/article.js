@@ -328,11 +328,9 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("scroll", () => tip.classList.remove("is-visible"), { passive: true });
 })();
 
-// Listen on the cover.
-// Desktop: the player below stays folded away until Listen is pressed; the first press opens it and
-// starts the audio, then the button plays and pauses and mirrors the player.
-// Phones: the pill itself grows to the full width into a small player (pause, progress, time left,
-// speed) while it plays, and folds back to the left with "Resume" and the time left when paused.
+// Listen on the cover: the pill itself grows into a small player (pause, progress, time left, speed)
+// while it plays, to the left on desktop and to the full width on phones, and folds back with
+// "Resume" and the time left when paused.
 (function () {
   const button = document.querySelector("[data-listen]");
   const reveal = document.querySelector("[data-audio-reveal]");
@@ -341,6 +339,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const pill = document.querySelector("[data-hero-player]");
   const word = button.querySelector("[data-listen-word]");
   const length = button.querySelector("[data-listen-length]");
+  const lengthBox = button.querySelector(".article-listen__length");
   const bar = document.querySelector("[data-hero-bar]");
   const fill = bar.querySelector("span");
   const thumb = bar.querySelector("i");
@@ -359,17 +358,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   reveal.classList.add("is-folded");   // already folded by the inline script in article.html
 
-  function openPlayerBelow() {
-    reveal.classList.remove("is-folded");
-    button.setAttribute("aria-expanded", "true");
-    setTimeout(() => {
-      const box = reveal.getBoundingClientRect();
-      if (box.bottom > window.innerHeight || box.top < 0) {
-        reveal.scrollIntoView({ block: "nearest", behavior: reduceMotion.matches ? "auto" : "smooth" });
-      }
-    }, reduceMotion.matches ? 0 : 440);
-  }
-
   // The closed pill is as wide as its content; open, it takes the row
   function measureClosed() {
     pill.style.setProperty("--pill-closed", `${button.scrollWidth + 14}px`);
@@ -382,10 +370,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   button.addEventListener("click", () => {
-    if (!phone.matches && reveal.classList.contains("is-folded")) {
-      openPlayerBelow();
-      audio.play().catch(() => {});
-    } else if (audio.paused) {
+    if (audio.paused) {
       audio.play().catch(() => {});
     } else {
       audio.pause();
@@ -396,14 +381,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const playing = !audio.paused && !audio.ended;
     const started = audio.currentTime > 0 && !audio.ended;
     button.classList.toggle("is-playing", playing);
+    lengthBox.hidden = playing || started;   // "· 1 min" only before the first play
     if (playing) word.textContent = "Pause";
-    else if (started) word.textContent = phone.matches ? `Resume · -${clock(audio.duration - audio.currentTime)}` : "Resume";
+    else if (started) word.textContent = `Resume · -${clock(audio.duration - audio.currentTime)}`;
     else word.textContent = "Listen to article";
     button.setAttribute("aria-label", playing ? "Pause the article audio" : started ? "Resume the article audio" : "Listen to this article");
-    if (phone.matches) {
-      setPillOpen(playing);
-      if (!playing) measureClosed();
-    }
+    setPillOpen(playing);
+    if (!playing) measureClosed();
   }
 
   function showPosition() {
@@ -417,10 +401,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   ["play", "pause", "ended"].forEach((name) => audio.addEventListener(name, show));
   audio.addEventListener("timeupdate", showPosition);
-  // Playing from the desktop player's own button opens it too
-  audio.addEventListener("play", () => {
-    if (!phone.matches && reveal.classList.contains("is-folded")) openPlayerBelow();
-  });
   audio.addEventListener("ended", () => {
     audio.currentTime = 0;
     showPosition();
@@ -470,10 +450,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Crossing between phone and desktop sizes: each layout tidies the other's state
+  // Between phone and desktop sizes the pill's text size changes: measure it again
   phone.addEventListener("change", () => {
-    if (!phone.matches) setPillOpen(false);
-    else measureClosed();
+    measureClosed();
     show();
   });
 
