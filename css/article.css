@@ -974,8 +974,11 @@
     margin-top: var(--scale-400);
   }
 
+  /* The rail fills the gap before the resources panel, so the help button comes to rest just above
+     the panel instead of over the topic cards */
   .help-rail {
     bottom: var(--scale-400);
+    height: 72px;
   }
 }
 
@@ -994,31 +997,24 @@
 }
 
 /* Explore this article's resources: the Related materials panel (css/preview.css) */
-.article-related .preview__related {
+.article-related.preview--page .preview__related {
   margin: 129px 0 var(--scale-1100);
 }
 
-/* Desktop: five smaller cards a row (20% narrower than four), photos kept in proportion */
+/* Desktop: the same card size as Related materials in the previews (246px); the wider panel shows the
+   next card peeking in at the edge */
 @media (min-width: 1100px) {
-  .article-related .preview__related {
-    --related-cards: 5;
+  .article-related .preview__related .resource-card {
+    flex: 0 0 246px;
   }
 
-  .article-related .preview__related .resource-card__frame {
-    height: 140px;
-  }
-
-  .article-related .preview__related .resource-card__play {
-    --play-size: 76px;
-  }
-
-  .article-related .preview__related .resource-card__listen {
-    --listen-size: 48px;
+  .article-related .preview__related .carousel__track {
+    gap: var(--scale-600);
   }
 }
 
 @media (max-width: 767px) {
-  .article-related .preview__related {
-    margin: 72px 0 var(--scale-1000);
+  .article-related.preview--page .preview__related {
+    margin: 0 0 var(--scale-1000);   /* the help rail above holds the 72px gap */
   }
 }
