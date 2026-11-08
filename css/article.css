@@ -394,8 +394,8 @@
 
 .completion__icon {
   flex-shrink: 0;
-  width: 44px;
-  height: 44px;
+  width: 57px;
+  height: 57px;
   color: var(--color-neutral-300);
   transition: color var(--motion-duration-hover) var(--motion-ease);
 }
@@ -533,15 +533,67 @@
 }
 
 @media (hover: hover) {
-  a.topic-card:hover {
+  a.topic-card:not(.is-disabled):hover {
     background: var(--surface-cards-hovered);
   }
 }
 
-/* Next topic: dimmed until this topic is completed, highlighted once it is */
+/* Next topic: locked until this topic is completed, highlighted once it is. Locked keeps its text
+   readable (no fading the whole card) and says why with a lock and, on hover, a tip at the pointer. */
 .topic-card--next.is-disabled {
-  opacity: 0.55;
+  position: relative;
+  border-style: dashed;
+  background: var(--color-page-bg);
+  box-shadow: none;
   cursor: not-allowed;
+}
+
+.topic-card--next.is-disabled .topic-card__kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text-body);
+}
+
+.topic-card--next.is-disabled .topic-card__kicker::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  background: currentColor;
+  -webkit-mask: url("../assets/icons/lock.svg") center / contain no-repeat;
+  mask: url("../assets/icons/lock.svg") center / contain no-repeat;
+}
+
+.topic-card--next.is-disabled .topic-card__title {
+  color: #6f6f6f;
+}
+
+.topic-card--next.is-disabled .topic-card__icon {
+  opacity: 0.35;
+  transform: none;
+}
+
+.topic-tip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 60;
+  padding: 6px var(--scale-300);
+  border-radius: var(--scale-200);
+  background: var(--surface-action-primary);
+  box-shadow: var(--shadow-menu);
+  font-size: var(--label-m-size);
+  line-height: var(--label-m-line);
+  font-weight: 500;
+  color: var(--color-text-on-dark);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 150ms var(--motion-ease);
+}
+
+.topic-tip.is-visible {
+  opacity: 1;
 }
 
 .topic-card--next.is-recommended {
@@ -560,8 +612,8 @@
     transform: translateX(calc(-1 * var(--arrow-shift)));
   }
 
-  .topic-card--next:hover .topic-card__icon,
-  .topic-card--next:focus-visible .topic-card__icon {
+  .topic-card--next:not(.is-disabled):hover .topic-card__icon,
+  .topic-card--next:not(.is-disabled):focus-visible .topic-card__icon {
     transform: translateX(var(--arrow-shift));
   }
 }
@@ -768,6 +820,25 @@
 /* Explore this article's resources: the Related materials panel (css/preview.css) */
 .article-related .preview__related {
   margin: 129px 0 var(--scale-1100);
+}
+
+/* Desktop: five smaller cards a row (20% narrower than four), photos kept in proportion */
+@media (min-width: 1100px) {
+  .article-related .preview__related {
+    --related-cards: 5;
+  }
+
+  .article-related .preview__related .resource-card__frame {
+    height: 140px;
+  }
+
+  .article-related .preview__related .resource-card__play {
+    --play-size: 76px;
+  }
+
+  .article-related .preview__related .resource-card__listen {
+    --listen-size: 48px;
+  }
 }
 
 @media (max-width: 767px) {
