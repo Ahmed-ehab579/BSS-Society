@@ -168,6 +168,35 @@
   height: 18px;
 }
 
+/* Desktop: the title across the card, then two halves: the summary on the left, the Listen pill on
+   the right resting on the summary's last line. Pressed, the pill grows to fill the right half. */
+@media (min-width: 1100px) {
+  .article-hero__content {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: end;
+    gap: var(--scale-800) var(--scale-1100);
+  }
+
+  .article-hero__text {
+    display: contents;
+  }
+
+  .article-hero__title {
+    grid-column: 1 / -1;
+  }
+
+  .article-hero__summary {
+    grid-column: 1;
+    width: auto;
+  }
+
+  .article-hero__actions {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+
 /* The pill's own small player: phones only */
 .hero-player {
   display: none;
