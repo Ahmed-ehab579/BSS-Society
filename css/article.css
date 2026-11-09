@@ -186,9 +186,22 @@
     grid-column: 1 / -1;
   }
 
+  /* A thin line between the summary and the Listen pill (Figma 1362:1223) */
   .article-hero__summary {
+    position: relative;
     grid-column: 1;
     width: auto;
+    padding-right: 18px;   /* 540px of text in the 558px half */
+  }
+
+  .article-hero__summary::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -25px;   /* inside the gap, 39px before the pill */
+    bottom: 0;
+    width: 0.7px;
+    background: #c0c0c0;
   }
 
   .article-hero__actions {
