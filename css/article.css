@@ -65,7 +65,6 @@
 }
 
 .article-back:focus-visible,
-.article-crumbs a:focus-visible,
 .topic-card:focus-visible,
 .help-fab:focus-visible,
 .audio-player button:focus-visible {
@@ -182,8 +181,17 @@
     display: contents;
   }
 
+  .article-crumbs,
   .article-hero__title {
     grid-column: 1 / -1;
+  }
+
+  .article-crumbs {
+    margin-bottom: -22px;   /* the title sits right under it, as in Figma */
+  }
+
+  .article-hero__title {
+    margin-bottom: -7px;   /* 25px above the summary (Figma 1303:20) */
   }
 
   /* A thin line between the summary and the Listen pill (Figma 1362:1223) */
@@ -458,7 +466,6 @@
 
 .audio-reveal.is-folded {
   grid-template-rows: 0fr;
-  margin-top: -27px;   /* takes back the gap above it in .article__head */
   opacity: 0;
   visibility: hidden;
   transition: grid-template-rows 420ms var(--motion-ease), opacity 200ms var(--motion-ease),
@@ -484,27 +491,40 @@
 .article__head {
   display: flex;
   flex-direction: column;
-  gap: 27px;
+  transition: margin-bottom 420ms var(--motion-ease);
 }
 
+/* While the player is folded the head is empty: it gives back the gap under it, so the first section
+   starts where the breadcrumb used to be */
+.article__head:has(> .audio-reveal.is-folded) {
+  margin-bottom: -57px;
+}
+
+/* Breadcrumb: on the cover, just above the title (Figma 1362:1234) */
 .article-crumbs {
   display: flex;
   align-items: center;
   gap: var(--scale-200);
   font-size: var(--label-l-size);
   line-height: var(--label-l-line);
-  color: var(--color-neutral-400);
+  color: #b1b1b1;
 }
 
 .article-crumbs__parent {
   font-weight: var(--label-weight);
+  color: inherit;
 }
 
 .article-crumbs__current {
   font-size: var(--label-m-size);
   line-height: var(--label-m-line);
   font-weight: var(--label-weight);
-  color: var(--color-text-on-light);
+  color: var(--color-text-on-dark);
+}
+
+.article-crumbs a:focus-visible {
+  outline: var(--border-lg) solid var(--color-text-on-dark);
+  outline-offset: 3px;
 }
 
 /* Audio player (static: no audio attached yet) */
@@ -1178,8 +1198,16 @@
   }
 
   .article {
-    margin-top: var(--scale-500);   /* the breadcrumb sits 20px under the cover */
+    margin-top: var(--scale-500);   /* the first section sits 20px under the cover */
     gap: 56px;   /* clear space between topics */
+  }
+
+  .article__head:has(> .audio-reveal.is-folded) {
+    margin-bottom: -56px;
+  }
+
+  .article-crumbs {
+    margin-bottom: -6px;
   }
 
   .article__head,
