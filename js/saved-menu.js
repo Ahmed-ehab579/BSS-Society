@@ -80,7 +80,7 @@
   const note = dialog.querySelector(".saved-sheet__note");
   const status = dialog.querySelector("[data-saved-status]");
   let filter = "all";
-  let undo = null;          // { entry, timer } for the item just removed
+  const undos = new Map();  // key -> { entry, timer, left }: every removed item keeps its own Undo
   let closeTimer = null;
   let isDropdown = false;
 
@@ -124,17 +124,26 @@
   function render() {
     const all = BSS.saved.list();
     const shownEntries = all.filter((entry) => filter === "all" || entry.path === filter);
-    const focusedKey = document.activeElement?.closest?.(".saved-row")?.dataset.key;
-    filters.innerHTML = chipsHtml(all);
-    filters.hidden = all.length === 0 && !undo;
+    const focusedRow = document.activeElement?.closest?.(".saved-row");
+    const focusedKey = focusedRow?.dataset.key;
+    const focusedUndo = focusedRow?.dataset.undo;
 
-    // The removed item keeps its place, newest first, so Undo sits where the item was
+    // Saved again somewhere else (another page or tab) while its Undo was waiting: nothing to undo
+    undos.forEach((undo, key) => {
+      if (all.some((entry) => entry.key === key)) dropUndo(key);
+    });
+
+    filters.innerHTML = chipsHtml(all);
+    filters.hidden = all.length === 0 && undos.size === 0;
+
+    // Each removed item keeps its place, newest first, so its Undo sits where the item was
     const rows = shownEntries.slice();
-    const undoShown = undo && (filter === "all" || undo.entry.path === filter);
-    if (undoShown) {
-      const index = rows.findIndex((entry) => (entry.savedAt || 0) < (undo.entry.savedAt || 0));
-      rows.splice(index < 0 ? rows.length : index, 0, { undo: undo.entry });
-    }
+    [...undos.values()]
+      .filter(({ entry }) => filter === "all" || entry.path === filter)
+      .forEach(({ entry }) => {
+        const index = rows.findIndex((row) => ((row.undo || row).savedAt || 0) < (entry.savedAt || 0));
+        rows.splice(index < 0 ? rows.length : index, 0, { undo: entry });
+      });
     list.innerHTML = rows.map((row) => (row.undo ? undoHtml(row.undo) : rowHtml(row))).join("");
     list.hidden = rows.length === 0;
     empty.hidden = rows.length !== 0;
@@ -152,33 +161,95 @@
       ? "This browser isn’t keeping your saves. They’ll be gone when you close this tab."
       : "Saved on this device only";
 
+    // Keep the keyboard where it was after the list is redrawn
     if (focusedKey) list.querySelector(`[data-key="${CSS.escape(focusedKey)}"] .saved-row__link`)?.focus({ preventScroll: true });
+    else if (focusedUndo) list.querySelector(`[data-undo="${CSS.escape(focusedUndo)}"] .saved-row__undo`)?.focus({ preventScroll: true });
+  }
+
+  const undoRow = (key) => list.querySelector(`[data-undo="${CSS.escape(key)}"]`);
+
+  function startUndoTimer(key, time = UNDO_TIME) {
+    const undo = undos.get(key);
+    if (!undo) return;
+    clearTimeout(undo.timer);
+    undo.timer = setTimeout(() => expire(key), time);
+  }
+
+  // Time's up: the row folds away, and the keyboard moves on to the next row instead of getting lost
+  function expire(key) {
+    const row = undoRow(key);
+    const finish = () => {
+      const hadFocus = row && row.contains(document.activeElement);
+      const next = row && (row.nextElementSibling || row.previousElementSibling);
+      const nextKey = next?.dataset.key;
+      const nextUndo = next?.dataset.undo;
+      dropUndo(key);
+      render();
+      if (!hadFocus) return;
+      const target = (nextKey && list.querySelector(`[data-key="${CSS.escape(nextKey)}"] .saved-row__link`))
+        || (nextUndo && list.querySelector(`[data-undo="${CSS.escape(nextUndo)}"] .saved-row__undo`))
+        || sheet;
+      target.focus({ preventScroll: true });
+    };
+    if (!row || reducedMotion.matches || !row.animate) {
+      finish();
+      return;
+    }
+    row.animate([
+      { height: `${row.offsetHeight}px`, opacity: 1 },
+      { height: "0px", opacity: 0, paddingTop: "0px", paddingBottom: "0px" },
+    ], { duration: 220, easing: "ease-in", fill: "forwards" }).finished.then(finish, finish);
+  }
+
+  function dropUndo(key) {
+    const undo = undos.get(key);
+    if (!undo) return;
+    clearTimeout(undo.timer);
+    undos.delete(key);
+  }
+
+  function clearUndos() {
+    [...undos.keys()].forEach(dropUndo);
   }
 
   function remove(key) {
     const entry = BSS.saved.list().find((item) => item.key === key);
     if (!entry) return;
-    clearUndo();
-    undo = { entry, timer: setTimeout(() => { undo = null; render(); }, UNDO_TIME) };
+    undos.set(key, { entry, timer: null });
+    startUndoTimer(key);
     BSS.saved.remove(key);   // renders through onChange
     status.textContent = `Removed ${entry.title} from saved`;
-    list.querySelector(".saved-row__undo")?.focus({ preventScroll: true });
+    undoRow(key)?.querySelector(".saved-row__undo").focus({ preventScroll: true });
   }
 
-  function restore() {
+  function restore(key) {
+    const undo = undos.get(key);
     if (!undo) return;
-    const { entry } = undo;
-    clearUndo();
-    BSS.saved.add(entry, entry.savedAt);
-    status.textContent = `${entry.title} is back in saved`;
-    list.querySelector(`[data-key="${CSS.escape(entry.key)}"] .saved-row__link`)?.focus({ preventScroll: true });
+    dropUndo(key);
+    BSS.saved.add(undo.entry, undo.entry.savedAt);
+    status.textContent = `${undo.entry.title} is back in saved`;
+    list.querySelector(`[data-key="${CSS.escape(key)}"] .saved-row__link`)?.focus({ preventScroll: true });
   }
 
-  function clearUndo() {
-    if (!undo) return;
-    clearTimeout(undo.timer);
-    undo = null;
+  // An Undo waits while someone is pointing at it or has it focused, then gets a little more time
+  const PAUSE_REST = 3000;
+  // (Keyboard focus only: after a mouse remove the Undo gets focus too, and that shouldn't keep it forever)
+  const keyboardFocusIn = (row) => Boolean(row.querySelector(":focus-visible"));
+  function pauseUndo(event) {
+    const row = event.target.closest?.("[data-undo]");
+    if (!row || (event.type === "focusin" && !keyboardFocusIn(row))) return;
+    clearTimeout(undos.get(row.dataset.undo)?.timer);
   }
+  function resumeUndo(event) {
+    const row = event.target.closest?.("[data-undo]");
+    if (!row || row.contains(event.relatedTarget)) return;
+    if (row.matches(":hover") || keyboardFocusIn(row)) return;
+    startUndoTimer(row.dataset.undo, PAUSE_REST);
+  }
+  list.addEventListener("pointerover", pauseUndo);
+  list.addEventListener("pointerout", resumeUndo);
+  list.addEventListener("focusin", pauseUndo);
+  list.addEventListener("focusout", resumeUndo);
 
   filters.addEventListener("click", (event) => {
     const chip = event.target.closest("[data-filter]");
@@ -192,7 +263,7 @@
   list.addEventListener("click", (event) => {
     const removeButton = event.target.closest(".saved-row__remove");
     if (removeButton) remove(removeButton.closest(".saved-row").dataset.key);
-    else if (event.target.closest(".saved-row__undo")) restore();
+    else if (event.target.closest(".saved-row__undo")) restore(event.target.closest("[data-undo]").dataset.undo);
   });
 
   // ---- Opening and closing (as in js/language.js) ---------------------------------------------------
@@ -246,7 +317,7 @@
     toggle.setAttribute("aria-expanded", "false");
     sheet.style.removeProperty("transform");
     backdrop.style.removeProperty("opacity");
-    clearUndo();
+    clearUndos();   // closing the menu makes the removals final
   }
 
   function close({ returnFocus = true } = {}) {
@@ -349,6 +420,10 @@
 
   BSS.savedFly = function (from) {
     if (!from || reducedMotion.matches || dialog.open || !toggle.offsetParent || !Element.prototype.animate) return null;
+    // Saved from inside an overlay (the Library preview): fly in the overlay's layer, so it is seen
+    // leaving the preview and fading into the dimmed header behind it
+    const layer = from.closest("dialog[open]") || document.body;
+    const behind = layer !== document.body;
     const start = (from.querySelector("img, svg") || from).getBoundingClientRect();
     if (!start.width) return null;
     const end = iconBox();
@@ -364,7 +439,7 @@
     across.style.left = `${x0}px`;
     across.style.top = `${y0}px`;
     across.innerHTML = `<div class="saved-fly__rise"><div class="saved-fly__chip">${FLY_ICON}</div></div>`;
-    document.body.append(across);
+    layer.append(across);
     const rise = across.firstElementChild;
     const chip = rise.firstElementChild;
 
@@ -378,7 +453,7 @@
       { transform: "scale(0.6)", opacity: 0 },
       { transform: "scale(1.15)", opacity: 1, offset: 0.14 },
       { transform: "scale(1)", opacity: 1, offset: 0.3 },
-      { transform: "scale(0.45)", opacity: 0.9, offset: 0.92 },
+      { transform: "scale(0.45)", opacity: behind ? 0.35 : 0.9, offset: 0.92 },
       { transform: "scale(0.3)", opacity: 0 },
     ], { duration: time, easing: "linear", fill: "forwards" });
 
