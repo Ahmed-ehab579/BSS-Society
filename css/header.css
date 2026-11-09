@@ -170,35 +170,31 @@
     opacity: 1;
   }
 
-  /* Desktop order, right to left: Contact Us at the edge, then the world icon, Saved and the links.
-     The nav's own box steps aside so its links and Contact Us can sit either side of the icons. */
-  .site-nav {
-    display: contents;
-  }
-
-  .site-nav__links {
-    order: 1;
-    margin-right: var(--scale-1000);
+  /* Desktop order: the links, Saved, the world icon, then Contact Us at the edge. Contact Us is in the
+     markup twice: this one after the icons (so Tab follows what's on screen), and one inside the
+     phone menu. Each screen size shows only its own. */
+  .site-nav__cta--menu {
+    display: none;
   }
 
   .site-header__inner .saved-toggle {   /* beats the base rules further down */
-    order: 2;
-    margin-left: 0;
+    margin-left: var(--scale-1000);
   }
 
   .site-header__inner .language-toggle {
-    order: 3;
     margin: 0 var(--scale-300) 0 0;
   }
+}
 
-  .site-nav__cta {
-    order: 4;
+@media (max-width: 899px) {
+  .site-nav__cta--bar {
+    display: none;
   }
 }
 
 @media (min-width: 900px) and (max-width: 1099px) {
-  .site-nav__links {
-    margin-right: var(--scale-500);
+  .site-header__inner .saved-toggle {
+    margin-left: var(--scale-500);
   }
 }
 
