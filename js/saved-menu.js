@@ -12,7 +12,7 @@
   const DISMISS_SPEED = 0.6;       // px per ms: a quick flick closes it from any distance
   const DROPDOWN_GAP = 8;          // px between the icon and the dropdown
   const DROPDOWN_CLOSE = 150;      // ms, matches the dropdown's closing transition
-  const TYPES = { book: "Book", audio: "Audio book", video: "Video", article: "Article", step: "Step" };
+  const TYPES = { book: "Book", audio: "Audio book", video: "Video", article: "Article", step: "" };   // a step says "Step 2" in its label
   const COVERS = ["book", "audio"];   // shown whole on a light board, like the Library cards
   const PATH_PAGES = { "start-here": "start-here.html", "new-muslim": "new-muslim.html", library: "library.html" };
   const CROSS = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
@@ -327,6 +327,27 @@
       finish(false);
     }
   });
+
+  // ---- Save buttons on article and step pages ------------------------------------------------------
+  // <button data-save> with a [data-save-text] label; getEntry() describes the page (js/saved.js entry)
+  BSS.saveButton = function (button, getEntry) {
+    const text = button.querySelector("[data-save-text]");
+    const show = () => {
+      const saved = BSS.saved.has(getEntry().key);
+      button.setAttribute("aria-pressed", String(saved));
+      if (text) text.textContent = saved ? "Saved" : "Save";
+    };
+    button.addEventListener("click", () => {
+      BSS.saved.toggle(getEntry());
+      show();
+      button.classList.remove("is-popping");
+      button.getBoundingClientRect();   // restart the animation on quick repeat presses
+      button.classList.add("is-popping");
+    });
+    show();
+    BSS.saved.refresh(getEntry());
+    BSS.saved.onChange(show);   // also when removed from the Saved menu or in another tab
+  };
 
   showCount();
   BSS.saved.onChange(() => {

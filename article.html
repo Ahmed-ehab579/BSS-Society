@@ -10,10 +10,10 @@
   <link rel="stylesheet" href="css/tokens.css?v=37">
   <link rel="stylesheet" href="css/base.css?v=5">
   <link rel="stylesheet" href="css/header.css?v=11">
-  <link rel="stylesheet" href="css/saved-menu.css?v=2">
+  <link rel="stylesheet" href="css/saved-menu.css?v=3">
   <link rel="stylesheet" href="css/language.css?v=4">
   <link rel="stylesheet" href="css/footer.css?v=2">
-  <link rel="stylesheet" href="css/article.css?v=64">
+  <link rel="stylesheet" href="css/article.css?v=66">
   <link rel="stylesheet" href="css/resource-card.css?v=8">
   <link rel="stylesheet" href="css/book.css?v=13">
   <link rel="stylesheet" href="css/preview.css?v=20">
@@ -63,10 +63,19 @@
 
   <main class="page article-page">
     <div class="container article-shell">
-      <a class="article-back" href="start-here.html">
-        <img src="assets/icons/arrow-down.svg" width="26" height="26" alt="">
-        <span>Back to the path</span>
-      </a>
+      <div class="article-top">
+        <a class="article-back" href="start-here.html">
+          <img src="assets/icons/arrow-down.svg" width="26" height="26" alt="">
+          <span>Back to the path</span>
+        </a>
+        <button class="save-btn" type="button" aria-pressed="false" aria-label="Save this article" data-save>
+          <span class="save-btn__icon" aria-hidden="true">
+            <img src="assets/icons/bookmark.svg" width="11.55" height="14.85" alt="" data-icon="off">
+            <img src="assets/icons/bookmark-filled.svg" width="11.55" height="14.85" alt="" data-icon="on">
+          </span>
+          <span data-save-text>Save</span>
+        </button>
+      </div>
 
       <div class="article-zone">
       <header class="article-hero">
@@ -368,9 +377,9 @@
   </script>
   <script src="js/header.js?v=8"></script>
   <script src="js/language.js?v=5"></script>
-  <script src="js/saved-menu.js?v=2"></script>
+  <script src="js/saved-menu.js?v=3"></script>
   <script src="js/progress.js?v=13"></script>
-  <script src="js/article.js?v=29"></script>
+  <script src="js/article.js?v=30"></script>
   <script src="js/carousel.js?v=6"></script>
   <script src="js/download-fill.js"></script>
   <script src="js/resource-card.js?v=7"></script>

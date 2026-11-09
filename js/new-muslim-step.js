@@ -35,6 +35,15 @@
   document.title = `${step.title} — New Muslim — Best Speech Society`;
   els.title.textContent = step.title;
   els.intro.textContent = step.intro;
+
+  // Save this step (js/saved-menu.js)
+  const saveButton = document.querySelector("[data-save]");
+  if (saveButton && window.BSS?.saveButton) {
+    window.BSS.saveButton(saveButton, () => ({
+      key: `new-muslim-step-${step.id}`, path: "new-muslim", type: "step", label: `Step ${step.id}`,
+      title: step.title, image: step.topics[0].image, url: `new-muslim-step.html?step=${step.id}`,
+    }));
+  }
   els.outcomes.innerHTML = step.outcomes.map((text) => `
     <li class="learn__item">
       <img src="assets/icons/check.svg" width="24" height="24" alt="">${escape(text)}

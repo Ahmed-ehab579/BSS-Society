@@ -497,3 +497,82 @@
     transition: none !important;
   }
 }
+
+/* ---- Save button on article and step pages (js/saved-menu.js, BSS.saveButton) ---------------------- */
+.save-btn {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--scale-200);
+  height: 40px;
+  padding: 0 var(--scale-400) 0 var(--scale-300);
+  border: var(--border-md) solid var(--border-color-on-light);
+  border-radius: var(--radius-pill);
+  background: none;
+  color: var(--color-text-on-light);
+  font-family: inherit;
+  font-size: var(--body-s-size);
+  line-height: var(--body-s-line);
+  font-weight: 500;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--motion-duration-hover) var(--motion-ease),
+    transform var(--motion-duration) var(--motion-ease);
+}
+
+.save-btn__icon {
+  position: relative;
+  display: flex;
+  width: 14px;
+  justify-content: center;
+}
+
+.save-btn__icon img {
+  width: 11.55px;
+  height: 14.85px;
+  transition: opacity var(--motion-duration) var(--motion-ease);
+}
+
+.save-btn [data-icon="on"] {
+  position: absolute;
+  opacity: 0;
+}
+
+.save-btn[aria-pressed="true"] {
+  background: var(--surface-cards);
+}
+
+.save-btn[aria-pressed="true"] [data-icon="on"] {
+  opacity: 1;
+}
+
+.save-btn[aria-pressed="true"] [data-icon="off"] {
+  opacity: 0;
+}
+
+.save-btn:active {
+  transform: scale(0.96);
+}
+
+.save-btn.is-popping .save-btn__icon {
+  animation: save-pop 360ms var(--motion-ease);
+}
+
+@keyframes save-pop {
+  40% { transform: scale(1.3); }
+}
+
+.save-btn:focus-visible {
+  outline: var(--border-lg) solid var(--border-color-on-light);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) {
+  .save-btn:hover {
+    background: var(--surface-cards);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .save-btn.is-popping .save-btn__icon { animation: none; }
+}

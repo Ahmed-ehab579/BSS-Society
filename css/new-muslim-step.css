@@ -410,3 +410,23 @@
     max-width: 558px;
   }
 }
+
+/* The intro text with Save under it, in the intro's right column */
+.step-intro {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  align-items: flex-start;
+  gap: var(--scale-500);
+  width: 485px;
+}
+
+.step-intro .intro__text {
+  width: auto;
+}
+
+@media (max-width: 1099px) {
+  .step-intro {
+    width: auto;
+  }
+}
