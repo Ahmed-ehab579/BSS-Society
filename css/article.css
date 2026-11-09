@@ -1552,6 +1552,7 @@
 }
 
 .help-panel__intro {
+  margin-top: -4px;   /* sits 4px closer to the title */
   padding-right: 76px;   /* shorter lines; the line under it still runs the full width */
   padding-bottom: 13px;
   border-bottom: 0.3px solid var(--color-text-body);
@@ -1803,6 +1804,7 @@
   }
 
   .help-panel__intro {
+    margin-top: 0;   /* phones keep their spacing */
     font-size: var(--body-xs-size);
     line-height: 20px;
   }
