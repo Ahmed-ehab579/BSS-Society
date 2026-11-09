@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="css/header.css?v=10">
   <link rel="stylesheet" href="css/language.css?v=4">
   <link rel="stylesheet" href="css/footer.css?v=2">
-  <link rel="stylesheet" href="css/article.css?v=58">
+  <link rel="stylesheet" href="css/article.css?v=60">
   <link rel="stylesheet" href="css/resource-card.css?v=8">
   <link rel="stylesheet" href="css/book.css?v=13">
   <link rel="stylesheet" href="css/preview.css?v=20">
@@ -69,6 +69,11 @@
         <p class="article-hero__time"><img src="assets/icons/book.svg" width="29" height="29.3333" alt="">5 min read</p>
         <div class="article-hero__content">
           <div class="article-hero__text">
+            <nav class="article-crumbs" aria-label="Breadcrumb">
+              <a class="article-crumbs__parent" href="start-here.html">Start Here</a>
+              <span aria-hidden="true">/</span>
+              <span class="article-crumbs__current" aria-current="page" data-topic-label>Topic 01</span>
+            </nav>
             <h1 class="article-hero__title">What’s the purpose of life?</h1>
             <p class="article-hero__summary"><span class="article-hero__summary-long">Islam’s answer begins with one idea: you were created on purpose, by a Creator who knows you. See what that purpose is, and how it brings meaning and peace to everyday life.</span><span class="article-hero__summary-short">You were created on purpose, by a Creator who knows you. Here’s what that means.</span></p>
           </div>
@@ -93,12 +98,6 @@
 
       <article class="article">
         <div class="article__head">
-          <nav class="article-crumbs" aria-label="Breadcrumb">
-            <a class="article-crumbs__parent" href="start-here.html">Start Here</a>
-            <span aria-hidden="true">/</span>
-            <span class="article-crumbs__current" aria-current="page" data-topic-label>Topic 01</span>
-          </nav>
-
           <!-- The article read aloud (sample track for now): js/article.js -->
           <div class="audio-reveal" id="article-audio" data-audio-reveal>
           <div class="audio-reveal__inner">
