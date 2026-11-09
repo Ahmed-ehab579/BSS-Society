@@ -51,6 +51,23 @@
   white-space: nowrap;
 }
 
+/* "Back to the path" on the left, Save on the right */
+.article-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--scale-400);
+  margin-bottom: var(--scale-600);
+}
+
+.article-top .article-back {
+  margin-bottom: 0;
+}
+
+.article-top .save-btn {
+  margin-block: -6px;   /* taller than the back link: the cover keeps its place */
+}
+
 .article-back img {
   width: 30px;
   height: 30px;
@@ -1095,6 +1112,10 @@
 @media (max-width: 767px) {
   .article-page {
     padding-top: calc(var(--header-height) + var(--scale-600));
+  }
+
+  .article-top {
+    margin-bottom: var(--scale-400);
   }
 
   .article-back {

@@ -23,6 +23,17 @@
   const label = document.querySelector("[data-topic-label]");
   if (label) label.textContent = `Topic 0${topicId}`;
 
+  // Save this article (js/saved-menu.js): it belongs to the Start here path wherever it was opened from
+  const saveButton = document.querySelector("[data-save]");
+  if (saveButton && window.BSS?.saveButton) {
+    window.BSS.saveButton(saveButton, () => ({
+      key: `article-${topicId}`, path: "start-here", type: "article", label: `Topic 0${topicId}`,
+      title: document.querySelector(".article-hero__title").textContent.trim(),
+      image: document.querySelector(".article-hero__image").getAttribute("src"),
+      url: `article.html?topic=${topicId}`,
+    }));
+  }
+
   /* ---- Reading progress bar: 0% when the text reaches the top, 100% at the end of the last section ---- */
   const fill = bar.firstElementChild;
   const last = sections[sections.length - 1];

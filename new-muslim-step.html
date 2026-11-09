@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="css/tokens.css?v=37">
   <link rel="stylesheet" href="css/base.css?v=5">
   <link rel="stylesheet" href="css/header.css?v=11">
-  <link rel="stylesheet" href="css/saved-menu.css?v=2">
+  <link rel="stylesheet" href="css/saved-menu.css?v=3">
   <link rel="stylesheet" href="css/language.css?v=4">
   <link rel="stylesheet" href="css/intro.css?v=6">
   <link rel="stylesheet" href="css/resource-card.css?v=8">
@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="css/book.css?v=13">
   <link rel="stylesheet" href="css/carousel.css?v=3">
   <link rel="stylesheet" href="css/preview.css?v=20">
-  <link rel="stylesheet" href="css/new-muslim-step.css?v=15">
+  <link rel="stylesheet" href="css/new-muslim-step.css?v=16">
   <link rel="stylesheet" href="css/footer.css?v=2">
 </head>
 <body>
@@ -65,7 +65,16 @@
     <!-- Filled from js/new-muslim-data.js by js/new-muslim-step.js (?step=1 to 4) -->
     <section class="container intro intro--top" aria-labelledby="intro-heading">
       <h1 class="text-h1 intro__heading step-title" id="intro-heading" data-step-title>Begin with the essentials</h1>
-      <p class="text-body-xl intro__text" data-step-intro></p>
+      <div class="step-intro">
+        <p class="text-body-xl intro__text" data-step-intro></p>
+        <button class="save-btn" type="button" aria-pressed="false" aria-label="Save this step" data-save>
+          <span class="save-btn__icon" aria-hidden="true">
+            <img src="assets/icons/bookmark.svg" width="11.55" height="14.85" alt="" data-icon="off">
+            <img src="assets/icons/bookmark-filled.svg" width="11.55" height="14.85" alt="" data-icon="on">
+          </span>
+          <span data-save-text>Save</span>
+        </button>
+      </div>
     </section>
 
     <!-- Sections inside main have no id: the header would treat them as in-page sections and drop the nav underline -->
@@ -216,11 +225,11 @@
   <script src="js/saved.js?v=1"></script>
   <script src="js/header.js?v=8"></script>
   <script src="js/language.js?v=5"></script>
-  <script src="js/saved-menu.js?v=2"></script>
+  <script src="js/saved-menu.js?v=3"></script>
   <script src="js/new-muslim-data.js"></script>
   <script src="js/download-fill.js"></script>
   <script src="js/resource-card.js?v=7"></script>
-  <script src="js/new-muslim-step.js?v=5"></script>
+  <script src="js/new-muslim-step.js?v=6"></script>
   <script src="js/carousel.js?v=6"></script>
   <script src="js/preview.js?v=10"></script>
   <script src="js/forms.js"></script>
