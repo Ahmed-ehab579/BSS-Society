@@ -1111,7 +1111,7 @@
   /* Phones: the cover card of reading apps. The photo darkens towards the bottom, where the title and a
      short summary sit above the Listen pill (left) and the read time (right). */
   .article-hero {
-    min-height: calc(460px * 1.2);   /* 20% taller: 552px */
+    min-height: calc(460px * 1.1);   /* 10% taller: 506px */
     padding: var(--scale-600) var(--scale-500);
     border-radius: 20px;
   }
