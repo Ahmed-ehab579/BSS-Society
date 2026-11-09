@@ -25,7 +25,6 @@
     youtube: "https://www.youtube.com/watch?v=O-3_Cki7QmY",
   };
 
-  const SAVED_KEY = "bss.saved.v1";
   const PLACE_KEY = "bss.audio.place.v1";   // where each audio book was left, to carry on from there
   const RESTART_NEAR_START = 3;  // seconds into a track after which "previous" restarts it first
   const NOTE_TIME = 2400;      // ms a confirmation stays up
@@ -549,15 +548,6 @@
     noteTimer = setTimeout(() => note.classList.remove("is-visible"), NOTE_TIME);
   }
 
-  function readSaved() {
-    try {
-      const saved = JSON.parse(localStorage.getItem(SAVED_KEY));
-      return Array.isArray(saved) ? saved : [];
-    } catch (error) {
-      return [];
-    }
-  }
-
   async function share(button) {
     if (navigator.share) {
       try {
@@ -575,21 +565,22 @@
     }
   }
 
+  // Saved items (js/saved.js) are labelled with the path the material was found in
+  const SAVE_PATH = { "new-muslim": "new-muslim", article: "start-here" }[page ? new URLSearchParams(location.search).get("from") : FROM] || "library";
+
+  const saveEntry = (item) => ({
+    key: item.key, path: SAVE_PATH, type: item.format, title: item.title,
+    image: item.image, url: `material.html?id=${item.key}&from=${SAVE_PATH === "start-here" ? "article" : SAVE_PATH}`,
+  });
+
   function toggleSave(button) {
-    const key = current.key;
-    const saved = readSaved();
-    const next = saved.includes(key) ? saved.filter((entry) => entry !== key) : [...saved, key];
-    try {
-      localStorage.setItem(SAVED_KEY, JSON.stringify(next));
-    } catch (error) {
-      say("Couldn’t save on this device", button);
-      return;
-    }
-    button.setAttribute("aria-pressed", String(next.includes(key)));
+    const { saved, stored } = BSS.saved.toggle(saveEntry(current));
+    button.setAttribute("aria-pressed", String(BSS.saved.has(current.key)));
     button.classList.remove("is-popping");
     button.getBoundingClientRect();   // restart the animation on quick repeat presses
     button.classList.add("is-popping");
-    say(next.includes(key) ? "Saved" : "Removed from saved", button);
+    if (!stored) say("Couldn’t save on this device", button);
+    else say(saved ? "Saved" : "Removed from saved", button);
   }
 
   // ---- Opening and closing -----------------------------------------------------------------------
@@ -646,7 +637,8 @@
     host.classList.add(`preview--${item.format}`);
     scroller.innerHTML = { book: bookHtml, audio: audioHtml, video: videoHtml }[item.format](item, type) + relatedHtml(item);
     scroller.scrollTop = 0;
-    scroller.querySelector("[data-preview-save]").setAttribute("aria-pressed", String(readSaved().includes(item.key)));
+    scroller.querySelector("[data-preview-save]").setAttribute("aria-pressed", String(BSS.saved.has(item.key)));
+    BSS.saved.refresh(saveEntry(item));
     setUpPlayer(item);
     setUpVideo(item);
     const row = scroller.querySelector("[data-carousel]");
