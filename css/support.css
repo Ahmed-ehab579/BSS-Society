@@ -1,0 +1,527 @@
+/* About page support band panels: "Get in touch" (Contact us) and "Help us reach further" (Partner with
+   us). Built by js/support.js on the markup in about.html. Desktop: a dialog in the middle of the
+   screen. Phones: a bottom sheet that drags down to dismiss, like the language picker. */
+
+.support-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  overflow: clip;
+  border: 0;
+  background: none;
+}
+
+.support-dialog::backdrop {
+  background: none;   /* the fading backdrop below replaces the browser's */
+}
+
+.support-dialog[open] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.support-dialog__backdrop {
+  position: absolute;
+  inset: 0;
+  background: var(--backdrop);
+  opacity: 0;
+  transition: opacity var(--motion-duration-sheet-out) var(--motion-ease);
+}
+
+.support-dialog.is-open .support-dialog__backdrop {
+  opacity: 1;
+  transition-duration: var(--motion-duration-sheet);
+}
+
+.support-sheet {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 560px;
+  max-width: calc(100% - 2 * var(--scale-600));
+  max-height: calc(100vh - 2 * var(--scale-800));
+  max-height: calc(100dvh - 2 * var(--scale-800));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-radius: var(--radius-card);
+  background: var(--color-page-bg);
+  box-shadow: var(--shadow-menu);
+  opacity: 0;
+  transform: translateY(12px) scale(0.98);
+  transition: opacity var(--motion-duration-sheet-out) var(--motion-ease),
+    transform var(--motion-duration-sheet-out) var(--motion-ease);
+}
+
+.support-sheet:focus {
+  outline: none;
+}
+
+.support-dialog.is-open .support-sheet {
+  opacity: 1;
+  transform: none;
+  transition: opacity var(--motion-duration-sheet) var(--motion-ease),
+    transform var(--motion-duration-sheet) var(--motion-ease-sheet);
+}
+
+.support-sheet.is-dragging {
+  transition: none !important;
+}
+
+.support-sheet__head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--scale-600) var(--scale-400) var(--scale-200) var(--scale-800);
+  background: var(--color-page-bg);
+}
+
+.support-sheet__grabber {
+  display: none;
+}
+
+.support-sheet__title {
+  margin: 0;
+  color: var(--color-heading);
+  font-size: var(--h5-size);
+  line-height: var(--h5-line);
+  font-weight: var(--h5-weight);
+}
+
+.support-sheet__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--color-text-on-light);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--motion-duration-hover) var(--motion-ease);
+}
+
+.support-sheet__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--scale-600);
+  margin: 0;
+  padding: 0 var(--scale-800) var(--scale-800);
+}
+
+.support-sheet__intro {
+  margin: 0;
+  color: var(--color-text-body);
+  font-size: var(--body-s-size);
+  line-height: var(--body-s-line);
+}
+
+.support-sheet__alt {
+  margin: 0;
+  color: var(--color-text-body);
+  font-size: var(--body-s-size);
+  line-height: var(--body-s-line);
+}
+
+.support-sheet__alt a {
+  color: var(--color-text-on-light);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---- Get in touch: one row per channel, the fastest first ------------------------------------------ */
+.contact-channels {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: var(--border-md) solid var(--color-neutral-100);
+  border-radius: var(--scale-400);
+  background: var(--surface-action-outline);
+  list-style: none;
+}
+
+.contact-channel {
+  display: flex;
+  align-items: center;
+}
+
+.contact-channel + .contact-channel {
+  border-top: var(--border-md) solid var(--color-neutral-100);
+}
+
+.contact-channel__main {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: var(--scale-400);
+  min-width: 0;
+  min-height: 76px;
+  padding: var(--scale-300) var(--scale-400);
+  color: var(--color-text-on-light);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--motion-duration-hover) var(--motion-ease);
+}
+
+.contact-channel__icon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--surface-cards);
+}
+
+.contact-channel__text {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.contact-channel__name {
+  display: flex;
+  align-items: center;
+  gap: var(--scale-200);
+  color: var(--color-heading);
+  font-size: var(--body-m-size);
+  line-height: 22px;
+  font-weight: 600;
+}
+
+.contact-channel__tag {
+  padding: 1px var(--scale-200);
+  border-radius: var(--radius-pill);
+  background: var(--surface-cards-hovered);
+  color: var(--color-completed-text);
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 600;
+}
+
+.contact-channel__detail {
+  overflow-wrap: anywhere;
+  color: var(--color-text-body);
+  font-size: var(--body-xs-size);
+  line-height: var(--body-xs-line);
+}
+
+.contact-channel__action {
+  flex-shrink: 0;
+  color: var(--color-text-on-light);
+  font-size: var(--body-s-size);
+  line-height: var(--body-s-line);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.contact-channel__copy {
+  flex-shrink: 0;
+  min-width: 72px;
+  height: 36px;
+  margin-right: var(--scale-400);
+  padding: 0 var(--scale-300);
+  border: var(--border-md) solid var(--color-neutral-300);
+  border-radius: var(--radius-pill);
+  background: none;
+  color: var(--color-text-on-light);
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--motion-duration-hover) var(--motion-ease),
+    border-color var(--motion-duration-hover) var(--motion-ease);
+}
+
+.contact-channel__copy.is-copied {
+  border-color: var(--color-completed);
+  background: var(--surface-cards-hovered);
+}
+
+/* ---- Help us reach further: the partner form -------------------------------------------------------- */
+.partner-group {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.partner-group__legend {
+  margin-bottom: var(--scale-300);
+  padding: 0;
+  color: var(--color-field-label);
+  font-size: var(--label-s-size);
+  line-height: var(--label-s-line);
+  font-weight: var(--label-weight);
+  letter-spacing: var(--label-s-tracking);
+  text-transform: uppercase;
+}
+
+.partner-group__hint {
+  margin: calc(-1 * var(--scale-200)) 0 var(--scale-300);
+  color: var(--color-text-body);
+  font-size: var(--body-xs-size);
+  line-height: var(--body-xs-line);
+}
+
+.partner-group__error {
+  margin: var(--scale-200) 0 0;
+  color: var(--color-error);
+  font-size: var(--body-xs-size);
+  line-height: var(--body-xs-line);
+}
+
+/* Individual or organisation: two halves of one pill */
+.partner-switch {
+  display: inline-flex;
+  padding: 3px;
+  border: var(--border-md) solid var(--color-neutral-300);
+  border-radius: var(--radius-pill);
+  background: var(--surface-action-outline);
+}
+
+.partner-switch__option span {
+  display: block;
+  padding: 7px var(--scale-400);
+  border-radius: var(--radius-pill);
+  color: var(--color-text-on-light);
+  font-size: var(--body-s-size);
+  line-height: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color var(--motion-duration-hover) var(--motion-ease),
+    color var(--motion-duration-hover) var(--motion-ease);
+}
+
+/* Chips: checkboxes that look like pills */
+.partner-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--scale-200);
+}
+
+.partner-chip span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 var(--scale-400);
+  border: var(--border-md) solid var(--color-neutral-300);
+  border-radius: var(--radius-pill);
+  background: var(--surface-action-outline);
+  color: var(--color-text-on-light);
+  font-size: var(--body-s-size);
+  line-height: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--motion-duration-hover) var(--motion-ease),
+    border-color var(--motion-duration-hover) var(--motion-ease),
+    color var(--motion-duration-hover) var(--motion-ease);
+}
+
+.partner-switch__option input,
+.partner-chip input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+}
+
+.partner-switch__option input:checked + span,
+.partner-chip input:checked + span {
+  background: var(--surface-action-primary);
+  border-color: var(--surface-action-primary);
+  color: var(--color-text-on-dark);
+}
+
+/* A tick appears in a chosen chip, so the state doesn't rely on colour alone */
+.partner-chip input:checked + span::before {
+  content: "";
+  width: 10px;
+  height: 6px;
+  margin-top: -3px;
+  border-bottom: 1.5px solid currentColor;
+  border-left: 1.5px solid currentColor;
+  transform: rotate(-45deg);
+}
+
+.partner-switch__option input:focus-visible + span,
+.partner-chip input:focus-visible + span {
+  outline: 2px solid var(--border-color-on-light);
+  outline-offset: 2px;
+}
+
+.partner-form .field[hidden] {
+  display: none;
+}
+
+.partner-form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--scale-400);
+}
+
+.field__optional {
+  color: var(--color-text-body);
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* The error sits in the flow here, so nothing overlaps the next field */
+.partner-form .field__error {
+  position: static;
+}
+
+.partner-form__foot {
+  display: flex;
+  flex-direction: column;
+  gap: var(--scale-300);
+}
+
+.partner-form__consent {
+  margin: 0;
+  color: var(--color-text-body);
+  font-size: var(--body-xs-size);
+  line-height: var(--body-xs-line);
+}
+
+.partner-form__submit {
+  align-self: flex-start;
+  min-width: 160px;
+}
+
+.partner-form__status {
+  margin: 0;
+  color: var(--color-text-on-light);
+  font-size: var(--body-s-size);
+  line-height: var(--body-s-line);
+}
+
+.partner-form__status:empty {
+  display: none;
+}
+
+/* ---- Focus and hover ---------------------------------------------------------------------------- */
+.support-sheet__close:focus-visible,
+.contact-channel__main:focus-visible,
+.contact-channel__copy:focus-visible,
+.support-sheet__alt a:focus-visible {
+  outline: 2px solid var(--border-color-on-light);
+  outline-offset: -2px;
+}
+
+@media (hover: hover) {
+  .support-sheet__close:hover,
+  .contact-channel__main:hover {
+    background: var(--surface-cards);
+  }
+
+  .contact-channel__copy:hover,
+  .partner-chip input:not(:checked) + span:hover,
+  .partner-switch__option input:not(:checked) + span:hover {
+    background: var(--surface-cards);
+  }
+}
+
+/* ---- Phones: a sheet from the bottom --------------------------------------------------------------- */
+@media (max-width: 767px) {
+  .support-dialog[open] {
+    align-items: flex-end;
+  }
+
+  .support-sheet {
+    width: 100%;
+    max-width: none;
+    max-height: 92vh;
+    max-height: 92dvh;
+    border-radius: var(--scale-600) var(--scale-600) 0 0;
+    box-shadow: none;
+    opacity: 1;
+    transform: translateY(100%);
+    transition: transform var(--motion-duration-sheet-out) var(--motion-ease-expand);
+  }
+
+  .support-dialog.is-open .support-sheet {
+    transform: none;
+    transition: transform var(--motion-duration-sheet) var(--motion-ease-sheet);
+  }
+
+  .support-sheet__head {
+    padding: var(--scale-600) var(--scale-200) var(--scale-200) var(--scale-500);
+    cursor: grab;
+    touch-action: none;   /* the header drags the sheet instead of scrolling */
+  }
+
+  .support-sheet__grabber {
+    position: absolute;
+    top: var(--scale-200);
+    left: calc(50% - 20px);
+    display: block;
+    width: 40px;
+    height: 4px;
+    border-radius: var(--radius-pill);
+    background: var(--color-neutral-300);
+  }
+
+  .support-sheet__title {
+    font-size: 22px;
+    line-height: 30px;
+  }
+
+  .support-sheet__body {
+    gap: var(--scale-500);
+    padding: 0 var(--scale-500) calc(var(--scale-600) + env(safe-area-inset-bottom));
+  }
+
+  .contact-channel__main {
+    gap: var(--scale-300);
+    padding-inline: var(--scale-300);
+  }
+
+  .contact-channel__copy {
+    min-width: 64px;
+    margin-right: var(--scale-300);
+  }
+
+  .partner-form__row {
+    grid-template-columns: 1fr;
+  }
+
+  .partner-form__submit {
+    align-self: stretch;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .support-dialog__backdrop,
+  .support-sheet,
+  .support-dialog.is-open .support-sheet {
+    transition: none !important;
+  }
+}
