@@ -1160,7 +1160,7 @@
 
   .article-hero__summary {
     width: auto;
-    max-width: 270px;   /* three lines on every phone width */
+    max-width: none;   /* the full width of the cover */
     font-size: var(--body-m-size);
     line-height: 24px;
     font-weight: 500;
@@ -1198,7 +1198,7 @@
   }
 
   .article {
-    margin-top: var(--scale-500);   /* the first section sits 20px under the cover */
+    margin-top: var(--scale-900);   /* the first section sits 40px under the cover */
     gap: 56px;   /* clear space between topics */
   }
 
