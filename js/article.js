@@ -542,6 +542,35 @@ document.addEventListener("DOMContentLoaded", () => {
     contextInput.value = "";
     panel.querySelector("#help-question").focus();
   });
+  // Phones: drag the sheet down by its grip or title row; past 100px (or a quick flick) it closes,
+  // otherwise it springs back
+  const handles = [panel.querySelector(".help-panel__grip"), panel.querySelector(".help-panel__head")];
+  let drag = null;
+  handles.forEach((handle) => handle.addEventListener("pointerdown", (event) => {
+    if (!phone.matches || event.target.closest("button") || event.button > 0) return;
+    drag = { y: event.clientY, t: event.timeStamp, dy: 0, id: event.pointerId };
+    handle.setPointerCapture(event.pointerId);
+    panel.classList.add("is-dragging");
+  }));
+  handles.forEach((handle) => handle.addEventListener("pointermove", (event) => {
+    if (!drag || event.pointerId !== drag.id) return;
+    drag.dy = Math.max(0, event.clientY - drag.y);
+    panel.style.transform = `translateY(${drag.dy}px)`;
+  }));
+  const endDrag = (event) => {
+    if (!drag || event.pointerId !== drag.id) return;
+    const fast = drag.dy / Math.max(1, event.timeStamp - drag.t) > 0.5;
+    const dismiss = drag.dy > 100 || (fast && drag.dy > 20);
+    drag = null;
+    panel.classList.remove("is-dragging");
+    panel.style.transform = "";
+    if (dismiss) close();
+  };
+  handles.forEach((handle) => {
+    handle.addEventListener("pointerup", endDrag);
+    handle.addEventListener("pointercancel", endDrag);
+  });
+
   phone.addEventListener("change", () => {
     if (panel.hidden) return;
     root.classList.toggle("is-sheet-open", phone.matches);

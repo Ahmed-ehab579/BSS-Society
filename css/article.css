@@ -1753,7 +1753,7 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    max-height: 88dvh;
+    max-height: 80dvh;   /* a strip of the page stays visible above the sheet */
     border-width: 0;
     border-radius: 20px 20px 0 0;
     transform: translateY(100%);
@@ -1770,9 +1770,24 @@
     flex: none;
     width: 40px;
     height: 4px;
-    margin: var(--scale-200) auto 0;
+    margin: 14px auto 0;   /* room above the grip to catch it */
     border-radius: 2px;
-    background: var(--color-neutral-200);
+    background: #adadad;
+  }
+
+  /* Drag the grip or the title row down to close the sheet */
+  .help-panel__grip,
+  .help-panel__head {
+    touch-action: none;
+    cursor: grab;
+  }
+
+  .help-panel__close {
+    cursor: pointer;
+  }
+
+  .help-panel.is-dragging {
+    transition: none;
   }
 
   .help-panel {
@@ -1789,6 +1804,7 @@
 
   .help-panel__intro {
     font-size: var(--body-xs-size);
+    line-height: 20px;
   }
 }
 
