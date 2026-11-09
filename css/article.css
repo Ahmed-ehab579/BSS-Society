@@ -2005,6 +2005,11 @@
   color: var(--color-completed);
 }
 
+/* Same line weight as the check in the completion card (stroke 5 in its 74px drawing) */
+.checkin__heart path {
+  stroke-width: calc(5px * 57 / 74);
+}
+
 .checkin__step--thanks .checkin__text {
   margin-top: 2px;
   font-size: 15px;
@@ -2105,6 +2110,10 @@
   .checkin__heart {
     width: 86px;
     height: 86px;
+  }
+
+  .checkin__heart path {
+    stroke-width: calc(5px * 86 / 74);
   }
 
   .checkin__step--thanks .checkin__text {
