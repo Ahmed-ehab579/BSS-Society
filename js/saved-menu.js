@@ -27,7 +27,10 @@
   const count = toggle.querySelector("[data-saved-count]");
   let shown = -1;
 
+  let holdCount = false;   // true while a saved item flies to the icon (the count changes when it lands)
+
   function showCount() {
+    if (holdCount) return;
     const total = BSS.saved.list().length;
     if (total === shown) return;
     const grew = shown >= 0 && total > shown;
@@ -328,6 +331,72 @@
     }
   });
 
+  // ---- Fly to the header: a saved item rises from its Save button into the header bookmark ----------
+  // Like a browser's download animation: a dark bookmark lifts off the button, arcs up to the header
+  // icon and shrinks into it; the icon then pulses and the count goes up. Skipped with reduced motion.
+  // Callers call BSS.savedFly(button) just before saving; it returns a promise for the landing.
+  const FLY_ICON = '<svg viewBox="0 0 11.55 14.85" width="11.55" height="14.85" aria-hidden="true"><path fill="currentColor" d="M0 14.85V1.65C0 1.2.16.81.48.48.81.16 1.2 0 1.65 0H9.9c.45 0 .84.16 1.17.48.32.33.48.71.48 1.17v13.2L5.78 12.38 0 14.85Z"/></svg>';
+  let flight = null;
+
+  // Where the icon will be: a header hidden by scrolling slides back first
+  function iconBox() {
+    const header = document.querySelector(".site-header");
+    header?.classList.remove("is-hidden");
+    const slide = header ? new DOMMatrix(getComputedStyle(header).transform).m42 : 0;
+    const box = toggle.getBoundingClientRect();
+    return { x: box.left + box.width / 2, y: box.top - slide + box.height / 2, width: box.width, bottom: box.bottom - slide, right: box.right };
+  }
+
+  BSS.savedFly = function (from) {
+    if (!from || reducedMotion.matches || dialog.open || !toggle.offsetParent || !Element.prototype.animate) return null;
+    const start = (from.querySelector("img, svg") || from).getBoundingClientRect();
+    if (!start.width) return null;
+    const end = iconBox();
+    const x0 = start.left + start.width / 2;
+    const y0 = start.top + start.height / 2;
+    const dx = end.x - x0;
+    const dy = end.y - y0;
+    const time = Math.min(900, Math.max(520, Math.hypot(dx, dy) * 0.75));   // farther flies a little longer
+
+    // Two layers make the arc: the outer one moves across, the inner one rises at a different pace
+    const across = document.createElement("div");
+    across.className = "saved-fly";
+    across.style.left = `${x0}px`;
+    across.style.top = `${y0}px`;
+    across.innerHTML = `<div class="saved-fly__rise"><div class="saved-fly__chip">${FLY_ICON}</div></div>`;
+    document.body.append(across);
+    const rise = across.firstElementChild;
+    const chip = rise.firstElementChild;
+
+    holdCount = true;
+    hideHint();   // an earlier "Removed" note would sit in its way
+    across.animate([{ transform: "translateX(0)" }, { transform: `translateX(${dx}px)` }],
+      { duration: time, easing: "cubic-bezier(0.55, 0, 0.75, 0.45)", fill: "forwards" });
+    rise.animate([{ transform: "translateY(0)" }, { transform: `translateY(${dy}px)` }],
+      { duration: time, easing: "cubic-bezier(0.2, 0.6, 0.35, 1)", fill: "forwards" });
+    const shrink = chip.animate([
+      { transform: "scale(0.6)", opacity: 0 },
+      { transform: "scale(1.15)", opacity: 1, offset: 0.14 },
+      { transform: "scale(1)", opacity: 1, offset: 0.3 },
+      { transform: "scale(0.45)", opacity: 0.9, offset: 0.92 },
+      { transform: "scale(0.3)", opacity: 0 },
+    ], { duration: time, easing: "linear", fill: "forwards" });
+
+    const landed = shrink.finished.catch(() => {}).then(() => {
+      across.remove();
+      toggle.classList.remove("is-landing");
+      toggle.getBoundingClientRect();
+      toggle.classList.add("is-landing");
+      holdCount = false;
+      showCount();
+      if (flight === landed) flight = null;
+    });
+    flight = landed;
+    return landed;
+  };
+
+  toggle.addEventListener("animationend", () => toggle.classList.remove("is-landing"));
+
   // ---- "Saved. Find it here" bubble under the header icon ----------------------------------------------
   // Shown after a save so people learn where their saves go; View opens the menu.
   const HINT_TIME = 3500;   // ms the bubble stays
@@ -347,13 +416,13 @@
 
   // kind: "saved", "removed" or "failed"
   BSS.savedHint = function (kind = "saved") {
+    if (flight) {
+      flight.then(() => BSS.savedHint(kind));   // after the item has landed on the icon
+      return;
+    }
     if (dialog.open) return;
-    // The icon has to be in view: a header hidden by scrolling slides back, so measure where it will be
-    const header = document.querySelector(".site-header");
-    header?.classList.remove("is-hidden");
-    const slide = header ? new DOMMatrix(getComputedStyle(header).transform).m42 : 0;
-    const icon = toggle.getBoundingClientRect();
-    hint.style.setProperty("--hint-top", `${Math.round(icon.bottom - slide + 6)}px`);
+    const icon = iconBox();   // the icon has to be in view
+    hint.style.setProperty("--hint-top", `${Math.round(icon.bottom + 6)}px`);
     hint.style.setProperty("--hint-right", `${Math.max(12, Math.round(root.clientWidth - icon.right - 6))}px`);
     hint.style.setProperty("--hint-arrow", `${Math.round(icon.width / 2 + 6 - Math.max(0, 12 - (root.clientWidth - icon.right - 6)))}px`);
     hintText.textContent = {
@@ -388,6 +457,7 @@
       if (text) text.textContent = saved ? "Saved" : "Save";
     };
     button.addEventListener("click", () => {
+      if (!BSS.saved.has(getEntry().key)) BSS.savedFly(button);
       const { saved, stored } = BSS.saved.toggle(getEntry());
       show();
       BSS.savedHint(stored ? (saved ? "saved" : "removed") : "failed");

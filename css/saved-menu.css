@@ -664,3 +664,44 @@
     transition: none;
   }
 }
+
+/* ---- Fly to the header (js/saved-menu.js, BSS.savedFly) ----------------------------------------------
+   A dark bookmark lifts off the Save button and arcs into the header icon, which then pulses. */
+.saved-fly {
+  position: fixed;
+  z-index: 160;   /* above the header and the hint */
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.saved-fly__chip {
+  position: absolute;
+  top: -17px;
+  left: -17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--surface-action-primary);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.22);
+  color: var(--color-text-on-dark);
+  opacity: 0;
+}
+
+.saved-fly__chip svg {
+  width: 12px;
+  height: 15px;
+}
+
+/* The header icon catches it */
+.saved-toggle.is-landing img {
+  animation: saved-land 420ms var(--motion-ease);
+}
+
+@keyframes saved-land {
+  35% { transform: scale(1.28) translateY(1px); }
+  70% { transform: scale(0.94); }
+}

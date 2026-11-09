@@ -574,6 +574,7 @@
   });
 
   function toggleSave(button) {
+    if (!BSS.saved.has(current.key) && !dialog.open) BSS.savedFly?.(button);   // the overlay covers the header
     const { saved, stored } = BSS.saved.toggle(saveEntry(current));
     button.setAttribute("aria-pressed", String(BSS.saved.has(current.key)));
     button.classList.remove("is-popping");
