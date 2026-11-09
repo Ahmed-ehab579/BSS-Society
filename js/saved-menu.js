@@ -328,6 +328,56 @@
     }
   });
 
+  // ---- "Saved. Find it here" bubble under the header icon ----------------------------------------------
+  // Shown after a save so people learn where their saves go; View opens the menu.
+  const HINT_TIME = 3500;   // ms the bubble stays
+  const hint = document.createElement("div");
+  hint.className = "saved-hint";
+  hint.setAttribute("role", "status");
+  hint.innerHTML = `<span class="saved-hint__text"></span><button class="saved-hint__view" type="button">View</button>`;
+  document.body.append(hint);
+  const hintText = hint.querySelector(".saved-hint__text");
+  const hintView = hint.querySelector(".saved-hint__view");
+  let hintTimer = null;
+
+  function hideHint() {
+    clearTimeout(hintTimer);
+    hint.classList.remove("is-visible");
+  }
+
+  // kind: "saved", "removed" or "failed"
+  BSS.savedHint = function (kind = "saved") {
+    if (dialog.open) return;
+    // The icon has to be in view: a header hidden by scrolling slides back, so measure where it will be
+    const header = document.querySelector(".site-header");
+    header?.classList.remove("is-hidden");
+    const slide = header ? new DOMMatrix(getComputedStyle(header).transform).m42 : 0;
+    const icon = toggle.getBoundingClientRect();
+    hint.style.setProperty("--hint-top", `${Math.round(icon.bottom - slide + 6)}px`);
+    hint.style.setProperty("--hint-right", `${Math.max(12, Math.round(root.clientWidth - icon.right - 6))}px`);
+    hint.style.setProperty("--hint-arrow", `${Math.round(icon.width / 2 + 6 - Math.max(0, 12 - (root.clientWidth - icon.right - 6)))}px`);
+    hintText.textContent = {
+      saved: "Saved. Find it here anytime.",
+      removed: "Removed from saved",
+      failed: "Couldn’t save on this device",
+    }[kind];
+    hintView.hidden = kind !== "saved";
+    hint.classList.remove("is-visible");
+    hint.getBoundingClientRect();   // replay the entrance on quick repeat saves
+    hint.classList.add("is-visible");
+    clearTimeout(hintTimer);
+    hintTimer = setTimeout(hideHint, HINT_TIME);
+  };
+
+  hintView.addEventListener("click", () => {
+    hideHint();
+    open();
+  });
+  hint.addEventListener("pointerenter", () => clearTimeout(hintTimer));   // stays while the pointer is on it
+  hint.addEventListener("pointerleave", () => { hintTimer = setTimeout(hideHint, 1500); });
+  toggle.addEventListener("click", hideHint);
+  window.addEventListener("resize", hideHint);
+
   // ---- Save buttons on article and step pages ------------------------------------------------------
   // <button data-save> with a [data-save-text] label; getEntry() describes the page (js/saved.js entry)
   BSS.saveButton = function (button, getEntry) {
@@ -338,8 +388,9 @@
       if (text) text.textContent = saved ? "Saved" : "Save";
     };
     button.addEventListener("click", () => {
-      BSS.saved.toggle(getEntry());
+      const { saved, stored } = BSS.saved.toggle(getEntry());
       show();
+      BSS.savedHint(stored ? (saved ? "saved" : "removed") : "failed");
       button.classList.remove("is-popping");
       button.getBoundingClientRect();   // restart the animation on quick repeat presses
       button.classList.add("is-popping");

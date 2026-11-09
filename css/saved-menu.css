@@ -576,3 +576,91 @@
 @media (prefers-reduced-motion: reduce) {
   .save-btn.is-popping .save-btn__icon { animation: none; }
 }
+
+/* ---- "Saved. Find it here anytime." under the header icon (js/saved-menu.js, BSS.savedHint) ---------- */
+.saved-hint {
+  position: fixed;
+  top: var(--hint-top, 80px);
+  right: var(--hint-right, 16px);
+  z-index: 150;   /* above the header, below the menus */
+  display: flex;
+  align-items: center;
+  gap: var(--scale-300);
+  max-width: calc(100vw - 24px);
+  padding: 10px 10px 10px var(--scale-400);
+  border-radius: var(--scale-300);
+  background: var(--surface-action-primary);
+  box-shadow: var(--shadow-menu);
+  color: var(--color-text-on-dark);
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 500;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: opacity var(--motion-duration) var(--motion-ease),
+    transform var(--motion-duration) var(--motion-ease),
+    visibility 0s linear var(--motion-duration);
+}
+
+/* The arrow points at the bookmark */
+.saved-hint::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  right: calc(var(--hint-arrow, 28px) - 6px);
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  background: inherit;
+  transform: rotate(45deg);
+}
+
+.saved-hint.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition: opacity var(--motion-duration) var(--motion-ease),
+    transform var(--motion-duration) var(--motion-ease);
+}
+
+.saved-hint__text {
+  position: relative;
+}
+
+.saved-hint__view {
+  position: relative;
+  height: 30px;
+  padding: 0 var(--scale-300);
+  border: var(--border-md) solid rgba(255, 255, 255, 0.5);
+  border-radius: var(--radius-pill);
+  background: none;
+  color: var(--color-text-on-dark);
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.saved-hint__view[hidden] {
+  display: none;
+}
+
+.saved-hint__view:focus-visible {
+  outline: var(--border-lg) solid var(--color-neutral-white);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) {
+  .saved-hint__view:hover {
+    background: rgba(255, 255, 255, 0.14);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .saved-hint,
+  .saved-hint.is-visible {
+    transition: none;
+  }
+}

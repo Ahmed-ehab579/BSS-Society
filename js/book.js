@@ -61,6 +61,7 @@
     saveButton.classList.add("is-popping");
     if (!stored) say("Couldn’t save on this device", saveButton);
     else say(saved ? "Saved" : "Removed from saved", saveButton);
+    if (stored && saved) BSS.savedHint?.();
   });
 
   showSaved();

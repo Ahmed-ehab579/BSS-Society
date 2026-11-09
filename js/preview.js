@@ -581,6 +581,7 @@
     button.classList.add("is-popping");
     if (!stored) say("Couldn’t save on this device", button);
     else say(saved ? "Saved" : "Removed from saved", button);
+    if (stored && saved && !dialog.open) BSS.savedHint?.();   // the overlay covers the header
   }
 
   // ---- Opening and closing -----------------------------------------------------------------------
