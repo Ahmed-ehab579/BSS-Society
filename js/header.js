@@ -44,7 +44,13 @@
 
   window.addEventListener("scroll", onScroll, { passive: true });
 
-  toggle.addEventListener("click", () => setMenu(!isMenuOpen()));
+  // The menu button sits after the bookmark and world icons, where it is on screen, so the dropdown
+  // comes before it in the markup: opened from the keyboard, the focus moves to the first link.
+  toggle.addEventListener("click", (event) => {
+    const open = !isMenuOpen();
+    setMenu(open);
+    if (open && event.detail === 0) nav.querySelector("a")?.focus();   // detail 0: Enter or Space
+  });
 
   backdrop.addEventListener("click", () => setMenu(false));
 
