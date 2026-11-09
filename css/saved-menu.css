@@ -1,0 +1,499 @@
+/* Saved menu: opens from the bookmark in the header. Built by js/saved-menu.js.
+   Phones: a bottom sheet (drag down to dismiss), like the language picker (css/language.css).
+   Wider screens: a dropdown under the icon (.is-dropdown, at the end of this file). */
+
+.saved-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  overflow: clip;
+  border: 0;
+  background: none;
+}
+
+.saved-dialog::backdrop {
+  background: none;   /* the fading backdrop below replaces the browser's */
+}
+
+.saved-dialog[open] {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.saved-dialog__backdrop {
+  position: absolute;
+  inset: 0;
+  background: var(--backdrop);
+  opacity: 0;
+  transition: opacity var(--motion-duration-sheet-out) var(--motion-ease);
+}
+
+.saved-dialog.is-open .saved-dialog__backdrop {
+  opacity: 1;
+  transition-duration: var(--motion-duration-sheet);
+}
+
+.saved-sheet {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 560px;
+  max-width: 100%;
+  max-height: 85vh;
+  max-height: 85dvh;
+  overflow: hidden;
+  border-radius: var(--scale-600) var(--scale-600) 0 0;
+  background: var(--color-page-bg);
+  transform: translateY(100%);
+  transition: transform var(--motion-duration-sheet-out) var(--motion-ease-expand);
+}
+
+.saved-sheet:focus {
+  outline: none;
+}
+
+.saved-dialog.is-open .saved-sheet {
+  transform: none;
+  transition: transform var(--motion-duration-sheet) var(--motion-ease-sheet);
+}
+
+.saved-sheet.is-dragging {
+  transition: none !important;
+}
+
+.saved-sheet__head {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--scale-600) var(--scale-200) var(--scale-200) var(--scale-500);
+  cursor: grab;
+  touch-action: none;   /* the header drags the sheet instead of scrolling */
+}
+
+.saved-sheet.is-dragging .saved-sheet__head {
+  cursor: grabbing;
+}
+
+.saved-sheet__grabber {
+  position: absolute;
+  top: var(--scale-200);
+  left: calc(50% - 20px);
+  width: 40px;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--color-neutral-300);
+}
+
+.saved-sheet__title {
+  margin: 0;
+  color: var(--color-heading);
+  font-size: 22px;
+  line-height: 30px;
+  font-weight: var(--h5-weight);
+}
+
+.saved-sheet__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--color-text-on-light);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--motion-duration-hover) var(--motion-ease);
+}
+
+/* Filter chips: which path each save belongs to */
+.saved-filters {
+  display: flex;
+  flex-shrink: 0;
+  gap: var(--scale-200);
+  padding: var(--scale-100) var(--scale-500) var(--scale-300);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.saved-filters::-webkit-scrollbar {
+  display: none;
+}
+
+.saved-filters[hidden] {
+  display: none;
+}
+
+.saved-chip {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 var(--scale-300);
+  border: var(--border-md) solid var(--color-neutral-300);
+  border-radius: var(--radius-pill);
+  background: var(--surface-action-outline);
+  color: var(--color-text-on-light);
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--motion-duration-hover) var(--motion-ease),
+    border-color var(--motion-duration-hover) var(--motion-ease);
+}
+
+.saved-chip__count {
+  color: var(--color-text-body);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+.saved-chip[aria-pressed="true"] {
+  border-color: var(--surface-action-primary);
+  background: var(--surface-action-primary);
+  color: var(--color-text-on-dark);
+}
+
+.saved-chip[aria-pressed="true"] .saved-chip__count {
+  color: var(--color-neutral-200);
+}
+
+/* Rows */
+.saved-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 0;
+  padding: 0 var(--scale-200) var(--scale-200);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  list-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.saved-list[hidden] {
+  display: none;
+}
+
+.saved-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-bottom: var(--scale-12) solid var(--color-neutral-200);
+}
+
+.saved-row:last-child {
+  border-bottom: 0;
+}
+
+.saved-row__link {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: var(--scale-300);
+  min-width: 0;
+  min-height: 72px;
+  padding: var(--scale-200) var(--scale-300);
+  border-radius: var(--scale-300);
+  color: var(--color-text-on-light);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--motion-duration-hover) var(--motion-ease);
+}
+
+.saved-row__thumb {
+  position: relative;
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  overflow: hidden;
+  border-radius: var(--scale-200);
+  background: var(--surface-media);
+}
+
+.saved-row__thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Book and audio book covers sit whole on a light board */
+.saved-row__thumb--cover {
+  background: var(--surface-book);
+}
+
+.saved-row__thumb--cover img {
+  padding: 5px;
+  object-fit: contain;
+}
+
+.saved-row__text {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.saved-row__meta {
+  overflow: hidden;
+  color: var(--color-text-body);
+  font-size: var(--body-xs-size);
+  line-height: var(--body-xs-line);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.saved-row__path {
+  color: var(--color-heading);
+  font-weight: 600;
+}
+
+.saved-row__title {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--color-heading);
+  font-size: 15px;
+  line-height: 21px;
+  font-weight: 500;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.saved-row__remove {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-right: var(--scale-100);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--motion-duration-hover) var(--motion-ease);
+}
+
+.saved-row__remove img {
+  width: 13px;
+  height: auto;
+}
+
+/* Removed: the row keeps its place for a few seconds with Undo */
+.saved-row--undo {
+  justify-content: space-between;
+  gap: var(--scale-300);
+  min-height: 72px;
+  padding: var(--scale-200) var(--scale-200) var(--scale-200) var(--scale-300);
+}
+
+.saved-row__removed {
+  overflow: hidden;
+  color: var(--color-text-body);
+  font-size: var(--body-s-size);
+  line-height: var(--body-s-line);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.saved-row__removed-title {
+  color: var(--color-heading);
+  font-weight: 500;
+}
+
+.saved-row__undo {
+  flex-shrink: 0;
+  height: 36px;
+  padding: 0 var(--scale-400);
+  border: var(--border-md) solid var(--border-color-on-light);
+  border-radius: var(--radius-pill);
+  background: none;
+  color: var(--color-text-on-light);
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Nothing saved (or nothing from this path) */
+.saved-empty {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--scale-200);
+  min-height: 220px;
+  padding: var(--scale-600) var(--scale-800) var(--scale-800);
+  text-align: center;
+}
+
+.saved-empty[hidden] {
+  display: none;
+}
+
+.saved-empty__icon {
+  width: 32px;
+  height: 32px;
+  margin-bottom: var(--scale-100);
+  opacity: 0.6;
+}
+
+.saved-empty__title {
+  margin: 0;
+  color: var(--color-heading);
+  font-size: var(--body-m-size);
+  line-height: var(--body-m-line);
+  font-weight: 500;
+}
+
+.saved-empty__text {
+  max-width: 280px;
+  margin: 0;
+  color: var(--color-text-body);
+  font-size: var(--body-s-size);
+  line-height: var(--body-s-line);
+}
+
+.saved-empty__link {
+  margin-top: var(--scale-200);
+  color: var(--color-text-on-light);
+  font-size: var(--body-s-size);
+  line-height: var(--body-s-line);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* "Saved on this device only" */
+.saved-sheet__note {
+  flex-shrink: 0;
+  margin: 0;
+  padding: var(--scale-300) var(--scale-500) calc(var(--scale-400) + env(safe-area-inset-bottom));
+  border-top: var(--scale-12) solid var(--color-neutral-200);
+  color: var(--color-text-muted);
+  font-size: var(--body-xs-size);
+  line-height: var(--body-xs-line);
+  text-align: center;
+}
+
+.saved-chip:focus-visible,
+.saved-row__link:focus-visible,
+.saved-row__remove:focus-visible,
+.saved-row__undo:focus-visible,
+.saved-sheet__close:focus-visible,
+.saved-empty__link:focus-visible {
+  outline: 2px solid var(--border-color-on-light);
+  outline-offset: -2px;
+}
+
+@media (hover: hover) {
+  .saved-row__link:hover,
+  .saved-row__remove:hover,
+  .saved-sheet__close:hover {
+    background: var(--surface-cards);
+  }
+
+  .saved-chip[aria-pressed="false"]:hover {
+    background: var(--surface-cards);
+  }
+
+  .saved-row__undo:hover {
+    background: var(--surface-action-primary);
+    color: var(--color-text-on-dark);
+  }
+}
+
+/* Dropdown: under the icon, beside the page instead of covering it. A click outside, Esc or scrolling
+   closes it, so there is no close button. */
+.saved-dialog.is-dropdown {
+  inset: var(--dropdown-top, 0) var(--dropdown-right, 0) auto auto;
+  display: block;
+  width: 420px;
+  max-width: calc(100vw - 2 * var(--scale-400));
+  height: auto;
+  overflow: visible;
+}
+
+.is-dropdown .saved-dialog__backdrop,
+.is-dropdown .saved-sheet__grabber,
+.is-dropdown .saved-sheet__close {
+  display: none;
+}
+
+.is-dropdown .saved-sheet {
+  width: 100%;
+  max-height: min(560px, calc(100vh - var(--dropdown-top, 0px) - var(--scale-400)));
+  margin: 0;
+  border: var(--border-md) solid var(--color-neutral-100);
+  border-radius: var(--scale-400);
+  box-shadow: var(--shadow-menu);
+  opacity: 0;
+  transform: translateY(-6px);
+  transform-origin: top right;
+  transition: opacity var(--motion-duration-link) var(--motion-ease),
+    transform var(--motion-duration-link) var(--motion-ease);
+}
+
+.saved-dialog.is-dropdown.is-open .saved-sheet {
+  opacity: 1;
+  transform: none;
+  transition: opacity var(--motion-duration) var(--motion-ease),
+    transform var(--motion-duration) var(--motion-ease);
+}
+
+.is-dropdown .saved-sheet__head {
+  padding: var(--scale-400) var(--scale-400) var(--scale-200);
+  cursor: auto;
+  touch-action: auto;
+}
+
+.is-dropdown .saved-sheet__title {
+  font-size: 20px;
+  line-height: 28px;
+}
+
+.is-dropdown .saved-filters {
+  padding-inline: var(--scale-400);
+}
+
+.is-dropdown .saved-row__link {
+  min-height: 68px;
+}
+
+.is-dropdown .saved-empty {
+  min-height: 200px;
+}
+
+.is-dropdown .saved-sheet__note {
+  padding-bottom: var(--scale-300);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .saved-dialog__backdrop,
+  .saved-sheet,
+  .saved-dialog.is-dropdown.is-open .saved-sheet,
+  .saved-row__link {
+    transition: none !important;
+  }
+}
