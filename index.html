@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300..700&display=swap">
   <link rel="stylesheet" href="css/tokens.css?v=37">
   <link rel="stylesheet" href="css/base.css?v=5">
-  <link rel="stylesheet" href="css/header.css?v=10">
+  <link rel="stylesheet" href="css/header.css?v=11">
   <link rel="stylesheet" href="css/language.css?v=4">
   <link rel="stylesheet" href="css/benefit-card.css">
   <link rel="stylesheet" href="css/home.css?v=17">
@@ -46,7 +46,11 @@
         </ul>
         <a class="btn btn--small btn--secondary site-nav__cta" href="#contact">Contact Us</a>
       </nav>
-            <button class="language-toggle" type="button" aria-label="Change language" aria-haspopup="dialog" aria-expanded="false">
+      <button class="saved-toggle" type="button" aria-label="Saved" aria-haspopup="dialog" aria-expanded="false" data-saved-toggle>
+        <img src="assets/icons/saved.svg" width="24" height="24" alt="">
+        <span class="saved-toggle__count" data-saved-count hidden></span>
+      </button>
+      <button class="language-toggle" type="button" aria-label="Change language" aria-haspopup="dialog" aria-expanded="false">
         <img src="assets/icons/globe.svg" width="24" height="24" alt="">
       </button>
     </div>
@@ -442,6 +446,7 @@
   <script src="js/saved.js?v=1"></script>
   <script src="js/header.js?v=8"></script>
   <script src="js/language.js?v=5"></script>
+  <script src="js/saved-menu.js?v=1"></script>
   <script src="js/carousel.js?v=6"></script>
   <script src="js/forms.js"></script>
   <script src="js/smooth-scroll.js?v=4"></script>
