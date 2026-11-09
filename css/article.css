@@ -1432,7 +1432,7 @@
   /* The rail fills the gap before the resources panel, so the help button comes to rest just above
      the panel instead of over the topic cards */
   .help-rail {
-    bottom: var(--scale-400);
+    bottom: calc(var(--scale-400) + 20px);   /* 36px off the screen's bottom edge while scrolling */
     height: 72px;
   }
 }
