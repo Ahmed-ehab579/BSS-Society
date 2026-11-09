@@ -208,6 +208,76 @@
   }
 }
 
+/* Saved (bookmark): just before the world icon, the same size; the count shows how many are saved */
+.saved-toggle {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin: 0 0 0 var(--scale-200);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--motion-duration-hover) var(--motion-ease);
+}
+
+.saved-toggle + .language-toggle {
+  margin-left: 0;
+}
+
+.saved-toggle img {
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+
+.saved-toggle__count {
+  position: absolute;
+  top: 5px;
+  right: 3px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border: 1.5px solid var(--color-page-bg);
+  border-radius: var(--radius-pill);
+  background: var(--color-text-on-light);
+  color: var(--color-page-bg);
+  font-size: 10px;
+  line-height: 14px;
+  font-weight: 600;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.saved-toggle__count[hidden] {
+  display: none;
+}
+
+.saved-toggle__count.is-bumping {
+  animation: saved-count-bump 320ms var(--motion-ease);
+}
+
+@keyframes saved-count-bump {
+  40% { transform: scale(1.25); }
+}
+
+@media (hover: hover) {
+  .saved-toggle:hover {
+    background: var(--surface-cards);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .saved-toggle__count.is-bumping { animation: none; }
+}
+
+.saved-toggle:focus-visible,
 .language-toggle:focus-visible,
 .site-nav__link:focus-visible,
 .menu-toggle:focus-visible {
@@ -227,6 +297,7 @@
     overflow: hidden;
   }
 
+  .saved-toggle,
   .language-toggle {
     order: 1;
     margin: 0;
