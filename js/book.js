@@ -54,6 +54,7 @@
   const showSaved = () => saveButton.setAttribute("aria-pressed", String(BSS.saved.has(id)));
 
   saveButton.addEventListener("click", () => {
+    if (!BSS.saved.has(id)) BSS.savedFly?.(saveButton);
     const { saved, stored } = BSS.saved.toggle(entry());
     showSaved();
     saveButton.classList.remove("is-popping");
