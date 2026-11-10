@@ -33,6 +33,10 @@
     button.classList.remove("is-sent", "is-swapping");
     button.innerHTML = saved.html;
     button.style.minWidth = saved.minWidth;
+    if (reduceMotion.matches) return;
+    // The label fades back in rather than snapping
+    button.animate([{ color: "transparent" }, {}], { duration: 200, easing: "ease-out" });
+    [...button.children].forEach((child) => child.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200, easing: "ease-out" }));
   }
 
   window.BSSSend = { play, reset, isSent: (button) => original.has(button) };

@@ -368,6 +368,7 @@
 
 /* Individual or organisation: two halves of one pill */
 .partner-switch {
+  position: relative;
   display: flex;
   height: 48px;
   padding: 0;   /* each half fills its side, so a hover colours the whole empty half */
@@ -378,8 +379,28 @@
 }
 
 .partner-switch__option {
+  position: relative;
+  z-index: 1;
   flex: 1 1 0;
   min-width: 0;
+}
+
+/* The dark pill slides to the chosen side; the labels sit above it */
+.partner-switch__thumb {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 50%;
+  border-radius: var(--radius-pill);
+  background: var(--surface-action-primary);
+  box-shadow: inset 0 0 0 3px var(--surface-action-outline);   /* the 3 px gap around the dark pill */
+  pointer-events: none;
+  transition: transform var(--motion-duration-hover) var(--motion-ease);
+}
+
+.partner-switch:has(.partner-switch__option:last-child input:checked) .partner-switch__thumb {
+  transform: translateX(100%);
 }
 
 .partner-switch__option span {
@@ -435,9 +456,19 @@
 }
 
 .partner-switch__option input:checked + span {
-  background: var(--surface-action-primary);
-  box-shadow: inset 0 0 0 3px var(--surface-action-outline);   /* the 3 px gap around the dark pill */
   color: var(--color-text-on-dark);
+}
+
+/* Browsers without :has() can't slide the pill, so the chosen label carries it */
+@supports not selector(:has(*)) {
+  .partner-switch__thumb {
+    display: none;
+  }
+
+  .partner-switch__option input:checked + span {
+    background: var(--surface-action-primary);
+    box-shadow: inset 0 0 0 3px var(--surface-action-outline);
+  }
 }
 
 /* A chosen area turns green */
@@ -447,14 +478,29 @@
   color: var(--color-text-on-light);
 }
 
-/* A tick appears in a chosen chip, so the state doesn't rely on colour alone */
-.partner-chip input:checked + span::before {
+/* A tick grows in when a chip is chosen, so the state doesn't rely on colour alone; the chip widens with
+   it instead of jumping */
+.partner-chip span::before {
   content: "";
-  width: 10px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: 0;
   height: 6px;
-  margin-top: -3px;
+  margin: -3px -7.5px 0 0;   /* takes no room (with the 6 px gap) while hidden */
   border-bottom: 1.5px solid currentColor;
   border-left: 1.5px solid currentColor;
+  opacity: 0;
+  transform: rotate(-45deg) scale(0.4);
+  transition: width var(--motion-duration) var(--motion-ease),
+    margin var(--motion-duration) var(--motion-ease),
+    opacity var(--motion-duration) var(--motion-ease),
+    transform var(--motion-duration) var(--motion-ease);
+}
+
+.partner-chip input:checked + span::before {
+  width: 10px;
+  margin-right: 0;
+  opacity: 1;
   transform: rotate(-45deg);
 }
 
@@ -532,6 +578,20 @@
 
 .partner-form__status:empty {
   display: none;
+}
+
+/* Errors and the status line ease in instead of popping up */
+@keyframes support-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.partner-group__error:not([hidden]),
+.partner-form .field__error:not([hidden]),
+.partner-form__status:not(:empty) {
+  animation: support-reveal var(--motion-duration) var(--motion-ease);
 }
 
 /* ---- Focus and hover ---------------------------------------------------------------------------- */
@@ -643,7 +703,15 @@
 @media (prefers-reduced-motion: reduce) {
   .support-dialog__backdrop,
   .support-sheet,
-  .support-dialog.is-open .support-sheet {
+  .support-dialog.is-open .support-sheet,
+  .partner-switch__thumb,
+  .partner-chip span::before {
     transition: none !important;
+  }
+
+  .partner-group__error,
+  .partner-form .field__error,
+  .partner-form__status {
+    animation: none !important;
   }
 }

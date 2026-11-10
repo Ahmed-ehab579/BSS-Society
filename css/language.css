@@ -160,6 +160,10 @@ html.is-sheet-open {
   opacity: 1;
 }
 
+.language-search__input {
+  transition: border-color var(--motion-duration) var(--motion-ease);
+}
+
 .language-search__input:focus-visible {
   border-color: var(--border-color-on-light);
   outline: 2px solid var(--border-color-on-light);
