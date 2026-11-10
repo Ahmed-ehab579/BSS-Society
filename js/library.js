@@ -5,8 +5,11 @@
   const TYPES = window.BSS.RESOURCE_TYPES;   // material types, from js/resource-card.js
   const PAGE_SIZE = 12;         // full rows in both the three-column (desktop) and two-column (phone) grids
   const SEARCH_DELAY = 200;     // ms after the last keystroke before the results update
-  const VIEW_KEY = "bss.library.view.v3";   // v3: the default changed to one card a row
-  const VIEWS = ["one", "list"];   // phone layouts: 1 card a row or a list (desktop is always the grid)
+  const wide = window.matchMedia("(min-width: 768px)");
+  // Phones and desktop remember their layout separately (desktop's list is an extra two-column view)
+  const VIEW_KEY = wide.matches ? "bss.library.view.desktop.v1" : "bss.library.view.v3";
+  const VIEWS = ["one", "list"];   // cards (one a row on phones, the grid on desktop) or the list
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   // Filters in their on-screen order. `all` is the label of the "no filter" option in the menus;
   // `short` is the text shown in the pill when it is shorter than the menu label.
@@ -505,11 +508,23 @@
     closeSheet(els.sortSheet);
   });
 
-  function setView(view) {
+  function applyView(view) {
     state.view = view;
     els.grid.dataset.layout = view;
     els.views.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.view === view)));
+  }
+
+  // A chosen layout is remembered; switching morphs the cards into rows (or back) where the browser can
+  function setView(view) {
+    if (view === state.view) return;
     try { window.localStorage.setItem(VIEW_KEY, view); } catch (error) { /* not remembered: fine */ }
+    if (document.startViewTransition && !reducedMotion.matches) {
+      [...els.grid.children].forEach((card, index) => { card.style.viewTransitionName = `resource-${index}`; });
+      const transition = document.startViewTransition(() => applyView(view));
+      transition.finished.finally(() => [...els.grid.children].forEach((card) => card.style.removeProperty("view-transition-name")));
+    } else {
+      applyView(view);
+    }
   }
 
   els.views.forEach((button) => button.addEventListener("click", () => setView(button.dataset.view)));
@@ -529,7 +544,7 @@
   renderSheet();
   els.searchInput.value = state.q;
   syncSort();
-  setView(state.view);
+  applyView(state.view);
   syncFilters();
   updateSearchUi();
   renderResults({ announce: false });
