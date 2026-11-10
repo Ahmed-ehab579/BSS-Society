@@ -199,7 +199,6 @@
   flex-direction: column;
   margin: 0;
   padding: 0;
-  overflow: hidden;
   border: var(--border-md) solid var(--color-neutral-100);
   border-radius: var(--scale-400);
   background: var(--surface-cards);
@@ -213,12 +212,12 @@
   align-items: center;
 }
 
-/* Hover and press highlight the whole row, Copy included, as a rounded shape inset 4 px from the list's
-   edges and dividers (12 px corners inside the list's 16 px) */
+/* Hover and press highlight the whole row, Copy included, as a rounded shape: full width, over the
+   list's side borders so it lines up with the rule and text above, and 4 px clear of the dividers */
 .contact-channel::before {
   content: "";
   position: absolute;
-  inset: var(--scale-100);
+  inset: var(--scale-100) calc(-1 * var(--border-md));
   z-index: -1;
   border-radius: var(--scale-300);
   background: transparent;
