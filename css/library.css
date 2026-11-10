@@ -891,10 +891,21 @@
   line-clamp: 2;
 }
 
-/* Desktop list: the button spans the text column at 44 px (the minimum comfortable target), with the
-   card's 16 px label, so it reads as clearly as the button on the cards */
+/* Desktop list: a compact 44 px button (the minimum comfortable target) with the card's 16 px label,
+   on the right of the row; books keep their download button beside it */
 @media (min-width: 768px) {
+  .resource-grid[data-layout="list"] .resource-card__body > .resource-card__action,
+  .resource-grid[data-layout="list"] .resource-card__actions {
+    align-self: flex-end;
+  }
+
+  .resource-grid[data-layout="list"] .resource-card__actions .resource-card__action {
+    flex: 0 0 auto;
+  }
+
   .resource-grid[data-layout="list"] .resource-card__action {
+    width: auto;
+    min-width: 148px;
     height: 44px;
     padding: 0 var(--scale-500);
     font-size: var(--label-l-size);
