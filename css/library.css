@@ -891,22 +891,19 @@
   line-clamp: 2;
 }
 
-/* Desktop list: the rows are wide, so the action is a compact button on the left (as in Apple Books or
-   Audible lists) rather than a bar across the row */
+/* Desktop list: the button spans the text column at 44 px (the minimum comfortable target), with the
+   card's 16 px label, so it reads as clearly as the button on the cards */
 @media (min-width: 768px) {
-  .resource-grid[data-layout="list"] .resource-card__body > .resource-card__action,
-  .resource-grid[data-layout="list"] .resource-card__actions {
-    align-self: flex-start;
-  }
-
   .resource-grid[data-layout="list"] .resource-card__action {
-    width: auto;
-    min-width: 148px;
+    height: 44px;
     padding: 0 var(--scale-500);
+    font-size: var(--label-l-size);
+    line-height: var(--label-l-line);
   }
 
-  .resource-grid[data-layout="list"] .resource-card__actions .resource-card__action {
-    flex: 0 0 auto;
+  .resource-grid[data-layout="list"] .resource-card__download {
+    width: 44px;
+    height: 44px;
   }
 }
 
