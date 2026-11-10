@@ -52,6 +52,7 @@
   max-height: calc(100dvh - 2 * var(--scale-600));
   overflow-y: auto;
   overscroll-behavior: contain;
+
   border-radius: var(--radius-card);
   background: var(--surface-cards);
   box-shadow: var(--shadow-menu);
@@ -63,6 +64,34 @@
 
 .support-sheet:focus {
   outline: none;
+}
+
+/* Scrollbar inside the panel: a thin rounded thumb on a clear track, kept clear of the rounded corners,
+   instead of the browser's grey bar along the edge */
+.support-sheet::-webkit-scrollbar {
+  width: 14px;
+}
+
+.support-sheet::-webkit-scrollbar-track {
+  margin-block: var(--scale-600);
+  background: transparent;
+}
+
+.support-sheet::-webkit-scrollbar-thumb {
+  border: 5px solid transparent;
+  border-radius: var(--radius-pill);
+  background: rgba(59, 59, 59, 0.28) padding-box;
+}
+
+.support-sheet::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(59, 59, 59, 0.45);
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .support-sheet {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(59, 59, 59, 0.28) transparent;
+  }
 }
 
 .support-dialog.is-open .support-sheet {
@@ -480,7 +509,7 @@
 }
 
 .partner-form__consent {
-  margin: 0;
+  margin: 0 0 calc(-1 * var(--scale-100));   /* sits 8 px above Send, closer than the 12 px gap */
   color: var(--color-text-body);
   font-size: var(--body-xs-size);
   line-height: var(--body-xs-line);
@@ -493,6 +522,7 @@
 
 .partner-form__status {
   margin: 0;
+  text-align: center;
   color: var(--color-text-on-light);
   font-size: var(--body-s-size);
   line-height: var(--body-s-line);
@@ -531,7 +561,7 @@
   }
 
   .partner-switch__option input:not(:checked) + span:hover {
-    background: var(--surface-cards);
+    background: var(--surface-cards-hovered);   /* the same green as the chips */
   }
 }
 
