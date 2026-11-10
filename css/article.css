@@ -2209,3 +2209,11 @@
     transition: none;
   }
 }
+
+/* Article read as a standalone resource (opened from the Library or a New Muslim step, js/article.js):
+   the Start here parts are left out */
+.is-standalone-article .completion,
+.is-standalone-article .checkin,
+.is-standalone-article .topic-nav {
+  display: none;
+}

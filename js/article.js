@@ -10,18 +10,30 @@
   const params = new URLSearchParams(window.location.search);
   const requested = Number(params.get("topic"));
 
-  // Opened from a Library card: the way back goes to the Library, and reading here doesn't start the
-  // Start here path, so someone who browsed the Library still meets it from the beginning
-  const fromLibrary = params.get("from") === "library";
+  // Opened from a Library card or a New Muslim step: the article is read as a standalone resource.
+  // The way back, the breadcrumb and the label follow where the reader came from, and the Start here
+  // parts (progress, "Mark as read", previous/next topic) are left out, so the path stays untouched
+  const from = params.get("from");
+  const fromLibrary = from === "library" || from === "new-muslim";
   if (fromLibrary) {
-    const back = document.querySelector(".article-back");
-    back.href = "library.html";
-    back.querySelector("span").textContent = "Back to the library";
+    const step = Math.max(1, Number(params.get("step")) || 1);
+    const item = Math.max(1, Number(params.get("item")) || 1);
+    const back = from === "library"
+      ? { href: "library.html", text: "Back to the library", parent: "Library", parentHref: "library.html", current: "Article" }
+      : { href: `new-muslim-step.html?step=${step}&topic=${item}`, text: `Back to step ${step}`, parent: "New Muslim", parentHref: "new-muslim.html", current: `Step 0${step}` };
+    const link = document.querySelector(".article-back");
+    link.href = back.href;
+    link.querySelector("span").textContent = back.text;
+    const crumb = document.querySelector(".article-crumbs__parent");
+    crumb.href = back.parentHref;
+    crumb.textContent = back.parent;
+    document.querySelector("[data-topic-label]").textContent = back.current;
+    document.body.classList.add("is-standalone-article");
   }
   const topicId = P && P.topic(requested) ? requested : 1;
 
   const label = document.querySelector("[data-topic-label]");
-  if (label) label.textContent = `Topic 0${topicId}`;
+  if (label && !fromLibrary) label.textContent = `Topic 0${topicId}`;
 
   // Save this article (js/saved-menu.js): it belongs to the Start here path wherever it was opened from
   const saveButton = document.querySelector("[data-save]");
@@ -179,7 +191,7 @@
     if (!nextTopic) { next.hidden = true; return; }
     const unlocked = P.info(nextTopic.id).unlocked;
     nextTitle.textContent = nextTopic.title;
-    nextKicker.textContent = unlocked ? `Next topic • Step 0${nextTopic.id}` : completed ? "Finish the earlier topics to unlock" : "Complete this topic to unlock";
+    nextKicker.textContent = unlocked ? `Up next • Topic 0${nextTopic.id}` : completed ? "Finish the earlier topics to unlock" : "Complete this topic to unlock";
     next.classList.toggle("is-disabled", !unlocked);
     next.classList.toggle("is-recommended", unlocked && completed);
     next.dataset.tip = completed ? "Finish the earlier topics first" : "Mark this topic as read to unlock the next one";

@@ -25,7 +25,7 @@
         <span class="journey-card__icon-spacer" aria-hidden="true"></span>
         <div class="journey-card__locked-copy">
           <p class="journey-card__locked-title">This topic builds on earlier steps</p>
-          <p class="journey-card__locked-text">Start with Step ${previous.id}, or explore this topic now.</p>
+          <p class="journey-card__locked-text">Start with Topic ${previous.id}, or explore this topic now.</p>
         </div>
         <div class="journey-card__locked-actions">
           <a class="btn btn--primary btn--regular" href="${articleUrl(previous.id)}">Go to Topic ${previous.id}</a>
