@@ -225,13 +225,11 @@
       email.focus();
       return;
     }
-    if (!CONNECTED) {
-      status.textContent = NOT_CONNECTED;   // nothing was sent, so the button stays as it is
-      return;
-    }
+    // The owner chose to show the Sent animation before a form service is connected; the line under
+    // the button still says plainly that nothing was sent until then
     if (window.BSSSend?.isSent(submit)) return;
     window.BSSSend?.play(submit, "Sent");
-    status.textContent = "Thank you. Our team will email you within a week.";
+    status.textContent = CONNECTED ? "Thank you. Our team will email you within a week." : NOT_CONNECTED;
   });
 
   showFollowUps();

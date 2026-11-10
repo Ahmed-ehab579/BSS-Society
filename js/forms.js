@@ -69,13 +69,11 @@
         invalid[0].focus();
         return;
       }
-      if (!CONNECTED) {
-        if (status) status.textContent = NOT_CONNECTED;
-        return;
-      }
-      // Send buttons show "Sent" with a checkmark; Subscribe buttons keep their label
+      // Send buttons show "Sent" with a checkmark (shown before a service is connected, by the owner's
+      // choice); Subscribe buttons keep their label. The status line says when nothing was sent.
       const send = form.querySelector(".contact-form__submit, .help-form__send");
-      if (send) window.BSSSend?.play(send, "Sent");
+      if (send && !window.BSSSend?.isSent(send)) window.BSSSend?.play(send, "Sent");
+      if (status) status.textContent = CONNECTED ? "" : NOT_CONNECTED;
     });
   });
 })();
