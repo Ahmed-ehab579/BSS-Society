@@ -571,6 +571,11 @@ textarea.field__input {
   resize: vertical;
 }
 
+.field__input {
+  transition: border-color var(--motion-duration) var(--motion-ease),
+    outline-color var(--motion-duration) var(--motion-ease);
+}
+
 .field__input::placeholder {
   color: var(--color-field-placeholder);
   opacity: 1;

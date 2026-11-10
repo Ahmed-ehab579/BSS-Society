@@ -170,12 +170,34 @@
   const submit = form.querySelector(".partner-form__submit");
   let submitted = false;
 
+  // Opens or folds an extra question smoothly: its height, margins and opacity grow from nothing, so the
+  // fields below slide instead of jumping
+  function toggleField(field, show, animate) {
+    if (show === !field.hidden && !field.getAnimations().length) return;
+    field.getAnimations().forEach((animation) => animation.cancel());
+    if (!animate || reducedMotion.matches) {
+      field.hidden = !show;
+      field.style.overflow = "";
+      return;
+    }
+    field.hidden = false;
+    const style = getComputedStyle(field);
+    const open = { height: `${field.offsetHeight}px`, marginTop: style.marginTop, marginBottom: style.marginBottom, opacity: 1 };
+    const closed = { height: "0px", marginTop: "0px", marginBottom: "0px", opacity: 0 };
+    field.style.overflow = "hidden";
+    const animation = field.animate(show ? [closed, open] : [open, closed], { duration: 320, easing: "cubic-bezier(0.2, 0, 0, 1)" });
+    animation.onfinish = () => {
+      field.style.overflow = "";
+      if (!show) field.hidden = true;
+    };
+  }
+
   // Extra questions appear only when they apply: languages for translators, a name for organisations
-  function showFollowUps() {
+  function showFollowUps(animate = true) {
     const chosen = new Set(areas.filter((box) => box.checked).map((box) => box.value));
     chosen.add(form.querySelector('input[name="as"]:checked').value);
     form.querySelectorAll("[data-show-when]").forEach((field) => {
-      field.hidden = !chosen.has(field.dataset.showWhen);
+      toggleField(field, chosen.has(field.dataset.showWhen), animate);
     });
   }
 
@@ -232,5 +254,5 @@
     status.textContent = CONNECTED ? "Thank you. Our team will email you within a week." : NOT_CONNECTED;
   });
 
-  showFollowUps();
+  showFollowUps(false);
 })();
