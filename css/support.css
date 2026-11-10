@@ -370,7 +370,8 @@
 .partner-switch {
   display: flex;
   height: 48px;
-  padding: 3px;
+  padding: 0;   /* each half fills its side, so a hover colours the whole empty half */
+  overflow: hidden;
   border: var(--border-md) solid var(--color-neutral-300);
   border-radius: var(--radius-pill);
   background: var(--surface-action-outline);
@@ -435,6 +436,7 @@
 
 .partner-switch__option input:checked + span {
   background: var(--surface-action-primary);
+  box-shadow: inset 0 0 0 3px var(--surface-action-outline);   /* the 3 px gap around the dark pill */
   color: var(--color-text-on-dark);
 }
 
