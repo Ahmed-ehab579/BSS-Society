@@ -30,7 +30,7 @@
     flex: 0 1 558px;
     min-width: 0;
     max-width: 558px;
-    font-size: 53px;
+    font-size: var(--h1-size);
     line-height: 78px;
   }
 }
@@ -83,7 +83,7 @@
   }
 
   .intro__heading {
-    font-size: 36px;
+    font-size: var(--h1-size);
     line-height: 52px;
   }
 }

@@ -1,81 +1,85 @@
-/* Design tokens from the Figma variables (BS Society Agent). Shared by all pages. */
+/* Design tokens shared by every page.
+   Layer 1 (CORE) is the approved system from the consistency audit (decisions d1–d15, 2026-11-10):
+   use these in new code. Layer 2 (ALIASES) keeps the older names working; each points to a core token,
+   so near-duplicate values are merged everywhere. */
 :root {
-  /* Colors */
-  --color-page-bg: #f5f2eb;
-  --color-text: #000000;               /* Color Scheme 1/Text */
-  --color-heading: #272727;
-  --color-text-on-light: #3b3b3b;      /* Text/0n-Light/Daefult */
-  --color-text-on-dark: #ffffff;       /* Text/on-Dark/Default */
-  --color-neutral-100: #e3e3e3;        /* Brand color/neutral/100 */
-  --color-neutral-200: #c6c6c6;        /* Brand color/neutral/200 */
-  --color-neutral-300: #aaaaaa;        /* Brand color/neutral/300 */
-  --color-neutral-400: #8e8e8e;        /* Brand color/neutral/400 */
-  --border-color-media: #4f4f4f;       /* the thin stroke round book covers and players */
-  --color-neutral-white: #ffffff;      /* Brand color/neutral/White */
-  --color-brand-500: #3b3b3b;          /* Brand color/primery/500 (d) */
-  --color-wordmark: #282828;
-  --surface-action-primary: #3b3b3b;   /* Surface/Action/Primery/Default */
-  --surface-action-primary-pressed: #232323; /* Surface/Action/Primery/Hovered, used for the pressed state */
-  --surface-cards: #e8e5dc;            /* Surface/Cards/Default, Brand color/Dominent/550 (sh) */
-  --surface-cards-hovered: #d5e3ca;    /* Surface/Cards/Hovered */
-  --surface-cards-locked-overlay: rgba(232, 229, 220, 0.89); /* Surface/Cards/Locked overlay */
-  --surface-cards-completed-overlay: rgba(206, 217, 199, 0.76); /* completed card wash (Figma 905:1894; variable pending) */
-  --color-completed: #93a787;          /* completed check icon (Figma 905:1894; variable pending) */
-  --color-completed-text: #41473c;     /* completed card message (Figma 905:1955; variable pending) */
-  --color-section-label: #555953;
-  --color-section-dot: #95b97b;
-  --color-text-muted: #909090;
-  --color-card-heading: #252525;
-  --color-card-text: rgba(37, 37, 37, 0.8);
-  --color-text-body: #626262;          /* Text/0n-light/body */
-  --color-heading-strong: #111111;
-  --color-topic-text: #d0d0d0;
-  --color-benefit-border: #333333;
-  --surface-action-outline: #f7f5ef;   /* Surface/Action/Outline/Default */
-  --surface-action-outline-hovered: #aac795; /* Surface/Action/Outline/Hovered */
-  --surface-action-outline-pressed: #94b47d; /* the same green, one step darker (not in Figma yet) */
-  --backdrop: rgba(0, 0, 0, 0.4);      /* Surface/Backdrop */
-  --border-color-on-light: #3b3b3b;    /* Border/Color/On-light */
-  --border-color-on-dark: #fdfcfb;     /* Border/Color/On-dark */
-  --color-footer-bg: #2e2e2e;
-  --color-footer-heading: #959595;
-  --color-field-label: #353535;
-  --color-field-bg: #f9f7f1;
-  --color-field-border: #bbbbbb;
-  --color-field-placeholder: #8a8a8a;
-  --surface-form-panel: rgba(243, 240, 231, 0.9);
-  --border-color-form-panel: #848484;
-  /* Library (Figma 984:2587; variables pending in Figma) */
-  --color-text-subtle: #858780;        /* filter labels, search placeholder, results eyebrow */
-  --color-type-icon: #647b4e;          /* material type icon in the card badge */
-  --surface-badge: rgba(255, 255, 255, 0.88);
-  --border-color-badge: #c2c2c2;
-  --surface-media: #f0efe8;            /* resource photo background while loading or missing */
-  --surface-book: #f6f3ed;             /* board behind book covers */
-  --surface-media-scrim: rgba(0, 0, 0, 0.2);
-  --surface-media-scrim-light: rgba(0, 0, 0, 0.07);
-  --surface-media-scrim-audio: rgba(50, 50, 50, 0.33);
-  --radius-media: 12px;
-  --shadow-media: 0 5px 8px rgba(0, 0, 0, 0.28);
-  --shadow-media-book: 0 2px 5px 1px rgba(0, 0, 0, 0.11);
-  --surface-resource-card: #e4e0d6;    /* resource card default; lighter on phones, below */
-  --surface-cards-hovered-neutral: #dedace;   /* resource card hover */
-  --shadow-card-hover: 0 8px 18px -10px rgba(0, 0, 0, 0.16);
-  --border-color-control: #dadbd4;     /* view toggle and sort */
-  --radius-pill: 999px;
-  --radius-card: 24px;
-  --shadow-menu: 0 8px 24px rgba(0, 0, 0, 0.12);
-  /* New Muslim path (Figma 1137:4683; variables pending in Figma) */
-  --color-step-number: rgba(32, 33, 36, 0.3);
-  --surface-preview: #f1efe6;          /* topic preview panel */
-  --surface-banner: #5a5a5a;           /* "Explore more resources" callout */
-  --radius-step: 28px;
-  /* About us (Figma 1205:1280; variables pending in Figma) */
-  --color-card-art: rgba(41, 41, 41, 0.06);          /* faded card illustration */
-  --color-card-art-active: rgba(127, 169, 96, 0.19); /* the same illustration on hover */
-  /* Validation colours: not defined in Figma (pending approval) */
+  /* ===================== CORE ===================== */
+
+  /* Surfaces (d1): page → raised → card → card hover → card pressed */
+  --surface-page: #f5f2eb;
+  --surface-raised: #f9f7f1;          /* fields, outline buttons, chips, panels, media boards */
+  --surface-card: #e8e5dc;
+  --surface-card-hover: #dedace;
+  --surface-card-pressed: #d2cdc0;
+  --surface-dark: #3b3b3b;            /* primary buttons, dark chips */
+  --surface-dark-pressed: #232323;
+  --surface-footer: #2e2e2e;
+  --surface-banner: #5a5a5a;
+  --surface-overlay: rgba(0, 0, 0, 0.4);        /* backdrop behind dialogs and sheets */
+  --surface-scrim: rgba(0, 0, 0, 0.2);          /* over photos and video */
+
+  /* Text (d2) */
+  --text-strong: #272727;             /* headings, titles, nav */
+  --text: #3b3b3b;                    /* default text, labels, links */
+  --text-body: #626262;               /* paragraphs, descriptions */
+  --text-muted: #8e8e8e;              /* captions, eyebrows, hints */
+  --text-on-dark: #ffffff;
+  --text-on-dark-muted: #c6c6c6;      /* secondary text on photos and dark panels */
+  --text-wordmark: #282828;           /* logo only */
+
+  /* Borders (d3) */
+  --border-strong: #3b3b3b;           /* outline buttons, selected items */
+  --border: #bbbbbb;                  /* fields, controls, cards that need an edge */
+  --border-subtle: #e3e3e3;           /* dividers */
+  --border-on-dark: #fdfcfb;
+
+  /* Green scale (d4) */
+  --green-100: #d5e3ca;               /* hover / selected fill */
+  --green-300: #aac795;               /* outline-button hover, soft accents */
+  --green-500: #93a787;               /* done, dots, pins */
+  --green-700: #647b4e;               /* icons and text in green */
+  --green-900: #41473c;               /* text on green fills */
+
+  /* Feedback (not in Figma yet) */
   --color-error: #b3261e;
   --color-error-on-dark: #ffb4ab;
+
+  /* Neutral ramp (kept for one-off needs) */
+  --color-neutral-100: #e3e3e3;
+  --color-neutral-200: #c6c6c6;
+  --color-neutral-300: #aaaaaa;
+  --color-neutral-400: #8e8e8e;
+  --color-neutral-white: #ffffff;
+
+  /* Corner radius (d11) */
+  --radius-xs: 4px;                   /* tiny marks (flags) */
+  --radius-sm: 12px;                  /* fields, small controls, photos */
+  --radius-md: 16px;                  /* small cards, panels on phones */
+  --radius-lg: 24px;                  /* cards, panels, large media */
+  --radius-pill: 999px;
+  --radius-round: 50%;
+
+  /* Shadows (d13) */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);                /* cards at rest */
+  --shadow-md: 0 8px 18px -10px rgba(0, 0, 0, 0.16);         /* card hover */
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);               /* menus, sheets, dialogs */
+  --shadow-media: 0 4px 8px rgba(0, 0, 0, 0.2);              /* photos, book covers, media badges */
+  --shadow-control: 0 1px 3px rgba(0, 0, 0, 0.25);           /* small moving parts (switch thumb) */
+
+  /* Motion (d13) */
+  --motion-fast: 150ms;               /* colour and underline changes */
+  --motion-base: 220ms;               /* most state changes */
+  --motion-slow: 360ms;               /* hovers that move, sheets leaving */
+  --motion-expand: 600ms;             /* opening and closing, reveals */
+  --motion-ease: cubic-bezier(0.2, 0, 0, 1);              /* standard */
+  --motion-ease-expand: cubic-bezier(0.65, 0, 0.35, 1);   /* even in-out */
+  --motion-ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);    /* sheets and drawers */
+
+  /* Icon sizes */
+  --icon-sm: 16px;
+  --icon-md: 20px;
+  --icon-lg: 24px;
+  --icon-xl: 32px;
 
   /* Border widths */
   --border-md: 1px;
@@ -83,8 +87,8 @@
 
   /* Spacing scale */
   --scale-0: 0;
-  --scale-100: 4px;
   --scale-12: 0.5px;
+  --scale-100: 4px;
   --scale-200: 8px;
   --scale-300: 12px;
   --scale-400: 16px;
@@ -95,92 +99,124 @@
   --scale-1000: 48px;
   --scale-1100: 64px;
 
-  /* Typography */
+  /* Typography (d5, d6): one scale; weights 400 / 500 / 600 only */
   --font-family: "Manrope", system-ui, sans-serif;
+  --font-arabic: "Noto Naskh Arabic", "Geeza Pro", serif;
 
-  --h1-size: 61px;
-  --h1-line: 86px;
-  --h1-weight: 500;
+  --h1-size: 61px;  --h1-line: 72px;  --h1-weight: 500;
+  --h2-size: 45px;  --h2-line: 59px;  --h2-weight: 400;  --h2-tracking: -0.98px;
+  --h3-size: 35px;  --h3-line: 49px;  --h3-weight: 500;  --h3-tracking: -0.39px;
+  --h4-size: 31px;  --h4-line: 45px;  --h4-weight: 500;
+  --h5-size: 26px;  --h5-line: 34px;  --h5-weight: 500;
+  --h6-size: 20px;  --h6-line: 28px;  --h6-weight: 600;
 
-  --h2-size: 45px;
-  --h2-line: 59px;
-  --h2-weight: 400;
-  --h2-tracking: -0.98px;
-
-  --h3-size: 35px;
-  --h3-line: 49px;
-  --h3-weight: 500;
-  --h3-tracking: -0.39px;
-
-  --h4-size: 31px;
-  --h4-line: 45px;
-  --h4-weight: 500;
-
-  --h5-size: 26px;
-  --h5-line: 34px;
-  --h5-weight: 500;
-
-  --h6-size: 20px;
-  --h6-line: 28px;
-  --h6-weight: 600;
-
-  --body-xxl-size: 24px;
-  --body-xxl-line: 42px;
-  --body-xxl-weight: 500;
-
-  --body-l-size: 18px;
-  --body-l-line: 29px;
-
-  --body-xl-size: 20px;
-  --body-xl-line: 32px;
-  --body-m-size: 16px;
-  --body-m-line: 26px;
-  --body-s-size: 14px;
-  --body-s-line: 22px;
-  --body-xs-size: 12px;
-  --body-xs-line: 18px;
+  --body-xxl-size: 24px;  --body-xxl-line: 42px;  --body-xxl-weight: 500;
+  --body-xl-size: 20px;   --body-xl-line: 32px;
+  --body-l-size: 18px;    --body-l-line: 29px;
+  --body-m-size: 16px;    --body-m-line: 26px;
+  --body-s-size: 14px;    --body-s-line: 22px;
+  --body-xs-size: 12px;   --body-xs-line: 18px;
   --body-weight: 400;
 
-  --label-l-size: 16px;
-  --label-l-line: 24px;
-  --label-m-size: 14px;
-  --label-m-line: 20px;
-  --label-s-size: 12px;
-  --label-s-line: 18px;
-  --label-s-tracking: 0.5px;
+  --label-l-size: 16px;  --label-l-line: 24px;
+  --label-m-size: 14px;  --label-m-line: 20px;
+  --label-s-size: 12px;  --label-s-line: 18px;  --label-s-tracking: 0.5px;
   --label-weight: 600;
   --label-uppercase-tracking: 1px;
 
-  /* Elevation */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);   /* Shadow/SM */
+  /* Display numbers (01, 02…) on paths, steps and stats: one style everywhere */
+  --display-size: 72px;
+  --display-line: 1;
+  --display-weight: 400;
+  --display-color: rgba(32, 33, 36, 0.3);
 
   /* Layout */
   --container-max: 1360px;
   --gutter: var(--scale-900);
   --header-height: 98px;
 
-  /* Motion */
-  --motion-duration: 220ms;
-  --motion-duration-hover: 360ms;      /* Figma smart animate 300ms, slightly slower */
-  --motion-duration-expand: 700ms;     /* cards opening and closing */
-  --motion-duration-art: 600ms;        /* card illustrations (faster than the 1020ms in Figma, by request) */
-  --motion-ease-expand: cubic-bezier(0.65, 0, 0.35, 1);   /* even ease-in-out, same pace both ways */
-  --motion-ease: cubic-bezier(0.2, 0, 0, 1);
-  --motion-duration-sheet: 440ms;      /* language sheet sliding up */
-  --motion-duration-sheet-out: 300ms;  /* and away: leaving is quicker than arriving */
-  --motion-ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);   /* fast start, long soft landing */
-  --motion-duration-link: 150ms;       /* Footer Link note: underline fades in over 150ms */
+  /* ===================== ALIASES (older names → core) ===================== */
+  --color-page-bg: var(--surface-page);
+  --surface-action-outline: var(--surface-raised);
+  --color-field-bg: var(--surface-raised);
+  --surface-book: var(--surface-raised);
+  --surface-preview: var(--surface-raised);
+  --surface-media: var(--surface-raised);
+  --surface-form-panel: var(--surface-raised);
+  --surface-cards: var(--surface-card);
+  --surface-resource-card: var(--surface-card);
+  --surface-cards-hovered-neutral: var(--surface-card-hover);
+  --surface-resource-card-pressed: var(--surface-card-pressed);
+  --surface-cards-hovered: var(--green-100);
+  --surface-cards-locked-overlay: rgba(232, 229, 220, 0.89);   /* --surface-card at 89% */
+  --surface-cards-completed-overlay: rgba(213, 227, 202, 0.76); /* --green-100 at 76% */
+  --surface-action-primary: var(--surface-dark);
+  --surface-action-primary-pressed: var(--surface-dark-pressed);
+  --surface-action-outline-hovered: var(--green-300);
+  --surface-action-outline-pressed: var(--green-500);
+  --surface-badge: rgba(255, 255, 255, 0.88);
+  --surface-media-scrim: var(--surface-scrim);
+  --surface-media-scrim-light: rgba(0, 0, 0, 0.07);
+  --surface-media-scrim-audio: rgba(50, 50, 50, 0.33);
+  --backdrop: var(--surface-overlay);
+  --color-footer-bg: var(--surface-footer);
+
+  --color-text: var(--text-strong);
+  --color-heading: var(--text-strong);
+  --color-heading-strong: var(--text-strong);
+  --color-card-heading: var(--text-strong);
+  --color-text-on-light: var(--text);
+  --color-brand-500: var(--text);
+  --color-field-label: var(--text);
+  --color-wordmark: var(--text-wordmark);
+  --color-text-body: var(--text-body);
+  --color-card-text: var(--text-body);
+  --color-text-muted: var(--text-muted);
+  --color-text-subtle: var(--text-muted);
+  --color-field-placeholder: var(--text-muted);
+  --color-section-label: var(--text-body);
+  --color-footer-heading: var(--text-on-dark-muted);
+  --color-topic-text: var(--text-on-dark-muted);
+  --color-text-on-dark: var(--text-on-dark);
+  --color-step-number: var(--display-color);
+
+  --border-color-on-light: var(--border-strong);
+  --border-color-on-dark: var(--border-on-dark);
+  --color-benefit-border: var(--border-strong);
+  --border-color-media: var(--border-strong);
+  --color-field-border: var(--border);
+  --border-color-badge: var(--border);
+  --border-color-control: var(--border);
+  --border-color-form-panel: var(--border);
+
+  --color-section-dot: var(--green-500);
+  --color-completed: var(--green-500);
+  --color-completed-text: var(--green-900);
+  --color-type-icon: var(--green-700);
+  --color-card-art: rgba(41, 41, 41, 0.06);
+  --color-card-art-active: rgba(149, 185, 123, 0.19);   /* --green-500 at 19% */
+
+  --radius-media: var(--radius-sm);
+  --radius-card: var(--radius-lg);
+  --radius-step: var(--radius-lg);
+
+  --shadow-card-hover: var(--shadow-md);
+  --shadow-menu: var(--shadow-lg);
+  --shadow-media-book: var(--shadow-media);
+
+  --motion-duration: var(--motion-base);
+  --motion-duration-hover: var(--motion-slow);
+  --motion-duration-expand: var(--motion-expand);
+  --motion-duration-art: var(--motion-expand);
+  --motion-duration-sheet: var(--motion-slow);
+  --motion-duration-sheet-out: var(--motion-base);
+  --motion-duration-link: var(--motion-fast);
 }
 
 @media (max-width: 767px) {
   :root {
     --gutter: var(--scale-400);
-  }
-}
-
-@media (max-width: 767px) {
-  :root {
-    --surface-resource-card: #dedace;   /* the old pressed colour; pressed is darker, below */
-    --surface-resource-card-pressed: #d2cdc0;
+    --h1-size: 36px;  --h1-line: 44px;   /* every page title on phones (R1) */
+    --display-size: 56px;
   }
 }

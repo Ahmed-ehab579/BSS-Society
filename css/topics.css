@@ -46,7 +46,7 @@
   flex: 0 0 287px;
   height: 406px;
   overflow: hidden;
-  border-radius: 25.4px;
+  border-radius: var(--radius-lg);
   color: var(--color-text-on-dark);
   user-select: none;
   -webkit-user-select: none;
@@ -110,7 +110,7 @@
   padding-inline: 7.7px;
   overflow: hidden;
   border: 1.4px solid var(--color-text-on-dark);
-  border-radius: 30.8px;
+  border-radius: var(--radius-pill);
   background: rgba(59, 59, 59, 0);
   color: var(--color-text-on-dark);
   transition: width var(--motion-duration-hover) var(--motion-ease),
@@ -120,7 +120,7 @@
 .topic-card__cta-label {
   flex: none;
   width: 60px;
-  font-size: 17px;
+  font-size: var(--body-m-size);
   line-height: 19.4px;
   font-weight: var(--h5-weight);
   white-space: nowrap;
@@ -190,7 +190,7 @@
   /* One main card plus a preview of the next */
   .topic-card {
     flex-basis: calc(100% - 56px);
-    border-radius: 16px;
+    border-radius: var(--radius-md);
   }
 
   .topic-card__cta {

@@ -39,7 +39,7 @@
   align-items: center;
   gap: var(--scale-200);
   padding: var(--scale-200) var(--scale-500) var(--scale-200) var(--scale-300);
-  border: var(--scale-12) solid var(--color-neutral-400);
+  border: var(--scale-12) solid var(--border);
   border-radius: var(--radius-pill);
   background: var(--surface-action-outline);   /* the panel is already Surface/Cards */
   color: var(--color-heading);
@@ -67,7 +67,7 @@
 .topic-tab {
   position: relative;   /* keeps the hidden topic title inside the tab (and the scrolling row on phones) */
   padding: var(--scale-200) var(--scale-600);
-  border: var(--scale-12) solid var(--color-neutral-400);
+  border: var(--scale-12) solid var(--border);
   border-radius: var(--radius-pill);
   background: var(--surface-action-outline);
   color: var(--color-text-body);
@@ -123,9 +123,9 @@
 .topic-panel__number {
   display: block;
   color: var(--color-step-number);
-  font-size: 82px;
+  font-size: var(--display-size);
   line-height: 82px;
-  font-weight: 300;
+  font-weight: 400;
   letter-spacing: -4.1px;
 }
 
@@ -244,7 +244,7 @@
 @media (max-width: 767px) {
   .step-heading {
     margin-bottom: var(--scale-800);
-    font-size: 40px;          /* the page's section title on phones (the phone page title is 36px) */
+    font-size: var(--h2-size);          /* the page's section title on phones (the phone page title is 36px) */
     line-height: 48px;
     letter-spacing: -0.8px;
   }
@@ -294,7 +294,7 @@
   }
 
   .topic-panel__number {
-    font-size: 64px;
+    font-size: var(--display-size);
     line-height: 60px;
     letter-spacing: -2.8px;
   }
@@ -332,7 +332,7 @@
   /* Compact cards on phones: 204px wide, shorter media, smaller type and a 40px button */
   .topic-panel__track > .resource-card {
     flex-basis: min(204px, 66%);
-    border-radius: var(--scale-500);
+    border-radius: var(--radius-lg);
   }
 
   .topic-panel__track .resource-card__media {
@@ -341,7 +341,7 @@
 
   .topic-panel__track .resource-card__frame {
     height: 160px;
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
   }
 
   .topic-panel__track .resource-card__play {
@@ -356,7 +356,7 @@
     top: var(--scale-200);
     right: var(--scale-200);
     padding: 1px 8px;
-    font-size: 11px;
+    font-size: var(--body-xs-size);
     line-height: 16px;
   }
 
@@ -374,13 +374,13 @@
   }
 
   .topic-panel__track .resource-card__title {
-    font-size: 17px;
+    font-size: var(--body-m-size);
     line-height: 24px;
     font-weight: var(--h6-weight);
   }
 
   .topic-panel__track .resource-card__desc {
-    font-size: 13px;
+    font-size: var(--body-s-size);
     line-height: 20px;
     -webkit-line-clamp: 2;
     line-clamp: 2;

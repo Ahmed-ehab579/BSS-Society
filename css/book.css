@@ -9,7 +9,7 @@
      24px  either side of the divider
      40px  one section and the next (32px on phones) */
 .book-page {
-  --book-radius: 20px;
+  --book-radius: var(--radius-lg);
   padding-top: calc(var(--header-height) + 57px);
 }
 
@@ -120,7 +120,7 @@
   grid-template-rows: auto auto 1fr;   /* taller buttons never push the author away from the title */
   column-gap: var(--scale-300);
   padding-bottom: var(--scale-600);
-  border-bottom: var(--scale-12) solid var(--color-neutral-400);
+  border-bottom: var(--scale-12) solid var(--border);
 }
 
 .book__tag {
@@ -151,7 +151,7 @@
 .book__author {
   grid-area: author;
   margin: var(--scale-100) 0 0;
-  font-size: 15px;
+  font-size: var(--body-m-size);
   line-height: var(--body-s-line);
   font-weight: 500;
   color: var(--color-text-body);
@@ -175,7 +175,7 @@
   height: 45px;
   padding: 0;
   border: 0;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: var(--surface-cards);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -212,7 +212,7 @@
 }
 
 [data-book-save].is-popping {
-  animation: book-pop 320ms var(--motion-ease);
+  animation: book-pop var(--motion-slow) var(--motion-ease);
 }
 
 @keyframes book-pop {
@@ -257,7 +257,7 @@
 }
 
 .book__heading {
-  font-size: 19px;
+  font-size: var(--h6-size);
   line-height: var(--h6-line);
   font-weight: 500;
   letter-spacing: 0.65px;
@@ -349,12 +349,12 @@
 
 .download-fill.is-resetting::before {
   opacity: 0;
-  transition: opacity 420ms var(--motion-ease);
+  transition: opacity var(--motion-slow) var(--motion-ease);
 }
 
 /* The text and icon turn dark as the light green reaches them */
 .btn--primary.download-fill {
-  transition: color 420ms var(--motion-ease);
+  transition: color var(--motion-slow) var(--motion-ease);
 }
 
 .btn--primary.download-fill.is-loading:not(.is-resetting) {
@@ -378,7 +378,7 @@
 }
 
 .download-icon > :first-child {
-  transition: opacity 240ms var(--motion-ease), filter 420ms var(--motion-ease),
+  transition: opacity var(--motion-base) var(--motion-ease), filter var(--motion-slow) var(--motion-ease),
     transform var(--motion-duration-hover) var(--motion-ease);
 }
 
@@ -397,7 +397,7 @@
   left: 50%;
   opacity: 0;
   transform: translate(-50%, -50%);
-  transition: opacity 240ms var(--motion-ease);
+  transition: opacity var(--motion-base) var(--motion-ease);
 }
 
 .download-check path {
@@ -412,7 +412,7 @@
 }
 
 .download-fill.is-done .download-check path {
-  transition: stroke-dashoffset 380ms var(--motion-ease);
+  transition: stroke-dashoffset var(--motion-slow) var(--motion-ease);
 }
 
 .download-fill.is-resetting .download-check path {
@@ -517,7 +517,7 @@
   .book__cover,
   .book__head,
   .book__details > .book__section:first-of-type {
-    animation: book-rise 640ms var(--motion-ease) both;
+    animation: book-rise var(--motion-expand) var(--motion-ease) both;
   }
 
   /* Only until it has settled: a held animation would keep the sticky cover on its own layer */
@@ -544,7 +544,7 @@
   .will-reveal {
     opacity: 0;
     transform: translateY(14px);
-    transition: opacity 640ms var(--motion-ease), transform 640ms var(--motion-ease);
+    transition: opacity var(--motion-expand) var(--motion-ease), transform var(--motion-expand) var(--motion-ease);
   }
 
   .will-reveal.is-revealed {
@@ -581,7 +581,7 @@
   }
 
   .book__cover {
-    border-radius: 16px;
+    border-radius: var(--radius-md);
   }
 
   /* The arrow is drawn 4px inside its box: this lines the arrow up with the photo and the logo */
@@ -605,7 +605,7 @@
   }
 
   .book__title {
-    font-size: 28px;
+    font-size: var(--h4-size);
     line-height: 40px;
     letter-spacing: -0.64px;
   }

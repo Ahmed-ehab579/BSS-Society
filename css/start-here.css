@@ -26,8 +26,8 @@
   max-width: 1153px;
   margin: var(--scale-600) auto 0;
   padding: var(--scale-300) var(--scale-500);
-  border: var(--border-md) solid var(--color-neutral-300);
-  border-radius: var(--scale-300);
+  border: var(--border-md) solid var(--border);
+  border-radius: var(--radius-sm);
   background: var(--surface-action-outline);
   font-size: var(--body-s-size);
   line-height: var(--body-s-line);
@@ -40,16 +40,16 @@
 
 /* Journey */
 .journey {
-  --line-muted: #b8b8b8;               /* dashed connector between locked cards */
-  --line-active: #5c5c5c;              /* connector once both cards are available */
-  --pin-done-ring: #c5d5b2;            /* Figma 970:2563 "Done": completed articles */
-  --pin-done-dot: #6e8e49;
-  --pin-turn-dot: #88b653;             /* Figma 970:2563 "Start here": the card whose turn it is, also "Continue" (pulses) */
-  --pin-idle-ring: #dbdbdb;            /* locked indicator: locked, unlocked early, or in progress but not its turn */
+  --line-muted: var(--border);               /* dashed connector between locked cards */
+  --line-active: var(--text-body);              /* connector once both cards are available */
+  --pin-done-ring: var(--green-100);            /* Figma 970:2563 "Done": completed articles */
+  --pin-done-dot: var(--green-700);
+  --pin-turn-dot: var(--green-500);             /* Figma 970:2563 "Start here": the card whose turn it is, also "Continue" (pulses) */
+  --pin-idle-ring: var(--border-subtle);            /* locked indicator: locked, unlocked early, or in progress but not its turn */
   --pin-turn-ring: var(--surface-cards);        /* Figma 970:2563 "Start here" ring */
-  --pin-idle-dot: #9f9f9f;
-  --card-stroke-active: #7d7d7d;       /* available card stroke */
-  --card-stroke-locked: #929292;       /* locked card stroke */
+  --pin-idle-dot: var(--text-muted);
+  --card-stroke-active: var(--border-strong);       /* available card stroke */
+  --card-stroke-locked: var(--border);       /* locked card stroke */
   --card-width: 275.56px;
   position: relative;
   max-width: 1153px;
@@ -94,7 +94,7 @@
   stroke-dasharray: 10 9;
   vector-effect: non-scaling-stroke;
   shape-rendering: geometricPrecision;  /* even anti-aliasing, so near-vertical runs don't snap to darker pixels */
-  transition: stroke var(--card-duration, 600ms) var(--card-ease, ease),
+  transition: stroke var(--card-duration, var(--motion-expand)) var(--card-var(--motion-ease), var(--motion-ease)),
     stroke-width var(--card-duration, 600ms) var(--card-ease, ease);
 }
 
@@ -142,7 +142,7 @@
   width: 52.61px;
   height: 52.61px;
   margin-bottom: 23.5px;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: var(--pin-idle-ring);
   isolation: isolate;                  /* keeps the pulse waves behind the dot */
   transition: background-color var(--motion-duration-hover) var(--motion-ease);
@@ -155,7 +155,7 @@
   margin: auto;
   width: 23.31px;
   height: 23.31px;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: var(--pin-idle-dot);
   transition: background-color var(--motion-duration-hover) var(--motion-ease);
 }
@@ -196,7 +196,7 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: var(--pin-turn-dot);
   opacity: 0;
   pointer-events: none;
@@ -238,10 +238,10 @@
   min-height: 428.65px;
   overflow: hidden;
   border: 0.5px solid var(--color-benefit-border);
-  border-radius: 21.312px;
+  border-radius: var(--radius-lg);
   background: var(--surface-cards);
   color: var(--color-card-text);
-  transition: background-color var(--card-duration) var(--card-ease),
+  transition: background-color var(--card-duration) var(--card-var(--motion-ease)),
     gap var(--card-duration) var(--card-ease);
 }
 
@@ -252,10 +252,10 @@
 }
 
 .journey-card__number {
-  font-size: 81.407px;
+  font-size: var(--display-size);
   line-height: 1;
-  font-weight: 300;
-  color: rgba(37, 37, 37, 0.35);
+  font-weight: 400;
+  color: var(--display-color);
   margin-bottom: var(--body-gap);
 }
 
@@ -288,7 +288,7 @@
   display: grid;
   grid-template-rows: 0fr;
   opacity: 0;
-  transition: grid-template-rows var(--card-duration) var(--card-ease),
+  transition: grid-template-rows var(--card-duration) var(--card-var(--motion-ease)),
     opacity var(--card-duration) var(--card-ease);
 }
 
@@ -302,7 +302,7 @@
   font-size: var(--body-s-size);
   line-height: 1.7;
   font-weight: 500;
-  color: #686868;                     /* subtitle colour on every card state */
+  color: var(--text-body);                     /* subtitle colour on every card state */
 }
 
 /* Reading button: only on keyboard focus (desktop). Never on touch screens or phones. */
@@ -313,7 +313,7 @@
   width: 44px;
   height: 44px;
   margin: 12px 0 0 auto;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: var(--surface-action-primary);
 }
 
@@ -324,10 +324,10 @@
 
 /* Elevation: the card whose turn it is sits above the flat ones */
 a.journey-card {
-  --card-shadow: 0 1px 2px rgba(37, 37, 37, 0.08), 0 8px 16px -4px rgba(37, 37, 37, 0.14), 0 20px 36px -12px rgba(37, 37, 37, 0.18);
+  --card-shadow: var(--shadow-lg);
   gap: 21px;                         /* always the expanded size: description visible, default colour */
   border-color: var(--card-stroke-active);
-  transition: background-color var(--card-duration) var(--card-ease);
+  transition: background-color var(--card-duration) var(--card-var(--motion-ease));
   cursor: default;   /* default arrow; the cursor badge signals the action */
   -webkit-tap-highlight-color: transparent;
 }
@@ -442,7 +442,7 @@ a.journey-card:focus-visible .journey-card__go {
   height: var(--icon-h);
   transform-origin: center;
   pointer-events: none;
-  transition: left var(--card-duration) var(--card-ease), top var(--card-duration) var(--card-ease),
+  transition: left var(--card-duration) var(--card-var(--motion-ease)), top var(--card-duration) var(--card-var(--motion-ease)),
     transform var(--card-duration) var(--card-ease);
 }
 
@@ -467,12 +467,12 @@ a.journey-card:focus-visible .journey-card__go {
   padding: 25px 13px;
   /* Opaque card colour underneath (Figma "Component 59") plus the 89% overlay on top */
   background:
-    linear-gradient(var(--surface-cards-locked-overlay, rgba(232, 229, 220, 0.89)), var(--surface-cards-locked-overlay, rgba(232, 229, 220, 0.89))),
-    var(--surface-cards, #e8e5dc);
+    linear-gradient(var(--surface-cards-locked-overlay, var(--surface-cards-locked-overlay)), var(--surface-cards-locked-overlay, var(--surface-cards-locked-overlay))),
+    var(--surface-cards, var(--surface-card));
   color: var(--color-text);
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--card-duration) var(--card-ease);
+  transition: opacity var(--card-duration) var(--card-var(--motion-ease));
 }
 
 .journey-card__locked-copy {
@@ -486,14 +486,14 @@ a.journey-card:focus-visible .journey-card__go {
 
 .journey-card__locked-title {
   max-width: 218px;
-  font-size: 21.75px;
+  font-size: var(--h6-size);
   line-height: 1.5;
   font-weight: 600;
 }
 
 .journey-card__locked-text {
   max-width: 187px;
-  font-size: 15.75px;
+  font-size: var(--body-m-size);
   line-height: 1.5;
   font-weight: 400;
 }
@@ -519,7 +519,7 @@ a.journey-card:focus-visible .journey-card__go {
 /* Original content stays only as a ghost behind the overlay (49% x 11% visible) */
 .journey-card.is-locked .journey-card__body,
 .journey-card.is-locked .journey-card__media {
-  transition: opacity var(--card-duration) var(--card-ease);
+  transition: opacity var(--card-duration) var(--card-var(--motion-ease));
 }
 
 .journey-card.is-locked:focus-within .journey-card__body {
@@ -595,7 +595,7 @@ a.journey-card:focus-visible .journey-card__go {
   padding: 25px 13px;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--card-duration) var(--card-ease);
+  transition: opacity var(--card-duration) var(--card-var(--motion-ease));
 }
 
 .journey-card__done-title {
@@ -610,7 +610,7 @@ a.journey-card:focus-visible .journey-card__go {
 
 .journey-card.is-completed .journey-card__body,
 .journey-card.is-completed .journey-card__media {
-  transition: opacity var(--card-duration) var(--card-ease);
+  transition: opacity var(--card-duration) var(--card-var(--motion-ease));
 }
 
 .journey-card.is-completed:focus-within .journey-card__done-panel {
@@ -664,7 +664,7 @@ a.journey-card:focus-visible .journey-card__go {
   gap: 4px;
   padding: 7px 14px;
   border: 1px solid var(--border-color-on-dark);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--surface-action-primary);
   color: var(--color-text-on-dark);
   font-size: var(--label-m-size);
@@ -741,11 +741,11 @@ a.journey-card:focus-visible .journey-card__go {
   }
 
   .journey-card__number {
-    font-size: 67.35px;
+    font-size: var(--display-size);
   }
 
   .journey-card__title {
-    font-size: 22.12px;
+    font-size: var(--h6-size);
   }
 
   .journey-card__media {
@@ -775,11 +775,11 @@ a.journey-card:focus-visible .journey-card__go {
   }
 
   .journey-card__locked-title {
-    font-size: 18px;
+    font-size: var(--body-l-size);
   }
 
   .journey-card__locked-text {
-    font-size: 14px;
+    font-size: var(--body-s-size);
   }
 
   .journey-card.is-locked {
@@ -823,7 +823,7 @@ a.journey-card:focus-visible .journey-card__go {
   }
 
   .journey-card__reveal {
-    transition: opacity var(--card-duration) var(--card-ease);
+    transition: opacity var(--card-duration) var(--card-var(--motion-ease));
   }
 
   .journey__segment,

@@ -20,7 +20,7 @@
 /* ---- Step card ---------------------------------------------------------------------------- */
 
 .path-step {
-  border: var(--scale-12) solid var(--color-neutral-400);
+  border: var(--scale-12) solid var(--border);
   border-radius: var(--radius-step);
   background: var(--surface-cards);
   transition: background-color var(--motion-duration-hover) var(--motion-ease);
@@ -54,9 +54,9 @@
 .path-step__number {
   display: block;
   color: var(--color-step-number);
-  font-size: 92px;
+  font-size: var(--display-size);
   line-height: 82px;
-  font-weight: 300;
+  font-weight: 400;
   letter-spacing: -4.1px;
 }
 
@@ -138,7 +138,7 @@
 .path-step.is-open .path-step__body {
   opacity: 1;
   transform: none;
-  transition: opacity var(--motion-duration-expand) var(--motion-ease-expand) 80ms,
+  transition: opacity var(--motion-duration-expand) var(--motion-ease-expand) var(--motion-fast),
     transform var(--motion-duration-expand) var(--motion-ease-expand);
 }
 
@@ -167,7 +167,7 @@
   width: 100%;
   padding: 26px 0 28px;
   border: 0;
-  border-bottom: var(--border-md) solid var(--color-neutral-300);
+  border-bottom: var(--border-md) solid var(--border);
   background: none;
   color: var(--color-text-body);
   font-family: inherit;
@@ -205,7 +205,7 @@
 .topic__row:focus-visible {
   outline: 2px solid var(--color-neutral-400);
   outline-offset: 2px;
-  border-radius: var(--scale-100);
+  border-radius: var(--radius-xs);
 }
 
 /* Desktop: all previews share the right column and cross-fade when the topic changes */
@@ -226,7 +226,7 @@
   opacity: 1;
   visibility: visible;
   transform: none;
-  transition: opacity var(--motion-duration-hover) var(--motion-ease) 60ms,
+  transition: opacity var(--motion-duration-hover) var(--motion-ease) var(--motion-fast),
     transform var(--motion-duration-hover) var(--motion-ease) 60ms, visibility 0s;
 }
 
@@ -240,16 +240,16 @@
   flex-direction: column;
   gap: var(--scale-500);
   padding: var(--scale-600);
-  border: var(--scale-12) solid var(--color-neutral-400);
-  border-radius: 18px;
+  border: var(--scale-12) solid var(--border);
+  border-radius: var(--radius-lg);
   background: var(--surface-preview);
 }
 
 .topic-preview__image {
   width: 100%;
   height: 170px;
-  border: var(--scale-12) solid var(--color-neutral-400);
-  border-radius: 10px;
+  border: var(--scale-12) solid var(--border);
+  border-radius: var(--radius-sm);
   object-fit: cover;
 }
 
@@ -384,7 +384,7 @@
   }
 
   .path-step__number {
-    font-size: 64px;
+    font-size: var(--display-size);
     line-height: 60px;
     letter-spacing: -2.8px;
   }
@@ -430,17 +430,17 @@
   .topic-preview__card {
     gap: var(--scale-400);   /* clearly larger than the space between text lines */
     padding: var(--scale-400) var(--scale-400) var(--scale-500);
-    border-radius: var(--scale-600);
+    border-radius: var(--radius-lg);
   }
 
   .topic-preview__image {
     height: auto;
     aspect-ratio: 16 / 10;   /* keeps the same proportions on every phone width */
-    border-radius: var(--scale-200);
+    border-radius: var(--radius-sm);
   }
 
   .topic-preview__text {
-    font-size: 15px;
+    font-size: var(--body-m-size);
     line-height: 25px;
   }
 
@@ -452,7 +452,7 @@
   }
 
   .callout__heading {
-    font-size: 30px;
+    font-size: var(--h4-size);
     line-height: 38px;
   }
 

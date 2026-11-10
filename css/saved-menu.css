@@ -51,7 +51,7 @@
   max-height: 85vh;
   max-height: 85dvh;
   overflow: hidden;
-  border-radius: var(--scale-600) var(--scale-600) 0 0;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   background: var(--color-page-bg);
   transform: translateY(100%);
   transition: transform var(--motion-duration-sheet-out) var(--motion-ease-expand);
@@ -97,7 +97,7 @@
 .saved-sheet__title {
   margin: 0;
   color: var(--color-heading);
-  font-size: 22px;
+  font-size: var(--h6-size);
   line-height: 30px;
   font-weight: var(--h5-weight);
 }
@@ -110,7 +110,7 @@
   height: 44px;
   padding: 0;
   border: 0;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: none;
   color: var(--color-text-on-light);
   cursor: pointer;
@@ -143,12 +143,12 @@
   gap: 6px;
   height: 34px;
   padding: 0 var(--scale-300);
-  border: var(--border-md) solid var(--color-neutral-300);
+  border: var(--border-md) solid var(--border);
   border-radius: var(--radius-pill);
   background: var(--surface-action-outline);
   color: var(--color-text-on-light);
   font-family: inherit;
-  font-size: 13px;
+  font-size: var(--body-s-size);
   line-height: 18px;
   font-weight: 500;
   white-space: nowrap;
@@ -194,7 +194,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  border-bottom: var(--scale-12) solid var(--color-neutral-200);
+  border-bottom: var(--scale-12) solid var(--border-subtle);
 }
 
 .saved-row:last-child {
@@ -209,7 +209,7 @@
   min-width: 0;
   min-height: 72px;
   padding: var(--scale-200) var(--scale-300);
-  border-radius: var(--scale-300);
+  border-radius: var(--radius-sm);
   color: var(--color-text-on-light);
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
@@ -222,7 +222,7 @@
   width: 52px;
   height: 52px;
   overflow: hidden;
-  border-radius: var(--scale-200);
+  border-radius: var(--radius-sm);
   background: var(--surface-media);
 }
 
@@ -269,7 +269,7 @@
   display: -webkit-box;
   overflow: hidden;
   color: var(--color-heading);
-  font-size: 15px;
+  font-size: var(--body-m-size);
   line-height: 21px;
   font-weight: 500;
   -webkit-line-clamp: 2;
@@ -286,7 +286,7 @@
   margin-right: var(--scale-100);
   padding: 0;
   border: 0;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: none;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -329,7 +329,7 @@
   background: none;
   color: var(--color-text-on-light);
   font-family: inherit;
-  font-size: 13px;
+  font-size: var(--body-s-size);
   line-height: 18px;
   font-weight: 600;
   cursor: pointer;
@@ -390,7 +390,7 @@
   flex-shrink: 0;
   margin: 0;
   padding: var(--scale-300) var(--scale-500) calc(var(--scale-400) + env(safe-area-inset-bottom));
-  border-top: var(--scale-12) solid var(--color-neutral-200);
+  border-top: var(--scale-12) solid var(--border-subtle);
   color: var(--color-text-muted);
   font-size: var(--body-xs-size);
   line-height: var(--body-xs-line);
@@ -445,8 +445,8 @@
   width: 100%;
   max-height: min(560px, calc(100vh - var(--dropdown-top, 0px) - var(--scale-400)));
   margin: 0;
-  border: var(--border-md) solid var(--color-neutral-100);
-  border-radius: var(--scale-400);
+  border: var(--border-md) solid var(--border-subtle);
+  border-radius: var(--radius-md);
   box-shadow: var(--shadow-menu);
   opacity: 0;
   transform: translateY(-6px);
@@ -469,7 +469,7 @@
 }
 
 .is-dropdown .saved-sheet__title {
-  font-size: 20px;
+  font-size: var(--h6-size);
   line-height: 28px;
 }
 
@@ -555,7 +555,7 @@
 }
 
 .save-btn.is-popping .save-btn__icon {
-  animation: save-pop 360ms var(--motion-ease);
+  animation: save-pop var(--motion-slow) var(--motion-ease);
 }
 
 @keyframes save-pop {
@@ -588,11 +588,11 @@
   gap: var(--scale-300);
   max-width: calc(100vw - 24px);
   padding: 10px 10px 10px var(--scale-400);
-  border-radius: var(--scale-300);
+  border-radius: var(--radius-sm);
   background: var(--surface-action-primary);
   box-shadow: var(--shadow-menu);
   color: var(--color-text-on-dark);
-  font-size: 13px;
+  font-size: var(--body-s-size);
   line-height: 18px;
   font-weight: 500;
   opacity: 0;
@@ -637,7 +637,7 @@
   background: none;
   color: var(--color-text-on-dark);
   font-family: inherit;
-  font-size: 13px;
+  font-size: var(--body-s-size);
   line-height: 18px;
   font-weight: 600;
   cursor: pointer;
@@ -688,9 +688,9 @@
   justify-content: center;
   width: 34px;
   height: 34px;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: var(--surface-action-primary);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.22);
+  box-shadow: var(--shadow-media);
   color: var(--color-text-on-dark);
   opacity: 0;
 }
@@ -702,7 +702,7 @@
 
 /* The header icon catches it */
 .saved-toggle.is-landing img {
-  animation: saved-land 420ms var(--motion-ease);
+  animation: saved-land var(--motion-slow) var(--motion-ease);
 }
 
 @keyframes saved-land {

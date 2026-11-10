@@ -1,11 +1,11 @@
 /* Related resources: panel, heading, auto-scrolling carousel (js/carousel.js) and resource cards.
    Shared by the article and book pages. */
 .resources {
-  --resources-radius: 20px;
+  --resources-radius: var(--radius-lg);
   --carousel-surface: var(--surface-action-outline);   /* the panel is already Surface/Cards */
   margin-top: 129px;
   padding: 65px var(--scale-500) 64px;
-  border-top: var(--border-md) solid var(--color-neutral-100);
+  border-top: var(--border-md) solid var(--border-subtle);
   border-radius: var(--resources-radius);
   background: var(--surface-cards);
 }
@@ -21,7 +21,7 @@
 
 .resources__head {
   padding-bottom: var(--scale-500);
-  border-bottom: var(--border-md) solid var(--color-neutral-200);
+  border-bottom: var(--border-md) solid var(--border-subtle);
 }
 
 .resources__heading {
@@ -144,8 +144,8 @@
   right: var(--scale-300);
   z-index: 1;
   padding: 0 var(--scale-200);
-  border: var(--scale-12) solid var(--color-neutral-300);
-  border-radius: 999px;
+  border: var(--scale-12) solid var(--border);
+  border-radius: var(--radius-pill);
   background: var(--color-neutral-200);
   font-size: var(--label-s-size);
   line-height: var(--label-s-line);
@@ -174,8 +174,8 @@
   align-items: center;
   gap: var(--scale-100);
   padding: 0 var(--scale-200);
-  border: var(--scale-12) solid var(--color-neutral-300);
-  border-radius: 999px;
+  border: var(--scale-12) solid var(--border);
+  border-radius: var(--radius-pill);
   background: var(--surface-action-outline);
   font-size: var(--label-s-size);
   line-height: var(--label-s-line);
@@ -210,7 +210,7 @@
   align-items: center;
   justify-content: center;
   padding: var(--scale-300) var(--scale-400);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--surface-action-primary);
   font-size: var(--label-s-size);
   line-height: var(--label-s-line);

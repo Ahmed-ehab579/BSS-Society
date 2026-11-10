@@ -7,7 +7,7 @@
   margin-inline: auto;
   padding: 59px 50px 49px 49px;
   overflow: hidden;
-  border-radius: 19.58px;
+  border-radius: var(--radius-lg);
 }
 
 /* The Figma frame is flipped horizontally: photo and overlays are mirrored */
@@ -80,9 +80,9 @@
   min-height: 550px;
   padding: 39.161px 39.161px 21.72px;
   border: 0.979px solid var(--border-color-form-panel);
-  border-radius: 23.496px;
+  border-radius: var(--radius-lg);
   background: var(--surface-form-panel);
-  box-shadow: 0 0.979px 1.958px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-sm);
 }
 
 .contact-form__row {
@@ -148,7 +148,7 @@
 @media (max-width: 767px) {
   .contact__panel {
     padding: var(--scale-600);
-    border-radius: 16px;
+    border-radius: var(--radius-md);
   }
 
   .contact__content {
@@ -156,7 +156,7 @@
   }
 
   .contact__heading {
-    font-size: 32px;
+    font-size: var(--h4-size);
     line-height: 40px;
     letter-spacing: -0.64px;
   }
@@ -169,7 +169,7 @@
   .contact-form {
     gap: var(--scale-900);
     padding: var(--scale-600);
-    border-radius: 16px;
+    border-radius: var(--radius-md);
   }
 
   .contact-form__row {

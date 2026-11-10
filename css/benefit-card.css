@@ -10,7 +10,7 @@
   overflow: hidden;
   padding: 25.583px 22.434px 21.995px;
   border: 0.478px solid var(--color-benefit-border);
-  border-radius: 22.952px;
+  border-radius: var(--radius-lg);
   background: var(--surface-cards);
   color: var(--color-card-text);
   transition: background-color var(--motion-duration-hover) var(--motion-ease);

@@ -86,7 +86,7 @@
   margin: 0;
   padding: 11px 11px 11px 16px;
   border: var(--border-md) solid var(--color-text-on-dark);
-  border-radius: 30px;
+  border-radius: var(--radius-pill);
   background: transparent;
   color: var(--color-text-on-dark);
   font-family: inherit;

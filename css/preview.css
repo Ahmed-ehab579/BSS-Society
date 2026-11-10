@@ -1,7 +1,7 @@
 /* Material preview overlay (js/preview.js): book, audio book and video, in the book details layout
    (css/book.css). 90% of the screen on desktop; a full-screen sheet on phones. */
 .preview {
-  --book-radius: 20px;
+  --book-radius: var(--radius-lg);
   --preview-gutter: var(--scale-1100);   /* the bar, the details and the related row share one edge */
   position: fixed;
   inset: 0;
@@ -33,7 +33,7 @@
   inset: 0;
   background: var(--backdrop);
   opacity: 0;
-  transition: opacity 240ms var(--motion-ease);
+  transition: opacity var(--motion-base) var(--motion-ease);
 }
 
 .preview.is-open .preview__backdrop {
@@ -50,12 +50,12 @@
   height: 90vh;
   height: 90dvh;
   overflow: hidden;
-  border-radius: var(--scale-600);
+  border-radius: var(--radius-lg);
   background: var(--color-page-bg);
   box-shadow: var(--shadow-menu);
   opacity: 0;
   transform: translateY(20px) scale(0.985);
-  transition: opacity 240ms var(--motion-ease), transform 240ms var(--motion-ease);
+  transition: opacity var(--motion-base) var(--motion-ease), transform var(--motion-base) var(--motion-ease);
 }
 
 .preview__sheet:focus {
@@ -88,7 +88,7 @@
   margin-right: calc(var(--scale-300) + var(--scale-200) - var(--preview-gutter));   /* 12px from the corner */
   padding: 0;
   border: 0;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: none;
   color: var(--color-text-on-light);
   cursor: pointer;
@@ -220,13 +220,13 @@
   gap: var(--scale-800);
   margin: 0 var(--preview-gutter) var(--scale-1000);
   padding: var(--scale-900) var(--related-padding);
-  border-radius: 20px;
+  border-radius: var(--radius-lg);
   background: var(--surface-cards);
 }
 
 .preview__related-heading {
   padding-bottom: var(--scale-500);
-  border-bottom: var(--border-md) solid var(--color-neutral-200);
+  border-bottom: var(--border-md) solid var(--border-subtle);
   font-size: var(--h5-size);
   line-height: var(--h5-line);
   font-weight: var(--label-weight);
@@ -298,11 +298,11 @@
 
 /* Photos sit a little lower here, and their play and listen icons are 20% smaller */
 .preview__related .resource-card__frame--photo {
-  box-shadow: 0 4.5px 7.2px rgba(0, 0, 0, 0.28);
+  box-shadow: var(--shadow-media);
 }
 
 .preview__related .resource-card__frame--book {
-  box-shadow: 0 1.8px 4.5px 0.9px rgba(0, 0, 0, 0.11);
+  box-shadow: var(--shadow-media);
 }
 
 .preview__related .resource-card__play {
@@ -403,7 +403,7 @@
   height: 14px;
   margin-top: -5px;
   border: 0;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: var(--surface-action-primary);
   -webkit-appearance: none;
   appearance: none;
@@ -414,7 +414,7 @@
   width: 14px;
   height: 14px;
   border: 0;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: var(--surface-action-primary);
 }
 
@@ -448,7 +448,7 @@
   justify-content: center;
   padding: 0;
   border: 0;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   font-family: inherit;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -517,9 +517,9 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  font-size: 9px;
+  font-size: 9px;   /* number inside the skip icon */
   line-height: 1;
-  font-weight: 700;
+  font-weight: 600;
   transform: translate(-50%, -32%);
 }
 
@@ -549,7 +549,7 @@
 }
 
 .tracks li + li {
-  border-top: var(--scale-12) solid var(--color-neutral-200);
+  border-top: var(--scale-12) solid var(--border-subtle);
 }
 
 .tracks__row {
@@ -561,7 +561,7 @@
   min-height: 48px;
   padding: var(--scale-100) var(--scale-200);
   border: 0;
-  border-radius: var(--scale-200);
+  border-radius: var(--radius-sm);
   background: none;
   color: var(--color-text-on-light);
   font-family: inherit;
@@ -724,7 +724,7 @@
   height: 48px;
   border: 3px solid rgba(255, 255, 255, 0.35);
   border-top-color: var(--color-text-on-dark);
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   animation: preview-spin 800ms linear infinite;
 }
 
@@ -876,11 +876,11 @@
     border-radius: 0;
     box-shadow: none;
     transform: none;
-    transition: opacity 200ms var(--motion-ease);
+    transition: opacity var(--motion-base) var(--motion-ease);
   }
 
   .preview.is-open .preview__sheet {
-    transition: opacity 200ms var(--motion-ease);
+    transition: opacity var(--motion-base) var(--motion-ease);
   }
 
   .preview__bar {
@@ -966,7 +966,7 @@
     flex-direction: row-reverse;
     margin-top: var(--scale-800);
     padding-bottom: var(--scale-600);
-    border-bottom: var(--scale-12) solid var(--color-neutral-200);
+    border-bottom: var(--scale-12) solid var(--border-subtle);
   }
 
   .preview .book__section {
@@ -1006,7 +1006,7 @@
 
   .preview--video .book__head {
     padding-bottom: var(--scale-600);
-    border-bottom: var(--scale-12) solid var(--color-neutral-200);
+    border-bottom: var(--scale-12) solid var(--border-subtle);
   }
 
   /* A 30% shade keeps the white play icon readable on any photo */
@@ -1024,8 +1024,8 @@
     gap: var(--scale-800);
     margin: 72px var(--preview-gutter) calc(var(--scale-400) + env(safe-area-inset-bottom));
     padding: var(--scale-900) var(--scale-400);
-    border-top: var(--border-md) solid var(--color-neutral-100);
-    border-radius: 20px;
+    border-top: var(--border-md) solid var(--border-subtle);
+    border-radius: var(--radius-lg);
   }
 
   .preview__related-heading {

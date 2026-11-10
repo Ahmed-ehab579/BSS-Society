@@ -20,7 +20,7 @@
   max-width: 30rem;
   margin: 0 0 var(--scale-800, 32px);
   color: var(--color-text-body);
-  font-size: var(--body-l-size, 20px);
+  font-size: var(--body-l-size);
   line-height: 1.6;
 }
 
@@ -60,7 +60,7 @@
 }
 
 .not-found__search input::placeholder {
-  color: var(--color-text-subtle, #909090);
+  color: var(--color-text-subtle, var(--text-muted));
   opacity: 1;
 }
 
@@ -125,11 +125,11 @@
   }
 
   .not-found__title {
-    font-size: 36px;
+    font-size: var(--h1-size);
   }
 
   .not-found__text {
-    font-size: 17px;
+    font-size: var(--body-m-size);
   }
 
   .not-found__search {

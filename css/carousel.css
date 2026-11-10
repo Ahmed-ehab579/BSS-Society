@@ -42,7 +42,7 @@
   height: 44px;
   padding: 0;
   border: 0;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: var(--carousel-surface, var(--surface-cards));
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -102,7 +102,7 @@
   overflow: hidden;
   border-radius: var(--radius-pill);
   background: color-mix(in srgb, var(--color-brand-500) 45%, transparent);
-  transition: width 380ms var(--motion-ease), background-color var(--motion-duration) var(--motion-ease);
+  transition: width var(--motion-slow) var(--motion-ease), background-color var(--motion-duration) var(--motion-ease);
 }
 
 .carousel__dot[aria-current="true"] span {

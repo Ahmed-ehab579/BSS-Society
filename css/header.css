@@ -216,7 +216,7 @@
   margin: 0 -10px 0 var(--scale-200);   /* the icon, not its tap area, lines up with the page edge */
   padding: 0;
   border: 0;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: none;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -247,7 +247,7 @@
   margin: 0 0 0 var(--scale-200);
   padding: 0;
   border: 0;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: none;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -275,7 +275,7 @@
   border-radius: var(--radius-pill);
   background: var(--color-text-on-light);
   color: var(--color-page-bg);
-  font-size: 10px;
+  font-size: 10px;  /* count inside the saved badge */
   line-height: 14px;
   font-weight: 600;
   text-align: center;
@@ -287,7 +287,7 @@
 }
 
 .saved-toggle__count.is-bumping {
-  animation: saved-count-bump 320ms var(--motion-ease);
+  animation: saved-count-bump var(--motion-slow) var(--motion-ease);
 }
 
 @keyframes saved-count-bump {
@@ -414,7 +414,7 @@
 
   /* No underline in the dropdown: the active link is simply bold */
   .site-nav__link.is-active {
-    font-weight: 700;
+    font-weight: 600;
   }
 
   /* Contact Us: full width, large button sizing, same outline style */

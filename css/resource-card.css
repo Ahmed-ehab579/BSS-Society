@@ -41,7 +41,7 @@
 }
 
 .resource-card__frame--book {
-  border: var(--scale-12) solid var(--color-neutral-400);
+  border: var(--scale-12) solid var(--border);
   background: var(--surface-book);
   box-shadow: var(--shadow-media-book);
 }
@@ -52,7 +52,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 600ms var(--motion-ease);
+  transition: transform var(--motion-expand) var(--motion-ease);
 }
 
 .resource-card__book {
@@ -111,9 +111,9 @@
   width: var(--listen-size);
   height: var(--listen-size);
   border: 1.66px solid rgba(255, 255, 255, 0.4);
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: rgba(32, 33, 36, 0.5);
-  box-shadow: 0 16.6px 24.9px -5px rgba(0, 0, 0, 0.1), 0 6.6px 10px -6.6px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-media);
   transform: translate(-50%, -50%);
   -webkit-backdrop-filter: blur(3.32px);
   backdrop-filter: blur(3.32px);
@@ -176,7 +176,7 @@
   overflow: hidden;
   margin: 0;
   color: var(--color-card-heading);
-  font-size: 22px;
+  font-size: var(--h6-size);
   line-height: 28px;
   font-weight: var(--h6-weight);   /* semibold on desktop; phone layouts set their own size and weight */
   -webkit-box-orient: vertical;
