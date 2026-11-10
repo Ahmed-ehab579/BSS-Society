@@ -70,15 +70,16 @@
     if (focusTab) tabs[index].focus();
     if (reveal) tabs[index].scrollIntoView({ block: "nearest", inline: "nearest", behavior: reducedMotion.matches ? "auto" : "smooth" });
 
-    els.panel.setAttribute("aria-labelledby", tabs[index].id);
-    if (animate && changed && !reducedMotion.matches) swapAnimated(() => renderTopic(index));
-    else if (changed || !animate) renderTopic(index);
-
-    // Keep the view in the URL without adding a history entry for every tab
+    // Keep the view in the URL without adding a history entry for every tab (set before rendering:
+    // the cards' article links read it)
     const url = new URL(location.href);
     url.searchParams.set("step", step.id);
     url.searchParams.set("topic", index + 1);
     history.replaceState(null, "", url);
+    els.panel.setAttribute("aria-labelledby", tabs[index].id);
+    if (animate && changed && !reducedMotion.matches) swapAnimated(() => renderTopic(index));
+    else if (changed || !animate) renderTopic(index);
+
   }
 
   function renderTopic(index) {

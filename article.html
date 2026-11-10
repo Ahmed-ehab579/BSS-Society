@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="css/saved-menu.css?v=6">
   <link rel="stylesheet" href="css/language.css?v=5">
   <link rel="stylesheet" href="css/footer.css?v=3">
-  <link rel="stylesheet" href="css/article.css?v=66">
+  <link rel="stylesheet" href="css/article.css?v=67">
   <link rel="stylesheet" href="css/resource-card.css?v=8">
   <link rel="stylesheet" href="css/book.css?v=13">
   <link rel="stylesheet" href="css/preview.css?v=20">
@@ -227,7 +227,7 @@
           </a>
           <!-- Next topic page does not exist yet. -->
           <a class="topic-card topic-card--next" href="#" data-next>
-            <span class="topic-card__kicker" data-next-kicker>Next topic • Step 02</span>
+            <span class="topic-card__kicker" data-next-kicker>Up next • Topic 02</span>
             <span class="topic-card__row">
               <span class="topic-card__title" data-next-title>Who is God in Islam?</span>
               <img class="topic-card__icon" src="assets/icons/topic-arrow-right.svg" width="47" height="47" alt="">
@@ -368,12 +368,13 @@
   <script src="js/send-button.js?v=2"></script>
   <script src="js/saved.js?v=1"></script>
   <script>
-    // Opened from the Library: the header marks the Library, not the Start here path
-    if (new URLSearchParams(location.search).get("from") === "library") {
+    // Opened from the Library or a New Muslim step: the header marks that section, not the Start here path
+    const sectionPage = { library: "library.html", "new-muslim": "new-muslim.html" }[new URLSearchParams(location.search).get("from")];
+    if (sectionPage) {
       document.querySelectorAll(".site-nav__link").forEach((link) => {
-        const library = link.getAttribute("href") === "library.html";
-        link.classList.toggle("is-active", library);
-        if (library) link.setAttribute("aria-current", "true"); else link.removeAttribute("aria-current");
+        const active = link.getAttribute("href") === sectionPage;
+        link.classList.toggle("is-active", active);
+        if (active) link.setAttribute("aria-current", "true"); else link.removeAttribute("aria-current");
       });
     }
   </script>
@@ -381,10 +382,10 @@
   <script src="js/language.js?v=5"></script>
   <script src="js/saved-menu.js?v=8"></script>
   <script src="js/progress.js?v=13"></script>
-  <script src="js/article.js?v=31"></script>
+  <script src="js/article.js?v=32"></script>
   <script src="js/carousel.js?v=6"></script>
   <script src="js/download-fill.js"></script>
-  <script src="js/resource-card.js?v=7"></script>
+  <script src="js/resource-card.js?v=8"></script>
   <script src="js/library.js?v=11"></script>
   <script src="js/preview.js?v=13"></script>
   <script src="js/forms.js?v=3"></script>

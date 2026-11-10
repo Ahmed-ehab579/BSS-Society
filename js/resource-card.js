@@ -1,8 +1,13 @@
 // Resource card markup (Figma 984:2777), shared by the Library and the New Muslim step pages.
 // Styles: css/resource-card.css. An item is { title, text, format, image, focus, dir }.
 (function () {
-  // The one article so far; "from" gives the page its way back to the Library
-  const ARTICLE_URL = "article.html?topic=1&amp;from=library";
+  // The one article so far. "from" tells the article where the reader came from (its way back);
+  // on a New Muslim step page it also carries the step and topic to return to
+  function articleUrl() {
+    if (!location.pathname.includes("new-muslim-step")) return "article.html?topic=1&amp;from=library";
+    const params = new URLSearchParams(location.search);
+    return `article.html?topic=1&amp;from=new-muslim&amp;step=${Number(params.get("step")) || 1}&amp;item=${Number(params.get("topic")) || 1}`;
+  }
 
   // One entry per material type (Figma 984:2777): badge text and icon, action label, how the media is
   // shown ("photo" fills the frame, "book" sits on a light board) and the icon laid over it.
@@ -33,7 +38,7 @@
   function actionsHtml(item, type, title) {
     const label = `aria-label="${type.action}: ${title}"`;
     if (item.format === "article") {
-      return `<a class="btn btn--primary resource-card__action" href="${ARTICLE_URL}" ${label}>${type.action}</a>`;
+      return `<a class="btn btn--primary resource-card__action" href="${articleUrl()}" ${label}>${type.action}</a>`;
     }
     const open = `<button class="btn btn--primary resource-card__action" type="button" data-preview-open ${label}>${type.action}</button>`;
     if (item.format !== "book") return open;
