@@ -3,6 +3,7 @@
 // and says so instead of showing a success message.
 (function () {
   const NOT_CONNECTED = "This form isn’t connected yet, so nothing was sent.";
+  const CONNECTED = false;   // true once a form service receives these forms
 
   function messageFor(input) {
     const v = input.validity;
@@ -51,6 +52,7 @@
       });
       input.addEventListener("input", () => {
         if (status) status.textContent = "";
+        form.querySelectorAll(".is-sent").forEach((button) => window.BSSSend?.reset(button));
         if (input.hasAttribute("aria-invalid")) check(input);
       });
     });
@@ -67,7 +69,13 @@
         invalid[0].focus();
         return;
       }
-      if (status) status.textContent = NOT_CONNECTED;
+      if (!CONNECTED) {
+        if (status) status.textContent = NOT_CONNECTED;
+        return;
+      }
+      // Send buttons show "Sent" with a checkmark; Subscribe buttons keep their label
+      const send = form.querySelector(".contact-form__submit, .help-form__send");
+      if (send) window.BSSSend?.play(send, "Sent");
     });
   });
 })();

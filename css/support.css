@@ -48,12 +48,12 @@
   flex-direction: column;
   width: 560px;
   max-width: calc(100% - 2 * var(--scale-600));
-  max-height: calc(100vh - 2 * var(--scale-800));
-  max-height: calc(100dvh - 2 * var(--scale-800));
+  max-height: calc(100vh - 2 * var(--scale-600));
+  max-height: calc(100dvh - 2 * var(--scale-600));
   overflow-y: auto;
   overscroll-behavior: contain;
   border-radius: var(--radius-card);
-  background: var(--color-page-bg);
+  background: var(--surface-cards);
   box-shadow: var(--shadow-menu);
   opacity: 0;
   transform: translateY(12px) scale(0.98);
@@ -85,7 +85,11 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--scale-600) var(--scale-400) var(--scale-200) var(--scale-800);
-  background: var(--color-page-bg);
+  background: var(--surface-cards);
+}
+
+#partner-dialog .support-sheet__head {
+  padding-bottom: var(--scale-100);
 }
 
 .support-sheet__grabber {
@@ -95,7 +99,7 @@
 .support-sheet__title {
   margin: 0;
   color: var(--color-heading);
-  font-size: var(--h5-size);
+  font-size: 32px;
   line-height: var(--h5-line);
   font-weight: var(--h5-weight);
 }
@@ -125,20 +129,35 @@
 }
 
 .support-sheet__intro {
+  max-width: 400px;
   margin: 0;
   color: var(--color-text-body);
   font-size: var(--body-s-size);
   line-height: var(--body-s-line);
 }
 
+/* Get in touch: thin rules above and below the list of channels */
+#contact-dialog .support-sheet__intro {
+  max-width: none;
+  padding: 0 max(0px, calc(100% - 400px)) var(--scale-200) 0;   /* text 400 px wide, rule full width */
+  border-bottom: 0.3px solid #6c6c6c;
+}
+
+.partner-form .support-sheet__intro {
+  max-width: 357px;
+}
+
 .support-sheet__alt {
   margin: 0;
+  padding-top: 6px;
+  border-top: 0.3px solid #7a7a7a;
   color: var(--color-text-body);
   font-size: var(--body-s-size);
   line-height: var(--body-s-line);
 }
 
 .support-sheet__alt a {
+  margin-left: var(--scale-200);
   color: var(--color-text-on-light);
   font-weight: 600;
   text-decoration: underline;
@@ -154,7 +173,7 @@
   overflow: hidden;
   border: var(--border-md) solid var(--color-neutral-100);
   border-radius: var(--scale-400);
-  background: var(--surface-action-outline);
+  background: var(--surface-cards);
   list-style: none;
 }
 
@@ -174,7 +193,7 @@
   gap: var(--scale-400);
   min-width: 0;
   min-height: 76px;
-  padding: var(--scale-300) var(--scale-400);
+  padding: var(--scale-300) var(--scale-400) var(--scale-300) 0;
   color: var(--color-text-on-light);
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
@@ -188,8 +207,6 @@
   justify-content: center;
   width: 44px;
   height: 44px;
-  border-radius: 50%;
-  background: var(--surface-cards);
 }
 
 .contact-channel__text {
@@ -221,6 +238,7 @@
 }
 
 .contact-channel__detail {
+  max-width: 246px;
   overflow-wrap: anywhere;
   color: var(--color-text-body);
   font-size: var(--body-xs-size);
@@ -238,6 +256,9 @@
 }
 
 .contact-channel__copy {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   flex-shrink: 0;
   min-width: 72px;
   height: 36px;
@@ -256,9 +277,31 @@
     border-color var(--motion-duration-hover) var(--motion-ease);
 }
 
+/* Copied: green fills in from the left, like the download buttons, then fades back (js/support.js) */
+.contact-channel__copy::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--surface-action-outline-hovered);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: background-color var(--motion-duration-hover) var(--motion-ease);
+}
+
 .contact-channel__copy.is-copied {
   border-color: var(--color-completed);
-  background: var(--surface-cards-hovered);
+}
+
+.contact-channel__copy.is-copied::before {
+  transform: none;
+  transition: transform 450ms cubic-bezier(0.4, 0, 0.2, 1),
+    background-color var(--motion-duration-hover) var(--motion-ease);
+}
+
+.contact-channel__copy.is-resetting::before {
+  opacity: 0;
+  transition: opacity 300ms var(--motion-ease);
 }
 
 /* ---- Help us reach further: the partner form -------------------------------------------------------- */
@@ -270,7 +313,7 @@
 }
 
 .partner-group__legend {
-  margin-bottom: var(--scale-300);
+  margin-bottom: var(--scale-200);
   padding: 0;
   color: var(--color-field-label);
   font-size: var(--label-s-size);
@@ -281,7 +324,7 @@
 }
 
 .partner-group__hint {
-  margin: calc(-1 * var(--scale-200)) 0 var(--scale-300);
+  margin: calc(-1 * var(--scale-100)) 0 18px;
   color: var(--color-text-body);
   font-size: var(--body-xs-size);
   line-height: var(--body-xs-line);
@@ -296,15 +339,24 @@
 
 /* Individual or organisation: two halves of one pill */
 .partner-switch {
-  display: inline-flex;
+  display: flex;
+  height: 48px;
   padding: 3px;
   border: var(--border-md) solid var(--color-neutral-300);
   border-radius: var(--radius-pill);
   background: var(--surface-action-outline);
 }
 
+.partner-switch__option {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
 .partner-switch__option span {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
   padding: 7px var(--scale-400);
   border-radius: var(--radius-pill);
   color: var(--color-text-on-light);
@@ -352,11 +404,16 @@
   opacity: 0;
 }
 
-.partner-switch__option input:checked + span,
-.partner-chip input:checked + span {
+.partner-switch__option input:checked + span {
   background: var(--surface-action-primary);
-  border-color: var(--surface-action-primary);
   color: var(--color-text-on-dark);
+}
+
+/* A chosen area turns green */
+.partner-chip input:checked + span {
+  background: var(--surface-action-outline-hovered);
+  border-color: var(--color-completed);
+  color: var(--color-text-on-light);
 }
 
 /* A tick appears in a chosen chip, so the state doesn't rely on colour alone */
@@ -374,6 +431,24 @@
 .partner-chip input:focus-visible + span {
   outline: 2px solid var(--border-color-on-light);
   outline-offset: 2px;
+}
+
+/* Spacing from Figma: intro 36, "getting in touch as" 32, areas 28, name and email 16, note 36, Send.
+   The follow-up fields sit 16 below the group that reveals them. */
+.partner-form.support-sheet__body {
+  gap: 0;
+}
+
+.partner-form .support-sheet__intro { margin-bottom: 36px; }
+.partner-form .partner-group:first-of-type { margin-bottom: var(--scale-800); }
+.partner-form [data-show-when="organisation"] { margin: calc(-1 * var(--scale-400)) 0 var(--scale-800); }
+.partner-form .partner-group + [data-show-when="translation"] { margin: calc(var(--scale-400) - 28px) 0 28px; }
+.partner-form .partner-group[aria-describedby] { margin-bottom: 28px; }
+.partner-form__row { margin-bottom: var(--scale-400); }
+.partner-form__row + .field { margin-bottom: 36px; }
+
+.partner-form .field__input {
+  border-width: var(--scale-12);
 }
 
 .partner-form .field[hidden] {
@@ -412,7 +487,7 @@
 }
 
 .partner-form__submit {
-  align-self: flex-start;
+  align-self: stretch;
   min-width: 160px;
 }
 
@@ -437,13 +512,24 @@
 }
 
 @media (hover: hover) {
-  .support-sheet__close:hover,
+  .support-sheet__close:hover {
+    background: var(--surface-cards-hovered-neutral);
+  }
+
   .contact-channel__main:hover {
-    background: var(--surface-cards);
+    background: var(--surface-cards-hovered-neutral);
   }
 
   .contact-channel__copy:hover,
-  .partner-chip input:not(:checked) + span:hover,
+  .partner-chip input:not(:checked) + span:hover {
+    background: var(--surface-cards-hovered);
+  }
+
+  .contact-channel__copy.is-copied:hover::before,
+  .partner-chip input:checked + span:hover {
+    background: var(--surface-action-outline-pressed);
+  }
+
   .partner-switch__option input:not(:checked) + span:hover {
     background: var(--surface-cards);
   }
@@ -490,8 +576,8 @@
   }
 
   .support-sheet__title {
-    font-size: 22px;
-    line-height: 30px;
+    font-size: var(--h5-size);   /* 32 on desktop; 26 keeps "Help us reach further" on one line */
+    line-height: var(--h5-line);
   }
 
   .support-sheet__body {
@@ -501,7 +587,11 @@
 
   .contact-channel__main {
     gap: var(--scale-300);
-    padding-inline: var(--scale-300);
+    padding-right: var(--scale-300);
+  }
+
+  .contact-channel__icon {
+    width: 40px;
   }
 
   .contact-channel__copy {

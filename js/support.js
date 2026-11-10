@@ -9,6 +9,7 @@
   const CONNECTED = false;          // true once a form service receives the partner form
   const NOT_CONNECTED = "This form isn’t connected yet, so nothing was sent.";
   const COPIED_TIME = 2000;         // ms "Copied" stays on the button
+  const RESET_TIME = 300;           // ms, matches the fade in css/support.css
   const DISMISS_DISTANCE = 110;     // px dragged down that closes the sheet
   const DISMISS_SPEED = 0.6;        // px per ms: a quick flick closes it from any distance
   const root = document.documentElement;
@@ -140,13 +141,18 @@
       } catch (error) {
         copied = copyTheOldWay(button.dataset.copy);   // older browsers, or the clipboard is blocked
       }
+      clearTimeout(timer);
+      button.classList.remove("is-resetting", "is-copied");
+      button.getBoundingClientRect();   // a second press runs the fill again from the left
       button.textContent = copied ? "Copied" : "Couldn’t copy";
       button.classList.toggle("is-copied", copied);
       if (contactStatus) contactStatus.textContent = copied ? `${button.dataset.copy} copied` : "Couldn’t copy. Select the text instead.";
-      clearTimeout(timer);
       timer = setTimeout(() => {
-        button.textContent = "Copy";
-        button.classList.remove("is-copied");
+        button.classList.add("is-resetting");   // the green fades, then the label returns
+        timer = setTimeout(() => {
+          button.textContent = "Copy";
+          button.classList.remove("is-copied", "is-resetting");
+        }, reducedMotion.matches ? 0 : RESET_TIME);
       }, COPIED_TIME);
     });
   });
@@ -161,6 +167,7 @@
   const email = form.querySelector("#partner-email");
   const emailError = form.querySelector("#partner-email-error");
   const status = form.querySelector(".partner-form__status");
+  const submit = form.querySelector(".partner-form__submit");
   let submitted = false;
 
   // Extra questions appear only when they apply: languages for translators, a name for organisations
@@ -191,6 +198,7 @@
   }
 
   form.addEventListener("change", (event) => {
+    window.BSSSend?.reset(submit);   // changing the form after a send makes Send ready again
     showFollowUps();
     if (event.target.name === "areas" && submitted) checkAreas();
     status.textContent = "";
@@ -198,6 +206,7 @@
   email.addEventListener("blur", () => {
     if (submitted || email.value.trim()) checkEmail();
   });
+  form.addEventListener("input", () => window.BSSSend?.reset(submit));
   email.addEventListener("input", () => {
     status.textContent = "";
     if (email.hasAttribute("aria-invalid")) checkEmail();
@@ -216,7 +225,13 @@
       email.focus();
       return;
     }
-    status.textContent = CONNECTED ? "Thank you. Our team will email you within a week." : NOT_CONNECTED;
+    if (!CONNECTED) {
+      status.textContent = NOT_CONNECTED;   // nothing was sent, so the button stays as it is
+      return;
+    }
+    if (window.BSSSend?.isSent(submit)) return;
+    window.BSSSend?.play(submit, "Sent");
+    status.textContent = "Thank you. Our team will email you within a week.";
   });
 
   showFollowUps();

@@ -701,7 +701,13 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
     save({ answer, sections, note: note.value.trim() });
-    showStep("thanks");
+    // The answer is stored, so Send can say so before the thank-you replaces it
+    const send = steps.details.querySelector('button[type="submit"]');
+    const sent = window.BSSSend && send ? window.BSSSend.play(send, "Sent") : Promise.resolve();
+    sent.then(() => setTimeout(() => {
+      showStep("thanks");
+      window.BSSSend?.reset(send);
+    }, reduceMotion.matches ? 0 : 500));
   });
 
   box.querySelectorAll("[data-checkin-skip]").forEach((button) => button.addEventListener("click", () => {
