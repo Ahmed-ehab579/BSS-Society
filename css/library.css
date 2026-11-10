@@ -415,9 +415,9 @@
   flex-shrink: 0;
 }
 
-/* Layout switch: phones only (desktop always shows the three-column grid) */
+/* Layout switch: cards (the default) or a list. Desktop shows the grid icon for cards, phones the single card */
 .view-toggle {
-  display: none;
+  display: flex;
   padding: var(--scale-100);
   border: var(--border-md) solid var(--border-color-control);
   border-radius: var(--scale-200);
@@ -428,8 +428,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   padding: 0;
   border: 0;
   border-radius: 6px;
@@ -438,6 +438,10 @@
   opacity: 0.75;
   transition: background-color var(--motion-duration) var(--motion-ease),
     opacity var(--motion-duration) var(--motion-ease);
+}
+
+.view-toggle__icon--phone {
+  display: none;
 }
 
 .view-toggle__btn[aria-pressed="true"] {
@@ -798,6 +802,114 @@
   height: 48px;
 }
 
+/* ---- List layout: a small picture on the left; type, title, two lines of text and a compact action on
+   the right. Desktop shows it in two columns, so many materials fit on one screen (an extra view: the
+   cards stay the default); phones show one column. ------------------------------------------------ */
+.resource-grid[data-layout="list"] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--scale-400);
+}
+
+.resource-grid[data-layout="list"] .resource-card__action {
+  gap: var(--scale-100);
+  height: 36px;
+  padding: 0 var(--scale-200);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.resource-grid[data-layout="list"] .resource-card__download {
+  width: 44px;
+}
+
+/* List: small thumbnail on the left; type, title, short text and a compact action on the right */
+.resource-grid[data-layout="list"] .resource-card {
+  flex-direction: row;
+  border-radius: var(--scale-400);
+}
+
+/* List: a little taller, with more room around the text for easier reading */
+.resource-grid[data-layout="list"] .resource-card__media {
+  flex-shrink: 0;
+  width: 112px;
+  padding: var(--scale-300) 0 var(--scale-300) var(--scale-300);
+}
+
+.resource-grid[data-layout="list"] .resource-card__frame {
+  height: 100%;
+  min-height: 144px;
+  border-radius: 10px;
+}
+
+.resource-grid[data-layout="list"] .resource-card__badge {
+  display: none;
+}
+
+.resource-grid[data-layout="list"] .resource-card__play {
+  --play-size: 60px;
+}
+
+.resource-grid[data-layout="list"] .resource-card__listen {
+  --listen-size: 36px;
+}
+
+.resource-grid[data-layout="list"] .resource-card__type {
+  display: flex;
+  align-items: center;
+  gap: var(--scale-100);
+  color: var(--color-section-label);
+  font-size: var(--label-s-size);
+  line-height: var(--label-s-line);
+  font-weight: 500;
+}
+
+.resource-grid[data-layout="list"] .resource-card__type img {
+  width: auto;
+  height: 10px;
+}
+
+.resource-grid[data-layout="list"] .resource-card__body {
+  min-width: 0;
+  gap: var(--scale-400);
+  padding: var(--scale-400);
+}
+
+.resource-grid[data-layout="list"] .resource-card__text {
+  gap: var(--scale-200);
+}
+
+.resource-grid[data-layout="list"] .resource-card__title {
+  font-size: 17px;
+  line-height: 24px;
+  font-weight: 500;
+}
+
+.resource-grid[data-layout="list"] .resource-card__desc {
+  font-size: 13px;
+  line-height: 20px;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+/* Desktop list: the rows are wide, so the action is a compact button on the left (as in Apple Books or
+   Audible lists) rather than a bar across the row */
+@media (min-width: 768px) {
+  .resource-grid[data-layout="list"] .resource-card__body > .resource-card__action,
+  .resource-grid[data-layout="list"] .resource-card__actions {
+    align-self: flex-start;
+  }
+
+  .resource-grid[data-layout="list"] .resource-card__action {
+    width: auto;
+    min-width: 148px;
+    padding: 0 var(--scale-500);
+  }
+
+  .resource-grid[data-layout="list"] .resource-card__actions .resource-card__action {
+    flex: 0 0 auto;
+  }
+}
+
 /* ---- Responsive -------------------------------------------------------------------------------- */
 
 @media (max-width: 1279px) {
@@ -987,8 +1099,12 @@
     justify-content: space-between;
   }
 
-  .view-toggle {
-    display: flex;
+  .view-toggle__icon--phone {
+    display: block;
+  }
+
+  .view-toggle__icon--wide {
+    display: none;
   }
 
   /* Switch and sort share one 44px height (minimum comfortable touch target) */
@@ -1013,17 +1129,6 @@
     gap: var(--scale-300);
   }
 
-  .resource-grid[data-layout="list"] .resource-card__action {
-    gap: var(--scale-100);
-    height: 36px;
-    padding: 0 var(--scale-200);
-    font-size: 13px;
-    line-height: 18px;
-  }
-
-  .resource-grid[data-layout="list"] .resource-card__download {
-    width: 44px;
-  }
 
   /* One a row: the desktop card, a little narrower and shorter, with a larger title */
   .resource-grid[data-layout="one"] .resource-card__frame {
@@ -1043,75 +1148,6 @@
     font-size: var(--h6-size);
     line-height: var(--h6-line);
     font-weight: var(--h6-weight);   /* 600 */
-  }
-
-  /* List: small thumbnail on the left; type, title, short text and a compact action on the right */
-  .resource-grid[data-layout="list"] .resource-card {
-    flex-direction: row;
-    border-radius: var(--scale-400);
-  }
-
-  /* List: a little taller, with more room around the text for easier reading */
-  .resource-grid[data-layout="list"] .resource-card__media {
-    flex-shrink: 0;
-    width: 112px;
-    padding: var(--scale-300) 0 var(--scale-300) var(--scale-300);
-  }
-
-  .resource-grid[data-layout="list"] .resource-card__frame {
-    height: 100%;
-    min-height: 144px;
-    border-radius: 10px;
-  }
-
-  .resource-grid[data-layout="list"] .resource-card__badge {
-    display: none;
-  }
-
-  .resource-grid[data-layout="list"] .resource-card__play {
-    --play-size: 60px;
-  }
-
-  .resource-grid[data-layout="list"] .resource-card__listen {
-    --listen-size: 36px;
-  }
-
-  .resource-grid[data-layout="list"] .resource-card__type {
-    display: flex;
-    align-items: center;
-    gap: var(--scale-100);
-    color: var(--color-section-label);
-    font-size: var(--label-s-size);
-    line-height: var(--label-s-line);
-    font-weight: 500;
-  }
-
-  .resource-grid[data-layout="list"] .resource-card__type img {
-    width: auto;
-    height: 10px;
-  }
-
-  .resource-grid[data-layout="list"] .resource-card__body {
-    min-width: 0;
-    gap: var(--scale-400);
-    padding: var(--scale-400);
-  }
-
-  .resource-grid[data-layout="list"] .resource-card__text {
-    gap: var(--scale-200);
-  }
-
-  .resource-grid[data-layout="list"] .resource-card__title {
-    font-size: 17px;
-    line-height: 24px;
-    font-weight: 500;
-  }
-
-  .resource-grid[data-layout="list"] .resource-card__desc {
-    font-size: 13px;
-    line-height: 20px;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
   }
 
   /* Pressed feedback instead of hover on touch */

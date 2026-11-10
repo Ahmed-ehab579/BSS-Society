@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="css/book.css?v=13">
   <link rel="stylesheet" href="css/carousel.css?v=3">
   <link rel="stylesheet" href="css/preview.css?v=20">
-  <link rel="stylesheet" href="css/library.css?v=24">
+  <link rel="stylesheet" href="css/library.css?v=28">
   <link rel="stylesheet" href="css/footer.css?v=3">
 </head>
 <body>
@@ -113,10 +113,11 @@
             </div>
 
             <div class="results__controls">
-              <!-- Phones only: 1 card a row (default), 2 a row or a list -->
+              <!-- Cards (default: one a row on phones, the grid on desktop) or a list (js/library.js) -->
               <div class="view-toggle" role="group" aria-label="Layout">
-                <button class="view-toggle__btn" type="button" aria-pressed="true" data-view="one" aria-label="One card per row">
-                  <img src="assets/icons/view-single.svg" width="14.6981" height="14.6981" alt="">
+                <button class="view-toggle__btn" type="button" aria-pressed="true" data-view="one" aria-label="Cards">
+                  <img class="view-toggle__icon--phone" src="assets/icons/view-single.svg" width="14.6981" height="14.6981" alt="">
+                  <img class="view-toggle__icon--wide" src="assets/icons/view-grid.svg" width="14.6981" height="14.6981" alt="">
                 </button>
                 <button class="view-toggle__btn" type="button" aria-pressed="false" data-view="list" aria-label="List">
                   <img src="assets/icons/view-list.svg" width="14.6981" height="14.6981" alt="">
@@ -260,7 +261,7 @@
   <script src="js/saved-menu.js?v=8"></script>
   <script src="js/download-fill.js"></script>
   <script src="js/resource-card.js?v=7"></script>
-  <script src="js/library.js?v=11"></script>
+  <script src="js/library.js?v=13"></script>
   <script src="js/carousel.js?v=6"></script>
   <script src="js/preview.js?v=13"></script>
   <script src="js/forms.js?v=3"></script>
