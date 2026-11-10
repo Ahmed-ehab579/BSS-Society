@@ -199,6 +199,52 @@ a {
   transition-duration: var(--motion-duration-hover);
 }
 
+/* Send buttons after a real send (js/send-button.js): the label fades out, then a checkmark draws in
+   on the left of "Sent" */
+.btn.is-swapping {
+  color: transparent;
+  transition: color 160ms var(--motion-ease);
+}
+
+.btn.is-swapping > * {
+  opacity: 0;
+  transition: opacity 160ms var(--motion-ease);
+}
+
+.btn.is-sent {
+  cursor: default;
+}
+
+.btn.is-sent > span {
+  transition: opacity 240ms var(--motion-ease);
+}
+
+.btn__sent-check {
+  flex-shrink: 0;
+}
+
+.btn__sent-check path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: btn-sent-check 420ms 120ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes btn-sent-check {
+  to { stroke-dashoffset: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn.is-swapping,
+  .btn.is-swapping > * {
+    transition: none;
+  }
+
+  .btn__sent-check path {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}
+
 /* Secondary on dark (Regular): 16px side padding, Label M, stroke inside */
 .btn--secondary-on-dark {
   height: 44px;
