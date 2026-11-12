@@ -173,10 +173,36 @@
   border-radius: var(--radius-md);
   background: var(--color-field-bg);
   box-shadow: var(--shadow-menu);
+  /* Opens and closes smoothly: fades in while dropping 6px into place (by request) */
+  transform-origin: top left;
+  transition:
+    opacity var(--motion-base) var(--motion-ease),
+    transform var(--motion-base) var(--motion-ease),
+    display var(--motion-base) allow-discrete;
+}
+
+.filter__menu--end {
+  transform-origin: top right;
 }
 
 .filter__menu[hidden] {
   display: none;
+  pointer-events: none;   /* a closing menu never catches clicks while it fades */
+  opacity: 0;
+  transform: translateY(-6px) scale(0.98);
+}
+
+@starting-style {
+  .filter__menu:not([hidden]) {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .filter__menu {
+    transition: none;
+  }
 }
 
 .filter-option {
