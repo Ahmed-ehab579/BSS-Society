@@ -411,7 +411,7 @@ a.journey-card:focus-visible .journey-card__go {
   --icon-pad: 25px;                    /* panel padding above the icon */
   --icon-gap: 28px;                    /* icon to message */
   --icon-scale: 1.25;
-  --panel-gap: 50px;                   /* message to buttons */
+  --panel-gap: 80px;                   /* message to buttons: icon and message sit higher, by request */
   --spacer-top: var(--icon-pad);       /* replaced by the measured value */
   --icon-hover-top: calc(var(--spacer-top) + var(--icon-h) * (var(--icon-scale) - 1) / 2);
 }
