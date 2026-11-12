@@ -42,14 +42,18 @@
 .journey {
   --line-muted: var(--border);               /* dashed connector between locked cards */
   --line-active: var(--text-body);              /* connector once both cards are available */
-  --pin-done-ring: var(--green-100);            /* Figma 970:2563 "Done": completed articles */
-  --pin-done-dot: var(--green-700);
-  --pin-turn-dot: var(--green-500);             /* Figma 970:2563 "Start here": the card whose turn it is, also "Continue" (pulses) */
+  --pin-done-ring: #c5d5b2;            /* Figma 970:2563 "Done": completed articles */
+  --pin-done-dot: #6e8e49;
+  --pin-turn-dot: #88b653;             /* Figma 970:2563 "Start here": the card whose turn it is, also "Continue" (pulses) */
   --pin-idle-ring: var(--border-subtle);            /* locked indicator: locked, unlocked early, or in progress but not its turn */
   --pin-turn-ring: var(--surface-cards);        /* Figma 970:2563 "Start here" ring */
   --pin-idle-dot: var(--text-muted);
   --card-stroke-active: var(--color-neutral-400);   /* available card stroke: #8e8e8e, the system grey closest to the original #7d7d7d */
   --card-stroke-locked: var(--border);       /* locked card stroke */
+  /* Card greens in every state: the original journey tones, kept by request (scoped to this section) */
+  --surface-action-outline-pressed: #94b47d;                        /* active card fill */
+  --surface-cards-completed-overlay: rgba(206, 217, 199, 0.76);     /* completed card wash */
+  --color-completed: #93a787;                                       /* completed check */
   --card-width: 275.56px;
   position: relative;
   max-width: 1153px;
