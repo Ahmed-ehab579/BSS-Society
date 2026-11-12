@@ -12,7 +12,7 @@
   border: 0.478px solid var(--color-benefit-border);
   border-radius: var(--radius-lg);
   background: var(--surface-cards);
-  color: var(--color-card-text);
+  color: var(--text-strong);   /* titles, descriptions and icons share the strong text colour */
   transition: background-color var(--motion-duration-hover) var(--motion-ease);
 }
 
@@ -45,11 +45,6 @@
   padding-left: 4.782px;
   transform: translateY(107.215px);
   transition: transform var(--motion-duration-hover) var(--motion-ease);
-}
-
-/* Titles and icons use the strong text colour (--text-strong), like every other heading */
-.benefit-card__title {
-  color: var(--text-strong);
 }
 
 .benefit-card__title,
