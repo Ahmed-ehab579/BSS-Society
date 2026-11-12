@@ -94,7 +94,7 @@
   stroke-dasharray: 10 9;
   vector-effect: non-scaling-stroke;
   shape-rendering: geometricPrecision;  /* even anti-aliasing, so near-vertical runs don't snap to darker pixels */
-  transition: stroke var(--card-duration, var(--motion-expand)) var(--card-var(--motion-ease), var(--motion-ease)),
+  transition: stroke var(--card-duration, var(--motion-expand)) var(--card-ease, var(--motion-ease)),
     stroke-width var(--card-duration, 600ms) var(--card-ease, ease);
 }
 
@@ -241,7 +241,7 @@
   border-radius: var(--radius-lg);
   background: var(--surface-cards);
   color: var(--color-card-text);
-  transition: background-color var(--card-duration) var(--card-var(--motion-ease)),
+  transition: background-color var(--card-duration) var(--card-ease),
     gap var(--card-duration) var(--card-ease);
 }
 
@@ -288,7 +288,7 @@
   display: grid;
   grid-template-rows: 0fr;
   opacity: 0;
-  transition: grid-template-rows var(--card-duration) var(--card-var(--motion-ease)),
+  transition: grid-template-rows var(--card-duration) var(--card-ease),
     opacity var(--card-duration) var(--card-ease);
 }
 
@@ -327,7 +327,7 @@ a.journey-card {
   --card-shadow: var(--shadow-lg);
   gap: 21px;                         /* always the expanded size: description visible, default colour */
   border-color: var(--card-stroke-active);
-  transition: background-color var(--card-duration) var(--card-var(--motion-ease));
+  transition: background-color var(--card-duration) var(--card-ease);
   cursor: default;   /* default arrow; the cursor badge signals the action */
   -webkit-tap-highlight-color: transparent;
 }
@@ -442,7 +442,7 @@ a.journey-card:focus-visible .journey-card__go {
   height: var(--icon-h);
   transform-origin: center;
   pointer-events: none;
-  transition: left var(--card-duration) var(--card-var(--motion-ease)), top var(--card-duration) var(--card-var(--motion-ease)),
+  transition: left var(--card-duration) var(--card-ease), top var(--card-duration) var(--card-ease),
     transform var(--card-duration) var(--card-ease);
 }
 
@@ -472,7 +472,7 @@ a.journey-card:focus-visible .journey-card__go {
   color: var(--color-text);
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--card-duration) var(--card-var(--motion-ease));
+  transition: opacity var(--card-duration) var(--card-ease);
 }
 
 .journey-card__locked-copy {
@@ -517,7 +517,7 @@ a.journey-card:focus-visible .journey-card__go {
 /* Original content stays only as a ghost behind the overlay (49% x 11% visible) */
 .journey-card.is-locked .journey-card__body,
 .journey-card.is-locked .journey-card__media {
-  transition: opacity var(--card-duration) var(--card-var(--motion-ease));
+  transition: opacity var(--card-duration) var(--card-ease);
 }
 
 .journey-card.is-locked:focus-within .journey-card__body {
@@ -593,7 +593,7 @@ a.journey-card:focus-visible .journey-card__go {
   padding: 25px 13px;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--card-duration) var(--card-var(--motion-ease));
+  transition: opacity var(--card-duration) var(--card-ease);
 }
 
 .journey-card__done-title {
@@ -608,7 +608,7 @@ a.journey-card:focus-visible .journey-card__go {
 
 .journey-card.is-completed .journey-card__body,
 .journey-card.is-completed .journey-card__media {
-  transition: opacity var(--card-duration) var(--card-var(--motion-ease));
+  transition: opacity var(--card-duration) var(--card-ease);
 }
 
 .journey-card.is-completed:focus-within .journey-card__done-panel {
@@ -821,7 +821,7 @@ a.journey-card:focus-visible .journey-card__go {
   }
 
   .journey-card__reveal {
-    transition: opacity var(--card-duration) var(--card-var(--motion-ease));
+    transition: opacity var(--card-duration) var(--card-ease);
   }
 
   .journey__segment,
