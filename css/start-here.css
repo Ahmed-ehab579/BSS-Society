@@ -833,3 +833,11 @@ a.journey-card:focus-visible .journey-card__go {
     transition: none;
   }
 }
+
+/* Page title: narrower than the 700px default so it breaks as "Start with clarity / and confidence" */
+@media (min-width: 1100px) {
+  .intro__heading.start-title {
+    flex-basis: 560px;
+    max-width: 560px;
+  }
+}
