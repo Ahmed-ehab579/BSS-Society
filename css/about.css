@@ -838,3 +838,21 @@
     transition: none;
   }
 }
+
+/* Our commitment: narrower side padding so each card title sits on one line (by request) */
+@media (min-width: 1200px) {
+  .commitment .benefit-card {
+    padding-left: var(--scale-400);
+    padding-right: var(--scale-400);
+  }
+
+  .commitment .benefit-card__content {
+    left: var(--scale-400);
+    right: var(--scale-400);
+    padding-left: 0;
+  }
+
+  .commitment .benefit-card__title {
+    max-width: none;
+  }
+}
