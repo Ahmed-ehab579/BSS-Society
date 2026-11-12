@@ -37,7 +37,7 @@
 /* Two lines at every desktop width: small laptops get a slightly smaller title and text column */
 .about-title {
   text-wrap: balance;
-  text-transform: none;   /* sentence case here, by request */
+  font-weight: 400;        /* uppercase kept, lighter than the 500 H1 weight, by request */
 }
 
 @media (min-width: 1100px) and (max-width: 1319px) {
