@@ -129,6 +129,9 @@
   --display-line: 1;
   --display-weight: 400;
   --display-color: rgba(32, 33, 36, 0.3);
+  /* Large display: the About journey step numbers, as in the original Figma design (93 / light) */
+  --display-l-size: 93px;
+  --display-l-weight: 300;
 
   /* Layout */
   --container-max: 1360px;

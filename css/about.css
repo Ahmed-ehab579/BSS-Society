@@ -356,9 +356,9 @@
   flex-shrink: 0;
   width: 91px;
   color: var(--color-section-dot);
-  font-size: var(--display-size);
+  font-size: var(--display-l-size);
   line-height: 1;
-  font-weight: 400;
+  font-weight: var(--display-l-weight);
   text-align: center;
 }
 
