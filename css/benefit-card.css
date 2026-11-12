@@ -47,6 +47,11 @@
   transition: transform var(--motion-duration-hover) var(--motion-ease);
 }
 
+/* Titles and icons use the strong text colour (--text-strong), like every other heading */
+.benefit-card__title {
+  color: var(--text-strong);
+}
+
 .benefit-card__title,
 .benefit-card__text {
   max-width: 209.082px;
