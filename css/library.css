@@ -67,7 +67,7 @@
 .filter__toggle {
   display: flex;
   align-items: center;
-  gap: var(--scale-300);   /* equal 12px gaps: label · value · arrow, so the value sits centred */
+  gap: var(--scale-100);
   height: 44px;
   padding: 0 var(--scale-400);
   border: var(--border-md) solid var(--color-field-border);
