@@ -130,10 +130,7 @@
   .hero__actions .btn {
     flex: 1 1 0;
     min-width: max-content;
-    height: 52px;
     padding-inline: var(--scale-400);
-    font-size: var(--body-m-size);
-    line-height: 22px;
   }
 
   .hero__media {
@@ -196,13 +193,6 @@
   color: var(--tone);
 }
 
-/* The primary button that closes each section: a step above the Large button */
-.section-cta {
-  height: 60px;
-  padding: var(--scale-400) var(--scale-800);
-  font-size: var(--body-l-size);
-  line-height: 26px;
-}
 
 /* Start Here (panel styles: .section-panel) */
 .start__content {
@@ -305,14 +295,7 @@
     width: 100%;
   }
 
-  /* Section CTAs: a smaller step of the desktop size, and pressed feedback */
-  .section-cta {
-    height: 52px;
-    padding: var(--scale-300) var(--scale-800);
-    font-size: var(--label-l-size);
-    line-height: var(--label-l-line);
-  }
-
+  /* Section CTAs: pressed feedback on touch */
   .section-cta:active .btn__arrow-track {
     transform: none;
   }

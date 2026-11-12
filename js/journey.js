@@ -29,7 +29,7 @@
         </div>
         <div class="journey-card__locked-actions">
           <a class="btn btn--primary btn--regular" href="${articleUrl(previous.id)}">Go to Topic ${previous.id}</a>
-          <button class="btn btn--secondary btn--small journey-card__unlock" type="button" data-unlock="${topic.id}">Unlock this article anyway</button>
+          <button class="btn btn--secondary btn--regular journey-card__unlock" type="button" data-unlock="${topic.id}">Unlock this article anyway</button>
         </div>
       </div>
     </div>`;
@@ -59,7 +59,7 @@
         <p class="journey-card__done-title">You’ve finished this article</p>
         <div class="journey-card__locked-actions">
           <a class="btn btn--primary btn--regular" href="${articleUrl(topic.id)}">Read again</a>
-          <button class="btn btn--secondary btn--small" type="button" data-unread="${topic.id}">Mark as Unread</button>
+          <button class="btn btn--secondary btn--regular" type="button" data-unread="${topic.id}">Mark as Unread</button>
         </div>
       </div>
     </div>`;

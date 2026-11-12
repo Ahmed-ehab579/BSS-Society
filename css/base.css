@@ -247,13 +247,13 @@ a {
 
 /* Secondary on dark (Regular): 16px side padding, Label M, stroke inside */
 .btn--secondary-on-dark {
-  height: 44px;
-  padding: var(--scale-300) var(--scale-400);
+  height: 48px;
+  padding: var(--scale-300) var(--scale-600);
   background: transparent;
   color: var(--color-text-on-dark);
   border: var(--border-md) solid var(--border-color-on-dark);
-  font-size: var(--label-m-size);
-  line-height: var(--label-m-line);
+  font-size: var(--label-l-size);
+  line-height: var(--label-l-line);
   transition-duration: var(--motion-duration-hover);
 }
 
@@ -549,25 +549,25 @@ a {
 
 .field__input {
   width: 100%;
-  height: 44.433px;
+  height: 48px;
   margin: 0;
-  padding: 10.237px 15.664px;
-  border: 0.979px solid var(--color-field-border);
+  padding: var(--scale-300) var(--scale-400);
+  border: var(--border-md) solid var(--color-field-border);
   border-radius: var(--radius-sm);
   background: var(--color-field-bg);
   color: var(--color-text-on-light);
   font-family: inherit;
-  font-size: var(--body-s-size);
-  line-height: var(--body-s-line);
+  font-size: var(--body-m-size);   /* 16px: smaller makes iPhones zoom in on focus */
+  line-height: var(--body-m-line);
   font-weight: var(--body-weight);
 }
 
 textarea.field__input {
   display: block;
-  height: 106.195px;
-  min-height: 106.195px;
-  padding-top: 11.748px;
-  border-radius: var(--radius-md);
+  height: 112px;
+  min-height: 112px;
+  padding-top: var(--scale-300);
+  border-radius: var(--radius-sm);
   resize: vertical;
 }
 

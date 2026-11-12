@@ -172,7 +172,7 @@
   align-items: center;
   justify-content: center;
   width: 45px;
-  height: 45px;
+  height: 44px;
   padding: 0;
   border: 0;
   border-radius: var(--radius-round);
@@ -480,8 +480,8 @@
 }
 
 .book-page .resources .icon-btn {
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
 }
 
 .book-page .resources .icon-btn img {

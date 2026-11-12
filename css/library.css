@@ -68,7 +68,7 @@
   display: flex;
   align-items: center;
   gap: var(--scale-100);
-  height: 50px;
+  height: 44px;
   padding: 0 var(--scale-400);
   border: var(--border-md) solid var(--color-field-border);
   border-radius: var(--radius-pill);
@@ -233,7 +233,7 @@
 }
 
 .filter-clear-all {
-  height: 50px;
+  height: 44px;
   padding: 0 var(--scale-200);
   border: 0;
   background: none;
@@ -420,7 +420,7 @@
   display: flex;
   padding: var(--scale-100);
   border: var(--border-md) solid var(--border-color-control);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-pill);
   background: var(--color-field-bg);
 }
 
@@ -428,11 +428,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   padding: 0;
   border: 0;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-round);
   background: transparent;
   cursor: pointer;
   opacity: 0.75;
@@ -463,15 +463,15 @@
   display: flex;
   align-items: center;
   gap: var(--scale-100);
-  height: 40px;
-  padding: 0 var(--scale-300);
+  height: 44px;
+  padding: 0 var(--scale-400);
   border: var(--border-md) solid var(--border-color-control);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-pill);
   background: var(--color-field-bg);
   color: var(--color-text-subtle);
   font-family: inherit;
-  font-size: var(--label-s-size);
-  line-height: var(--label-s-line);
+  font-size: var(--label-m-size);
+  line-height: var(--label-m-line);
   font-weight: 500;
   white-space: nowrap;
   cursor: pointer;
@@ -584,14 +584,14 @@
   display: inline-flex;
   align-items: center;
   gap: var(--scale-200);
-  height: 40px;
+  height: 44px;
   padding: 0 var(--scale-800);
   border: var(--scale-12) solid var(--border);
   border-radius: var(--radius-pill);
   background: var(--surface-cards);
   color: var(--color-card-heading);
   font-family: inherit;
-  font-size: var(--label-s-size);
+  font-size: var(--label-m-size);
   line-height: var(--label-s-line);
   font-weight: var(--label-weight);
   cursor: pointer;
@@ -713,12 +713,12 @@
   align-items: center;
   justify-content: center;
   width: 40px;
-  height: 40px;
+  height: 44px;
   margin-right: calc(-1 * var(--scale-200));
   padding: 0;
   border: 0;
   border-radius: var(--radius-round);
-  background: var(--surface-cards);
+  background: none;
   cursor: pointer;
 }
 
@@ -799,7 +799,6 @@
 
 .filter-sheet__footer .btn {
   width: 100%;
-  height: 48px;
 }
 
 /* ---- List layout: a small picture on the left; type, title, two lines of text and a compact action on
@@ -812,10 +811,10 @@
 
 .resource-grid[data-layout="list"] .resource-card__action {
   gap: var(--scale-100);
-  height: 36px;
-  padding: 0 var(--scale-200);
-  font-size: var(--body-s-size);
-  line-height: 18px;
+  height: 40px;
+  padding: 0 var(--scale-400);
+  font-size: var(--label-m-size);
+  line-height: var(--label-m-line);
 }
 
 .resource-grid[data-layout="list"] .resource-card__download {
@@ -906,15 +905,15 @@
   .resource-grid[data-layout="list"] .resource-card__action {
     width: auto;
     min-width: 148px;
-    height: 44px;
-    padding: 0 var(--scale-500);
+    height: 48px;
+    padding: 0 var(--scale-600);
     font-size: var(--label-l-size);
     line-height: var(--label-l-line);
   }
 
   .resource-grid[data-layout="list"] .resource-card__download {
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
   }
 }
 

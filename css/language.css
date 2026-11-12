@@ -104,8 +104,8 @@ html.is-sheet-open {
   margin: 0;
   color: var(--color-heading);
   font-size: var(--h6-size);
-  line-height: 30px;
-  font-weight: var(--h5-weight);
+  line-height: var(--h6-line);
+  font-weight: var(--h6-weight);
 }
 
 .language-sheet__close {
@@ -408,7 +408,7 @@ html.is-sheet-open {
 }
 
 .is-dropdown .language-search__input {
-  height: 44px;
+  height: 48px;
 }
 
 .is-dropdown .language-search__clear {

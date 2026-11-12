@@ -129,8 +129,8 @@
   margin: 0;
   color: var(--color-heading);
   font-size: var(--h4-size);
-  line-height: var(--h5-line);
-  font-weight: var(--h5-weight);
+  line-height: 38px;
+  font-weight: var(--h4-weight);
 }
 
 .support-sheet__close {
@@ -542,7 +542,7 @@
 .partner-form__row + .field { margin-bottom: 36px; }
 
 .partner-form .field__input {
-  border-width: var(--scale-12);
+  border-width: var(--border-md);
 }
 
 .partner-form .field[hidden] {
@@ -633,7 +633,7 @@
 
 @media (hover: hover) {
   .support-sheet__close:hover {
-    background: var(--surface-cards-hovered-neutral);
+    background: var(--surface-card);
   }
 
   .contact-channel:hover::before {

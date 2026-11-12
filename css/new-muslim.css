@@ -309,9 +309,6 @@
 
 .callout__action {
   gap: var(--scale-200);
-  height: 52px;
-  padding: 0 var(--scale-600);
-  font-size: var(--label-l-size);
 }
 
 /* ---- Responsive ------------------------------------------------------------------------------- */

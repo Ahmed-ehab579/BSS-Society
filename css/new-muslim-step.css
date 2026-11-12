@@ -66,14 +66,15 @@
 
 .topic-tab {
   position: relative;   /* keeps the hidden topic title inside the tab (and the scrolling row on phones) */
-  padding: var(--scale-200) var(--scale-600);
+  min-height: 44px;
+  padding: var(--scale-200) var(--scale-500);
   border: var(--scale-12) solid var(--border);
   border-radius: var(--radius-pill);
   background: var(--surface-action-outline);
   color: var(--color-text-body);
   font-family: inherit;
-  font-size: var(--body-l-size);
-  line-height: var(--body-l-line);
+  font-size: var(--body-m-size);
+  line-height: var(--body-m-line);
   white-space: nowrap;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -286,12 +287,6 @@
     display: none;
   }
 
-  .topic-tab {
-    min-height: 44px;
-    padding: var(--scale-200) var(--scale-500);
-    font-size: var(--body-m-size);
-    line-height: var(--body-m-line);
-  }
 
   .topic-panel__number {
     font-size: var(--display-size);
@@ -386,12 +381,6 @@
     line-clamp: 2;
   }
 
-  .topic-panel__track .resource-card__action {
-    height: 40px;
-    padding: var(--scale-200) var(--scale-400);
-    font-size: var(--label-m-size);
-    line-height: var(--label-m-line);
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

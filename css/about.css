@@ -832,10 +832,7 @@
   .support__actions .btn {
     flex: 1 1 0;
     min-width: max-content;
-    height: 52px;
     padding-inline: var(--scale-400);
-    font-size: var(--body-m-size);
-    line-height: 22px;
   }
 }
 

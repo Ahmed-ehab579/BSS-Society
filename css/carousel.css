@@ -134,7 +134,7 @@
 
 @media (hover: hover) {
   .carousel__toggle:hover {
-    background: var(--surface-cards-hovered-neutral);
+    background: var(--green-100);
   }
 
   .carousel__dot:hover span {

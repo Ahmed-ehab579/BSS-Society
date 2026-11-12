@@ -1568,9 +1568,9 @@
 }
 
 .help-panel__title {
-  font-size: var(--h5-size);
-  line-height: 28px;
-  font-weight: 500;
+  font-size: var(--h4-size);
+  line-height: 38px;
+  font-weight: var(--h4-weight);
   color: var(--color-heading);
 }
 
@@ -1583,7 +1583,7 @@
   align-items: center;
   justify-content: center;
   width: 40px;
-  height: 40px;
+  height: 44px;
   padding: 0;
   border: 0;
   border-radius: var(--radius-round);
@@ -1826,6 +1826,11 @@
 
   .help-panel.is-open {
     transform: none;
+  }
+
+  .help-panel__title {
+    font-size: var(--h5-size);   /* dialog titles on phones (same as the support sheets) */
+    line-height: var(--h5-line);
   }
 
   .help-panel__grip {

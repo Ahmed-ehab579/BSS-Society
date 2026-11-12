@@ -511,8 +511,6 @@ a.journey-card:focus-visible .journey-card__go {
 }
 
 .journey-card__locked-actions .btn--secondary {
-  height: 44px;
-  padding: var(--scale-300) var(--scale-400);
   background: transparent;
 }
 
