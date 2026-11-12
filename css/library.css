@@ -112,6 +112,7 @@
   justify-content: center;
   width: 24px;
   height: 24px;
+  margin-left: var(--scale-200);   /* 12px gap before the arrow (4 + 8), wider than the 4px between label and value */
   transition: transform var(--motion-duration) var(--motion-ease);
 }
 
