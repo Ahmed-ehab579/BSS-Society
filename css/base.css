@@ -312,6 +312,22 @@ a {
   }
 }
 
+/* On-dark outline buttons: the white arrow turns the same dark grey as the label (#3b3b3b) when the
+   button fills with green on hover or press */
+.btn--secondary-on-dark img {
+  transition: filter var(--motion-duration-hover) var(--motion-ease);
+}
+
+@media (hover: hover) {
+  .btn--secondary-on-dark:hover img {
+    filter: brightness(0) invert(0.23);
+  }
+}
+
+.btn--secondary-on-dark:active img {
+  filter: brightness(0) invert(0.23);
+}
+
 .btn--primary:active {
   background: var(--surface-action-primary-pressed);
 }
