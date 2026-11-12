@@ -251,7 +251,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--scale-500);
-  padding: var(--scale-600);
+  padding: var(--scale-400);   /* 16px all round (was 24), by request */
   border: var(--scale-12) solid var(--border);
   border-radius: var(--radius-lg);
   background: var(--surface-preview);
@@ -427,12 +427,10 @@
   }
 
 
-  /* 16px inset (20px at the bottom to balance the text's line spacing); the image to text gap stays
-     below the padding so the content reads as one group; the image radius is the card radius minus the
-     padding, so the corners run parallel */
+  /* Preview card on phones: a tight 12px inset, 16px between the image and the text */
   .topic-preview__card {
     gap: var(--scale-400);   /* clearly larger than the space between text lines */
-    padding: var(--scale-400) var(--scale-400) var(--scale-500);
+    padding: var(--scale-300);   /* 12px all round on phones (was 16 / 20), by request */
     border-radius: var(--radius-lg);
   }
 
