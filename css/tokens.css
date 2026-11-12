@@ -135,6 +135,8 @@
   /* Large display: the About journey step numbers, as in the original Figma design (93 / light) */
   --display-l-size: 93px;
   --display-l-weight: 300;
+  /* Medium display: New Muslim step numbers, between Display (72) and Display L (93) */
+  --display-m-size: 82px;
 
   /* Layout */
   --container-max: 1360px;
@@ -235,5 +237,6 @@
     --body-l-size: 16px;    --body-l-line: 26px;
     --display-size: 56px;
     --display-l-size: 64px;
+    --display-m-size: 60px;
   }
 }
