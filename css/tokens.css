@@ -142,7 +142,7 @@
   --surface-book: var(--surface-raised);
   --surface-preview: var(--surface-raised);
   --surface-media: var(--surface-raised);
-  --surface-form-panel: var(--surface-raised);
+  --surface-form-panel: rgba(243, 240, 231, 0.9);   /* contact form over the photo: see-through, as approved before the audit */
   --surface-cards: var(--surface-card);
   --surface-resource-card: var(--surface-card);
   --surface-cards-hovered-neutral: var(--surface-card-hover);
