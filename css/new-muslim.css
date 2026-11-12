@@ -196,8 +196,8 @@
 .topic__title {
   flex: 1;
   min-width: 0;
-  font-size: var(--body-xxl-size);   /* 24px, phone 20 (was the 26px H5), by request */
-  line-height: var(--h5-line);
+  font-size: var(--body-xl-size);    /* Body XL: 20/32, phone 18/29 (was the 26px H5), by request */
+  line-height: var(--body-xl-line);
   font-weight: var(--body-weight);
   transition: font-weight var(--motion-duration-hover) var(--motion-ease);
 }
