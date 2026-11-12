@@ -34,6 +34,23 @@
   color: var(--color-text-body);
 }
 
+/* Two lines at every desktop width: small laptops get a slightly smaller title and text column */
+.about-title {
+  text-wrap: balance;
+}
+
+@media (min-width: 1100px) and (max-width: 1319px) {
+  .about-title {
+    flex-basis: auto;
+    font-size: var(--h1-size);
+    line-height: 1.47;
+  }
+
+  .about-title + .intro__text {
+    width: 400px;
+  }
+}
+
 /* ---- Who we are: text on the left, photo fading in from the right ------------------------------ */
 
 .who__panel {
