@@ -1145,8 +1145,6 @@
 
   .article-hero__title {
     margin-block: 0;
-    font-size: var(--h4-size);
-    line-height: 38px;
     font-weight: 500;
     letter-spacing: -0.5px;
     max-width: 300px;   /* two lines on every phone width */
@@ -1380,15 +1378,7 @@
     transform: scale(0.93);
   }
 
-  .article-section__heading {
-    font-size: var(--h5-size);
-    line-height: var(--h5-line);
-  }
 
-  .article-section__body {
-    font-size: var(--body-l-size);
-    line-height: var(--body-l-line);
-  }
 
   /* Phones: centred, the check large on top, then the title, the line and the button */
   .completion {
@@ -1801,10 +1791,6 @@
     transform: none;
   }
 
-  .help-panel__title {
-    font-size: var(--h5-size);   /* dialog titles on phones (same as the support sheets) */
-    line-height: var(--h5-line);
-  }
 
   .help-panel__grip {
     display: block;

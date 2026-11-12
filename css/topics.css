@@ -205,10 +205,6 @@
     max-width: calc(100% - 40px);
   }
 
-  .topic-card__title {
-    font-size: var(--h5-size);
-    line-height: var(--h5-line);
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -695,8 +695,6 @@
   .about-intro__heading,
   .who__heading,
   .support__heading {
-    font-size: var(--h4-size);
-    line-height: 40px;
     letter-spacing: -0.64px;
   }
 
@@ -715,13 +713,9 @@
 
   /* Figma 2178:2863: same layout, scaled to the phone. Small text stays at a readable size. */
   .stat__value {
-    font-size: var(--h2-size);
     letter-spacing: -0.88px;
   }
 
-  .stat__plus {
-    font-size: var(--h3-size);
-  }
 
   .stat__label {
     font-size: var(--body-xs-size);
@@ -811,9 +805,6 @@
     border-radius: var(--radius-md);
   }
 
-  .apart-card__title {
-    font-size: var(--h5-size);
-  }
 
   .apart-card__text {
     font-size: var(--body-m-size);

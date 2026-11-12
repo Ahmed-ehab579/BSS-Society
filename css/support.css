@@ -695,10 +695,6 @@
     background: var(--color-neutral-300);
   }
 
-  .support-sheet__title {
-    font-size: var(--h5-size);   /* 32 on desktop; 26 keeps "Help us reach further" on one line */
-    line-height: var(--h5-line);
-  }
 
   .support-sheet__body {
     gap: var(--scale-500);

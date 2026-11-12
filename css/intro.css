@@ -82,8 +82,4 @@
     padding-top: calc(var(--header-height) + var(--scale-800));
   }
 
-  .intro__heading {
-    font-size: var(--h1-size);
-    line-height: 52px;
-  }
 }

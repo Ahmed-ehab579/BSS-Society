@@ -124,9 +124,6 @@
     margin-inline: auto;
   }
 
-  .not-found__title {
-    font-size: var(--h1-size);
-  }
 
   .not-found__text {
     font-size: var(--body-m-size);

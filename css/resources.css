@@ -241,10 +241,6 @@
     padding: var(--scale-900) var(--scale-400);
   }
 
-  .resources__heading {
-    font-size: var(--h6-size);
-    line-height: var(--h6-line);
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

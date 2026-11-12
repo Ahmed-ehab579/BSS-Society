@@ -939,8 +939,6 @@
   }
 
   .library-panel__heading {
-    font-size: var(--h4-size);
-    line-height: 40px;
     letter-spacing: -0.64px;
   }
 
@@ -1096,10 +1094,6 @@
     gap: var(--scale-500);
   }
 
-  .results__heading {
-    font-size: var(--h5-size);
-    line-height: var(--h5-line);
-  }
 
   /* Layout switch on the left, sort on the right */
   .results__controls {

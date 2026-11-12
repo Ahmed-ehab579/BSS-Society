@@ -106,10 +106,6 @@
     gap: var(--scale-900);
   }
 
-  .hero__heading {
-    font-size: var(--h1-size);
-    line-height: 52px;
-  }
 
   .hero__break {
     display: inline;
@@ -280,15 +276,9 @@
 
   .about__heading,
   .start__heading {
-    font-size: var(--h4-size);
-    line-height: 40px;
     letter-spacing: -0.64px;
   }
 
-  .about__text {
-    font-size: var(--body-xl-size);
-    line-height: var(--body-xl-line);
-  }
 
   .about__intro .btn,
   .start__intro .btn {
@@ -610,10 +600,6 @@
     gap: var(--scale-300);
   }
 
-  .topic-card__title {
-    font-size: var(--h5-size);
-    line-height: var(--h5-line);
-  }
 
   .new-muslim__photo,
   .benefit-card {

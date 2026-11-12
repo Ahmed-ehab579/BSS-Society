@@ -913,8 +913,6 @@
 
   .preview .book__title {
     margin: var(--scale-200) 0 0;
-    font-size: var(--h5-size);
-    line-height: var(--h5-line);
     font-weight: var(--h6-weight);
     letter-spacing: -0.4px;
   }
@@ -1028,10 +1026,6 @@
     border-radius: var(--radius-lg);
   }
 
-  .preview__related-heading {
-    font-size: var(--h6-size);
-    line-height: var(--h6-line);
-  }
 
   .preview__related .carousel {
     gap: var(--scale-600);

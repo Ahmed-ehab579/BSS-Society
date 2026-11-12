@@ -156,8 +156,6 @@
   }
 
   .contact__heading {
-    font-size: var(--h4-size);
-    line-height: 40px;
     letter-spacing: -0.64px;
   }
 
