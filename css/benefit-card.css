@@ -22,6 +22,8 @@
   justify-content: center;
   width: 69.096px;
   height: 69.096px;
+  transform-origin: top left;
+  transition: transform var(--motion-duration-hover) var(--motion-ease);
 }
 
 .benefit-card__icon img {
@@ -59,6 +61,11 @@
 
   .benefit-card:hover .benefit-card__content {
     transform: none;
+  }
+
+  /* The icon shrinks into the top-left corner (69 → 48px, the compact icon size) as the card opens */
+  .benefit-card:hover .benefit-card__icon {
+    transform: scale(0.695);
   }
 }
 
@@ -98,6 +105,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .benefit-card,
+  .benefit-card__icon,
   .benefit-card__content {
     transition: none;
   }
