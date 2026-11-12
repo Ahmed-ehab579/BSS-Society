@@ -34,30 +34,6 @@
   color: var(--color-text-body);
 }
 
-/* Two lines at every desktop width: small laptops get a slightly smaller title and text column */
-.about-title {
-  text-wrap: balance;
-  font-weight: 400;        /* uppercase kept, lighter than the 500 H1 weight, by request */
-}
-
-/* Tighter lines than the 78px intro default, using the H1 token (72px), by request */
-@media (min-width: 1100px) {
-  .about-title {
-    line-height: var(--h1-line);
-  }
-}
-
-@media (min-width: 1100px) and (max-width: 1319px) {
-  .about-title {
-    flex-basis: auto;
-    font-size: var(--h1-size);
-  }
-
-  .about-title + .intro__text {
-    width: 400px;
-  }
-}
-
 /* ---- Who we are: text on the left, photo fading in from the right ------------------------------ */
 
 .who__panel {
