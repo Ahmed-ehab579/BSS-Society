@@ -9,7 +9,7 @@
   const OLD_KEY = "bss.saved.v1";   // v1 was a plain list of keys from the book page and the previews
   const PATHS = {
     "start-here": "Start here",
-    "new-muslim": "New muslim",
+    "new-muslim": "New Muslim",
     library: "Library",
   };
 

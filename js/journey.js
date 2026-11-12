@@ -59,7 +59,7 @@
         <p class="journey-card__done-title">You’ve finished this article</p>
         <div class="journey-card__locked-actions">
           <a class="btn btn--primary btn--regular" href="${articleUrl(topic.id)}">Read again</a>
-          <button class="btn btn--secondary btn--regular" type="button" data-unread="${topic.id}">Mark as Unread</button>
+          <button class="btn btn--secondary btn--regular" type="button" data-unread="${topic.id}">Mark as unread</button>
         </div>
       </div>
     </div>`;

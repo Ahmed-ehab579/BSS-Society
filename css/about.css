@@ -152,7 +152,7 @@
 }
 
 .stat__plus {
-  font-size: var(--display-size);
+  font-size: var(--h2-size);
 }
 
 .stat__label {
@@ -172,7 +172,7 @@
   line-height: 1.5;
   font-weight: 500;
   letter-spacing: 0.47px;
-  text-transform: capitalize;
+  text-transform: none;   /* sentence case, like every other label */
   white-space: nowrap;   /* the lines are set by hand in the HTML */
 }
 

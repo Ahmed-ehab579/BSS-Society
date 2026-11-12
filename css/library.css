@@ -42,7 +42,7 @@
   font-size: var(--label-m-size);
   line-height: var(--label-m-line);
   font-weight: var(--label-weight);
-  letter-spacing: var(--label-s-tracking);
+  letter-spacing: var(--label-uppercase-tracking);
   text-transform: uppercase;
   white-space: nowrap;
 }

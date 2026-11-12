@@ -80,7 +80,7 @@
   const isThisPage = (link) =>
     link.origin === location.origin && pagePath(link.pathname) === pagePath(location.pathname);
   // The link for this page, or for pages with no link of their own the section their markup marks
-  // active (New muslim on the step pages, Start here on articles).
+  // active (New Muslim on the step pages, Start here on articles).
   const activeLink = navLinks.find(isThisPage) || navLinks.find((link) => link.classList.contains("is-active")) || null;
 
   navLinks.forEach((link) => link.classList.toggle("is-active", link === activeLink));

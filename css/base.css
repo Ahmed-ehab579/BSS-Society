@@ -320,6 +320,37 @@ a {
   transition-duration: var(--motion-duration-link);
 }
 
+/* Back link: one design on every page (article, book, material). Text and arrow move together. */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--scale-200);
+  color: var(--text);
+  font-size: var(--label-l-size);
+  line-height: var(--label-l-line);
+  font-weight: 500;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.back-link img {
+  width: var(--icon-lg);
+  height: var(--icon-lg);
+  flex-shrink: 0;
+  transition: transform var(--motion-slow) var(--motion-ease);
+}
+
+.back-link:focus-visible {
+  outline: var(--border-lg) solid var(--border-strong);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) {
+  .back-link:hover img {
+    transform: translateX(-3px);
+  }
+}
+
 /* Actions / Icon Button (40 × 40) */
 .icon-btn {
   display: inline-flex;

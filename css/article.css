@@ -40,15 +40,7 @@
 
 /* Back link */
 .article-back {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--scale-200);
-  margin-bottom: var(--scale-600);
-  color: var(--color-text-on-light);
-  font-size: var(--h6-size);
-  line-height: 28px;
-  font-weight: var(--body-xxl-weight);
-  white-space: nowrap;
+  margin-bottom: var(--scale-600);   /* look: .back-link (base.css) */
 }
 
 /* "Back to the path" on the left, Save on the right */
@@ -68,18 +60,6 @@
   margin-block: -6px;   /* taller than the back link: the cover keeps its place */
 }
 
-.article-back img {
-  width: 30px;
-  height: 30px;
-  transform: rotate(90deg);
-  transition: transform var(--motion-duration) var(--motion-ease);
-}
-
-@media (hover: hover) {
-  .article-back:hover img {
-    transform: rotate(90deg) translateY(-4px);
-  }
-}
 
 .article-back:focus-visible,
 .topic-card:focus-visible,
@@ -696,7 +676,7 @@
   font-weight: var(--label-weight);
   letter-spacing: var(--label-uppercase-tracking);
   text-transform: uppercase;
-  color: var(--color-neutral-400);
+  color: var(--text-muted);   /* eyebrow: 12/600 uppercase, muted */
 }
 
 .article-section__heading {
@@ -872,7 +852,7 @@
   font-weight: var(--label-weight);
   letter-spacing: var(--label-uppercase-tracking);
   text-transform: uppercase;
-  color: var(--color-neutral-400);
+  color: var(--text-muted);   /* eyebrow: 12/600 uppercase, muted */
 }
 
 .topic-card__row {
@@ -1120,13 +1100,6 @@
 
   .article-back {
     margin-bottom: var(--scale-400);
-    font-size: var(--label-l-size);
-    line-height: var(--label-l-line);
-  }
-
-  .article-back img {
-    width: 28px;
-    height: 28px;
   }
 
   /* Phones: the cover card of reading apps. The photo darkens towards the bottom, where the title and a

@@ -57,7 +57,7 @@
   const root = document.documentElement;
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const escape = (text) => String(text).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
-  const backLabel = location.pathname.includes("library") ? "Back to library" : "Back";
+  const backLabel = location.pathname.includes("library") ? "Back to the library" : "Back";
   const page = document.querySelector("[data-material-page]");   // material.html: the page itself
   const phone = window.matchMedia("(max-width: 767px)");
   const FROM = location.pathname.includes("new-muslim") ? "new-muslim" : location.pathname.includes("article") ? "article" : "library";
@@ -602,10 +602,10 @@
       <h${level} class="preview__related-heading" id="${id}">${heading}</h${level}>
       <div class="carousel" data-carousel role="region" aria-roledescription="carousel" aria-label="Related materials">
         <div class="carousel__controls">
-          <button class="icon-btn icon-btn--prev" type="button" data-carousel-prev aria-label="Previous material">
+          <button class="icon-btn icon-btn--prev" type="button" data-carousel-prev aria-label="Previous resource">
             <img src="assets/icons/arrow-right.svg" width="28" height="28" alt="">
           </button>
-          <button class="icon-btn" type="button" data-carousel-next aria-label="Next material">
+          <button class="icon-btn" type="button" data-carousel-next aria-label="Next resource">
             <img src="assets/icons/arrow-right.svg" width="28" height="28" alt="">
           </button>
         </div>
@@ -770,7 +770,7 @@
     const from = params.get("from");
     const fromNewMuslim = from === "new-muslim";
     if (from === "new-muslim" || from === "article") {
-      back.querySelector("span").textContent = "Back";
+      back.querySelector("span").textContent = fromNewMuslim ? "Back to New Muslim" : "Back to the article";
       back.href = fromNewMuslim ? "new-muslim.html" : "article.html";
     }
     let cameFromSite = false;
@@ -783,7 +783,7 @@
       history.back();   // keeps the Library's filters and scroll position
     });
     if (!item) {
-      page.innerHTML = `<p class="material-missing">This material isn’t available. <a href="library.html">Browse the library</a></p>`;
+      page.innerHTML = `<p class="material-missing">This material isn’t available. <a href="library.html">Explore the library</a></p>`;
       return;
     }
     document.title = `${item.title} — Best Speech Society`;
