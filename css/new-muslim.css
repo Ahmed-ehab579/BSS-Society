@@ -54,7 +54,7 @@
 .path-step__number {
   display: block;
   color: var(--color-step-number);
-  font-size: var(--display-l-size);      /* Display L: the original large step number (93 / light) */
+  font-size: var(--display-size);        /* Display size (72, phone 56) in the light weight: a bit smaller than Display L, by request */
   line-height: 82px;
   font-weight: var(--display-l-weight);
   letter-spacing: -4.1px;
@@ -381,7 +381,7 @@
   }
 
   .path-step__number {
-    font-size: var(--display-l-size);
+    font-size: var(--display-size);
     line-height: 60px;
     letter-spacing: -2.8px;
   }
