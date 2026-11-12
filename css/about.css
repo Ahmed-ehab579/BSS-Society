@@ -140,7 +140,7 @@
 .stat__value {
   order: -1;
   margin: 0 0 var(--scale-100);
-  font-size: var(--h1-size);   /* one step down from display (72 → 61, phone 56 → 36), by request */
+  font-size: var(--display-hero-size);   /* 61px (phone 36), kept as approved when H1 moved to 51px */
   line-height: 1;
   font-weight: 400;
   letter-spacing: -1.25px;

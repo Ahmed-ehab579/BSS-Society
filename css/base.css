@@ -54,6 +54,14 @@ a {
 }
 
 /* Type styles */
+/* Display (hero): the home page hero title */
+.text-display {
+  font-size: var(--display-hero-size);
+  line-height: var(--display-hero-line);
+  font-weight: var(--display-hero-weight);
+  text-transform: uppercase;
+}
+
 .text-h1 {
   font-size: var(--h1-size);
   line-height: var(--h1-line);

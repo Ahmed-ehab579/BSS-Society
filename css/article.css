@@ -121,8 +121,8 @@
 .article-hero__title {
   font-size: var(--h1-size);
   line-height: var(--h1-line);
-  font-weight: 500;                    /* lighter than the H1 token (500), per design review */
-  margin-block: -17px;                 /* H1 line (96px) is taller than the Figma 62px lockup */
+  font-weight: var(--h1-weight);
+  max-width: 700px;                    /* page titles: H1, up to 700px wide */
 }
 
 /* Phones get the short summary */

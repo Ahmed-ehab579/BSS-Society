@@ -11,8 +11,8 @@
   margin: var(--scale-500, 20px) 0;
   color: var(--color-heading);
   font-size: var(--h1-size);
-  font-weight: 400;
-  line-height: 1.08;
+  font-weight: var(--h1-weight);
+  line-height: var(--h1-line);
   letter-spacing: -0.02em;
 }
 
