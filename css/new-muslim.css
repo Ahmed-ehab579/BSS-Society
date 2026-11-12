@@ -181,11 +181,11 @@
     border-radius var(--motion-duration-hover) var(--motion-ease);
 }
 
-/* Selected topic: the page background colour with rounded corners; its divider fades out */
+/* Selected topic: one step darker than the open card (#dedace → #d2cdc0), rounded; its divider fades out */
 .topic.is-selected .topic__row {
   border-bottom-color: transparent;
   border-radius: var(--radius-sm);
-  background: var(--surface-page);
+  background: var(--surface-card-pressed);
   color: var(--color-heading);
 }
 
