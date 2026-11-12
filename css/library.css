@@ -67,7 +67,7 @@
 .filter__toggle {
   display: flex;
   align-items: center;
-  gap: var(--scale-100);
+  gap: var(--scale-300);   /* equal 12px gaps: label · value · arrow, so the value sits centred */
   height: 44px;
   padding: 0 var(--scale-400);
   border: var(--border-md) solid var(--color-field-border);
@@ -112,7 +112,6 @@
   justify-content: center;
   width: 24px;
   height: 24px;
-  margin-left: var(--scale-200);   /* 12px gap before the arrow (4 + 8), wider than the 4px between label and value */
   transition: transform var(--motion-duration) var(--motion-ease);
 }
 
@@ -177,9 +176,9 @@
   /* Opens and closes smoothly: fades in while dropping 6px into place (by request) */
   transform-origin: top left;
   transition:
-    opacity var(--motion-base) var(--motion-ease),
-    transform var(--motion-base) var(--motion-ease),
-    display var(--motion-base) allow-discrete;
+    opacity var(--motion-slow) var(--motion-ease),
+    transform var(--motion-slow) var(--motion-ease),
+    display var(--motion-slow) allow-discrete;
 }
 
 .filter__menu--end {
@@ -229,13 +228,23 @@
   pointer-events: none;
 }
 
+/* The label fills the row, so the check mark sits at the far right */
+.filter-option__label {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--scale-400);
+}
+
 /* Check mark on the selected option */
 .filter-option__label::after {
   content: "";
   display: inline-block;
+  flex-shrink: 0;
   width: 5px;
   height: 10px;
-  margin-left: var(--scale-400);
+  margin-left: auto;
   border: solid var(--color-type-icon);
   border-width: 0 2px 2px 0;
   transform: translateY(-2px) rotate(45deg);
