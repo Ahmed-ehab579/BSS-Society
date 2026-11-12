@@ -106,7 +106,7 @@
   /* Display (hero): the home page hero title only */
   --display-hero-size: 61px;  --display-hero-line: 72px;  --display-hero-weight: 500;
   /* H1: the page title on every other page */
-  --h1-size: 51px;  --h1-line: 64px;  --h1-weight: 500;
+  --h1-size: 51px;  --h1-line: 72px;  --h1-weight: 500;
   --h2-size: 45px;  --h2-line: 59px;  --h2-weight: 400;  --h2-tracking: -0.98px;
   --h3-size: 35px;  --h3-line: 49px;  --h3-weight: 500;  --h3-tracking: -0.39px;
   --h4-size: 31px;  --h4-line: 45px;  --h4-weight: 500;
@@ -224,7 +224,7 @@
     --gutter: var(--scale-400);
     /* One phone rule (R1): every step of the type scale steps down once on phones */
     --display-hero-size: 36px;  --display-hero-line: 44px;
-    --h1-size: 36px;  --h1-line: 46px;
+    --h1-size: 36px;  --h1-line: 50px;
     --h2-size: 31px;  --h2-line: 40px;  --h2-tracking: -0.6px;
     --h3-size: 26px;  --h3-line: 34px;
     --h4-size: 26px;  --h4-line: 34px;
