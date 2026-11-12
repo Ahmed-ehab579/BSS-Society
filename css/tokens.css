@@ -36,7 +36,7 @@
   /* Green scale (d4) */
   --green-100: #d5e3ca;               /* hover / selected fill */
   --green-300: #aac795;               /* outline-button hover, soft accents */
-  --green-500: #93a787;               /* done, dots, pins */
+  --green-500: #95b97b;               /* dots, pins, done (the original section-dot green) */
   --green-700: #647b4e;               /* icons and text in green */
   --green-900: #41473c;               /* text on green fills */
 
