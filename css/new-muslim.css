@@ -165,17 +165,28 @@
   align-items: center;
   gap: var(--scale-300);
   width: 100%;
-  padding: 26px 0 28px;
+  padding: var(--scale-500) var(--scale-400);   /* even 20px top and bottom; 16px sides so the selected fill has room */
   border: 0;
   border-bottom: var(--border-md) solid var(--border);
-  background: none;
+  border-radius: 0;
+  background: transparent;
   color: var(--color-text-body);
   font-family: inherit;
   text-align: left;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  transition: color var(--motion-duration) var(--motion-ease),
-    border-color var(--motion-duration-hover) var(--motion-ease);
+  transition: color var(--motion-duration-hover) var(--motion-ease),
+    background-color var(--motion-duration-hover) var(--motion-ease),
+    border-color var(--motion-duration-hover) var(--motion-ease),
+    border-radius var(--motion-duration-hover) var(--motion-ease);
+}
+
+/* Selected topic: the system's selected fill (green 100) with rounded corners; its divider fades out */
+.topic.is-selected .topic__row {
+  border-bottom-color: transparent;
+  border-radius: var(--radius-sm);
+  background: var(--surface-cards-hovered);
+  color: var(--color-heading);
 }
 
 .topic:last-child .topic__row {
@@ -188,6 +199,7 @@
   font-size: var(--h5-size);
   line-height: var(--h5-line);
   font-weight: var(--body-weight);
+  transition: font-weight var(--motion-duration-hover) var(--motion-ease);
 }
 
 .topic.is-selected .topic__title {
@@ -411,7 +423,7 @@
   }
 
   .topic__row {
-    padding: var(--scale-400) 0;
+    padding: var(--scale-400);
   }
 
 
@@ -463,6 +475,7 @@
   .path-step__body,
   .path-step.is-open .path-step__body,
   .topic__row,
+  .topic__title,
   .topic__chevron,
   .topic-preview,
   .topic.is-selected .topic-preview {
