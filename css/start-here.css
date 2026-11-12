@@ -48,7 +48,7 @@
   --pin-idle-ring: var(--border-subtle);            /* locked indicator: locked, unlocked early, or in progress but not its turn */
   --pin-turn-ring: var(--surface-cards);        /* Figma 970:2563 "Start here" ring */
   --pin-idle-dot: var(--text-muted);
-  --card-stroke-active: var(--border-strong);       /* available card stroke */
+  --card-stroke-active: var(--color-neutral-400);   /* available card stroke: #8e8e8e, the system grey closest to the original #7d7d7d */
   --card-stroke-locked: var(--border);       /* locked card stroke */
   --card-width: 275.56px;
   position: relative;
