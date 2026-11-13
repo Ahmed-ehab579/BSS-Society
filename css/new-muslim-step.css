@@ -405,3 +405,11 @@
     margin-bottom: var(--scale-600);
   }
 }
+
+/* Step titles on two lines ("Begin with the / essentials"): 520px holds every step's first line */
+@media (min-width: 1100px) {
+  .intro__heading.step-title {
+    flex-basis: 520px;
+    max-width: 520px;
+  }
+}
