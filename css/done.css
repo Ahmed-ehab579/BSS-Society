@@ -197,7 +197,7 @@
 }
 
 .progress-ring__value {
-  stroke: var(--green-700);
+  stroke: var(--green-500);            /* the site's main green: section dots, pins, done states */
   stroke-dasharray: var(--ring-value, 0) 360;
   transition: stroke-dasharray var(--motion-slow) var(--motion-ease);
 }
