@@ -19,10 +19,6 @@
             <span class="path-step__number" aria-hidden="true">${pad(step.id)}</span>
             <h3 class="path-step__title"><span class="visually-hidden">Step ${step.id}: </span>${escape(step.title)}</h3>
             <p class="path-step__text">${escape(step.text)}</p>
-            <p class="progress-line" data-step-progress hidden>
-              <span class="progress-line__bar" aria-hidden="true"><span></span></span>
-              <span data-step-progress-text></span>
-            </p>
           </div>
           <div class="path-step__actions">
             <a class="btn btn--regular btn--primary path-step__start" href="new-muslim-step.html?step=${step.id}">
@@ -78,15 +74,14 @@
     const done = window.BSS.done;
     if (!done) return;
     STEPS.forEach((step) => {
-      const line = list.querySelector(`[data-step="${step.id}"] [data-step-progress]`);
+      const card = list.querySelector(`[data-step="${step.id}"]`);
+      let ring = card.querySelector("[data-step-progress]");
+      if (!ring) {
+        card.querySelector(".path-step__header").insertAdjacentHTML("beforeend", done.ringHtml('data-step-progress'));
+        ring = card.querySelector("[data-step-progress]");
+      }
       const keys = stepKeys(step);
-      const count = done.count(keys);
-      line.hidden = count === 0;
-      line.classList.toggle("is-complete", count === keys.length);
-      line.style.setProperty("--progress", (count / keys.length).toFixed(3));
-      line.querySelector("[data-step-progress-text]").textContent = count === keys.length
-        ? "Step complete"
-        : `${count} of ${keys.length} materials done`;
+      done.paintRing(ring, done.count(keys), keys.length, "step");
     });
   }
   paintProgress();

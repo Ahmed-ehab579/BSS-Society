@@ -41,8 +41,11 @@
 .path-step__header {
   cursor: pointer;                     /* the whole header opens the step (js/new-muslim.js) */
   display: grid;
-  grid-template-areas: "intro actions";
+  grid-template-areas:
+    "intro progress"
+    "intro actions";
   grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto 1fr;
   column-gap: var(--scale-900);
   margin: 0 var(--scale-900);
   padding: var(--scale-900) 0 var(--scale-800);
@@ -103,6 +106,13 @@
 
 .path-step.is-open .path-step__chevron {
   transform: rotate(180deg);
+}
+
+/* Step progress (js/done.js): the same ring as the step pages, top right; the buttons stay bottom right */
+.path-step__header > .progress-ring {
+  grid-area: progress;
+  justify-self: end;
+  align-self: start;
 }
 
 /* ---- Topics: rows on the left, the selected topic's preview on the right ------------------- */
@@ -393,11 +403,20 @@
   .path-step__header {
     grid-template-areas:
       "intro"
+      "progress"
       "actions";
     grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
     row-gap: var(--scale-600);
     margin: 0 var(--scale-500);
     padding: var(--scale-600) 0;
+  }
+
+  /* Phones: the ring sits under the text, the caption beside it */
+  .path-step__header > .progress-ring {
+    flex-direction: row;
+    gap: var(--scale-300);
+    justify-self: start;
   }
 
   .path-step__number {

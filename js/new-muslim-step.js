@@ -102,15 +102,9 @@
       }
     });
     const keys = [...new Set(step.topics[topicIndex].resources.map((item) => item.key))];
-    const count = done.count(keys);
-    const ARC = 300;   // the ring's open arc, in degrees: the gap sits at the bottom
-    els.progress.classList.toggle("is-complete", count === keys.length);
-    els.progress.classList.toggle("is-empty", count === 0);
-    els.progress.style.setProperty("--ring-value", (ARC * count / keys.length).toFixed(1));
-    els.progress.querySelector("[data-topic-progress-text]").textContent = `${count}/${keys.length}`;
-    els.progress.setAttribute("aria-label", count === keys.length
-      ? `Topic complete: all ${keys.length} materials done`
-      : `${count} of ${keys.length} materials done`);
+    if (!els.progress.firstElementChild) els.progress.outerHTML = done.ringHtml("data-topic-progress");
+    els.progress = document.querySelector("[data-topic-progress]");
+    done.paintRing(els.progress, done.count(keys), keys.length, "topic");
   }
 
   window.BSS.done?.onChange(paintProgress);

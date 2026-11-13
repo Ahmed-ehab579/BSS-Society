@@ -125,9 +125,38 @@
     });
   }).observe(document.documentElement, { childList: true, subtree: true });
 
+  // ---- Progress ring (css/done.css): done/total inside, what is left under it ---------------------------
+
+  const ringHtml = (attributes = "") => `<div class="progress-ring is-empty" role="img" ${attributes}>
+      <div class="progress-ring__dial">
+        <svg viewBox="0 0 60 60" aria-hidden="true">
+          <circle class="progress-ring__track" cx="30" cy="30" r="26" pathLength="360"/>
+          <circle class="progress-ring__value" cx="30" cy="30" r="26" pathLength="360"/>
+        </svg>
+        <span class="progress-ring__count" aria-hidden="true"></span>
+      </div>
+      <p class="progress-ring__caption" aria-hidden="true"></p>
+    </div>`;
+
+  // `what`: "topic" or "step", for the finished caption and the label read out
+  function paintRing(ring, done, total, what) {
+    const complete = total > 0 && done === total;
+    ring.classList.toggle("is-empty", done === 0);
+    ring.classList.toggle("is-complete", complete);
+    ring.style.setProperty("--ring-value", (total ? (300 * done) / total : 0).toFixed(1));
+    ring.querySelector(".progress-ring__count").textContent = `${done}/${total}`;
+    const left = total - done;
+    ring.querySelector(".progress-ring__caption").textContent = complete
+      ? `${what === "step" ? "Step" : "Topic"} complete`
+      : done === 0 ? `${total} to explore` : `${left} to go`;
+    ring.setAttribute("aria-label", complete
+      ? `${what === "step" ? "Step" : "Topic"} complete: all ${total} materials done`
+      : `${done} of ${total} materials done, ${left} to go`);
+  }
+
   window.BSS = window.BSS || {};
   window.BSS.done = {
-    has, set, count, inPath, blockHtml,
+    has, set, count, inPath, blockHtml, ringHtml, paintRing,
     onChange: (fn) => listeners.push(fn),
   };
 })();

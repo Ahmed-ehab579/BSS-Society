@@ -151,57 +151,6 @@
   line-height: var(--body-l-line);
 }
 
-/* Topic progress (Figma 1137:4795): an open ring, the gap at the bottom, "done/total" in the middle.
-   js/new-muslim-step.js sets --ring-value (degrees of the 300° arc) */
-.progress-ring {
-  position: relative;
-  flex-shrink: 0;
-  width: 72px;
-  height: 72px;
-}
-
-.progress-ring svg {
-  display: block;
-  width: 72px;
-  height: 72px;
-  transform: rotate(120deg);           /* the arc starts bottom left and runs clockwise */
-}
-
-.progress-ring circle {
-  fill: none;
-  stroke-width: 5;
-  stroke-linecap: round;
-}
-
-.progress-ring__track {
-  stroke: var(--color-neutral-200);
-  stroke-dasharray: 300 360;
-}
-
-.progress-ring__value {
-  stroke: var(--green-700);           /* dark green progress */
-  stroke-dasharray: var(--ring-value, 0) 360;
-  transition: stroke-dasharray var(--motion-slow) var(--motion-ease), stroke var(--motion-slow) var(--motion-ease);
-}
-
-/* Nothing done yet: no dot of progress at the start of the arc */
-.progress-ring.is-empty .progress-ring__value {
-  stroke: none;
-}
-
-.progress-ring__label {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-bottom: 2px;
-  color: var(--text);
-  font-size: var(--body-l-size);
-  line-height: 1;
-  font-weight: 500;
-}
-
 /* Card type (Figma 1012:3539): an outlined pill above the title instead of a badge on the photo */
 .topic-panel__track .resource-card__badge {
   display: none;
@@ -366,8 +315,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .topic-tab,
-  .progress-ring__value {
+  .topic-tab {
     transition: none;
   }
 }
