@@ -18,22 +18,28 @@
   // with a short video on the topic itself, followed by four items from this pool.
   const BOOK = (file) => [`assets/images/${file}`, "50% 50%"];
   const POOL = [
-    ["The life of the Prophet Muhammad", "From his childhood in Makkah to his final sermon, the key moments of his life told simply.", "book", BOOK("library-book-mockup.png")],
-    ["How the Qur’an was preserved", "The careful history of memorising, writing and compiling the Qur’an over the first decades.", "article", ["assets/images/library-article-street.jpg", "50% 41%"]],
-    ["Mercy to the worlds", "An audio reflection on the Prophet’s mercy towards people, animals and the world around him.", "audio", BOOK("library-book-3.png")],
-    ["Juz ʿAmma: a reading planner", "Read the last part of the Qur’an a little each day, with short notes on every chapter.", "book", BOOK("library-book-2.png")],
-    ["Why believe in God?", "Simple, honest reasons people give for belief, and the questions they often start with.", "article", ["assets/images/topic-belief.jpg", "50% 50%"]],
-    ["Everyday manners", "Greetings, gratitude, kindness to neighbours: the small daily habits Islam encourages.", "video", ["assets/images/topic-life.jpg", "50% 45%"]],
-    ["The six pillars of faith", "Belief in God, the angels, the books, the prophets, the last day and destiny, each explained.", "book", BOOK("library-book-4.png")],
-    ["Walking in his footsteps", "A short film retracing the migration from Makkah to Madinah and what it teaches about patience.", "video", ["assets/images/library-caravan.jpg", "50% 71%"]],
-    ["Questions women ask", "Honest answers to common questions about hijab, marriage, work and worship.", "audio", BOOK("library-book-5.png")],
+    ["The life of the Prophet Muhammad", "From his childhood in Makkah to his final sermon, the key moments of his life told simply.", "book", BOOK("library-book-mockup.png"), "prophet"],
+    ["How the Qur’an was preserved", "The careful history of memorising, writing and compiling the Qur’an over the first decades.", "article", ["assets/images/library-article-street.jpg", "50% 41%"], "quran"],
+    ["Mercy to the worlds", "An audio reflection on the Prophet’s mercy towards people, animals and the world around him.", "audio", BOOK("library-book-3.png"), "prophet"],
+    ["Juz ʿAmma: a reading planner", "Read the last part of the Qur’an a little each day, with short notes on every chapter.", "book", BOOK("library-book-2.png"), "quran"],
+    ["Why believe in God?", "Simple, honest reasons people give for belief, and the questions they often start with.", "article", ["assets/images/topic-belief.jpg", "50% 50%"], "belief"],
+    ["Everyday manners", "Greetings, gratitude, kindness to neighbours: the small daily habits Islam encourages.", "video", ["assets/images/topic-life.jpg", "50% 45%"], "life"],
+    ["The six pillars of faith", "Belief in God, the angels, the books, the prophets, the last day and destiny, each explained.", "book", BOOK("library-book-4.png"), "belief"],
+    ["Walking in his footsteps", "A short film retracing the migration from Makkah to Madinah and what it teaches about patience.", "video", ["assets/images/library-caravan.jpg", "50% 71%"], "prophet"],
+    ["Questions women ask", "Honest answers to common questions about hijab, marriage, work and worship.", "audio", BOOK("library-book-5.png"), "women"],
   ];
 
+  // Library topic of each New Muslim topic (shown on its intro video, as the Library shows it)
+  const TOPIC_CATEGORY = {
+    "Who is God in Islam?": "belief", "What is the Qur’an?": "quran", "Who is Prophet Muhammad?": "prophet",
+    "What does it mean to be Muslim?": "belief", "Learning to read the Qur’an": "quran", "Answers to common questions": "life",
+  };
+
   function resourcesFor(title, [image, focus], offset) {
-    const intro = { title, text: "A short, gentle introduction to this topic, to watch before anything else.", format: "video", image, focus };
+    const intro = { title, text: "A short, gentle introduction to this topic, to watch before anything else.", format: "video", image, focus, category: TOPIC_CATEGORY[title] || "life" };
     const more = [0, 1, 2, 3].map((i) => {
-      const [itemTitle, text, format, [itemImage, itemFocus]] = POOL[(offset + i * 2) % POOL.length];
-      return { title: itemTitle, text, format, image: itemImage, focus: itemFocus };
+      const [itemTitle, text, format, [itemImage, itemFocus], category] = POOL[(offset + i * 2) % POOL.length];
+      return { title: itemTitle, text, format, image: itemImage, focus: itemFocus, category };
     });
     return [intro, ...more].map((item) => ({ dir: "auto", ...item }));
   }
