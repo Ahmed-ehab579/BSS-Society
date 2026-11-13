@@ -108,22 +108,12 @@
   transform: rotate(180deg);
 }
 
-/* Step progress (js/done.js): the same ring as the step pages, top right; the buttons stay bottom right */
+/* Step progress (js/done.js): exactly the step pages' ring (one component, one look), placed top right;
+   the buttons stay bottom right */
 .path-step__header > .progress-ring {
   grid-area: progress;
   justify-self: end;
   align-self: start;
-}
-
-/* A smaller ring here than on the step page: a summary on a card, not the page's focus */
-.path-step__header .progress-ring__dial,
-.path-step__header .progress-ring svg {
-  width: 60px;
-  height: 60px;
-}
-
-.path-step__header .progress-ring__count {
-  font-size: var(--label-l-size);
 }
 
 /* ---- Topics: rows on the left, the selected topic's preview on the right ------------------- */
@@ -423,10 +413,8 @@
     padding: var(--scale-600) 0;
   }
 
-  /* Phones: the ring sits under the text, the caption beside it */
+  /* Phones: the same ring, under the text */
   .path-step__header > .progress-ring {
-    flex-direction: row;
-    gap: var(--scale-300);
     justify-self: start;
   }
 
