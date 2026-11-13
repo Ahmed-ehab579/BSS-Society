@@ -386,3 +386,17 @@
     width: auto;
   }
 }
+
+/* Back to the path, above the page title: 40px under the header, 32px over the title */
+.step-back {
+  max-width: calc(1305px + 2 * var(--gutter));   /* the intro's edges */
+  margin-top: calc(-1 * var(--scale-600));
+  margin-bottom: var(--scale-800);
+}
+
+@media (max-width: 767px) {
+  .step-back {
+    margin-top: calc(-1 * var(--scale-200));     /* 24px under the header on phones */
+    margin-bottom: var(--scale-600);
+  }
+}
