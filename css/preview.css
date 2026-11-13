@@ -76,7 +76,7 @@
   align-items: center;
   justify-content: space-between;
   align-items: flex-start;
-  height: 74px;                        /* back link 20px from the top (was 10); the close button keeps its place */
+  height: 94px;                        /* back link 40px from the top; the close button keeps its place */
   padding-inline: calc(var(--preview-gutter) - var(--scale-200));
 }
 
@@ -103,7 +103,7 @@
   align-items: center;
   gap: var(--scale-200);
   height: 44px;
-  margin-top: var(--scale-500);        /* 20px from the top of the sheet */
+  margin-top: var(--scale-900);        /* 40px from the top of the sheet */
   padding: 0 var(--scale-400) 0 var(--scale-200);
   border: 0;
   border-radius: var(--radius-pill);
@@ -887,11 +887,11 @@
   }
 
   .preview__bar {
-    height: 62px;
+    height: 74px;
   }
 
   .preview__back {
-    margin-top: var(--scale-300);      /* 12px from the top (was 6) */
+    margin-top: var(--scale-600);      /* 24px from the top */
   }
 
   /* A page goes back; it doesn't close */
