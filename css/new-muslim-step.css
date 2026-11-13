@@ -232,7 +232,7 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--scale-900);
-  margin: var(--scale-800) 0 0;
+  margin: var(--scale-1100) 0 0;      /* 64px below the topic header (was 32) */
   padding: 0;
   list-style: none;
 }
@@ -337,7 +337,7 @@
     grid-template-columns: min(280px, 100%);
     justify-content: center;
     gap: var(--scale-600);
-    margin-top: var(--scale-600);
+    margin-top: var(--scale-1000);    /* 48px below the topic header on phones (was 24) */
   }
 
   .topic-panel__track .resource-card__frame {
