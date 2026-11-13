@@ -109,8 +109,9 @@
             <span class="saved-row__title">${title}</span>
           </span>
         </a>
-        <button class="saved-row__remove" type="button" aria-label="Remove ${title} from saved">
-          <img src="assets/icons/bookmark-filled.svg" width="11.55" height="14.85" alt="">
+        <button class="saved-row__remove" type="button" aria-label="Remove ${title} from saved" data-tip="Remove from saved">
+          <img class="saved-row__icon-saved" src="assets/icons/bookmark-filled.svg" width="11.55" height="14.85" alt="">
+          <img class="saved-row__icon-remove" src="assets/icons/bookmark.svg" width="11.55" height="14.85" alt="">
         </button>
       </li>`;
   }

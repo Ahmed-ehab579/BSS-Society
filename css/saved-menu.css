@@ -293,9 +293,69 @@
   transition: background-color var(--motion-duration-hover) var(--motion-ease);
 }
 
+.saved-row__remove {
+  position: relative;
+}
+
 .saved-row__remove img {
   width: 13px;
   height: auto;
+  transition: opacity var(--motion-fast) var(--motion-ease);
+}
+
+/* Hover or keyboard focus says what a press will do: the filled bookmark empties and a short label
+   "Remove from saved" appears beside it (the pattern of YouTube, Medium and Pocket) */
+.saved-row__icon-remove {
+  position: absolute;
+  opacity: 0;
+}
+
+.saved-row__remove::after {
+  content: attr(data-tip);
+  position: absolute;
+  top: 50%;
+  right: calc(100% + var(--scale-100));
+  padding: var(--scale-100) var(--scale-300);
+  border-radius: var(--radius-sm);
+  background: var(--surface-dark);
+  color: var(--text-on-dark);
+  font-size: var(--label-s-size);
+  line-height: var(--label-s-line);
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(4px, -50%);
+  transition: opacity var(--motion-fast) var(--motion-ease), transform var(--motion-fast) var(--motion-ease);
+}
+
+.saved-row__remove:focus-visible .saved-row__icon-saved {
+  opacity: 0;
+}
+
+.saved-row__remove:focus-visible .saved-row__icon-remove,
+.saved-row__remove:focus-visible::after {
+  opacity: 1;
+}
+
+.saved-row__remove:focus-visible::after {
+  transform: translate(0, -50%);
+}
+
+@media (hover: hover) {
+  .saved-row__remove:hover .saved-row__icon-saved {
+    opacity: 0;
+  }
+
+  .saved-row__remove:hover .saved-row__icon-remove,
+  .saved-row__remove:hover::after {
+    opacity: 1;
+  }
+
+  .saved-row__remove:hover::after {
+    transform: translate(0, -50%);
+    transition-delay: 150ms;           /* a passing cursor doesn't flash the label */
+  }
 }
 
 /* Removed: the row keeps its place for a few seconds with Undo */
