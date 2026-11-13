@@ -147,6 +147,17 @@
   STEPS.forEach((step, index) => {
     const el = stepEl(step);
 
+    // The whole card header works like "Start step N" (the link stays the one keyboard and screen readers
+    // use). Its own buttons, selected text and modifier clicks (new tab) keep their usual behaviour.
+    const header = el.querySelector(".path-step__header");
+    const start = el.querySelector(".path-step__start");
+    header.addEventListener("click", (event) => {
+      if (event.target.closest("a, button")) return;
+      if (String(window.getSelection())) return;
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
+      start.click();
+    });
+
     el.querySelector("[data-toggle]").addEventListener("click", () => {
       const open = !el.classList.contains("is-open");
       const change = () => {

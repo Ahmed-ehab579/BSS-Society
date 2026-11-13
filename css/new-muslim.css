@@ -39,6 +39,7 @@
 
 /* Number, title and text on the left; buttons bottom right */
 .path-step__header {
+  cursor: pointer;                     /* the whole header opens the step (js/new-muslim.js) */
   display: grid;
   grid-template-areas: "intro actions";
   grid-template-columns: minmax(0, 1fr) auto;
