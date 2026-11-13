@@ -71,9 +71,8 @@
   // Mark as done: a third icon button beside Share and Save, behaving like Save (a toggle with the same
   // states, a pop and a short note). Outline check → green check once done.
   const DONE_BUTTON = `<button class="book__icon-btn book__done-btn" type="button" data-preview-done aria-pressed="false" aria-label="Mark as done">
-            <svg class="done-icon" viewBox="0 0 22 22" width="22" height="22" fill="none" aria-hidden="true">
-              <circle class="done-icon__circle" cx="11" cy="11" r="9.25" stroke-width="1.5"/>
-              <path class="done-icon__tick" d="M7 11.3l2.7 2.7 5.3-5.6" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            <svg class="done-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true">
+              <path class="done-icon__tick" d="M4.5 12.5l4.8 4.8L19.5 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </button>`;
 
@@ -153,6 +152,7 @@
       </section>
       ${extra}
       <div class="book__cta">${cta}<p class="book__unavailable" role="status"></p></div>
+      ${IN_PATH && BSS.done ? BSS.done.blockHtml(item.key) : ""}
     </div>`;
   }
 
