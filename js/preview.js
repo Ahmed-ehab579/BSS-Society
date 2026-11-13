@@ -72,7 +72,7 @@
   // states, a pop and a short note). Outline check → green check once done.
   const DONE_BUTTON = `<button class="book__icon-btn book__done-btn" type="button" data-preview-done aria-pressed="false" aria-label="Mark as done">
             <svg class="done-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true">
-              <path class="done-icon__tick" d="M4.5 12.5l4.8 4.8L19.5 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path class="done-icon__tick" d="M4.5 12.5l4.8 4.8L19.5 7" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </button>`;
 
