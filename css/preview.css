@@ -75,7 +75,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 64px;
+  align-items: flex-start;
+  height: 74px;                        /* back link 20px from the top (was 10); the close button keeps its place */
   padding-inline: calc(var(--preview-gutter) - var(--scale-200));
 }
 
@@ -85,6 +86,7 @@
   justify-content: center;
   width: 44px;
   height: 44px;
+  margin-top: 10px;                    /* same spot as before the back link moved down */
   margin-right: calc(var(--scale-300) + var(--scale-200) - var(--preview-gutter));   /* 12px from the corner */
   padding: 0;
   border: 0;
@@ -101,6 +103,7 @@
   align-items: center;
   gap: var(--scale-200);
   height: 44px;
+  margin-top: var(--scale-500);        /* 20px from the top of the sheet */
   padding: 0 var(--scale-400) 0 var(--scale-200);
   border: 0;
   border-radius: var(--radius-pill);
@@ -884,7 +887,11 @@
   }
 
   .preview__bar {
-    height: 56px;
+    height: 62px;
+  }
+
+  .preview__back {
+    margin-top: var(--scale-300);      /* 12px from the top (was 6) */
   }
 
   /* A page goes back; it doesn't close */
