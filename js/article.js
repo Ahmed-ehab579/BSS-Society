@@ -29,6 +29,11 @@
     crumb.textContent = back.parent;
     document.querySelector("[data-topic-label]").textContent = back.current;
     document.body.classList.add("is-standalone-article");
+    // From the New Muslim path: "Mark as done" at the end, where Start here has "Mark as read" (js/done.js)
+    const key = params.get("key");
+    if (from === "new-muslim" && key && window.BSS?.done) {
+      document.querySelector("[data-completion]").insertAdjacentHTML("afterend", window.BSS.done.blockHtml(key));
+    }
   }
   const topicId = P && P.topic(requested) ? requested : 1;
 

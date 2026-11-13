@@ -62,6 +62,8 @@
   const phone = window.matchMedia("(max-width: 767px)");
   const FROM = location.pathname.includes("new-muslim") ? "new-muslim" : location.pathname.includes("article") ? "article" : "library";
   const pageAddress = (item) => `material.html?id=${item.key}&from=${FROM}`;
+  // Opened from the New Muslim path: the material can be marked as done (js/done.js)
+  const IN_PATH = FROM === "new-muslim" || new URLSearchParams(location.search).get("from") === "new-muslim";
 
   const dialog = document.createElement("dialog");
   dialog.className = "preview";
@@ -138,6 +140,7 @@
       </section>
       ${extra}
       <div class="book__cta">${cta}<p class="book__unavailable" role="status"></p></div>
+      ${IN_PATH && BSS.done ? BSS.done.blockHtml(item.key) : ""}
     </div>`;
   }
 

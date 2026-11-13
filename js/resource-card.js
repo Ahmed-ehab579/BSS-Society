@@ -3,10 +3,11 @@
 (function () {
   // The one article so far. "from" tells the article where the reader came from (its way back);
   // on a New Muslim step page it also carries the step and topic to return to
-  function articleUrl() {
+  // (key: the card's material, so the article can be marked as done on the path, js/done.js)
+  function articleUrl(item) {
     if (!location.pathname.includes("new-muslim-step")) return "article.html?topic=1&amp;from=library";
     const params = new URLSearchParams(location.search);
-    return `article.html?topic=1&amp;from=new-muslim&amp;step=${Number(params.get("step")) || 1}&amp;item=${Number(params.get("topic")) || 1}`;
+    return `article.html?topic=1&amp;from=new-muslim&amp;step=${Number(params.get("step")) || 1}&amp;item=${Number(params.get("topic")) || 1}&amp;key=${item.key}`;
   }
 
   // One entry per material type (Figma 984:2777): badge text and icon, action label, how the media is
@@ -32,13 +33,16 @@
     return item.key;
   }
 
+  // New Muslim path: shown on a material the reader marked as done (js/done.js)
+  const DONE_ICON = '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
   const DOWNLOAD_ICON = '<svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 3v10m0 0 4-4m-4 4L6 9M3.500 16.500h13"/></svg>';
 
   // Articles open the article page. The others open a preview (js/preview.js); books add a quick download.
   function actionsHtml(item, type, title) {
     const label = `aria-label="${type.action}: ${title}"`;
     if (item.format === "article") {
-      return `<a class="btn btn--primary resource-card__action" href="${articleUrl()}" ${label}>${type.action}</a>`;
+      return `<a class="btn btn--primary resource-card__action" href="${articleUrl(item)}" ${label}>${type.action}</a>`;
     }
     const open = `<button class="btn btn--primary resource-card__action" type="button" data-preview-open ${label}>${type.action}</button>`;
     if (item.format !== "book") return open;
@@ -65,6 +69,7 @@
             <span class="resource-card__badge">
               <img src="${type.icon}" width="${type.iconSize[0]}" height="${type.iconSize[1]}" alt="">${type.badge}
             </span>
+            <span class="resource-card__done" hidden>${DONE_ICON}Done</span>
           </div>
         </div>
         <div class="resource-card__body">

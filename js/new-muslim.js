@@ -19,6 +19,10 @@
             <span class="path-step__number" aria-hidden="true">${pad(step.id)}</span>
             <h3 class="path-step__title"><span class="visually-hidden">Step ${step.id}: </span>${escape(step.title)}</h3>
             <p class="path-step__text">${escape(step.text)}</p>
+            <p class="progress-line" data-step-progress hidden>
+              <span class="progress-line__bar" aria-hidden="true"><span></span></span>
+              <span data-step-progress-text></span>
+            </p>
           </div>
           <div class="path-step__actions">
             <a class="btn btn--regular btn--primary path-step__start" href="new-muslim-step.html?step=${step.id}">
@@ -63,6 +67,30 @@
   }
 
   list.innerHTML = STEPS.map(stepHtml).join("");
+
+  // Progress (js/done.js): shown on a step once something in it is done
+  const stepKeys = (step) => {
+    const items = step.topics.flatMap((topic) => topic.resources);
+    window.BSS.registerResources?.(items);
+    return [...new Set(items.map((item) => item.key).filter(Boolean))];   // a material in two topics counts once
+  };
+  function paintProgress() {
+    const done = window.BSS.done;
+    if (!done) return;
+    STEPS.forEach((step) => {
+      const line = list.querySelector(`[data-step="${step.id}"] [data-step-progress]`);
+      const keys = stepKeys(step);
+      const count = done.count(keys);
+      line.hidden = count === 0;
+      line.classList.toggle("is-complete", count === keys.length);
+      line.style.setProperty("--progress", (count / keys.length).toFixed(3));
+      line.querySelector("[data-step-progress-text]").textContent = count === keys.length
+        ? "Step complete"
+        : `${count} of ${keys.length} materials done`;
+    });
+  }
+  paintProgress();
+  window.BSS.done?.onChange(paintProgress);
 
   const stepEl = (step) => list.querySelector(`[data-step="${step.id}"]`);
 

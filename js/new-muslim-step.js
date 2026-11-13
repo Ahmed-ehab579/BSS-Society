@@ -15,6 +15,7 @@
     topicTitle: document.querySelector("[data-topic-title]"),
     topicText: document.querySelector("[data-topic-text]"),
     track: document.querySelector("[data-resources]"),
+    progress: document.querySelector("[data-topic-progress]"),
     dots: document.querySelector("[data-dots]"),
     prev: document.querySelector('[data-scroll="-1"]'),
     next: document.querySelector('[data-scroll="1"]'),
@@ -36,6 +37,8 @@
   els.title.textContent = step.title;
   els.intro.textContent = step.intro;
 
+  // Every topic's materials get their keys now, so progress can be counted for topics not yet shown
+  step.topics.forEach((topic) => window.BSS.registerResources(topic.resources));
   els.outcomes.innerHTML = step.outcomes.map((text) => `
     <li class="learn__item">
       <img src="assets/icons/check.svg" width="24" height="24" alt="">${escape(text)}
@@ -82,7 +85,38 @@
     els.track.innerHTML = topic.resources.map(cardHtml).join("");
     els.track.scrollLeft = 0;
     updateArrows();
+    paintProgress();
   }
+
+  // ---- Progress (js/done.js): a check on each finished topic's tab, "x of n done" for the open topic --
+
+  const TAB_CHECK = '<svg class="topic-tab__done" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  function paintProgress() {
+    const done = window.BSS.done;
+    if (!done) return;
+    step.topics.forEach((topic, i) => {
+      const keys = [...new Set(topic.resources.map((item) => item.key))];
+      const complete = keys.length > 0 && done.count(keys) === keys.length;
+      const tab = tabs[i];
+      const mark = tab.querySelector(".topic-tab__done");
+      if (complete && !mark) tab.insertAdjacentHTML("beforeend", TAB_CHECK + '<span class="visually-hidden topic-tab__done-text"> (done)</span>');
+      if (!complete && mark) {
+        mark.remove();
+        tab.querySelector(".topic-tab__done-text")?.remove();
+      }
+    });
+    const keys = [...new Set(step.topics[topicIndex].resources.map((item) => item.key))];
+    const count = done.count(keys);
+    els.progress.hidden = false;
+    els.progress.classList.toggle("is-complete", count === keys.length);
+    els.progress.style.setProperty("--progress", (count / keys.length).toFixed(3));
+    els.progress.querySelector("[data-topic-progress-text]").textContent = count === keys.length
+      ? `All ${keys.length} done. Topic complete`
+      : `${count} of ${keys.length} done`;
+  }
+
+  window.BSS.done?.onChange(paintProgress);
 
   // Topic change: the old content fades out quickly, the panel eases to its new height and the new
   // content fades up, the cards following one another by a few milliseconds. A newer click cancels

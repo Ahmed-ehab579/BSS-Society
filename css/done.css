@@ -1,0 +1,232 @@
+/* New Muslim path, "Mark as done" (js/done.js). The card follows the article's "Finished this topic?"
+   card; done shows in the system's done greens. */
+.done-card {
+  display: flex;
+  align-items: center;
+  gap: var(--scale-500);
+  margin-top: var(--scale-800);
+  padding: var(--scale-600);
+  border: var(--border-md) solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  transition: background-color var(--motion-slow) var(--motion-ease), border-color var(--motion-slow) var(--motion-ease);
+}
+
+.done-card__icon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  color: var(--color-neutral-300);
+  transition: color var(--motion-slow) var(--motion-ease);
+}
+
+.done-card__copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.done-card__title {
+  margin: 0;
+  color: var(--text-strong);
+  font-size: var(--h6-size);
+  line-height: var(--h6-line);
+  font-weight: var(--h6-weight);
+}
+
+.done-card__text {
+  margin: var(--scale-100) 0 0;
+  color: var(--text-body);
+  font-size: var(--body-s-size);
+  line-height: var(--body-s-line);
+}
+
+.done-card [hidden] {
+  display: none;                       /* the button's own display must not bring it back */
+}
+
+.done-card__actions {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  align-items: stretch;
+}
+
+.done-card__undo {
+  padding: var(--scale-200) var(--scale-100);
+  border: 0;
+  background: none;
+  color: var(--text-body);
+  font-family: inherit;
+  font-size: var(--label-m-size);
+  line-height: var(--label-m-line);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.done-card__undo:focus-visible {
+  outline: var(--border-lg) solid var(--border-strong);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs);
+}
+
+@media (hover: hover) {
+  .done-card__undo:hover {
+    color: var(--text-strong);
+  }
+}
+
+/* Done: green wash, green check */
+.done-card.is-done {
+  border-color: var(--green-300);
+  background: var(--green-100);
+}
+
+.done-card.is-done .done-card__icon {
+  color: var(--color-completed);
+}
+
+.done-card.is-done .done-card__title {
+  color: var(--green-900);
+}
+
+/* The tick draws in when marked (not on page load) */
+.done-card.is-celebrating .done-card__tick {
+  stroke-dasharray: 1;
+  animation: done-tick var(--motion-slow) var(--motion-fast) var(--motion-ease) both;
+}
+
+.done-card.is-celebrating .done-card__icon {
+  animation: done-pop var(--motion-slow) var(--motion-ease);
+}
+
+@keyframes done-tick {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes done-pop {
+  50% { transform: scale(1.12); }
+}
+
+/* ---- The green check on a done material's card ---------------------------------------------------- */
+.resource-card__done {
+  position: absolute;
+  top: var(--scale-300);
+  left: var(--scale-300);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: var(--scale-100);
+  height: 28px;
+  padding: 0 var(--scale-300) 0 var(--scale-200);
+  border-radius: var(--radius-pill);
+  background: var(--green-500);
+  box-shadow: var(--shadow-media);
+  color: var(--text-on-dark);
+  font-size: var(--label-s-size);
+  line-height: var(--label-s-line);
+  font-weight: var(--label-weight);
+  animation: done-badge-in var(--motion-slow) var(--motion-ease);
+}
+
+.resource-card__done[hidden] {
+  display: none;
+}
+
+.resource-card__done svg {
+  width: 16px;
+  height: 16px;
+}
+
+@keyframes done-badge-in {
+  from { opacity: 0; transform: scale(0.6); }
+}
+
+/* ---- Progress on the step page (topic tabs and panel) and the path page (steps) ------------------- */
+.topic-tab__done {
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  margin-left: var(--scale-200);
+  vertical-align: -2px;
+  color: var(--green-700);
+}
+
+.progress-line {
+  display: flex;
+  align-items: center;
+  gap: var(--scale-300);
+  margin-top: var(--scale-400);
+  color: var(--text-body);
+  font-size: var(--body-s-size);
+  line-height: var(--body-s-line);
+}
+
+.progress-line__bar {
+  position: relative;
+  flex: none;
+  width: 96px;
+  height: 6px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--surface-card-pressed);
+}
+
+.progress-line__bar span {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--green-500);
+  transform: scaleX(var(--progress, 0));
+  transform-origin: left;
+  transition: transform var(--motion-slow) var(--motion-ease);
+}
+
+.progress-line.is-complete {
+  color: var(--green-900);
+  font-weight: 500;
+}
+
+@media (max-width: 767px) {
+  .done-card {
+    flex-wrap: wrap;
+    gap: var(--scale-400);
+    padding: var(--scale-500);
+  }
+
+  .done-card__icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .done-card__actions {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .done-card,
+  .done-card__icon,
+  .progress-line__bar span {
+    transition: none;
+  }
+
+  .done-card.is-celebrating .done-card__tick,
+  .done-card.is-celebrating .done-card__icon,
+  .resource-card__done {
+    animation: none;
+  }
+}
+
+/* In the article: lined up with the article's own "Finished this topic?" card */
+.article .done-card {
+  margin-inline: var(--scale-800);
+}
+
+@media (max-width: 767px) {
+  .article .done-card {
+    margin-inline: 0;
+  }
+}
