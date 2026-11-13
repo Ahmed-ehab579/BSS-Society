@@ -16,6 +16,11 @@
 
 /* ---- What you'll learn ------------------------------------------------------------------------- */
 /* In the shaded section panel, like the topic panel below and the homepage sections */
+/* A solid card surface instead of the shared panel's fade (the system's card colour) */
+.learn .section-panel {
+  background: var(--surface-card);
+}
+
 /* Panel title in the H4 style; the gap below scales down with it */
 .learn__heading {
   margin-bottom: var(--scale-800);
