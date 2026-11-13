@@ -123,7 +123,7 @@
   display: flex;
   flex-shrink: 0;
   gap: var(--scale-200);
-  padding: var(--scale-100) var(--scale-500) var(--scale-300);
+  padding: var(--scale-100) var(--scale-500) var(--scale-400);   /* 16px under the chips */
   overflow-x: auto;
   scrollbar-width: none;
 }
