@@ -114,6 +114,7 @@
   grid-area: progress;
   justify-self: end;
   align-self: start;
+  margin-top: 10px;                    /* the ring's top lines up with the top of the "01" digits */
 }
 
 /* ---- Topics: rows on the left, the selected topic's preview on the right ------------------- */
@@ -416,6 +417,7 @@
   /* Phones: the same ring, under the text */
   .path-step__header > .progress-ring {
     justify-self: start;
+    margin-top: 0;
   }
 
   .path-step__number {
