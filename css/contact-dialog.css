@@ -58,6 +58,34 @@
   transform: none;
 }
 
+/* The panel's scrollbar, as in the material preview: a thin soft grey bar with rounded ends on a clear
+   track, kept inside the panel and clear of its rounded corners, instead of the system's bar on the edge */
+.contact-dialog__panel::-webkit-scrollbar {
+  width: 14px;
+}
+
+.contact-dialog__panel::-webkit-scrollbar-track {
+  margin-block: var(--scale-600);
+  background: transparent;
+}
+
+.contact-dialog__panel::-webkit-scrollbar-thumb {
+  border: 5px solid transparent;
+  border-radius: var(--radius-pill);
+  background: rgba(59, 59, 59, 0.28) padding-box;
+}
+
+.contact-dialog__panel::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(59, 59, 59, 0.45);
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .contact-dialog__panel {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(59, 59, 59, 0.28) transparent;
+  }
+}
+
 .contact-dialog__close {
   position: absolute;
   top: var(--scale-300);
