@@ -57,7 +57,11 @@
   const root = document.documentElement;
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const escape = (text) => String(text).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
-  const backLabel = location.pathname.includes("library") ? "Back to the library" : "Back";
+  // The overlay's way back names the page underneath, like the site's other back links
+  const backLabel = location.pathname.includes("library") ? "Back to the library"
+    : location.pathname.includes("new-muslim-step") ? `Back to step ${Number(new URLSearchParams(location.search).get("step")) || 1}`
+    : location.pathname.includes("article") ? "Back to the article"
+    : "Back";
   const page = document.querySelector("[data-material-page]");   // material.html: the page itself
   const phone = window.matchMedia("(max-width: 767px)");
   const FROM = location.pathname.includes("new-muslim") ? "new-muslim" : location.pathname.includes("article") ? "article" : "library";
