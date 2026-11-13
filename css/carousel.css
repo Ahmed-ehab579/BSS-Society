@@ -34,6 +34,22 @@
   cursor: grabbing;
 }
 
+/* Rows can be dragged with a mouse: a grab hand says so, and text is never selected while dragging */
+@media (hover: hover) and (pointer: fine) {
+  .carousel__viewport {
+    cursor: grab;
+  }
+
+  .carousel.is-dragging .carousel__viewport {
+    cursor: grabbing;
+  }
+}
+
+.carousel.is-dragging {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 .carousel__toggle {
   position: relative;
   order: 1;   /* after the dots, on the right */
