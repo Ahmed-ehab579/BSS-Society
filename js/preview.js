@@ -121,7 +121,7 @@
         <h2 class="book__title" id="preview-title" dir="${item.dir || "auto"}">${escape(item.title)}</h2>
         <p class="book__author">By ${escape(item.author || AUTHOR)}</p>
         <div class="book__actions">
-          <button class="book__icon-btn" type="button" data-preview-share aria-label="Share">
+          <button class="book__icon-btn" type="button" data-preview-share aria-label="Share" aria-haspopup="dialog" aria-expanded="false">
             <img src="assets/icons/share.svg" width="14.4" height="16" alt="">
           </button>
           <button class="book__icon-btn" type="button" data-book-save data-preview-save aria-pressed="false" aria-label="Save">
@@ -548,14 +548,11 @@
     noteTimer = setTimeout(() => note.classList.remove("is-visible"), NOTE_TIME);
   }
 
+  // Share: the share panel (js/share.js) with Copy link and the places people share to
   async function share(button) {
-    if (navigator.share) {
-      try {
-        await navigator.share({ title: current.title, url: location.href });
-        return;
-      } catch (error) {
-        if (error.name === "AbortError") return;   // closing the share sheet is not a failure
-      }
+    if (BSS.share) {
+      BSS.share.open(button, { title: current.title, url: location.href });
+      return;
     }
     try {
       await navigator.clipboard.writeText(location.href);

@@ -32,6 +32,10 @@
   }
 
   shareButton.addEventListener("click", async () => {
+    if (BSS.share) {   // the share panel (js/share.js)
+      BSS.share.open(shareButton, { title: book.querySelector(".book__title").textContent.trim(), url: location.href });
+      return;
+    }
     if (navigator.share) {
       try {
         await navigator.share({ title: document.title, url: location.href });
