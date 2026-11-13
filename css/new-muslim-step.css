@@ -117,7 +117,7 @@
 }
 
 .topic-panel__intro {
-  max-width: 706px;
+  max-width: 565px;                    /* 20% narrower than 706px; the short description fits two lines */
   min-width: 0;
 }
 

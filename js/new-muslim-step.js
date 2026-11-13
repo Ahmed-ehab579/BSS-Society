@@ -81,7 +81,7 @@
     const topic = step.topics[index];
     els.number.textContent = pad(index + 1);
     els.topicTitle.textContent = topic.title;
-    els.topicText.textContent = topic.text;
+    els.topicText.textContent = topic.short || topic.text;   // two lines here; the path page has the longer text
     els.track.innerHTML = topic.resources.map(cardHtml).join("");
     els.track.scrollLeft = 0;
     updateArrows();
