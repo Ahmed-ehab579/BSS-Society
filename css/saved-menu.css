@@ -75,7 +75,7 @@
   flex-shrink: 0;
   align-items: center;
   justify-content: space-between;
-  padding: var(--scale-600) var(--scale-200) var(--scale-200) var(--scale-500);
+  padding: var(--scale-600) var(--scale-200) calc(var(--scale-200) + 6px) var(--scale-500);   /* 14px under the title */
   cursor: grab;
   touch-action: none;   /* the header drags the sheet instead of scrolling */
 }
@@ -523,7 +523,7 @@
 }
 
 .is-dropdown .saved-sheet__head {
-  padding: var(--scale-400) var(--scale-400) var(--scale-200);
+  padding: var(--scale-400) var(--scale-400) calc(var(--scale-200) + 6px);   /* 14px under the title */
   cursor: auto;
   touch-action: auto;
 }
