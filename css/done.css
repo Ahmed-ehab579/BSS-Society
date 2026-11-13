@@ -118,12 +118,15 @@
   z-index: 2;
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 36px;
+  gap: 2px;
   height: 36px;
-  border-radius: var(--radius-round);
-  background: var(--green-100);        /* light green circle, dark green tick, no shadow */
+  padding: 0 var(--scale-400) 0 var(--scale-100);
+  border-radius: var(--radius-pill);
+  background: var(--green-100);        /* light green pill, dark green tick and word, no shadow */
   color: var(--green-700);
+  font-size: var(--label-m-size);
+  line-height: var(--label-m-line);
+  font-weight: var(--label-weight);
   animation: done-badge-in var(--motion-slow) var(--motion-ease);
 }
 
@@ -132,8 +135,9 @@
 }
 
 .resource-card__done svg {
-  width: 36px;
-  height: 36px;
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
 }
 
 /* New Muslim step cards: the type badge moves under the photo, so the check takes its corner */

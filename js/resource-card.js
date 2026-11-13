@@ -69,7 +69,7 @@
             <span class="resource-card__badge">
               <img src="${type.icon}" width="${type.iconSize[0]}" height="${type.iconSize[1]}" alt="">${type.badge}
             </span>
-            <span class="resource-card__done" hidden>${DONE_ICON}<span class="visually-hidden">Done</span></span>
+            <span class="resource-card__done" hidden>${DONE_ICON}<span class="resource-card__done-label">Done</span></span>
           </div>
         </div>
         <div class="resource-card__body">
