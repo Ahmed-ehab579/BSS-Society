@@ -64,6 +64,14 @@
   const pageAddress = (item) => `material.html?id=${item.key}&from=${FROM}`;
   // Opened from the New Muslim path: the material can be marked as done (js/done.js)
   const IN_PATH = FROM === "new-muslim" || new URLSearchParams(location.search).get("from") === "new-muslim";
+  // Mark as done: a third icon button beside Share and Save, behaving like Save (a toggle with the same
+  // states, a pop and a short note). Outline check → green check once done.
+  const DONE_BUTTON = `<button class="book__icon-btn book__done-btn" type="button" data-preview-done aria-pressed="false" aria-label="Mark as done">
+            <svg class="done-icon" viewBox="0 0 22 22" width="22" height="22" fill="none" aria-hidden="true">
+              <circle class="done-icon__circle" cx="11" cy="11" r="9.25" stroke-width="1.5"/>
+              <path class="done-icon__tick" d="M7 11.3l2.7 2.7 5.3-5.6" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>`;
 
   const dialog = document.createElement("dialog");
   dialog.className = "preview";
@@ -130,6 +138,7 @@
             <img src="assets/icons/bookmark.svg" width="11.55" height="14.85" alt="" data-icon="off">
             <img src="assets/icons/bookmark-filled.svg" width="11.55" height="14.85" alt="" data-icon="on">
           </button>
+          ${IN_PATH && BSS.done ? DONE_BUTTON : ""}
           <p class="book__note" role="status"></p>
         </div>
       </header>
@@ -140,7 +149,6 @@
       </section>
       ${extra}
       <div class="book__cta">${cta}<p class="book__unavailable" role="status"></p></div>
-      ${IN_PATH && BSS.done ? BSS.done.blockHtml(item.key) : ""}
     </div>`;
   }
 
@@ -573,6 +581,25 @@
     image: item.image, url: `material.html?id=${item.key}&from=${SAVE_PATH === "start-here" ? "article" : SAVE_PATH}`,
   });
 
+  // Mark as done (js/done.js): New Muslim path only
+  function showDone() {
+    const button = scroller.querySelector("[data-preview-done]");
+    if (button && current) button.setAttribute("aria-pressed", String(BSS.done.has(current.key)));
+  }
+
+  function toggleDone(button) {
+    const marking = !BSS.done.has(current.key);
+    const stored = BSS.done.set(current.key, marking);
+    showDone();
+    button.classList.remove("is-popping");
+    button.getBoundingClientRect();   // restart the animation on quick repeat presses
+    if (marking) button.classList.add("is-popping");
+    if (!stored) say("Couldn’t save on this device", button);
+    else say(marking ? "Marked as done" : "Marked as not done", button);
+  }
+
+  BSS.done?.onChange(showDone);   // also when marked in another tab
+
   function toggleSave(button) {
     if (!BSS.saved.has(current.key)) BSS.savedFly?.(button);   // over the overlay, it fades into the header behind
     const { saved, stored } = BSS.saved.toggle(saveEntry(current));
@@ -640,6 +667,7 @@
     scroller.innerHTML = { book: bookHtml, audio: audioHtml, video: videoHtml }[item.format](item, type) + relatedHtml(item);
     scroller.scrollTop = 0;
     scroller.querySelector("[data-preview-save]").setAttribute("aria-pressed", String(BSS.saved.has(item.key)));
+    showDone();
     BSS.saved.refresh(saveEntry(item));
     setUpPlayer(item);
     setUpVideo(item);
@@ -726,6 +754,7 @@
     if (target.closest("[data-preview-close]")) leave();
     else if (target.closest("[data-preview-share]")) share(target.closest("button"));
     else if (target.closest("[data-preview-save]")) toggleSave(target.closest("button"));
+    else if (target.closest("[data-preview-done]")) toggleDone(target.closest("button"));
     else if (target.closest("[data-preview-missing]")) showNote(MISSING[target.closest("[data-preview-missing]").dataset.previewMissing]);
     else if (target.closest("[data-video-play]") && !youtubeId(sourceFor(current, "youtube"))) showNote(MISSING.youtube);
     else if (target.closest("a.download-fill") && !window.BSSDownload.play(target.closest("a"))) event.preventDefault();

@@ -236,3 +236,62 @@
     margin-inline: 0;
   }
 }
+
+/* ---- Mark as done in a material's header: a third icon button beside Share and Save (js/preview.js) --
+   Same button, same states (hover, pressed, focus) as its neighbours. Not done: an outline check.
+   Done: the check fills with the done greens (as on the cards) and pops, like Save does. */
+.done-icon {
+  display: block;
+  overflow: visible;
+}
+
+.done-icon__circle {
+  fill: transparent;
+  stroke: var(--text-strong);
+  transition: fill var(--motion-base) var(--motion-ease), stroke var(--motion-base) var(--motion-ease);
+}
+
+.done-icon__tick {
+  stroke: var(--text-strong);
+  transition: stroke var(--motion-base) var(--motion-ease);
+}
+
+.book__done-btn[aria-pressed="true"] .done-icon__circle {
+  fill: var(--green-100);
+  stroke: var(--green-700);
+}
+
+.book__done-btn[aria-pressed="true"] .done-icon__tick {
+  stroke: var(--green-700);
+}
+
+/* Marking it: the tick draws in and the button pops (Save's pop) */
+.book__done-btn.is-popping {
+  animation: done-btn-pop var(--motion-slow) var(--motion-ease);
+}
+
+.book__done-btn.is-popping .done-icon__tick {
+  stroke-dasharray: 14;
+  animation: done-btn-tick var(--motion-slow) var(--motion-ease) both;
+}
+
+@keyframes done-btn-pop {
+  45% { transform: scale(1.12); }
+}
+
+@keyframes done-btn-tick {
+  from { stroke-dashoffset: 14; }
+  to { stroke-dashoffset: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .done-icon__circle,
+  .done-icon__tick {
+    transition: none;
+  }
+
+  .book__done-btn.is-popping,
+  .book__done-btn.is-popping .done-icon__tick {
+    animation: none;
+  }
+}
