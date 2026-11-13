@@ -144,7 +144,9 @@
     ring.classList.toggle("is-empty", done === 0);
     ring.classList.toggle("is-complete", complete);
     ring.style.setProperty("--ring-value", (total ? (300 * done) / total : 0).toFixed(1));
-    ring.querySelector(".progress-ring__count").textContent = `${done}/${total}`;
+    const count = ring.querySelector(".progress-ring__count");
+    count.textContent = `${done}/${total}`;
+    count.classList.toggle("is-long", count.textContent.length > 3);
     const left = total - done;
     ring.querySelector(".progress-ring__caption").textContent = complete
       ? `${what === "step" ? "Step" : "Topic"} complete`

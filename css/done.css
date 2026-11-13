@@ -218,7 +218,11 @@
   font-size: var(--h6-size);
   line-height: 1;
   font-weight: var(--h6-weight);
-  font-variant-numeric: tabular-nums;
+}
+
+/* Longer counts ("2/13") step down, so every count fills the ring the same way as "2/5" */
+.progress-ring__count.is-long {
+  font-size: var(--body-m-size);
 }
 
 .progress-ring__caption {
