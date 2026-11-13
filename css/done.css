@@ -110,7 +110,7 @@
   50% { transform: scale(1.12); }
 }
 
-/* ---- The green check on a done material's card (Figma 1012:3539: a solid 32px circle on the photo) --- */
+/* ---- The green check on a done material's card (Figma 1012:3539: a solid circle on the photo, 36px) --- */
 .resource-card__done {
   position: absolute;
   top: var(--scale-300);
@@ -119,12 +119,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border-radius: var(--radius-round);
-  background: var(--green-500);
-  box-shadow: var(--shadow-media);
-  color: var(--text-on-dark);
+  background: var(--green-100);        /* light green circle, dark green tick, no shadow */
+  color: var(--green-700);
   animation: done-badge-in var(--motion-slow) var(--motion-ease);
 }
 
@@ -133,8 +132,8 @@
 }
 
 .resource-card__done svg {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
 }
 
 /* New Muslim step cards: the type badge moves under the photo, so the check takes its corner */
