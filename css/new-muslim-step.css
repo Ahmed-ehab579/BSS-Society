@@ -210,9 +210,11 @@
   height: 22px;
   margin-bottom: calc(var(--scale-200) - var(--scale-300));   /* 8px to the title */
   padding: 0 10px;
-  border: var(--scale-12) solid var(--border-color-badge);
+  border: 0;
   border-radius: var(--radius-pill);
-  background: var(--surface-badge);
+  outline: var(--scale-12) solid #676767;   /* a centre stroke: half inside, half outside the edge */
+  outline-offset: -0.25px;
+  background: rgba(255, 255, 255, 0.5);   /* white at 50% */
   color: var(--color-card-heading);
   font-size: var(--label-s-size);
   line-height: var(--label-s-line);
