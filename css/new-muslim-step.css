@@ -111,7 +111,7 @@
 
 .topic-panel__head {
   display: flex;
-  align-items: flex-end;
+  align-items: center;                 /* the progress ring sits beside the topic text */
   justify-content: space-between;
   gap: var(--scale-900);
 }
@@ -146,97 +146,96 @@
   line-height: var(--body-l-line);
 }
 
-/* Arrows: exactly the homepage Library arrows (shared icon button: card surface, green on hover) */
-.topic-panel__controls {
-  display: flex;
+/* Topic progress (Figma 1137:4795): an open ring, the gap at the bottom, "done/total" in the middle.
+   js/new-muslim-step.js sets --ring-value (degrees of the 300° arc) */
+.progress-ring {
+  position: relative;
   flex-shrink: 0;
-  gap: var(--scale-400);
+  width: 60px;
+  height: 60px;
 }
 
-.topic-panel__controls .icon-btn {
-  transition: background-color var(--motion-duration-hover) var(--motion-ease),
-    opacity var(--motion-duration-hover) var(--motion-ease);
+.progress-ring svg {
+  display: block;
+  width: 60px;
+  height: 60px;
+  transform: rotate(120deg);           /* the arc starts bottom left and runs clockwise */
 }
 
-.icon-btn--prev img {
-  transform: scaleX(-1);
+.progress-ring circle {
+  fill: none;
+  stroke-width: 5;
+  stroke-linecap: round;
 }
 
-.topic-panel__controls .icon-btn:disabled {
-  opacity: 0.4;
-  cursor: default;
+.progress-ring__track {
+  stroke: var(--color-neutral-200);
+  stroke-dasharray: 300 360;
 }
 
-@media (hover: hover) {
-  .topic-panel__controls .icon-btn:not(:disabled):hover {
-    background: var(--surface-cards-hovered);
-  }
+.progress-ring__value {
+  stroke: var(--text);
+  stroke-dasharray: var(--ring-value, 0) 360;
+  transition: stroke-dasharray var(--motion-slow) var(--motion-ease), stroke var(--motion-slow) var(--motion-ease);
 }
 
-/* One row of Library cards that scrolls sideways (swipe, trackpad or the arrows) and snaps to a card.
-   The row runs to the panel's edges, so cards slide out at the edge instead of being cut inside the
-   padding; the vertical padding keeps the cards' hover lift and shadow from being clipped. */
-.topic-panel__track {
+/* Nothing done yet: no dot of progress at the start of the arc */
+.progress-ring.is-empty .progress-ring__value {
+  stroke: none;
+}
+
+.progress-ring__label {
+  position: absolute;
+  inset: 0;
   display: flex;
-  gap: var(--scale-600);
-  margin: var(--scale-800) calc(-1 * var(--panel-pad)) calc(-1 * var(--scale-400));
-  padding: var(--scale-200) var(--panel-pad) var(--scale-400);
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  scroll-padding-inline: var(--panel-pad);
-  scrollbar-width: none;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 2px;
+  color: var(--text);
+  font-size: var(--body-m-size);
+  line-height: 1;
+  font-weight: 500;
+}
+
+/* The materials: the Library's card grid, four a row, so the cards match the Library's */
+.topic-panel__track {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--scale-900);
+  margin: var(--scale-800) 0 0;
+  padding: 0;
   list-style: none;
 }
 
-.topic-panel__track::-webkit-scrollbar {
-  display: none;
+@media (min-width: 768px) {
+  .topic-panel__track .resource-card__frame {
+    height: 220px;
+  }
+
+  .topic-panel__track .resource-card__title {
+    font-size: var(--h6-size);
+    line-height: var(--h6-line);
+  }
+
+  .topic-panel__track .resource-card__play {
+    --play-size: 96px;
+  }
+
+  .topic-panel__track .resource-card__listen {
+    --listen-size: 62px;
+  }
 }
 
-.topic-panel__track > .resource-card {
-  flex: 0 0 283px;      /* the Library card width */
-  scroll-snap-align: start;
+@media (max-width: 1279px) {
+  .topic-panel__track {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
-/* Pagination dots: phones only (desktop has the arrows). The active dot stretches into a pill;
-   width and colour ease between dots as the row scrolls. */
-.topic-panel__dots {
-  display: none;
-  justify-content: center;
-  gap: 6px;
-  margin-top: var(--scale-400);
-}
-
-.topic-panel__dot {
-  position: relative;
-  width: 8px;
-  height: 24px;              /* 8px dot inside a 24px tall touch area */
-  padding: 0;
-  border: 0;
-  background: none;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  transition: width var(--motion-duration-hover) var(--motion-ease);
-}
-
-.topic-panel__dot::before {
-  content: "";
-  position: absolute;
-  top: 8px;
-  right: 0;
-  left: 0;
-  height: 8px;
-  border-radius: var(--radius-pill);
-  background: var(--color-neutral-300);
-  transition: background-color var(--motion-duration-hover) var(--motion-ease);
-}
-
-.topic-panel__dot.is-active {
-  width: 24px;
-}
-
-.topic-panel__dot.is-active::before {
-  background: var(--color-text-on-light);
+@media (max-width: 999px) {
+  .topic-panel__track {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 /* ---- Responsive ------------------------------------------------------------------------------- */
@@ -303,84 +302,37 @@
     --panel-pad: var(--scale-600);
   }
 
-  /* Swipe instead of arrows; the next card peeks in to show there is more */
-  .topic-panel__controls {
-    display: none;
-  }
-
-  .topic-panel__dots {
-    display: flex;
-  }
-
+  /* Phones: the Library's one-a-row cards */
   .topic-panel__track {
-    gap: var(--scale-400);
+    grid-template-columns: min(280px, 100%);
+    justify-content: center;
+    gap: var(--scale-600);
     margin-top: var(--scale-600);
   }
 
-  /* Compact cards on phones: 204px wide, shorter media, smaller type and a 40px button */
-  .topic-panel__track > .resource-card {
-    flex-basis: min(204px, 66%);
-    border-radius: var(--radius-lg);
-  }
-
-  .topic-panel__track .resource-card__media {
-    padding: 10px 10px 0;
-  }
-
   .topic-panel__track .resource-card__frame {
-    height: 160px;
-    border-radius: var(--radius-sm);
+    height: auto;
+    aspect-ratio: 4 / 3;
   }
 
   .topic-panel__track .resource-card__play {
-    --play-size: 84px;
+    --play-size: 96px;
   }
 
   .topic-panel__track .resource-card__listen {
-    --listen-size: 56px;
-  }
-
-  .topic-panel__track .resource-card__badge {
-    top: var(--scale-200);
-    right: var(--scale-200);
-    padding: 1px 8px;
-    font-size: var(--body-xs-size);
-    line-height: 16px;
-  }
-
-  .topic-panel__track .resource-card__badge img {
-    height: 10px;
-  }
-
-  .topic-panel__track .resource-card__body {
-    gap: var(--scale-500);
-    padding: var(--scale-500) 10px 10px;   /* the photo's inset, so text lines up with it */
-  }
-
-  .topic-panel__track .resource-card__text {
-    gap: var(--scale-200);
+    --listen-size: 62px;
   }
 
   .topic-panel__track .resource-card__title {
-    font-size: var(--body-m-size);
-    line-height: 24px;
+    font-size: var(--h6-size);
+    line-height: var(--h6-line);
     font-weight: var(--h6-weight);
   }
-
-  .topic-panel__track .resource-card__desc {
-    font-size: var(--body-s-size);
-    line-height: 20px;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-  }
-
 }
 
 @media (prefers-reduced-motion: reduce) {
   .topic-tab,
-  .topic-panel__dot,
-  .topic-panel__dot::before,
-  .topic-panel__controls .icon-btn {
+  .progress-ring__value {
     transition: none;
   }
 }

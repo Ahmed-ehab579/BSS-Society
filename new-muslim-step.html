@@ -22,7 +22,7 @@
   <link rel="stylesheet" href="css/preview.css?v=28">
   <link rel="stylesheet" href="css/share.css?v=2">
   <link rel="stylesheet" href="css/done.css?v=2">
-  <link rel="stylesheet" href="css/new-muslim-step.css?v=22">
+  <link rel="stylesheet" href="css/new-muslim-step.css?v=23">
   <link rel="stylesheet" href="css/footer.css?v=5">
 </head>
 <body>
@@ -93,22 +93,17 @@
             <span class="topic-panel__number" aria-hidden="true" data-topic-number></span>
             <h3 class="topic-panel__title" data-topic-title></h3>
             <p class="topic-panel__text" data-topic-text></p>
-            <p class="progress-line" data-topic-progress hidden>
-              <span class="progress-line__bar" aria-hidden="true"><span></span></span>
-              <span data-topic-progress-text></span>
-            </p>
           </div>
-          <div class="topic-panel__controls">
-            <button class="icon-btn icon-btn--prev" type="button" aria-label="Previous resources" aria-controls="topic-resources" data-scroll="-1">
-              <img src="assets/icons/arrow-right.svg" width="28" height="28" alt="">
-            </button>
-            <button class="icon-btn" type="button" aria-label="Next resources" aria-controls="topic-resources" data-scroll="1">
-              <img src="assets/icons/arrow-right.svg" width="28" height="28" alt="">
-            </button>
+          <!-- Topic progress (Figma 1137:4795): an open ring with "done / total" in the middle (js/done.js) -->
+          <div class="progress-ring" role="img" data-topic-progress>
+            <svg viewBox="0 0 60 60" width="60" height="60" aria-hidden="true">
+              <circle class="progress-ring__track" cx="30" cy="30" r="26" pathLength="360"/>
+              <circle class="progress-ring__value" cx="30" cy="30" r="26" pathLength="360"/>
+            </svg>
+            <span class="progress-ring__label" aria-hidden="true" data-topic-progress-text></span>
           </div>
         </div>
         <ul class="topic-panel__track" id="topic-resources" role="list" aria-label="Suggested resources" data-resources></ul>
-        <div class="topic-panel__dots" data-dots></div>
       </div>
     </section>
 
@@ -232,7 +227,7 @@
   <script src="js/download-fill.js"></script>
   <script src="js/resource-card.js?v=9"></script>
   <script src="js/done.js?v=1"></script>
-  <script src="js/new-muslim-step.js?v=10"></script>
+  <script src="js/new-muslim-step.js?v=11"></script>
   <script src="js/carousel.js?v=7"></script>
   <script src="js/share.js?v=1"></script>
   <script src="js/preview.js?v=16"></script>

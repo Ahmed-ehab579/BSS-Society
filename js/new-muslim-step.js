@@ -16,9 +16,6 @@
     topicText: document.querySelector("[data-topic-text]"),
     track: document.querySelector("[data-resources]"),
     progress: document.querySelector("[data-topic-progress]"),
-    dots: document.querySelector("[data-dots]"),
-    prev: document.querySelector('[data-scroll="-1"]'),
-    next: document.querySelector('[data-scroll="1"]'),
   };
   if (!els.tabs) return;
 
@@ -83,8 +80,6 @@
     els.topicTitle.textContent = topic.title;
     els.topicText.textContent = topic.short || topic.text;   // two lines here; the path page has the longer text
     els.track.innerHTML = topic.resources.map(cardHtml).join("");
-    els.track.scrollLeft = 0;
-    updateArrows();
     paintProgress();
   }
 
@@ -108,12 +103,14 @@
     });
     const keys = [...new Set(step.topics[topicIndex].resources.map((item) => item.key))];
     const count = done.count(keys);
-    els.progress.hidden = false;
+    const ARC = 300;   // the ring's open arc, in degrees: the gap sits at the bottom
     els.progress.classList.toggle("is-complete", count === keys.length);
-    els.progress.style.setProperty("--progress", (count / keys.length).toFixed(3));
-    els.progress.querySelector("[data-topic-progress-text]").textContent = count === keys.length
-      ? `All ${keys.length} done. Topic complete`
-      : `${count} of ${keys.length} done`;
+    els.progress.classList.toggle("is-empty", count === 0);
+    els.progress.style.setProperty("--ring-value", (ARC * count / keys.length).toFixed(1));
+    els.progress.querySelector("[data-topic-progress-text]").textContent = `${count}/${keys.length}`;
+    els.progress.setAttribute("aria-label", count === keys.length
+      ? `Topic complete: all ${keys.length} materials done`
+      : `${count} of ${keys.length} materials done`);
   }
 
   window.BSS.done?.onChange(paintProgress);
@@ -156,65 +153,6 @@
     const target = move === -Infinity ? 0 : move === Infinity ? last : (topicIndex + move + tabs.length) % tabs.length;
     showTopic(target, { focusTab: true, reveal: true, animate: true });
   });
-
-  // ---- Resource row: scrolls by one card; the arrows switch off at either end ----------------------
-
-  function cardStep() {
-    const card = els.track.firstElementChild;
-    if (!card) return 0;
-    return card.getBoundingClientRect().width + parseFloat(getComputedStyle(els.track).columnGap || 0);
-  }
-
-  function updateArrows() {
-    const max = els.track.scrollWidth - els.track.clientWidth;
-    els.prev.disabled = els.track.scrollLeft <= 1;
-    els.next.disabled = els.track.scrollLeft >= max - 1;
-    updateDots();
-  }
-
-  // Dots (phones): one per stop the row can actually snap to. Cards near the end share the last stop
-  // (the row can't scroll further), so a wide screen gets fewer dots than cards. The active dot is
-  // the stop nearest to the current scroll. A visual aid for touch; keyboard users have the cards.
-  let stops = [];
-  function snapStops() {
-    const max = els.track.scrollWidth - els.track.clientWidth;
-    const pad = parseFloat(getComputedStyle(els.track).scrollPaddingLeft) || 0;
-    const origin = els.track.getBoundingClientRect().left - els.track.scrollLeft + pad;
-    const positions = [...els.track.children].map((card) =>
-      Math.max(0, Math.min(max, Math.round(card.getBoundingClientRect().left - origin))));
-    return positions.filter((position, i) => i === 0 || position - positions[i - 1] > 2);
-  }
-
-  function updateDots() {
-    if (getComputedStyle(els.dots).display === "none") return;
-    const next = snapStops();
-    if (next.length !== stops.length || next.some((position, i) => position !== stops[i])) {
-      stops = next;
-      els.dots.innerHTML = stops.length < 2 ? "" : stops.map((position, i) => `
-        <button class="topic-panel__dot" type="button" tabindex="-1" aria-label="Show position ${i + 1} of ${stops.length}"></button>`).join("");
-    }
-    const left = els.track.scrollLeft;
-    const active = stops.reduce((best, position, i) => (Math.abs(position - left) < Math.abs(stops[best] - left) ? i : best), 0);
-    [...els.dots.children].forEach((dot, i) => {
-      dot.classList.toggle("is-active", i === active);
-      if (i === active) dot.setAttribute("aria-current", "true");
-      else dot.removeAttribute("aria-current");
-    });
-  }
-
-  els.dots.addEventListener("click", (event) => {
-    const dot = event.target.closest(".topic-panel__dot");
-    if (!dot) return;
-    const left = stops[[...els.dots.children].indexOf(dot)];
-    els.track.scrollTo({ left, behavior: reducedMotion.matches ? "auto" : "smooth" });
-  });
-
-  [els.prev, els.next].forEach((button) => button.addEventListener("click", () => {
-    els.track.scrollBy({ left: Number(button.dataset.scroll) * cardStep(), behavior: reducedMotion.matches ? "auto" : "smooth" });
-  }));
-
-  els.track.addEventListener("scroll", updateArrows, { passive: true });
-  window.addEventListener("resize", updateArrows);
 
   showTopic(topicIndex);
 })();
