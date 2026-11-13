@@ -350,16 +350,16 @@ a {
   align-items: center;
   gap: var(--scale-200);
   color: var(--text);
-  font-size: var(--label-l-size);
-  line-height: var(--label-l-line);
+  font-size: var(--body-l-size);       /* 18px (phone 16): a little larger than other labels, easy to find */
+  line-height: var(--body-l-line);
   font-weight: 500;
   white-space: nowrap;
   text-decoration: none;
 }
 
 .back-link img {
-  width: var(--icon-lg);
-  height: var(--icon-lg);
+  width: 26px;
+  height: 26px;
   flex-shrink: 0;
   transition: transform var(--motion-slow) var(--motion-ease);
 }
