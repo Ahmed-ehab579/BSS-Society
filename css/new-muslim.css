@@ -30,6 +30,13 @@
   background: var(--surface-cards-hovered-neutral);
 }
 
+/* Hover: a closed step darkens one step on the card scale (card → card hover), the colour it keeps once open */
+@media (hover: hover) {
+  .path-step:not(.is-open):hover {
+    background: var(--surface-card-hover);
+  }
+}
+
 /* Number, title and text on the left; buttons bottom right */
 .path-step__header {
   display: grid;
