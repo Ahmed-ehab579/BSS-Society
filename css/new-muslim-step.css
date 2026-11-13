@@ -197,6 +197,34 @@
   font-weight: 500;
 }
 
+/* Card type (Figma 1012:3539): an outlined pill above the title instead of a badge on the photo */
+.topic-panel__track .resource-card__badge {
+  display: none;
+}
+
+.topic-panel__track .resource-card__type {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  gap: var(--scale-100);
+  height: 22px;
+  margin-bottom: calc(var(--scale-200) - var(--scale-300));   /* 8px to the title */
+  padding: 0 10px;
+  border: var(--scale-12) solid var(--border-color-badge);
+  border-radius: var(--radius-pill);
+  background: var(--surface-badge);
+  color: var(--color-card-heading);
+  font-size: var(--label-s-size);
+  line-height: var(--label-s-line);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.topic-panel__track .resource-card__type img {
+  width: auto;
+  height: 10px;
+}
+
 /* The materials: the Library's card grid, four a row, so the cards match the Library's */
 .topic-panel__track {
   display: grid;
