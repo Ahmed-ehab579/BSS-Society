@@ -129,9 +129,9 @@
 .topic-panel__number {
   display: block;
   color: var(--color-step-number);
-  font-size: var(--display-size);
+  font-size: var(--display-m-size);    /* Display M (82, phone 60), light: the same as the path page's step numbers */
   line-height: 82px;
-  font-weight: 400;
+  font-weight: var(--display-l-weight);
   letter-spacing: -4.1px;
 }
 
@@ -318,7 +318,7 @@
 
 
   .topic-panel__number {
-    font-size: var(--display-size);
+    font-size: var(--display-m-size);
     line-height: 60px;
     letter-spacing: -2.8px;
   }
