@@ -146,7 +146,7 @@
   line-height: var(--body-l-line);
 }
 
-/* Arrows: the homepage icon button, on the light outline surface (the panel is already Surface/Cards) */
+/* Arrows: exactly the homepage Library arrows (shared icon button: card surface, green on hover) */
 .topic-panel__controls {
   display: flex;
   flex-shrink: 0;
@@ -154,7 +154,6 @@
 }
 
 .topic-panel__controls .icon-btn {
-  background: var(--surface-action-outline);
   transition: background-color var(--motion-duration-hover) var(--motion-ease),
     opacity var(--motion-duration-hover) var(--motion-ease);
 }
