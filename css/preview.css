@@ -183,8 +183,8 @@
 }
 
 .preview .book__title {
-  font-size: var(--h4-size);
-  line-height: 42px;
+  font-size: var(--h3-size);           /* H3: 35px (phone 26), a few px up from H4, by request */
+  line-height: var(--h3-line);
   letter-spacing: -0.6px;
 }
 
