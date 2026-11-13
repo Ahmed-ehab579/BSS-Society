@@ -657,7 +657,7 @@
 
 /* Video: the picture leads, and YouTube only loads on play */
 .preview--video .book {
-  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);   /* a slightly narrower picture gives the title room for three words a line */
   gap: var(--scale-1000);
 }
 
