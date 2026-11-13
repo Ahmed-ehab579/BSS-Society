@@ -151,14 +151,14 @@
 .progress-ring {
   position: relative;
   flex-shrink: 0;
-  width: 60px;
-  height: 60px;
+  width: 72px;
+  height: 72px;
 }
 
 .progress-ring svg {
   display: block;
-  width: 60px;
-  height: 60px;
+  width: 72px;
+  height: 72px;
   transform: rotate(120deg);           /* the arc starts bottom left and runs clockwise */
 }
 
@@ -174,7 +174,7 @@
 }
 
 .progress-ring__value {
-  stroke: var(--text);
+  stroke: var(--green-700);           /* dark green progress */
   stroke-dasharray: var(--ring-value, 0) 360;
   transition: stroke-dasharray var(--motion-slow) var(--motion-ease), stroke var(--motion-slow) var(--motion-ease);
 }
@@ -192,7 +192,7 @@
   justify-content: center;
   padding-bottom: 2px;
   color: var(--text);
-  font-size: var(--body-m-size);
+  font-size: var(--body-l-size);
   line-height: 1;
   font-weight: 500;
 }
