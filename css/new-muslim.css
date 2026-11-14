@@ -624,3 +624,16 @@
     font-weight: 600;
   }
 }
+
+/* Phones: topic titles one step up, H5 size (20/28, was Body XL 18/29), on every topic so opening one
+   doesn't shift the list; 16px from the open title to its preview card */
+@media (max-width: 767px) {
+  .topic__title {
+    font-size: var(--h5-size);
+    line-height: var(--h5-line);
+  }
+
+  .topic.is-selected .topic__row {
+    padding-bottom: var(--scale-400);
+  }
+}
