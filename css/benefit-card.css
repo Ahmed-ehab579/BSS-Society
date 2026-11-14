@@ -103,6 +103,24 @@
   }
 }
 
+/* Phones: tighter cards. The title and its text belong together (8px apart), the icon leads into them
+   (16px), and 20px padding keeps a calm edge */
+@media (max-width: 767px) {
+  .benefit-card {
+    gap: var(--scale-400);
+    padding: var(--scale-500);
+  }
+
+  .benefit-card__content {
+    gap: var(--scale-200);
+  }
+
+  /* The desktop line break ("Follow / a clear path") isn't needed on a full-width card */
+  .benefit-card__title br {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .benefit-card,
   .benefit-card__icon,
