@@ -390,8 +390,7 @@
 @media (max-width: 767px) {
   .learn__item {
     align-items: flex-start;
-    max-width: 260px;
-    text-wrap: pretty;
+    text-wrap: pretty;   /* one line when it fits; if it wraps, never one word alone on line 2 */
   }
 
   .learn__item img {
