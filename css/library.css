@@ -1212,3 +1212,32 @@
     animation: none;
   }
 }
+
+/* Phones: one header for every slide-up panel (as on the Saved and language sheets): the close button
+   alone in the top-right corner, the title (H4) on its own row 8px below it, 14px to the content */
+@media (max-width: 767px) {
+  .filter-sheet__header {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: var(--scale-200);
+    padding-top: var(--scale-300);
+    padding-right: var(--scale-300);
+    padding-bottom: 14px;
+  }
+
+  .filter-sheet__close {
+    order: -1;
+    align-self: flex-end;
+    width: 44px;
+    height: 44px;
+    margin: 0;
+  }
+
+  .filter-sheet__title {
+    margin: 0;
+    font-size: var(--h4-size);
+    line-height: var(--h4-line);
+    font-weight: var(--h4-weight);
+  }
+}

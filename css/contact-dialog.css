@@ -208,3 +208,21 @@
     transition: none;
   }
 }
+
+/* Phones: the same header as the other slide-up panels: close alone in the top-right corner, the intro
+   starting 8px below it, the title in H4 */
+@media (max-width: 767px) {
+  .contact-dialog__panel {
+    padding-top: calc(var(--scale-300) + 44px + var(--scale-200));
+  }
+
+  .contact-dialog__intro {
+    padding-right: 0;
+  }
+
+  .contact-dialog__title {
+    font-size: var(--h4-size);
+    line-height: var(--h4-line);
+    font-weight: var(--h4-weight);
+  }
+}
