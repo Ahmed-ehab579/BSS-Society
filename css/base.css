@@ -478,6 +478,11 @@ a {
     border-radius: var(--radius-md);
   }
 
+  /* Phones: the title and the text under it read as one group */
+  .section-intro {
+    gap: var(--scale-300);
+  }
+
   .section-intro__heading {
     letter-spacing: -0.64px;
   }
