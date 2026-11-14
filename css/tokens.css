@@ -139,6 +139,7 @@
   --display-m-size: 82px;
 
   /* Layout */
+  --intro-gap: 80px;                  /* section intro (text + button) → the content below: clearly more than text → button */
   --container-max: 1360px;
   --gutter: var(--scale-900);
   --header-height: 98px;
@@ -237,6 +238,7 @@
     --body-l-size: 16px;    --body-l-line: 26px;
     --display-size: 56px;
     --display-l-size: 64px;
+    --intro-gap: 56px;
     --display-m-size: 60px;
   }
 }
