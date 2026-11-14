@@ -368,3 +368,10 @@
     --surface-resource-card: #e1ddd1;
   }
 }
+
+/* Desktop and tablet: the same default surface as on phones (#e1ddd1) */
+@media (min-width: 768px) {
+  .topic-panel__track .resource-card {
+    --surface-resource-card: #e1ddd1;
+  }
+}

@@ -637,3 +637,15 @@
     transition: none;
   }
 }
+
+/* Desktop and tablet: the guide card changes first made on phones (2026-11-14):
+   default surface #e1ddd1 and a shorter photo, the card 15% shorter (610px to 519px) */
+@media (min-width: 768px) {
+  .start__cards .guide-card {
+    --surface-cards: #e1ddd1;
+  }
+
+  .start__cards .guide-card__media {
+    height: 197px;
+  }
+}
