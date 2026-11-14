@@ -1143,3 +1143,10 @@
     animation: none;
   }
 }
+
+/* Phones: the related cards' default surface is #e1ddd1, as on the Library and New Muslim cards */
+@media (max-width: 767px) {
+  .preview__related .resource-card {
+    --surface-resource-card: #e1ddd1;
+  }
+}
