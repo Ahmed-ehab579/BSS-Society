@@ -336,3 +336,15 @@
     animation: none;
   }
 }
+
+/* Phones: the Done badge 3px shorter (33px) and its word darker (green-900), the tick stays green */
+@media (max-width: 767px) {
+  .resource-card__done {
+    height: 33px;
+    color: var(--green-900);
+  }
+
+  .resource-card__done svg {
+    color: var(--green-700);
+  }
+}
