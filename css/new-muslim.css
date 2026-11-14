@@ -560,3 +560,26 @@
     height: 61px;
   }
 }
+
+/* Phones: the title on its own full-width row under the number and ring (one line when it fits),
+   16px under the ring's caption; the count inside the ring in the H6 style (18/26, 600), centred */
+@media (max-width: 767px) {
+  .path-step__header {
+    grid-template-areas:
+      "number progress"
+      "title title"
+      "text text"
+      "actions actions";
+    grid-template-rows: auto auto auto auto;
+  }
+
+  .path-step__title {
+    margin-top: var(--scale-400);
+  }
+
+  .path-step__header .progress-ring__count,
+  .path-step__header .progress-ring__count.is-long {
+    font-size: var(--h6-size);
+    font-weight: var(--h6-weight);
+  }
+}
