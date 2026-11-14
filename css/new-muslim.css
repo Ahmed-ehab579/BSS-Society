@@ -592,3 +592,28 @@
     letter-spacing: -3.4px;
   }
 }
+
+/* Phones: the open topic is one card. Its highlight (#d2cdc0) wraps the title row and the preview,
+   which sits inside it, inset 12px, 12px under the title. Corners nest: 24 outside = 12 inside + 12 inset. */
+@media (max-width: 767px) {
+  .topic {
+    display: block;
+    border-radius: var(--radius-lg);
+    transition: background-color var(--motion-duration-hover) var(--motion-ease);
+  }
+
+  .topic.is-selected {
+    background: var(--surface-card-pressed);
+  }
+
+  .topic.is-selected .topic__row {
+    padding-bottom: var(--scale-300);   /* 12px from the title to the card */
+    background: transparent;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  }
+
+  .topic-preview__card {
+    margin: 0 var(--scale-300) var(--scale-300);   /* 12px inset */
+    border-radius: var(--radius-sm);
+  }
+}
