@@ -551,3 +551,12 @@
     margin-top: var(--scale-600);
   }
 }
+
+/* Phones: the step ring 20% smaller (76px → 61px); the count keeps its size */
+@media (max-width: 767px) {
+  .path-step__header .progress-ring__dial,
+  .path-step__header .progress-ring svg {
+    width: 61px;
+    height: 61px;
+  }
+}
