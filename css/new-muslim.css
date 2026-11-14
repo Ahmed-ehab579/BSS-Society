@@ -617,3 +617,10 @@
     border-radius: var(--radius-sm);
   }
 }
+
+/* Phones: the open topic's title a step heavier (600, was 500) */
+@media (max-width: 767px) {
+  .topic.is-selected .topic__title {
+    font-weight: 600;
+  }
+}
