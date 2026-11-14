@@ -814,6 +814,7 @@ a.journey-card:focus-visible .journey-card__go {
   /* Step card titles: even lines, never one word alone on the last line */
   .journey-card__title {
     text-wrap: balance;
+    color: var(--color-card-heading);  /* card headings use the heading colour (#272727), as on every other card */
   }
 }
 
