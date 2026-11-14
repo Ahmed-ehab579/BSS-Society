@@ -382,3 +382,24 @@
     background: var(--surface-card-pressed);
   }
 }
+
+/* Phones: "What you'll learn" — the tick in the done green (a green-100 disc behind the green-700 tick),
+   lined up with the first line when an item wraps, and slightly narrower pills so a wrapped item
+   carries two words onto its second line (no lone word) */
+@media (max-width: 767px) {
+  .learn__item {
+    align-items: flex-start;
+    max-width: 260px;
+    text-wrap: pretty;
+  }
+
+  .learn__item img {
+    box-sizing: border-box;
+    width: 20px;
+    height: 20px;
+    margin-top: 1px;   /* centred on the first line */
+    padding: 3px;
+    border-radius: var(--radius-round);
+    background: var(--green-100);
+  }
+}
