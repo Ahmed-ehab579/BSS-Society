@@ -1189,6 +1189,10 @@
     --listen-size: 62px;
   }
 
+  .resource-grid[data-layout="one"] .resource-card__body {
+    padding-top: 22px;               /* photo to title: 30% less than 32px */
+  }
+
   .resource-grid[data-layout="one"] .resource-card__title {
     font-size: var(--h5-size);        /* a step up from H6: 20/28 on phones */
     line-height: var(--h5-line);
