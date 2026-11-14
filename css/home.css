@@ -575,9 +575,10 @@
 }
 
 @media (max-width: 767px) {
+  .start__content,
   .library__content,
   .new-muslim__content {
-    gap: var(--scale-800);              /* button to cards: 32px, as in the Start here section */
+    gap: var(--scale-900);              /* button to cards: 40px in every section */
   }
 
   .carousel {
