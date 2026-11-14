@@ -509,45 +509,45 @@
   }
 }
 
-/* Phones: the step progress as one compact row, as on mobile progress patterns: a small 24px ring,
-   the count next to it (centred on the ring), then what is left. 16px under the step text
-   (it belongs to it), 24px on to the buttons. */
+/* Phones: the ring sits top right, level with the step number (number left, ring right), as on desktop.
+   The intro's parts join the header grid so the title and text can run under the ring's column. */
 @media (max-width: 767px) {
+  .path-step__header {
+    grid-template-areas:
+      "number progress"
+      "title progress"
+      "text text"
+      "actions actions";
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto 1fr auto auto;
+    column-gap: var(--scale-400);
+    row-gap: 0;
+  }
+
+  .path-step__intro {
+    display: contents;
+  }
+
+  .path-step__number {
+    grid-area: number;
+  }
+
+  .path-step__title {
+    grid-area: title;
+    align-self: start;
+  }
+
+  .path-step__text {
+    grid-area: text;
+  }
+
   .path-step__header > .progress-ring {
-    flex-direction: row;
-    align-items: center;
-    gap: var(--scale-200);
-    margin-top: calc(var(--scale-400) - var(--scale-600));   /* 24px row gap → 16px */
+    justify-self: end;
+    align-self: start;
+    margin-top: 0;
   }
 
-  .path-step__header .progress-ring__dial {
-    display: flex;
-    align-items: center;
-    gap: var(--scale-200);
-    width: auto;
-    height: auto;
-  }
-
-  .path-step__header .progress-ring svg {
-    width: 24px;
-    height: 24px;
-  }
-
-  .path-step__header .progress-ring circle {
-    stroke-width: 8;   /* about 3px at 24px */
-  }
-
-  .path-step__header .progress-ring__count,
-  .path-step__header .progress-ring__count.is-long {
-    position: static;
-    padding: 0;
-    font-size: var(--body-s-size);
-    line-height: var(--body-s-line);
-    font-weight: 600;
-  }
-
-  .path-step__header .progress-ring__caption::before {
-    content: "·";
-    margin-right: var(--scale-200);
+  .path-step__actions {
+    margin-top: var(--scale-600);
   }
 }
