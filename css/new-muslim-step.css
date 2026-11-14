@@ -375,3 +375,10 @@
     --surface-resource-card: #e1ddd1;
   }
 }
+
+/* Desktop: hover one step darker (#d2cdc0) so it still shows against the #e1ddd1 default */
+@media (min-width: 768px) and (hover: hover) {
+  .topic-panel__track .resource-card:hover {
+    background: var(--surface-card-pressed);
+  }
+}
