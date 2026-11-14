@@ -577,7 +577,7 @@
 @media (max-width: 767px) {
   .library__content,
   .new-muslim__content {
-    gap: var(--intro-gap);
+    gap: var(--scale-800);              /* button to cards: 32px, as in the Start here section */
   }
 
   .carousel {

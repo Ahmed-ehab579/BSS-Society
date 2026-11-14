@@ -806,12 +806,7 @@ a.journey-card:focus-visible .journey-card__go {
     padding: calc(6px + 3px) calc(var(--scale-200) + 3px);
   }
 
-  /* Section CTA keeps the regular mobile size and pressed feedback (as on the homepage) */
-  .topics-section .section-cta {
-    height: 48px;
-    padding: var(--scale-300) var(--scale-600);
-  }
-
+  /* Section CTA: the same large button as the homepage sections (56px), with its pressed feedback */
   .topics-section .section-cta:active .btn__arrow-track {
     transform: none;
   }

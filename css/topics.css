@@ -176,7 +176,7 @@
 
 @media (max-width: 767px) {
   .topics__content {
-    gap: var(--intro-gap);
+    gap: var(--scale-800);              /* button to cards: 32px, as on the homepage */
   }
 
   .carousel {
