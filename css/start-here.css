@@ -815,9 +815,9 @@ a.journey-card:focus-visible .journey-card__go {
   .journey-card__title {
     text-wrap: balance;
     color: var(--color-card-heading);  /* card headings use the heading colour (#272727), as on every other card */
-    font-size: var(--h5-size);          /* H5 (20/28 on phones), regular weight */
+    font-size: var(--h5-size);          /* H5 (20/28 on phones), weight 450 */
     line-height: var(--h5-line);
-    font-weight: 400;
+    font-weight: 450;
   }
 }
 
