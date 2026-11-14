@@ -307,6 +307,7 @@
     max-width: none;
     align-self: center;
     border-radius: var(--radius-md);
+    --surface-cards: #e1ddd1;          /* default surface on phones, as the Library cards */
   }
 
   .start__cards .guide-card__text {
