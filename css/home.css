@@ -586,12 +586,13 @@
   }
 
   .carousel__track {
-    gap: var(--scale-400);
+    gap: var(--scale-500);             /* as on the Start here page */
   }
 
-  /* One main card plus a preview of the next */
+  /* The Start here topic cards' size (260px, 287:406), the next card peeking in */
   .topic-card {
-    flex-basis: calc(100% - 56px);
+    flex-basis: 260px;
+    aspect-ratio: 287 / 406;
     border-radius: var(--radius-md);
   }
 
