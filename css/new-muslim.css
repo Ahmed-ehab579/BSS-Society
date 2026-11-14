@@ -562,7 +562,7 @@
 }
 
 /* Phones: the title on its own full-width row under the number and ring (one line when it fits),
-   12px under the ring's caption; the count inside the ring in the H6 style (18/26, 600), centred */
+   8px under the ring's caption; the count inside the ring in the H6 style (18/26, 600), centred */
 @media (max-width: 767px) {
   .path-step__header {
     grid-template-areas:
@@ -574,7 +574,7 @@
   }
 
   .path-step__title {
-    margin-top: var(--scale-300);   /* 12px under the ring's caption */
+    margin-top: var(--scale-200);   /* 8px under the ring's caption */
   }
 
   .path-step__header .progress-ring__count,
