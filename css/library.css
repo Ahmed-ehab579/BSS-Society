@@ -976,6 +976,7 @@
 
   .library-panel__heading {
     letter-spacing: -0.64px;
+    max-width: 300px;                  /* "Find the right / resource for you", as on desktop */
   }
 
   .library-tools {
