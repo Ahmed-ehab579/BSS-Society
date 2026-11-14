@@ -778,6 +778,7 @@ a.journey-card:focus-visible .journey-card__go {
 
   .journey-card__locked-title {
     font-size: var(--body-l-size);
+    text-wrap: balance;                /* even lines at every phone width: no word left alone on line 2 */
   }
 
   .journey-card__locked-text {
