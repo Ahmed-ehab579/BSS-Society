@@ -184,12 +184,12 @@
   }
 
   .carousel__track {
-    gap: var(--scale-400);
+    gap: var(--scale-500);             /* as between the Related materials cards */
   }
 
-  /* One main card plus a preview of the next */
+  /* The Related materials cards' size (239px), the next card peeking in */
   .topic-card {
-    flex-basis: calc(100% - 56px);
+    flex-basis: 239px;
     border-radius: var(--radius-md);
   }
 
