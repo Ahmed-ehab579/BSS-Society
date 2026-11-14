@@ -303,7 +303,7 @@
 
   .start__cards .guide-card {
     flex: none;
-    width: 72%;                        /* 28% narrower than the column (80% less another 10%), centred */
+    width: 80%;                        /* 20% narrower than the column, centred */
     max-width: none;
     align-self: center;
     border-radius: var(--radius-md);
