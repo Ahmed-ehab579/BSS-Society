@@ -637,3 +637,10 @@
     padding-bottom: var(--scale-400);
   }
 }
+
+/* Phones: the preview text set in from the card's sides (20px, the photo keeps its 12px inset) */
+@media (max-width: 767px) {
+  .topic-preview__text {
+    padding-inline: var(--scale-200);
+  }
+}
