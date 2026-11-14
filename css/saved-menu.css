@@ -73,9 +73,10 @@
 .saved-sheet__head {
   display: flex;
   flex-shrink: 0;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--scale-600) var(--scale-200) calc(var(--scale-200) + 6px) var(--scale-500);   /* 14px under the title */
+  flex-direction: column;              /* the close button sits alone in the top-right corner, the title below */
+  align-items: flex-start;
+  gap: var(--scale-200);
+  padding: var(--scale-300) var(--scale-300) calc(var(--scale-200) + 6px) var(--scale-500);   /* 14px under the title */
   cursor: grab;
   touch-action: none;   /* the header drags the sheet instead of scrolling */
 }
@@ -103,6 +104,8 @@
 }
 
 .saved-sheet__close {
+  order: -1;
+  align-self: flex-end;
   display: flex;
   align-items: center;
   justify-content: center;
