@@ -361,3 +361,10 @@
     max-width: 520px;
   }
 }
+
+/* Phones: the topic's material cards take the Library cards' default surface (#e1ddd1) */
+@media (max-width: 767px) {
+  .topic-panel__track .resource-card {
+    --surface-resource-card: #e1ddd1;
+  }
+}
