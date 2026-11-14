@@ -313,6 +313,11 @@
   .start__cards .guide-card__text {
     max-width: none;
   }
+
+  /* A shorter photo: the card 15% shorter (574px to 488px at 390px wide) */
+  .start__cards .guide-card__media {
+    height: 202px;
+  }
 }
 
 /* Library */
