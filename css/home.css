@@ -279,6 +279,11 @@
     letter-spacing: -0.64px;
   }
 
+  /* Two words on the second line, as on desktop: "A clear place to / explore Islam" */
+  .about__heading {
+    max-width: 300px;
+  }
+
 
   .about__intro .btn,
   .start__intro .btn {
