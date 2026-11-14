@@ -583,3 +583,12 @@
     font-weight: var(--h6-weight);
   }
 }
+
+/* Phones: the step number one step up the display scale, Display (72px, the size above 64) */
+@media (max-width: 767px) {
+  .path-step__number {
+    font-size: 72px;
+    line-height: 64px;
+    letter-spacing: -3.4px;
+  }
+}
