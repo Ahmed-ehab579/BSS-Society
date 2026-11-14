@@ -1150,3 +1150,13 @@
     --surface-resource-card: #e1ddd1;
   }
 }
+
+/* Phones: the Related materials heading in the H4 text style, with no padding under it */
+@media (max-width: 767px) {
+  .preview__related-heading {
+    padding-bottom: 0;
+    font-size: var(--h4-size);
+    line-height: var(--h4-line);
+    font-weight: var(--h4-weight);
+  }
+}
