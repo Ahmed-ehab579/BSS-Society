@@ -811,6 +811,12 @@ a.journey-card:focus-visible .journey-card__go {
     transform: none;
   }
 
+  /* Step cards: a slightly darker default surface on phones (#e1ddd1); locked cards' veil follows it */
+  .journey-card {
+    --surface-cards: #e1ddd1;
+    --surface-cards-locked-overlay: rgba(225, 221, 209, 0.89);
+  }
+
   /* Step card titles: even lines, never one word alone on the last line */
   .journey-card__title {
     text-wrap: balance;
