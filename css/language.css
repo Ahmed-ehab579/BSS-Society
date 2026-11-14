@@ -82,7 +82,7 @@ html.is-sheet-open {
   flex-direction: column;              /* the close button sits alone in the top-right corner, the title below */
   align-items: flex-start;
   gap: var(--scale-200);
-  padding: var(--scale-300) var(--scale-300) var(--scale-200) var(--scale-500);
+  padding: var(--scale-300) var(--scale-300) calc(var(--scale-200) + 6px) var(--scale-500);   /* 14px under the title, as on the Saved sheet */
   cursor: grab;
   touch-action: none;   /* the header drags the sheet instead of scrolling */
 }
