@@ -324,7 +324,7 @@
 }
 
 .library__content {
-  gap: var(--intro-gap);
+  gap: 55px;
 }
 
 .carousel {
@@ -491,7 +491,7 @@
 
 /* New Muslim path */
 .new-muslim__content {
-  gap: var(--intro-gap);
+  gap: 82px;
 }
 
 .new-muslim__heading {
@@ -535,7 +535,7 @@
 /* Below 1200px: photo on top, compact cards with everything visible */
 @media (max-width: 1199px) {
   .new-muslim__content {
-    gap: var(--intro-gap);
+    gap: var(--scale-1000);
   }
 
   .new-muslim__benefits {
@@ -575,7 +575,8 @@
 }
 
 @media (max-width: 767px) {
-  .library__content {
+  .library__content,
+  .new-muslim__content {
     gap: var(--intro-gap);
   }
 

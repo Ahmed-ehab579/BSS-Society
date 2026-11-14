@@ -139,7 +139,7 @@
   --display-m-size: 82px;
 
   /* Layout */
-  --intro-gap: 104px;                 /* section intro (text + button) → the content below: clearly more than text → button */
+  --intro-gap: 72px;                  /* phones: section intro (text + button) → the content below, clearly more than text → button. Desktop keeps its approved gaps */
   --container-max: 1360px;
   --gutter: var(--scale-900);
   --header-height: 98px;
@@ -238,7 +238,6 @@
     --body-l-size: 16px;    --body-l-line: 26px;
     --display-size: 56px;
     --display-l-size: 64px;
-    --intro-gap: 72px;
     --display-m-size: 60px;
   }
 }

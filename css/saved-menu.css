@@ -773,3 +773,12 @@
   35% { transform: scale(1.28) translateY(1px); }
   70% { transform: scale(0.94); }
 }
+
+/* Phones: the sheet title one step larger (H4, 26/34) */
+@media (max-width: 767px) {
+  .saved-sheet__title {
+    font-size: var(--h4-size);
+    line-height: var(--h4-line);
+    font-weight: var(--h4-weight);
+  }
+}

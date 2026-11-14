@@ -3,7 +3,7 @@
 .topics__content {
   display: flex;
   flex-direction: column;
-  gap: var(--intro-gap);
+  gap: calc(var(--scale-800) + var(--scale-600));
   max-width: 1209px;
   margin-inline: auto;
 }
