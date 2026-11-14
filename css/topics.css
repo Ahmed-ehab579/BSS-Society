@@ -187,9 +187,9 @@
     gap: var(--scale-500);             /* as between the Related materials cards */
   }
 
-  /* The Related materials cards' size (239px), the next card peeking in */
+  /* A bit bigger than the Related materials cards (239px), the next card still peeking in */
   .topic-card {
-    flex-basis: 239px;
+    flex-basis: 260px;
     border-radius: var(--radius-md);
   }
 
