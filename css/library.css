@@ -983,6 +983,7 @@
   .library-tools {
     gap: var(--scale-400);
     padding-bottom: var(--scale-600);
+    border-bottom-color: var(--color-neutral-400);   /* a little darker on phones (#8e8e8e), where the thin line reads faint */
   }
 
   /* Phones: search on top, full width; the desktop pills are replaced by the Filters button */
