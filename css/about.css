@@ -713,6 +713,7 @@
 
   /* Figma 2178:2863: same layout, scaled to the phone. Small text stays at a readable size. */
   .stat__value {
+    font-size: var(--display-size);    /* phones: one step up the scale, 36 → Display 56 */
     letter-spacing: -0.88px;
   }
 
