@@ -362,9 +362,7 @@
   }
 }
 
-/* Phones: the topic's material cards take the Library cards' default surface (#e1ddd1) */
-@media (max-width: 767px) {
-  .topic-panel__track .resource-card {
-    --surface-resource-card: #e1ddd1;
-  }
+/* The topic's material cards: default surface #e1ddd1 on every screen (as the Library cards on phones) */
+.topic-panel__track .resource-card {
+  --surface-resource-card: #e1ddd1;
 }
