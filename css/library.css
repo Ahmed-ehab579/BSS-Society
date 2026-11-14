@@ -1190,9 +1190,14 @@
   }
 
   .resource-grid[data-layout="one"] .resource-card__title {
-    font-size: var(--h6-size);
-    line-height: var(--h6-line);
+    font-size: var(--h5-size);        /* a step up from H6: 20/28 on phones */
+    line-height: var(--h5-line);
     font-weight: var(--h6-weight);   /* 600 */
+  }
+
+  .resource-grid[data-layout="list"] .resource-card__title {
+    font-size: var(--body-xl-size);   /* a step up from Body M: 18/29 on phones */
+    line-height: var(--body-xl-line);
   }
 
   /* Pressed feedback instead of hover on touch */
