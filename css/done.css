@@ -119,11 +119,11 @@
   display: flex;
   align-items: center;
   gap: 2px;
-  height: 36px;
+  height: 33px;
   padding: 0 var(--scale-400) 0 var(--scale-100);
   border-radius: var(--radius-pill);
-  background: var(--green-100);        /* light green pill, dark green tick and word, no shadow */
-  color: var(--green-700);
+  background: var(--green-100);        /* light green pill, green tick, darker word, no shadow */
+  color: var(--green-900);
   font-size: var(--label-m-size);
   line-height: var(--label-m-line);
   font-weight: var(--label-weight);
@@ -136,6 +136,7 @@
 
 .resource-card__done svg {
   flex-shrink: 0;
+  color: var(--green-700);
   width: 30px;
   height: 30px;
 }
@@ -334,17 +335,5 @@
   .book__done-btn.is-popping,
   .book__done-btn.is-popping .done-icon__tick {
     animation: none;
-  }
-}
-
-/* Phones: the Done badge 3px shorter (33px) and its word darker (green-900), the tick stays green */
-@media (max-width: 767px) {
-  .resource-card__done {
-    height: 33px;
-    color: var(--green-900);
-  }
-
-  .resource-card__done svg {
-    color: var(--green-700);
   }
 }
