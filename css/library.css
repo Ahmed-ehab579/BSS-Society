@@ -986,11 +986,6 @@
     border-bottom-color: #636363;      /* darker on phones: Neutral 400 (#8e8e8e) 30% darker */
   }
 
-  /* Library cards: a slightly darker default surface on phones (#e1ddd1), as on the active Start here card */
-  .resource-grid .resource-card {
-    --surface-resource-card: #e1ddd1;
-  }
-
   /* Phones: search on top, full width; the desktop pills are replaced by the Filters button */
   .library-tools__row--filters {
     display: none;
