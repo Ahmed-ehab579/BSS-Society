@@ -580,6 +580,24 @@ a {
   background: var(--surface-cards-hovered);
 }
 
+/* Phones: no green flash on tap (a quiet neutral press instead), and the card hugs its text: the
+   desktop's fixed text height left a big empty gap above the photo */
+@media (max-width: 767px) {
+  .guide-card:active {
+    background: var(--surface-card-hover);
+  }
+
+  .guide-card__content {
+    min-height: 0;
+    padding: var(--scale-600) var(--scale-500);
+  }
+
+  /* The desktop line break ("Follow / a guided path") isn't needed on a full-width card */
+  .guide-card h3 br {
+    display: none;
+  }
+}
+
 /* Form fields (Contact form). Figma strokes are inside, so the border is
    taken out of the padding. Focus and error states are not defined in
    Figma; they reuse the site focus outline and the error tokens. */
