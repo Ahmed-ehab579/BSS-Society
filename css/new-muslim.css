@@ -508,3 +508,46 @@
     transition: none;
   }
 }
+
+/* Phones: the step progress as one compact row, as on mobile progress patterns: a small 24px ring,
+   the count next to it (centred on the ring), then what is left. 16px under the step text
+   (it belongs to it), 24px on to the buttons. */
+@media (max-width: 767px) {
+  .path-step__header > .progress-ring {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--scale-200);
+    margin-top: calc(var(--scale-400) - var(--scale-600));   /* 24px row gap → 16px */
+  }
+
+  .path-step__header .progress-ring__dial {
+    display: flex;
+    align-items: center;
+    gap: var(--scale-200);
+    width: auto;
+    height: auto;
+  }
+
+  .path-step__header .progress-ring svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .path-step__header .progress-ring circle {
+    stroke-width: 8;   /* about 3px at 24px */
+  }
+
+  .path-step__header .progress-ring__count,
+  .path-step__header .progress-ring__count.is-long {
+    position: static;
+    padding: 0;
+    font-size: var(--body-s-size);
+    line-height: var(--body-s-line);
+    font-weight: 600;
+  }
+
+  .path-step__header .progress-ring__caption::before {
+    content: "·";
+    margin-right: var(--scale-200);
+  }
+}
