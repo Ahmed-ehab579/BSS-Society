@@ -421,7 +421,7 @@
   }
 
   .path-step__number {
-    font-size: var(--display-m-size);
+    font-size: var(--display-l-size);   /* 64px on phones, as in the earlier version (was Display M, 60) */
     line-height: 60px;
     letter-spacing: -2.8px;
   }
