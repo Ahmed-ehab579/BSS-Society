@@ -589,12 +589,7 @@ a {
 
   .guide-card__content {
     min-height: 0;
-    padding: var(--scale-600) var(--scale-500);
-  }
-
-  /* The desktop line break ("Follow / a guided path") isn't needed on a full-width card */
-  .guide-card h3 br {
-    display: none;
+    padding: var(--scale-600) var(--scale-500) var(--scale-1000);   /* 48px from the text to the photo */
   }
 }
 
