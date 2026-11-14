@@ -18,7 +18,7 @@
 }
 
 .book-back {
-  margin-bottom: var(--scale-500);   /* look: .back-link (base.css) */
+  margin-bottom: var(--scale-600);   /* look: .back-link (base.css); every back link: 24px to the content (phone 16) */
 }
 
 .book {
@@ -563,7 +563,7 @@
   /* The arrow is drawn 4px inside its box: this lines the arrow up with the photo and the logo */
   .book-back {
     margin-left: -4px;
-    margin-bottom: var(--scale-300);   /* close to the photo it leads back from */
+    margin-bottom: var(--scale-400);   /* every back link: 16px to the content on phones */
   }
 
   .book__head {

@@ -2218,3 +2218,11 @@
     margin: 0;
   }
 }
+
+/* Phones: Save no taller than the back link's row, so the back link sits exactly 16px over the cover,
+   like every other back link */
+@media (max-width: 767px) {
+  .article-top .save-btn {
+    margin-block: -7px;
+  }
+}

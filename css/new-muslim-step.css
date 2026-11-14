@@ -342,15 +342,16 @@
 
 /* Back to the path, above the page title: 40px under the header, 16px over the title */
 .step-back {
+  display: flex;                                 /* hugs the link: no extra line-box space under it */
   max-width: calc(1305px + 2 * var(--gutter));   /* the intro's edges */
   margin-top: calc(-1 * var(--scale-600));
-  margin-bottom: var(--scale-400);
+  margin-bottom: var(--scale-600);               /* every back link: 24px to the content (phone 16) */
 }
 
 @media (max-width: 767px) {
   .step-back {
     margin-top: calc(-1 * var(--scale-200));     /* 24px under the header on phones */
-    margin-bottom: var(--scale-300);
+    margin-bottom: var(--scale-400);
   }
 }
 

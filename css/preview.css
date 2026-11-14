@@ -1160,10 +1160,3 @@
     font-weight: var(--h4-weight);
   }
 }
-
-/* Phones: 4px more under "Back to the library" on the material page (12px → 16px) */
-@media (max-width: 767px) {
-  .book-back:has(+ .preview) {
-    margin-bottom: var(--scale-400);
-  }
-}
