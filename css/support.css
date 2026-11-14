@@ -743,7 +743,8 @@
 /* Phones: one header for every slide-up panel (as on the Saved and language sheets): the close button
    alone in the top-right corner, the title (H4) on its own row 8px below it, 14px to the content */
 @media (max-width: 767px) {
-  .support-sheet__head {
+  .support-sheet__head,
+  #partner-dialog .support-sheet__head {
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
