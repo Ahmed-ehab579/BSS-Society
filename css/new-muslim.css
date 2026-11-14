@@ -580,7 +580,7 @@
   .path-step__header .progress-ring__count,
   .path-step__header .progress-ring__count.is-long {
     font-size: var(--h6-size);
-    font-weight: var(--h6-weight);
+    font-weight: 500;   /* a step lighter than H6's 600 */
   }
 }
 
