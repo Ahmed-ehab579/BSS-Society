@@ -74,6 +74,12 @@
   --motion-ease: cubic-bezier(0.2, 0, 0, 1);              /* standard */
   --motion-ease-expand: cubic-bezier(0.65, 0, 0.35, 1);   /* even in-out */
   --motion-ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);    /* sheets and drawers */
+  --motion-reveal: 800ms;                                 /* things appearing: scroll reveals, page load */
+  --motion-settle: 1000ms;                                /* photos settling from 1.04 to 1 */
+  --motion-stagger: 70ms;                                 /* gap between items revealed together */
+  --motion-ease-glide: cubic-bezier(0.16, 1, 0.3, 1);     /* soft arrival, no overshoot */
+  --motion-rise: 24px;                                    /* how far revealed content travels (12px phones) */
+  --motion-press: 0.98;                                   /* buttons and cards when pressed */
 
   /* Icon sizes */
   --icon-sm: 16px;
@@ -225,6 +231,8 @@
 @media (max-width: 767px) {
   :root {
     --gutter: var(--scale-400);
+    --motion-rise: 12px;
+    --motion-reveal: 600ms;
     /* One phone rule (R1): every step of the type scale steps down once on phones */
     --display-hero-size: 36px;  --display-hero-line: 44px;
     --h1-size: 36px;  --h1-line: 50px;
