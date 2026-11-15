@@ -854,12 +854,12 @@
   }
 }
 
-/* Phones: the step number one step back down the display scale, Display (72px, was 82) */
+/* Phones: the step number 76px, by request */
 @media (max-width: 767px) {
   .path-step__number {
-    font-size: 72px;
-    line-height: 64px;
-    letter-spacing: -3.4px;
+    font-size: 76px;
+    line-height: 68px;
+    letter-spacing: -3.8px;
   }
 }
 
