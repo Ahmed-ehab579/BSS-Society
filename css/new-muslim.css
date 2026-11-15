@@ -863,9 +863,9 @@
   }
 }
 
-/* Phones: a closed step card's edge darker (#bbbbbb → neutral-400 #8e8e8e), by request */
+/* Phones: a closed step card's edge darker (#bbbbbb → #5b5b5b, two steps past neutral-400), by request */
 @media (max-width: 767px) {
   .path-step:not(.is-open) {
-    border-color: var(--color-neutral-400);
+    border-color: #5b5b5b;
   }
 }
