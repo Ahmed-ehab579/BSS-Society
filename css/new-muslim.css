@@ -869,3 +869,69 @@
     border-color: #5b5b5b;
   }
 }
+
+/* Phones only: a longer step line (js/new-muslim-data.js) and a tick in the Done badge */
+.path-step__text .text-phone,
+.topic__done-icon {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  /* The step line at full width, three lines */
+  .path-step__text {
+    max-width: none;
+  }
+
+  .path-step__text .text-wide {
+    display: none;
+  }
+
+  .path-step__text .text-phone {
+    display: inline;
+  }
+
+  /* Topics: titles 20px from the list's edge, chevrons 12px; the open topic's frame keeps 12px each side
+     and its preview card starts in line with the title */
+  .topic__row {
+    padding-right: var(--scale-300);
+    padding-left: var(--scale-500);
+  }
+
+  .topic.is-selected {
+    padding: 10px var(--scale-300);
+  }
+
+  .topic.is-selected .topic__row {
+    padding: var(--scale-400) 0 13px var(--scale-200);
+  }
+
+  .topic-preview__card {
+    width: auto;
+    margin: 0 0 var(--scale-300) var(--scale-200);
+  }
+
+  /* The Done badge as on the step page's cards (css/done.css .resource-card__done), 12px above the title */
+  .topic__row {
+    row-gap: var(--scale-300);
+  }
+
+  .topic__done {
+    gap: 2px;
+    height: 33px;
+    padding: 0 var(--scale-400) 0 var(--scale-100);
+    border: 0;
+    background: var(--green-100);
+    color: var(--green-900);
+    font-size: var(--label-m-size);
+    line-height: var(--label-m-line);
+    font-weight: var(--label-weight);
+  }
+
+  .topic__done-icon {
+    display: block;
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    color: var(--green-700);
+  }
+}

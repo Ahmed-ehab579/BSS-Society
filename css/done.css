@@ -371,3 +371,10 @@
     animation: none;
   }
 }
+
+/* Phones, a material page: "Mark as done" at the end of the page, after the summary and the buttons */
+@media (max-width: 767px) {
+  .book__details > .done-card {
+    order: 3;
+  }
+}

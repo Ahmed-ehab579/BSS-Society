@@ -500,3 +500,65 @@
     font-weight: 400;
   }
 }
+
+/* Phones only: the longer topic line and the path's full name on the back link (js/new-muslim-step.js) */
+.topic-panel__text .text-phone,
+.step-back .text-phone {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  /* The topic line at full width, three lines (a longer version of the desktop text) */
+  .topic-panel__text {
+    max-width: none;
+  }
+
+  .topic-panel__text .text-wide,
+  .step-back .text-wide {
+    display: none;
+  }
+
+  .topic-panel__text .text-phone,
+  .step-back .text-phone {
+    display: inline;
+  }
+
+  /* The Cards/List switch on the right, its edge in line with the topic header above */
+  .topic-panel__views {
+    justify-content: flex-end;
+    margin-inline: 0;
+  }
+
+  /* Topic pills: the done check before the word, larger; the selected pill's edge darker */
+  .topic-tab {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .topic-tab__done {
+    order: -1;
+    width: 20px;
+    height: 20px;
+    margin: 0 6px 0 -4px;
+  }
+
+  .topic-tab[aria-selected="true"] {
+    border-color: #5b5b5b;
+  }
+
+  /* List view: the Done badge in the card's top right corner, off the small photo, a size smaller */
+  #topic-resources[data-layout="list"] > .resource-card > .resource-card__done {
+    top: var(--scale-300);
+    right: var(--scale-300);
+    left: auto;
+    height: 28px;
+    padding: 0 var(--scale-300) 0 2px;
+    font-size: var(--body-s-size);
+    line-height: 1;
+  }
+
+  #topic-resources[data-layout="list"] > .resource-card > .resource-card__done svg {
+    width: 24px;
+    height: 24px;
+  }
+}

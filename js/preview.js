@@ -65,7 +65,12 @@
   const page = document.querySelector("[data-material-page]");   // material.html: the page itself
   const phone = window.matchMedia("(max-width: 767px)");
   const FROM = location.pathname.includes("new-muslim") ? "new-muslim" : location.pathname.includes("article") ? "article" : "library";
-  const pageAddress = (item) => `material.html?id=${item.key}&from=${FROM}`;
+  // From a New Muslim step, the step and topic travel along so the material page can lead back to them
+  const stepPlace = () => {
+    const params = new URLSearchParams(location.search);
+    return ["step", "topic"].filter((name) => params.get(name)).map((name) => `&${name}=${encodeURIComponent(params.get(name))}`).join("");
+  };
+  const pageAddress = (item) => `material.html?id=${item.key}&from=${FROM}${FROM === "new-muslim" ? stepPlace() : ""}`;
   // Opened from the New Muslim path: the material can be marked as done (js/done.js)
   const IN_PATH = FROM === "new-muslim" || new URLSearchParams(location.search).get("from") === "new-muslim";
   // Mark as done: a third icon button beside Share and Save, behaving like Save (a toggle with the same
@@ -668,7 +673,9 @@
     current = item;
     host.classList.remove("preview--book", "preview--audio", "preview--video");
     host.classList.add(`preview--${item.format}`);
-    scroller.innerHTML = { book: bookHtml, audio: audioHtml, video: videoHtml }[item.format](item, type) + relatedHtml(item);
+    // Phones, a material page opened from the New Muslim path: no related materials, the path leads on
+    const noRelated = page && phone.matches && new URLSearchParams(location.search).get("from") === "new-muslim";
+    scroller.innerHTML = { book: bookHtml, audio: audioHtml, video: videoHtml }[item.format](item, type) + (noRelated ? "" : relatedHtml(item));
     scroller.scrollTop = 0;
     scroller.querySelector("[data-preview-save]").setAttribute("aria-pressed", String(BSS.saved.has(item.key)));
     showDone();
@@ -774,7 +781,7 @@
     const from = event.target.closest("button");
     if (!event.target.closest("[data-preview-download]")) {
       // From one material page to another the address is replaced, so "Back to library" stays one step
-      if (page) location.replace(`material.html?id=${item.key}&from=${new URLSearchParams(location.search).get("from") || "library"}`);
+      if (page) location.replace(`material.html?id=${item.key}&from=${new URLSearchParams(location.search).get("from") || "library"}${stepPlace()}`);
       else if (phone.matches) location.href = pageAddress(item);
       else open(item, { from });
       return;
@@ -802,13 +809,21 @@
     const back = document.querySelector("[data-material-back]");
     const from = params.get("from");
     const fromNewMuslim = from === "new-muslim";
-    if (from === "new-muslim" || from === "article") {
+    // From a New Muslim step: back to that step's topic ("Back to Topic 2"), the page it was opened from
+    const stepNumber = Number(params.get("step")) || 0;
+    const topicNumber = Number(params.get("topic")) || 0;
+    if (fromNewMuslim && stepNumber) {
+      back.querySelector("span").textContent = topicNumber ? `Back to Topic ${topicNumber}` : `Back to step ${stepNumber}`;
+      back.href = `new-muslim-step.html?step=${stepNumber}${topicNumber ? `&topic=${topicNumber}` : ""}`;
+    } else if (from === "new-muslim" || from === "article") {
       back.querySelector("span").textContent = fromNewMuslim ? "Back to New Muslim" : "Back to the article";
       back.href = fromNewMuslim ? "new-muslim.html" : "article.html";
     }
     let cameFromSite = false;
     try {
-      cameFromSite = new URL(document.referrer).origin === location.origin;
+      const referrer = new URL(document.referrer);
+      cameFromSite = referrer.origin === location.origin
+        && (!fromNewMuslim || !stepNumber || referrer.pathname.includes("new-muslim-step"));
     } catch (error) {}
     back.addEventListener("click", (event) => {
       if (!cameFromSite || history.length < 2) return;

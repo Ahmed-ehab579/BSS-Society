@@ -18,7 +18,7 @@
           <div class="path-step__intro">
             <span class="path-step__number" aria-hidden="true">${pad(step.id)}</span>
             <h3 class="path-step__title"><span class="visually-hidden">Step ${step.id}: </span>${escape(step.title)}</h3>
-            <p class="path-step__text">${escape(step.text)}</p>
+            <p class="path-step__text"><span class="text-wide">${escape(step.text)}</span><span class="text-phone">${escape(step.phoneText)}</span></p>
           </div>
           <div class="path-step__actions">
             <a class="btn btn--regular btn--primary path-step__start" href="new-muslim-step.html?step=${step.id}">
@@ -44,7 +44,7 @@
               <li class="topic" role="listitem" data-topic="${topic.id}">
                 <button class="topic__row" type="button" aria-expanded="false" aria-controls="topic-${topic.id}">
                   <span class="topic__title">${escape(topic.title)}</span>
-                  <span class="topic__done" hidden>Done</span>
+                  <span class="topic__done" hidden><svg class="topic__done-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M10 16.5l4.2 4.2L22.5 12" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Done</span>
                   <img class="topic__chevron" src="assets/icons/row-chevron.svg" width="24" height="24" alt="">
                 </button>
                 <div class="topic-preview" id="topic-${topic.id}" style="--span: ${step.topics.length + 1}" role="region" aria-label="${escape(topic.title)}">

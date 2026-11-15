@@ -78,8 +78,10 @@
     const topic = step.topics[index];
     els.number.textContent = pad(index + 1);
     els.topicTitle.textContent = topic.title;
-    els.topicText.textContent = topic.short || topic.text;   // two lines here; the path page has the longer text
+    // desktop: two lines (the path page has the longer text); phones: a three-line version at full width
+    els.topicText.innerHTML = `<span class="text-wide">${escape(topic.short || topic.text)}</span><span class="text-phone">${escape(topic.phoneText)}</span>`;
     els.track.innerHTML = topic.resources.map(cardHtml).join("");
+    placeDoneBadges();
     paintProgress();
   }
 
@@ -126,7 +128,19 @@
     track.classList.toggle("topic-panel__track", !phone);
     track.classList.toggle("resource-grid", phone);
     if (phone) track.dataset.layout = view; else delete track.dataset.layout;
+    placeDoneBadges();
     viewButtons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.view === view)));
+  }
+
+  // Phones, list view: the Done badge leaves the small photo for the card's top right corner
+  // (css/new-muslim-step.css); anywhere else it stays on the photo
+  function placeDoneBadges() {
+    const inCard = phoneView.matches && view === "list";
+    els.track.querySelectorAll(".resource-card").forEach((card) => {
+      const badge = card.querySelector(".resource-card__done");
+      const home = inCard ? card : card.querySelector(".resource-card__frame");
+      if (badge && home && badge.parentElement !== home) home.append(badge);
+    });
   }
 
   viewButtons.forEach((button) => button.addEventListener("click", () => {

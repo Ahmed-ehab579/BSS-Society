@@ -44,6 +44,30 @@
     return [intro, ...more].map((item) => ({ dir: "auto", ...item }));
   }
 
+  // Phones: a slightly longer line (three lines at full width) under each step's and topic's title
+  const PHONE_TEXT = {
+    "Begin with the essentials": "The core beliefs of Islam, explained simply and without pressure: who God is, the Qur’an, the Prophet and what it means to be Muslim.",
+    "Build your daily foundation": "Prayer, purification and the small habits that shape each day, from your first prayer and wudu to Ramadan and eating halal with ease.",
+    "Live with confidence": "Bring your faith into family, work and friendships with ease, with gentle ideas for hard talks and answers to common questions.",
+    "Keep learning with support": "Find community, trusted sources and help whenever you need it, so you keep growing with confidence long after your very first steps.",
+    "Who is God in Islam?": "How Islam describes God: one, merciful and always near, and why this belief sits at the heart of everything a Muslim does each day.",
+    "What is the Qur’an?": "Where the Qur’an came from, how its chapters are organised, and why Muslims see it as the word of God, read every day.",
+    "Who is Prophet Muhammad?": "His life in Makkah and Madinah, his character and his message, and why Muslims love him and follow his example in daily life.",
+    "What does it mean to be Muslim?": "The testimony of faith, the five pillars, and what becoming Muslim changes in everyday life, and what it gently leaves the same.",
+    "How to pray, step by step": "The five daily prayers made simple: when they happen, what to say and how to move, starting with the easiest version.",
+    "Wudu: preparing for prayer": "How and why Muslims wash before prayer, with a simple order to follow from day one, at home, at work or while you are travelling.",
+    "Your first Ramadan": "What to expect from the month of fasting, from the pre-dawn meal to sunset, with practical ways to prepare.",
+    "Halal food made simple": "What halal means in practice at home, at work and when eating out, and how to explain your choices kindly to friends and family.",
+    "Sharing the news with family": "Gentle ideas for sharing your new faith with the people you love: when to share, what to say, and how to answer worries with patience.",
+    "Muslim manners in daily life": "Greetings, kindness and the small courtesies that carry the spirit of Islam into each day, from saying salam to treating neighbours well.",
+    "Answers to common questions": "Clear, honest answers to the questions new Muslims are asked most often, about women, the hijab, fasting and Jesus.",
+    "Faith at work and study": "Making room for prayer and faith in a busy week of work or study: finding a quiet place to pray, handling Fridays, exams and deadlines.",
+    "Finding a welcoming community": "How to find a mosque or group where you feel at home, what to expect on a first visit, and how to build friendships that support you.",
+    "Learning to read the Qur’an": "First steps with the Arabic letters and sounds, starting with the short chapters used in prayer, at a pace that suits you and your week.",
+    "Choosing trustworthy sources": "How to tell reliable teachers and books from confusing or extreme voices online, with simple questions to ask about any source.",
+    "Getting help when you need it": "Who to turn to with questions, doubts or hard days, why asking is always welcome, and where to find mentors and our team.",
+  };
+
   const STEPS = [
     { title: "Begin with the essentials", text: "The core beliefs of Islam, explained simply and without pressure.",
       intro: "Four short topics on the core beliefs of Islam. Take them in order, or start with the question already on your mind.",
@@ -80,8 +104,9 @@
   ].map((step, s) => ({
     ...step,
     id: s + 1,
+    phoneText: PHONE_TEXT[step.title] || step.text,
     topics: step.topics.map(([title, text, image, short], t) => ({
-      id: `${s + 1}-${t + 1}`, title, text, short, image: IMG[image][0], focus: IMG[image][1],
+      id: `${s + 1}-${t + 1}`, title, text, short, phoneText: PHONE_TEXT[title] || short || text, image: IMG[image][0], focus: IMG[image][1],
       resources: resourcesFor(title, IMG[image], s * 4 + t),
     })),
   }));
