@@ -862,3 +862,10 @@
     letter-spacing: -3.4px;
   }
 }
+
+/* Phones: a closed step card's edge one step darker (#bbbbbb → neutral-300 #aaaaaa) */
+@media (max-width: 767px) {
+  .path-step:not(.is-open) {
+    border-color: var(--color-neutral-300);
+  }
+}
