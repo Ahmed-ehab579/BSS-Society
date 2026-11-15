@@ -840,3 +840,16 @@
     border-bottom-color: transparent;
   }
 }
+
+/* Phones: preview text 15/24; the card 15% shorter (390 → ~332px at 375 wide), taken from the photo,
+   which becomes a wider strip (16:10 → 21:8) */
+@media (max-width: 767px) {
+  .topic-preview__text {
+    font-size: 15px;
+    line-height: 24px;
+  }
+
+  .topic-preview__image {
+    aspect-ratio: 21 / 8;
+  }
+}
