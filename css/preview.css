@@ -1160,3 +1160,45 @@
     font-weight: var(--h4-weight);
   }
 }
+
+/* Phones, a material page opened from the New Muslim path (js/preview.js .preview--path): under the
+   photo or player, a full-width row with Share, Save and Done on the right; then the title; then the
+   author, smaller and close under it. No type and topic tag above the title. */
+@media (max-width: 767px) {
+  .preview.preview--path .book__tag {
+    display: none;
+  }
+
+  .preview.preview--path .book__head {
+    grid-template-areas:
+      "actions"
+      "title"
+      "author";
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0;
+  }
+
+  .preview.preview--path .book__actions {
+    grid-area: actions;
+    justify-self: end;
+  }
+
+  .preview.preview--path .book__title {
+    grid-area: title;
+    margin-top: var(--scale-400);
+  }
+
+  .preview.preview--path .book__author {
+    grid-area: author;
+    margin-top: var(--scale-100);
+    font-size: var(--body-s-size);
+    line-height: var(--body-s-line);
+  }
+}
+
+/* Phones, path material pages: the icon row 16px under the photo or player it belongs to (was 32) */
+@media (max-width: 767px) {
+  .preview.preview--path .book {
+    row-gap: var(--scale-400);
+  }
+}

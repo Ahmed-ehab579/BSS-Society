@@ -2226,3 +2226,24 @@
     margin-block: -7px;
   }
 }
+
+/* From the New Muslim path (js/article.js .is-path-article), phones: no breadcrumb on the photo and no
+   Save pill at the top; Share, Save and Done sit in a row under the photo, on the right, as on the path's
+   material pages */
+.article-tools {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .is-path-article .article-crumbs,
+  .is-path-article .article-top .save-btn {
+    display: none;
+  }
+
+  .is-path-article .article-tools {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--scale-200);
+    margin-top: var(--scale-400);
+  }
+}

@@ -332,3 +332,27 @@
     padding: 0;
   }
 }
+
+/* Phones: larger share icons (28px in 60px tiles, as on native share sheets) with a slightly larger
+   label; the link row loses its outline, a soft filled field around the link and Copy instead */
+@media (max-width: 767px) {
+  .share__icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .share__icon svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .share__label {
+    font-size: var(--body-s-size);
+    line-height: var(--body-s-line);
+  }
+
+  .share__link {
+    border: 0;
+    background: var(--surface-card);
+  }
+}

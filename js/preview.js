@@ -675,6 +675,7 @@
     host.classList.add(`preview--${item.format}`);
     // Phones, a material page opened from the New Muslim path: no related materials, the path leads on
     const noRelated = page && phone.matches && new URLSearchParams(location.search).get("from") === "new-muslim";
+    host.classList.toggle("preview--path", Boolean(noRelated));   // its own layout too (css/preview.css)
     scroller.innerHTML = { book: bookHtml, audio: audioHtml, video: videoHtml }[item.format](item, type) + (noRelated ? "" : relatedHtml(item));
     scroller.scrollTop = 0;
     scroller.querySelector("[data-preview-save]").setAttribute("aria-pressed", String(BSS.saved.has(item.key)));

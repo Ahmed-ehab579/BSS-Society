@@ -378,3 +378,10 @@
     order: 3;
   }
 }
+
+/* Phones: the Done badge on cards gets a thin darker edge */
+@media (max-width: 767px) {
+  .resource-card__done {
+    border: 0.3px solid #5b5b5b;
+  }
+}

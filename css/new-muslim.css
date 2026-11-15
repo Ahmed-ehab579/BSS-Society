@@ -935,3 +935,29 @@
     color: var(--green-700);
   }
 }
+
+/* Phones: topic titles a step larger (20/28, was 18/30); the open topic's frame 12px each side, its title,
+   chevron and preview card all set 12px in, so both sides match (closed rows the same, nothing shifts) */
+@media (max-width: 767px) {
+  .topic__title {
+    font-size: var(--h5-size);
+    line-height: var(--h5-line);
+  }
+
+  .topic__row {
+    padding-left: var(--scale-300);
+  }
+
+  .topic.is-selected .topic__row {
+    padding-left: 0;
+  }
+
+  .topic-preview__card {
+    margin-left: 0;
+  }
+
+  /* Done badge: a thin darker edge, as on the cards */
+  .topic__done {
+    border: 0.3px solid #5b5b5b;
+  }
+}
