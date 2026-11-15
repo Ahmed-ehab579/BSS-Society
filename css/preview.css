@@ -1205,3 +1205,26 @@
     row-gap: var(--scale-400);
   }
 }
+
+/* Phones, path material pages: the tag, title and author move up beside the icon row (icons top right);
+   a long title wraps in its own column, always 16px clear of the icons */
+@media (max-width: 767px) {
+  .preview.preview--path .book__head {
+    grid-template-areas:
+      "tag actions"
+      "title actions"
+      "author author";
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto 1fr auto;
+    column-gap: var(--scale-400);
+  }
+
+  .preview.preview--path .book__actions {
+    align-self: start;
+  }
+
+  .preview.preview--path .book__tag {
+    align-self: start;
+    margin-top: 0;
+  }
+}

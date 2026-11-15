@@ -400,3 +400,11 @@
     line-height: 24px;
   }
 }
+
+/* Phones: the "Mark as done" check twice as large (80px, was 40) */
+@media (max-width: 767px) {
+  .done-card__icon {
+    width: 80px;
+    height: 80px;
+  }
+}
