@@ -274,7 +274,7 @@
   padding: var(--scale-400);   /* 16px all round (was 24), by request */
   border: var(--scale-12) solid var(--border);
   border-radius: var(--radius-lg);
-  background: var(--surface-preview);
+  background: #f1efe6;                 /* Figma Surface/Preview, phones and desktop (the token stays #f9f7f1 for About) */
 }
 
 .topic-preview__image {
