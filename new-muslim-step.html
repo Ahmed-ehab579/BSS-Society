@@ -23,7 +23,8 @@
   <link rel="stylesheet" href="css/preview.css?v=33">
   <link rel="stylesheet" href="css/share.css?v=3">
   <link rel="stylesheet" href="css/done.css?v=14">
-  <link rel="stylesheet" href="css/new-muslim-step.css?v=44">
+  <link rel="stylesheet" href="css/library.css?v=51">
+  <link rel="stylesheet" href="css/new-muslim-step.css?v=46">
   <link rel="stylesheet" href="css/footer.css?v=5">
 </head>
 <body>
@@ -104,6 +105,18 @@
           </div>
           <!-- Topic progress (Figma 1137:4795): drawn by js/done.js (BSS.done.ringHtml) -->
           <div data-topic-progress></div>
+        </div>
+        <!-- Phones: the Library's layout switch, cards (one a row) or a list (js/new-muslim-step.js) -->
+        <div class="topic-panel__views" data-step-views>
+          <div class="view-toggle" role="group" aria-label="Layout">
+            <button class="view-toggle__btn" type="button" aria-pressed="true" data-view="one" aria-label="Cards">
+              <img class="view-toggle__icon--phone" src="assets/icons/view-single.svg" width="14.6981" height="14.6981" alt="">
+              <img class="view-toggle__icon--wide" src="assets/icons/view-grid.svg" width="14.6981" height="14.6981" alt="">
+            </button>
+            <button class="view-toggle__btn" type="button" aria-pressed="false" data-view="list" aria-label="List">
+              <img src="assets/icons/view-list.svg" width="14.6981" height="14.6981" alt="">
+            </button>
+          </div>
         </div>
         <ul class="topic-panel__track" id="topic-resources" role="list" aria-label="Suggested resources" data-resources></ul>
       </div>
@@ -229,7 +242,7 @@
   <script src="js/download-fill.js"></script>
   <script src="js/resource-card.js?v=11"></script>
   <script src="js/done.js?v=4"></script>
-  <script src="js/new-muslim-step.js?v=12"></script>
+  <script src="js/new-muslim-step.js?v=13"></script>
   <script src="js/carousel.js?v=7"></script>
   <script src="js/share.js?v=1"></script>
   <script src="js/preview.js?v=20"></script>

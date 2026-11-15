@@ -109,6 +109,41 @@
 
   window.BSS.done?.onChange(paintProgress);
 
+  // ---- Phones: the materials in the Library's layouts, cards (one a row) or a list --------------
+  // The track takes the Library's grid class on phones only (css/library.css); desktop keeps its row.
+  const phoneView = matchMedia("(max-width: 767px)");
+  const VIEW_KEY = "bss.step.view.v1";
+  const viewButtons = [...document.querySelectorAll("[data-step-views] [data-view]")];
+  let view = "one";
+  try {
+    const saved = window.localStorage.getItem(VIEW_KEY);
+    if (saved === "one" || saved === "list") view = saved;
+  } catch (error) { /* storage blocked: keep the default */ }
+
+  function applyLayout() {
+    const track = els.track;
+    const phone = phoneView.matches;
+    track.classList.toggle("topic-panel__track", !phone);
+    track.classList.toggle("resource-grid", phone);
+    if (phone) track.dataset.layout = view; else delete track.dataset.layout;
+    viewButtons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.view === view)));
+  }
+
+  viewButtons.forEach((button) => button.addEventListener("click", () => {
+    if (button.dataset.view === view) return;
+    view = button.dataset.view;
+    try { window.localStorage.setItem(VIEW_KEY, view); } catch (error) { /* not remembered: fine */ }
+    if (document.startViewTransition && !reducedMotion.matches) {
+      const cards = [...els.track.children];
+      cards.forEach((card, index) => { card.style.viewTransitionName = `step-resource-${index}`; });
+      document.startViewTransition(applyLayout).finished.finally(() => cards.forEach((card) => card.style.removeProperty("view-transition-name")));
+    } else {
+      applyLayout();
+    }
+  }));
+  phoneView.addEventListener("change", applyLayout);
+  applyLayout();
+
   // Topic change: the old content fades out quickly, the panel eases to its new height and the new
   // content fades up, the cards following one another by a few milliseconds. A newer click cancels
   // an unfinished change.

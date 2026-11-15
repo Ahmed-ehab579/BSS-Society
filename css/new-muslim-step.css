@@ -407,3 +407,34 @@
     border: var(--scale-12) solid #5b5b5b;
   }
 }
+
+/* The layout switch is for phones only (js/new-muslim-step.js); desktop keeps the row of cards */
+.topic-panel__views {
+  display: none;
+}
+
+/* Phones: the materials exactly as in the Library (css/library.css .resource-grid), with its switch:
+   cards one a row, or a list. 48px under the topic header to the switch, 24px on to the cards. */
+@media (max-width: 767px) {
+  .topic-panel__views {
+    display: flex;
+    margin-top: var(--scale-1000);
+  }
+
+  .topic-panel__views + .resource-grid {
+    margin-top: var(--scale-600);
+  }
+
+  /* This panel's inner width is 16px narrower than the Library's: reach 8px each side so the cards
+     come out the same size as there */
+  .topic-panel__views,
+  #topic-resources.resource-grid {
+    margin-inline: calc(-1 * var(--scale-200));
+  }
+
+  /* The type badge sits under the photo in the card layout, so the done check keeps the right corner */
+  #topic-resources.resource-grid[data-layout="one"] .resource-card__done {
+    right: var(--scale-300);
+    left: auto;
+  }
+}
