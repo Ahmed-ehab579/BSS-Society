@@ -400,3 +400,10 @@
     background: var(--green-100);
   }
 }
+
+/* Phones: the "What you'll learn" panel gets the step cards' edge (0.5px #5b5b5b) */
+@media (max-width: 767px) {
+  .learn .section-panel {
+    border: var(--scale-12) solid #5b5b5b;
+  }
+}
