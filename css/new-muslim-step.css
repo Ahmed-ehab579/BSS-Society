@@ -438,3 +438,65 @@
     left: auto;
   }
 }
+
+/* Phones: the topic header exactly like the New Muslim path card's (Figma: Path step card, phone):
+   the number (76px) and the ring share the top row, the title 8px under them, the text 8px under that */
+@media (max-width: 767px) {
+  .topic-panel__head {
+    display: grid;
+    grid-template-areas:
+      "number progress"
+      "title title"
+      "text text";
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    column-gap: var(--scale-400);
+    row-gap: 0;
+  }
+
+  .topic-panel__intro {
+    display: contents;
+  }
+
+  .topic-panel__number {
+    grid-area: number;
+    font-size: 76px;
+    line-height: 68px;
+    letter-spacing: -3.8px;
+  }
+
+  .topic-panel__title {
+    grid-area: title;
+    margin-top: var(--scale-200);
+    font-size: var(--h3-size);         /* 26/34 on phones */
+    line-height: var(--h3-line);
+    letter-spacing: -0.4px;
+  }
+
+  .topic-panel__text {
+    grid-area: text;
+    max-width: 252px;
+    margin-top: var(--scale-200);
+    font-size: var(--body-s-size);
+    line-height: var(--body-s-line);
+  }
+
+  .topic-panel__head > .progress-ring {
+    grid-area: progress;
+    justify-self: end;
+    gap: var(--scale-100);
+  }
+
+  .topic-panel__head .progress-ring__dial,
+  .topic-panel__head .progress-ring svg:not(.progress-ring__check) {
+    width: 61px;
+    height: 61px;
+  }
+
+  .topic-panel__head .progress-ring__count,
+  .topic-panel__head .progress-ring__count.is-long {
+    font-size: var(--body-m-size);
+    line-height: var(--body-m-line);
+    font-weight: 400;
+  }
+}
