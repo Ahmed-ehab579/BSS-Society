@@ -841,15 +841,15 @@
   }
 }
 
-/* Phones: preview text 15/24; the card 15% shorter (390 → ~332px at 375 wide), taken from the photo,
-   which becomes a wider strip (16:10 → 21:8) */
+/* Phones: preview text 15/24; the card 15% narrower than before (it was inset 5px each side), centred */
 @media (max-width: 767px) {
   .topic-preview__text {
     font-size: 15px;
     line-height: 24px;
   }
 
-  .topic-preview__image {
-    aspect-ratio: 21 / 8;
+  .topic-preview__card {
+    width: calc((100% - 10px) * 0.85);
+    margin: 0 auto var(--scale-300);
   }
 }
