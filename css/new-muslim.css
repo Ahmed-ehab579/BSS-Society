@@ -658,3 +658,12 @@
     padding-bottom: var(--scale-500);
   }
 }
+
+/* Phones: the step number one more step up the display scale, Display M (82px, as on desktop) */
+@media (max-width: 767px) {
+  .path-step__number {
+    font-size: 82px;
+    line-height: 72px;
+    letter-spacing: -4.1px;
+  }
+}
