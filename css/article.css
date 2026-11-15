@@ -2247,3 +2247,58 @@
     margin-top: var(--scale-400);
   }
 }
+
+/* Phones: the article hero without a breadcrumb; the title set tighter (36/42, was 36/50) so its
+   lines read as one block, 16px above the summary (12px column gap + 4) */
+@media (max-width: 767px) {
+  .article-crumbs {
+    display: none;
+  }
+
+  .article-hero__title {
+    line-height: 42px;
+  }
+
+  .article-hero__summary {
+    margin-top: var(--scale-100);      /* + the 12px gap of the text column = 16px */
+  }
+}
+
+/* Phones: "Finished this topic?" and the comprehension check read at body size. Titles H5 (20/28,
+   600), text 16/24 (was 12/22), 6px between them so the pair reads as one group; buttons and links
+   at 16px, the field label and chips at 14px (no text under 14px). The path's "Mark as done" card
+   matches it in css/done.css. */
+@media (max-width: 767px) {
+  .completion__title,
+  .checkin__title {
+    font-size: var(--h5-size);
+    line-height: var(--h5-line);
+    font-weight: 600;
+  }
+
+  .completion__text,
+  .checkin__text {
+    margin-top: 6px;
+    font-size: var(--body-m-size);
+    line-height: 24px;
+  }
+
+  .checkin__text {
+    margin-top: -6px;                  /* the step's 12px gap - 6 = 6px under the title */
+  }
+
+  .checkin__option,
+  .checkin__skip,
+  .checkin__link {
+    font-size: var(--body-m-size);
+    line-height: 24px;
+  }
+
+  .checkin .field__label,
+  .checkin__chip,
+  .checkin__note,
+  .checkin__error {
+    font-size: var(--body-s-size);
+    line-height: 20px;
+  }
+}

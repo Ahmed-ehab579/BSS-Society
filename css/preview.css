@@ -1163,15 +1163,12 @@
 
 /* Phones, a material page opened from the New Muslim path (js/preview.js .preview--path): under the
    photo or player, a full-width row with Share, Save and Done on the right; then the title; then the
-   author, smaller and close under it. No type and topic tag above the title. */
+   author, smaller and close under it. The type and topic tag stays above the title. */
 @media (max-width: 767px) {
-  .preview.preview--path .book__tag {
-    display: none;
-  }
-
   .preview.preview--path .book__head {
     grid-template-areas:
       "actions"
+      "tag"
       "title"
       "author";
     grid-template-columns: minmax(0, 1fr);
@@ -1183,9 +1180,15 @@
     justify-self: end;
   }
 
+  .preview.preview--path .book__tag {
+    grid-area: tag;
+    justify-self: start;
+    margin-top: var(--scale-400);   /* 16px under the icon row */
+  }
+
   .preview.preview--path .book__title {
     grid-area: title;
-    margin-top: var(--scale-400);
+    margin-top: var(--scale-200);   /* 8px under the tag */
   }
 
   .preview.preview--path .book__author {

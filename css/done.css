@@ -385,3 +385,18 @@
     border: 0.3px solid #5b5b5b;
   }
 }
+
+/* Phones: "Mark as done" at the sizes of the article's "Finished this topic?" (css/article.css):
+   title H5 20/28, text 16/24, 6px between them */
+@media (max-width: 767px) {
+  .done-card__title {
+    font-size: var(--h5-size);
+    line-height: var(--h5-line);
+  }
+
+  .done-card__text {
+    margin-top: 6px;
+    font-size: var(--body-m-size);
+    line-height: 24px;
+  }
+}
