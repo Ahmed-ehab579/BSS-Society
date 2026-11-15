@@ -667,3 +667,17 @@
     letter-spacing: -4.1px;
   }
 }
+
+/* Phones: "Discover the content" / "Hide the content" shows no hover or pressed state; the chevron and
+   the label already say what the tap did */
+@media (max-width: 767px) {
+  .path-step__toggle,
+  .path-step__toggle:hover,
+  .path-step__toggle:active,
+  .path-step__toggle:focus:not(:focus-visible) {
+    background: transparent;
+    border-color: var(--border-color-on-light);
+    color: var(--color-text-on-light);
+    -webkit-tap-highlight-color: transparent;
+  }
+}
