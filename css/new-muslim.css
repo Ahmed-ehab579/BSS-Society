@@ -644,3 +644,17 @@
     padding-inline: var(--scale-200);
   }
 }
+
+/* Phones: topic titles 22/30 (between H5 20 and H4 26: at 26 even "Who is God in Islam?" wrapped);
+   no lone word on a second line; 20px from the open title to its card */
+@media (max-width: 767px) {
+  .topic__title {
+    font-size: 22px;
+    line-height: 30px;
+    text-wrap: pretty;
+  }
+
+  .topic.is-selected .topic__row {
+    padding-bottom: var(--scale-500);
+  }
+}
