@@ -1228,3 +1228,23 @@
     margin-top: 0;
   }
 }
+
+/* Phones, path material pages: the tag beside the icons, 15px lower (it sat too high); the title and
+   author below at full width */
+@media (max-width: 767px) {
+  .preview.preview--path .book__head {
+    grid-template-areas:
+      "tag actions"
+      "title title"
+      "author author";
+    grid-template-rows: auto auto auto;
+  }
+
+  .preview.preview--path .book__tag {
+    margin-top: 15px;
+  }
+
+  .preview.preview--path .book__title {
+    margin-top: var(--scale-300);   /* 12px under the icon row */
+  }
+}
