@@ -409,12 +409,13 @@
   }
 }
 
-/* Phones: "Mark as done" stacked and left-aligned: the check, then the title and text, then the button,
-   all on the same left edge */
+/* Phones: "Mark as done" centred, like the article's "Finished this topic?": the check, then the title
+   and text, then the button, all on the card's centre line */
 @media (max-width: 767px) {
   .done-card {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
   }
 
   .done-card__copy {
@@ -422,7 +423,6 @@
   }
 
   .done-card__undo {
-    align-self: flex-start;
-    padding-left: 0;
+    align-self: center;
   }
 }

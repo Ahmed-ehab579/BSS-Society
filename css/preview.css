@@ -1248,3 +1248,14 @@
     margin-top: var(--scale-300);   /* 12px under the icon row */
   }
 }
+
+/* Phones, path material pages: the tag 4px closer to the title, and tag, title and author 3px lower */
+@media (max-width: 767px) {
+  .preview.preview--path .book__tag {
+    margin-top: 22px;
+  }
+
+  .preview.preview--path .book__title {
+    margin-top: 15px;   /* 16px from the tag (was 20) */
+  }
+}
