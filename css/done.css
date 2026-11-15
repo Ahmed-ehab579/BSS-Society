@@ -371,3 +371,20 @@
     animation: none;
   }
 }
+
+/* Phones: one Done badge on the step page cards and the path page topics. The cards' colours
+   (green-100 fill, green-900 word) with the path pill's shape: text only, 12px sides, 14/22 medium */
+@media (max-width: 767px) {
+  .resource-card__done {
+    gap: 0;
+    height: auto;
+    padding: 0 var(--scale-300);
+    font-size: var(--body-s-size);
+    line-height: var(--body-s-line);
+    font-weight: 500;
+  }
+
+  .resource-card__done svg {
+    display: none;
+  }
+}

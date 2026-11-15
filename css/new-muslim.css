@@ -869,3 +869,12 @@
     border-color: #5b5b5b;
   }
 }
+
+/* Phones: the topic Done pill in the step cards' Done colours (green-100 fill, green-900 word, no edge) */
+@media (max-width: 767px) {
+  .topic__done {
+    border: 0;
+    background: var(--green-100);
+    color: var(--green-900);
+  }
+}
