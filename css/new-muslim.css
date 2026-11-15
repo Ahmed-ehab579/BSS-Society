@@ -853,3 +853,12 @@
     margin: 0 auto var(--scale-300);
   }
 }
+
+/* Phones: the step number one step back down the display scale, Display (72px, was 82) */
+@media (max-width: 767px) {
+  .path-step__number {
+    font-size: 72px;
+    line-height: 64px;
+    letter-spacing: -3.4px;
+  }
+}
