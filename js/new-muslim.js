@@ -44,6 +44,7 @@
               <li class="topic" role="listitem" data-topic="${topic.id}">
                 <button class="topic__row" type="button" aria-expanded="false" aria-controls="topic-${topic.id}">
                   <span class="topic__title">${escape(topic.title)}</span>
+                  <span class="topic__done" hidden>Done</span>
                   <img class="topic__chevron" src="assets/icons/row-chevron.svg" width="24" height="24" alt="">
                 </button>
                 <div class="topic-preview" id="topic-${topic.id}" style="--span: ${step.topics.length + 1}" role="region" aria-label="${escape(topic.title)}">
@@ -82,6 +83,14 @@
       }
       const keys = stepKeys(step);
       done.paintRing(ring, done.count(keys), keys.length, "step");
+      // A topic is finished once all of its materials are done: it shows a Done pill
+      step.topics.forEach((topic) => {
+        const topicKeys = [...new Set(topic.resources.map((item) => item.key).filter(Boolean))];
+        const finished = topicKeys.length > 0 && done.count(topicKeys) === topicKeys.length;
+        const item = card.querySelector(`[data-topic="${topic.id}"]`);
+        item.classList.toggle("is-done", finished);
+        item.querySelector(".topic__done").hidden = !finished;
+      });
     });
   }
   paintProgress();

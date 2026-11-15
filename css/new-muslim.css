@@ -555,7 +555,7 @@
 /* Phones: the step ring 20% smaller (76px → 61px); the count keeps its size */
 @media (max-width: 767px) {
   .path-step__header .progress-ring__dial,
-  .path-step__header .progress-ring svg {
+  .path-step__header .progress-ring svg:not(.progress-ring__check) {
     width: 61px;
     height: 61px;
   }
@@ -679,5 +679,157 @@
     border-color: var(--border-color-on-light);
     color: var(--color-text-on-light);
     -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Desktop and tablet (Figma: Path step card): the number and the ring share the top row; the title and
+   text sit under them on the left, the buttons bottom right, level with the end of the text */
+@media (min-width: 768px) {
+  .path-step__header {
+    grid-template-areas:
+      "number progress"
+      "title actions"
+      "text actions";
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto auto auto;
+    column-gap: var(--scale-400);
+    row-gap: 0;
+  }
+
+  .path-step__intro {
+    display: contents;
+  }
+
+  .path-step__number {
+    grid-area: number;
+  }
+
+  .path-step__title {
+    grid-area: title;
+  }
+
+  .path-step__text {
+    grid-area: text;
+  }
+
+  .path-step__header > .progress-ring {
+    grid-area: progress;
+    justify-self: end;
+    align-self: start;
+    margin-top: 0;
+    gap: 0;
+  }
+
+  .path-step__actions {
+    grid-area: actions;
+    align-self: end;
+  }
+}
+
+/* Finished topics carry a Done pill (js/new-muslim.js): beside the title on desktop, above it on phones */
+.topic__done {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  padding: 0 var(--scale-300);
+  border: 0.3px solid #878787;
+  border-radius: var(--radius-pill);
+  background: #c6e0ad;                 /* the Done green (Figma: Path step card) */
+  color: var(--color-heading);
+  font-size: var(--body-s-size);
+  line-height: var(--body-s-line);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.topic__done[hidden] {
+  display: none;
+}
+
+.topic__title + .topic__done {
+  margin-left: calc(var(--scale-200) - var(--scale-300));   /* 6px from the title (the row keeps 12) */
+}
+
+/* Phones (Figma: Path step card): ring count 16/26, 4px to its caption; the step text a little narrower;
+   no arrow on Start step; topic titles 18/30; the open topic a framed card with the preview set inside */
+@media (max-width: 767px) {
+  .path-step__header > .progress-ring {
+    gap: var(--scale-100);
+  }
+
+  .path-step__header .progress-ring__count,
+  .path-step__header .progress-ring__count.is-long {
+    font-size: var(--body-m-size);
+    line-height: var(--body-m-line);
+    font-weight: 400;
+  }
+
+  .path-step__text {
+    max-width: 252px;
+  }
+
+  .path-step__start .btn__arrow-clip {
+    display: none;
+  }
+
+  .topic__row {
+    display: grid;
+    grid-template-areas:
+      "done ."
+      "title chevron";
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: var(--scale-300);
+    row-gap: var(--scale-100);
+    padding: var(--scale-400) 7px var(--scale-400) var(--scale-400);
+  }
+
+  .topic__row:not(:has(.topic__done:not([hidden]))) {
+    grid-template-areas: "title chevron";
+  }
+
+  .topic__title {
+    grid-area: title;
+    font-size: 18px;
+    line-height: 30px;
+    font-weight: 500;
+  }
+
+  .topic__done {
+    grid-area: done;
+    justify-self: start;
+  }
+
+  .topic__title + .topic__done {
+    margin-left: 0;
+  }
+
+  .topic__chevron {
+    grid-area: chevron;
+  }
+
+  .topic.is-selected {
+    padding: 10px 7px;
+    box-shadow: inset 0 0 0 0.3px #5d5d5d;
+  }
+
+  .topic.is-selected .topic__row {
+    padding: var(--scale-400) 2px 13px 7px;
+  }
+
+  .topic.is-selected .topic__title {
+    font-weight: 600;
+  }
+
+  .topic-preview__card {
+    gap: var(--scale-400);
+    margin: 0 5px var(--scale-300);
+    padding: var(--scale-400) var(--scale-300);
+    border-radius: var(--radius-md);
+  }
+
+  .topic-preview__text {
+    font-size: var(--body-s-size);
+    line-height: var(--body-s-line);
   }
 }

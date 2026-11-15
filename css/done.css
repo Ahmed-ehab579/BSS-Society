@@ -178,7 +178,7 @@
   height: 76px;
 }
 
-.progress-ring svg {
+.progress-ring svg:not(.progress-ring__check) {
   display: block;
   width: 76px;
   height: 76px;
@@ -198,7 +198,7 @@
 }
 
 .progress-ring__value {
-  stroke: var(--green-700);
+  stroke: #82a65e;                     /* the ring green (Figma: Path step card), between green-500 and green-700 */
   stroke-dasharray: var(--ring-value, 0) 360;
   transition: stroke-dasharray var(--motion-slow) var(--motion-ease);
 }
@@ -234,8 +234,42 @@
   white-space: nowrap;
 }
 
+/* Finished (Figma: Path step card, Progress=Complete): the ring closes into a full green circle, a check
+   replaces the count, and the caption keeps the count ("13/13") */
+.progress-ring__check {
+  display: none;
+}
+
+.progress-ring.is-complete .progress-ring__track {
+  stroke: #82a65e;
+  stroke-dasharray: none;
+}
+
+.progress-ring.is-complete .progress-ring__value,
+.progress-ring.is-complete .progress-ring__count {
+  display: none;
+}
+
+.progress-ring.is-complete .progress-ring__check {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  width: 59%;                          /* 36px in the 61px ring */
+  height: 59%;
+  transform: translate(-50%, -50%);
+  overflow: visible;
+}
+
+.progress-ring__check path {
+  fill: none;
+  stroke: #5f7b43;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .progress-ring.is-complete .progress-ring__caption {
-  color: var(--green-900);
   font-weight: 500;
 }
 

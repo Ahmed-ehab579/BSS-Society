@@ -133,6 +133,7 @@
           <circle class="progress-ring__track" cx="30" cy="30" r="26" pathLength="360"/>
           <circle class="progress-ring__value" cx="30" cy="30" r="26" pathLength="360"/>
         </svg>
+        <svg class="progress-ring__check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
         <span class="progress-ring__count" aria-hidden="true"></span>
       </div>
       <p class="progress-ring__caption" aria-hidden="true"></p>
@@ -148,8 +149,9 @@
     count.textContent = `${done}/${total}`;
     count.classList.toggle("is-long", count.textContent.length > 3);
     const left = total - done;
+    // Finished: the check says it, the caption keeps the count (Figma: Path step card, Progress=Complete)
     ring.querySelector(".progress-ring__caption").textContent = complete
-      ? `${what === "step" ? "Step" : "Topic"} complete`
+      ? `${total}/${total}`
       : done === 0 ? `${total} to explore` : `${left} to go`;
     ring.setAttribute("aria-label", complete
       ? `${what === "step" ? "Step" : "Topic"} complete: all ${total} materials done`
