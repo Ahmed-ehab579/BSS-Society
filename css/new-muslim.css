@@ -833,3 +833,10 @@
     line-height: var(--body-s-line);
   }
 }
+
+/* Phones: no divider under the topic just above the open one; the open card's own edge separates them */
+@media (max-width: 767px) {
+  .topic:has(+ .topic.is-selected) .topic__row {
+    border-bottom-color: transparent;
+  }
+}
