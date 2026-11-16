@@ -73,6 +73,13 @@
   transition-duration: var(--motion-duration-link);
 }
 
+/* Buttons whose press area covers their whole card (an ::after laid over the card) keep their size:
+   shrinking them would shrink that area under the pointer, and the click would be lost */
+.btn.resource-card__action:active,
+.journey-card__done-panel .btn--primary:active {
+  scale: none;
+}
+
 /* Header icons and panel close buttons: a soft round shade and a small give when pressed (phones have
    no hover, so this is their only feedback); letting go, both ease back */
 .saved-toggle,
