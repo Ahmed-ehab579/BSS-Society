@@ -186,6 +186,12 @@
   font-weight: 400;   /* regular, on phones and desktop */
 }
 
+/* The words fill to #474747 as the paragraph scrolls up (js/motion.js); without the script, the same colour */
+.about .about__text,
+.about .about__text * {
+  color: #474747;
+}
+
 .about__em {
   color: var(--tone);
 }
