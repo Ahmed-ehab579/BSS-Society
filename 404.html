@@ -21,7 +21,9 @@
   <link rel="stylesheet" href="css/language.css?v=11">
   <link rel="stylesheet" href="css/intro.css?v=9">
   <link rel="stylesheet" href="css/not-found.css?v=4">
-  <link rel="stylesheet" href="css/footer.css?v=5">
+  <link rel="stylesheet" href="css/footer.css?v=6">
+  <link rel="stylesheet" href="css/motion.css?v=2">
+  <script src="js/motion.js?v=1"></script>
 </head>
 <body>
   <header class="site-header">
@@ -65,11 +67,11 @@
 
   <main class="page">
     <div class="container not-found">
-      <div class="not-found__copy">
-        <p class="section-label">Error 404</p>
-        <h1 class="not-found__title">This one isn’t on our shelf</h1>
-        <p class="not-found__text">We looked everywhere, but the page you asked for isn’t here. Try a search, or pick something from the library.</p>
-        <form class="not-found__search" action="library.html" method="get" role="search">
+      <div class="not-found__copy" data-reveal-group>
+        <p class="section-label" data-reveal>Error 404</p>
+        <h1 class="not-found__title" data-reveal>This one isn’t on our shelf</h1>
+        <p class="not-found__text" data-reveal>We looked everywhere, but the page you asked for isn’t here. Try a search, or pick something from the library.</p>
+        <form class="not-found__search" data-reveal action="library.html" method="get" role="search">
           <img src="assets/icons/search.svg" width="25.3727" height="25.3727" alt="">
           <label class="visually-hidden" for="not-found-search">Search the library</label>
           <input id="not-found-search" name="q" type="search" placeholder="Search the library" autocomplete="off" spellcheck="false" enterkeyhint="search">
@@ -179,7 +181,7 @@
   <script src="js/header.js?v=11"></script>
   <script src="js/language.js?v=5"></script>
   <script src="js/saved-menu.js?v=9"></script>
-  <script src="js/send-button.js?v=2"></script>
+  <script src="js/send-button.js?v=3"></script>
   <script src="js/contact-dialog.js?v=1"></script>
   <script src="js/forms.js?v=4"></script>
 </body>

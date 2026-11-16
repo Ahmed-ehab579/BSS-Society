@@ -18,12 +18,14 @@
   <link rel="stylesheet" href="css/language.css?v=11">
   <link rel="stylesheet" href="css/intro.css?v=9">
   <link rel="stylesheet" href="css/resource-card.css?v=9">
-  <link rel="stylesheet" href="css/book.css?v=18">
+  <link rel="stylesheet" href="css/book.css?v=19">
   <link rel="stylesheet" href="css/carousel.css?v=6">
   <link rel="stylesheet" href="css/preview.css?v=41">
   <link rel="stylesheet" href="css/share.css?v=4">
   <link rel="stylesheet" href="css/library.css?v=51">
-  <link rel="stylesheet" href="css/footer.css?v=5">
+  <link rel="stylesheet" href="css/footer.css?v=6">
+  <link rel="stylesheet" href="css/motion.css?v=2">
+  <script src="js/motion.js?v=1"></script>
 </head>
 <body>
   <header class="site-header">
@@ -66,15 +68,15 @@
   <div class="menu-backdrop" aria-hidden="true"></div>
 
   <main class="page">
-    <section class="container intro intro--top" aria-labelledby="intro-heading">
-      <h1 class="text-h1 intro__heading" id="intro-heading">Explore the library</h1>
-      <p class="text-body-xl intro__text">Find carefully selected books, articles, videos, and audio resources to help you learn about Islam with clarity, depth, and confidence at your own pace.</p>
+    <section class="container intro intro--top" aria-labelledby="intro-heading" data-reveal-group>
+      <h1 class="text-h1 intro__heading" id="intro-heading" data-reveal>Explore the library</h1>
+      <p class="text-body-xl intro__text" data-reveal>Find carefully selected books, articles, videos, and audio resources to help you learn about Islam with clarity, depth, and confidence at your own pace.</p>
     </section>
 
     <!-- No id on this section: the header would treat it as an in-page section and drop the Library underline -->
     <section class="container section library-section" aria-labelledby="resources-heading">
       <div class="section-panel library-panel">
-        <h2 class="text-h2 library-panel__heading" id="resources-heading">Find the right resource for you</h2>
+        <h2 class="text-h2 library-panel__heading" data-reveal id="resources-heading">Find the right resource for you</h2>
 
         <!-- Filters and search. Rendered by js/library.js from the FILTERS list; the state is kept in the URL. -->
         <div class="library-tools" data-library-tools>
@@ -270,7 +272,7 @@
   <script src="js/carousel.js?v=7"></script>
   <script src="js/share.js?v=1"></script>
   <script src="js/preview.js?v=22"></script>
-  <script src="js/send-button.js?v=2"></script>
+  <script src="js/send-button.js?v=3"></script>
   <script src="js/contact-dialog.js?v=1"></script>
   <script src="js/forms.js?v=4"></script>
   <script src="js/smooth-scroll.js?v=4"></script>

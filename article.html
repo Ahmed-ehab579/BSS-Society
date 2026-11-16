@@ -16,14 +16,16 @@
   <link rel="stylesheet" href="css/header.css?v=15">
   <link rel="stylesheet" href="css/saved-menu.css?v=14">
   <link rel="stylesheet" href="css/language.css?v=11">
-  <link rel="stylesheet" href="css/footer.css?v=5">
-  <link rel="stylesheet" href="css/article.css?v=79">
+  <link rel="stylesheet" href="css/footer.css?v=6">
+  <link rel="stylesheet" href="css/article.css?v=80">
   <link rel="stylesheet" href="css/resource-card.css?v=9">
-  <link rel="stylesheet" href="css/book.css?v=18">
+  <link rel="stylesheet" href="css/book.css?v=19">
   <link rel="stylesheet" href="css/preview.css?v=41">
   <link rel="stylesheet" href="css/share.css?v=4">
   <link rel="stylesheet" href="css/done.css?v=23">
   <link rel="stylesheet" href="css/carousel.css?v=6">
+  <link rel="stylesheet" href="css/motion.css?v=2">
+  <script src="js/motion.js?v=1"></script>
 </head>
 <body>
   <header class="site-header">
@@ -87,17 +89,17 @@
       <header class="article-hero">
         <img class="article-hero__image" src="assets/images/article-hero.jpg" width="736" height="1104" alt="">
         <p class="article-hero__time"><img src="assets/icons/book.svg" width="29" height="29.3333" alt="">5 min read</p>
-        <div class="article-hero__content">
+        <div class="article-hero__content" data-reveal-group>
           <div class="article-hero__text">
             <nav class="article-crumbs" aria-label="Breadcrumb">
               <a class="article-crumbs__parent" href="start-here.html">Start here</a>
               <span aria-hidden="true">/</span>
               <span class="article-crumbs__current" aria-current="page" data-topic-label>Topic 01</span>
             </nav>
-            <h1 class="article-hero__title">What’s the purpose of life?</h1>
-            <p class="article-hero__summary"><span class="article-hero__summary-long">Islam’s answer begins with one idea: you were created on purpose, by a Creator who knows you. See what that purpose is, and how it brings meaning and peace to everyday life.</span><span class="article-hero__summary-short">You were created on purpose, by a Creator who knows you. Here’s what that means.</span></p>
+            <h1 class="article-hero__title" data-reveal>What’s the purpose of life?</h1>
+            <p class="article-hero__summary" data-reveal><span class="article-hero__summary-long">Islam’s answer begins with one idea: you were created on purpose, by a Creator who knows you. See what that purpose is, and how it brings meaning and peace to everyday life.</span><span class="article-hero__summary-short">You were created on purpose, by a Creator who knows you. Here’s what that means.</span></p>
           </div>
-          <div class="article-hero__actions" data-hero-player>
+          <div class="article-hero__actions" data-hero-player data-reveal>
             <!-- Desktop: opens the audio player below and starts it. Phones: the pill itself grows into a
                  small player (js/article.js). -->
             <button class="article-listen" type="button" aria-controls="article-audio" aria-expanded="false" data-listen>
@@ -370,7 +372,7 @@
   </footer>
 
   <script src="js/base.js?v=3"></script>
-  <script src="js/send-button.js?v=2"></script>
+  <script src="js/send-button.js?v=3"></script>
   <script src="js/saved.js?v=2"></script>
   <script>
     // Opened from the Library or a New Muslim step: the header marks that section, not the Start here path

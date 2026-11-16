@@ -191,7 +191,7 @@
   height: var(--border-md);
   background: var(--color-text-on-dark);
   opacity: 0;
-  transition: opacity var(--motion-duration-link) ease-out;
+  transition: opacity var(--motion-duration-link) var(--motion-ease);
 }
 
 .footer-link[href]:focus-visible {

@@ -830,7 +830,7 @@ a.journey-card:focus-visible .journey-card__go {
   /* No movement; keep short cross-fades so state changes stay readable */
   .journey-card,
   a.journey-card {
-    --card-duration: 200ms;
+    --card-duration: var(--motion-base);
     transition: none;
   }
 

@@ -162,6 +162,9 @@
   // content fades up, the cards following one another by a few milliseconds. A newer click cancels
   // an unfinished change.
   const parts = () => [els.panel.querySelector(".topic-panel__intro"), ...els.track.children];
+  // Timing from the shared motion tokens (css/tokens.css)
+  const token = (name, fallback) => getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
+  const ms = (name, fallback) => parseFloat(token(name, fallback)) || parseFloat(fallback);
   let swapId = 0;
   function swapAnimated(render) {
     const id = ++swapId;
@@ -169,18 +172,18 @@
     const from = els.panel.getBoundingClientRect().height;
     const fadeOut = parts().map((el) => el.animate(
       [{ opacity: 1, transform: "none" }, { opacity: 0, transform: "translateY(-4px)" }],
-      { duration: 140, easing: "ease-in", fill: "forwards" }));
+      { duration: ms("--motion-fast", "150ms"), easing: "ease-in", fill: "forwards" }));
     Promise.all(fadeOut.map((animation) => animation.finished)).then(() => {
       if (id !== swapId) return;
       fadeOut.forEach((animation) => animation.cancel());
       render();
       const to = els.panel.getBoundingClientRect().height;
       if (Math.abs(to - from) > 1) {
-        els.panel.animate([{ height: `${from}px` }, { height: `${to}px` }], { duration: 320, easing: "cubic-bezier(0.2, 0, 0, 1)" });
+        els.panel.animate([{ height: `${from}px` }, { height: `${to}px` }], { duration: ms("--motion-slow", "360ms"), easing: token("--motion-ease", "ease") });
       }
       parts().forEach((el, i) => el.animate(
         [{ opacity: 0, transform: "translateY(8px)" }, { opacity: 1, transform: "none" }],
-        { duration: 320, delay: i === 0 ? 0 : 40 + i * 30, easing: "cubic-bezier(0.2, 0, 0, 1)", fill: "backwards" }));
+        { duration: ms("--motion-slow", "360ms"), delay: i === 0 ? 0 : 40 + i * 30, easing: token("--motion-ease", "ease"), fill: "backwards" }));
     }).catch(() => { /* cancelled by a newer change */ });
   }
 

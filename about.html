@@ -19,8 +19,10 @@
   <link rel="stylesheet" href="css/intro.css?v=9">
   <link rel="stylesheet" href="css/benefit-card.css?v=6">
   <link rel="stylesheet" href="css/about.css?v=40">
-  <link rel="stylesheet" href="css/footer.css?v=5">
+  <link rel="stylesheet" href="css/footer.css?v=6">
   <link rel="stylesheet" href="css/support.css?v=15">
+  <link rel="stylesheet" href="css/motion.css?v=2">
+  <script src="js/motion.js?v=1"></script>
 </head>
 <body>
   <header class="site-header">
@@ -63,23 +65,23 @@
   <div class="menu-backdrop" aria-hidden="true"></div>
 
   <main class="page about-page">
-    <section class="container intro intro--top" aria-labelledby="intro-heading">
-      <h1 class="text-h1 intro__heading about-title" id="intro-heading">Every sincere question deserves a clear answer</h1>
-      <p class="text-body-xl intro__text">We create and freely share reliable books and resources about Islam, for anyone who wants to understand it clearly.</p>
+    <section class="container intro intro--top" aria-labelledby="intro-heading" data-reveal-group>
+      <h1 class="text-h1 intro__heading about-title" data-reveal id="intro-heading">Every sincere question deserves a clear answer</h1>
+      <p class="text-body-xl intro__text" data-reveal>We create and freely share reliable books and resources about Islam, for anyone who wants to understand it clearly.</p>
     </section>
 
     <!-- Sections inside main have no id: the header would treat them as in-page sections and drop the nav underline -->
     <section class="container section who" aria-labelledby="who-heading">
       <div class="who__panel">
-        <div class="who__media" aria-hidden="true">
+        <div class="who__media" aria-hidden="true" data-reveal="media">
           <img src="assets/images/about-hero.jpg" width="1187" height="1200" alt="" loading="lazy" decoding="async">
         </div>
-        <div class="who__content">
-          <div class="who__heading-group">
+        <div class="who__content" data-reveal-group>
+          <div class="who__heading-group" data-reveal>
             <p class="section-label">Who we are</p>
             <h2 class="text-h2 who__heading" id="who-heading">Making clear knowledge accessible to all.</h2>
           </div>
-          <p class="who__text">We are <strong>a non-profit organisation</strong> creating and freely sharing reliable Islamic books and <strong>learning resources</strong>. We work with <strong>native translators living</strong> in target communities, <strong>language reviewers</strong>, Al-Azhar scholars, and qualified specialists — because accuracy and accessibility must both be earned.</p>
+          <p class="who__text" data-reveal>We are <strong>a non-profit organisation</strong> creating and freely sharing reliable Islamic books and <strong>learning resources</strong>. We work with <strong>native translators living</strong> in target communities, <strong>language reviewers</strong>, Al-Azhar scholars, and qualified specialists — because accuracy and accessibility must both be earned.</p>
           <dl class="stats" data-stats>
             <div class="stat">
               <dt class="stat__label">Languages</dt>
@@ -103,12 +105,12 @@
 
     <section class="container section commitment" aria-labelledby="commitment-heading">
       <div class="section-panel">
-        <div class="about-intro">
-          <div class="about-intro__heading-group">
+        <div class="about-intro" data-reveal-group>
+          <div class="about-intro__heading-group" data-reveal>
             <p class="section-label">Our commitment</p>
             <h2 class="text-h2 about-intro__heading" id="commitment-heading">Built with care,<br>shared with purpose.</h2>
           </div>
-          <p class="text-body-xl about-intro__text">Every resource is created to be trustworthy, culturally thoughtful, and freely available to anyone seeking a clearer understanding of Islam.</p>
+          <p class="text-body-xl about-intro__text" data-reveal>Every resource is created to be trustworthy, culturally thoughtful, and freely available to anyone seeking a clearer understanding of Islam.</p>
         </div>
         <div class="commitment__cards">
           <div class="benefit-card">
@@ -145,12 +147,12 @@
 
     <section class="container section journey" aria-labelledby="journey-heading">
       <div class="section-panel">
-      <div class="about-intro">
-        <div class="about-intro__heading-group">
+      <div class="about-intro" data-reveal-group>
+        <div class="about-intro__heading-group" data-reveal>
           <p class="section-label">How it works</p>
           <h2 class="text-h2 about-intro__heading" id="journey-heading">Our books journey</h2>
         </div>
-        <p class="text-body-xl about-intro__text">From the first question to the finished book, every resource follows the same careful steps.</p>
+        <p class="text-body-xl about-intro__text" data-reveal>From the first question to the finished book, every resource follows the same careful steps.</p>
       </div>
       <div class="journey__track" data-journey>
       <div class="journey__counter" aria-hidden="true">
@@ -204,11 +206,11 @@
 
     <section class="container section apart" aria-labelledby="apart-heading">
       <div class="section-panel">
-        <div class="about-intro__heading-group">
+        <div class="about-intro__heading-group" data-reveal>
           <p class="section-label">What sets us apart</p>
           <h2 class="text-h2 about-intro__heading" id="apart-heading">Designed around the reader.</h2>
         </div>
-        <ul class="apart__cards" role="list">
+        <ul class="apart__cards" role="list" data-reveal>
           <li class="apart-card">
             <span class="apart-card__art apart-card__art--curated" aria-hidden="true"></span>
             <h3 class="apart-card__title">Curated, not crowded</h3>
@@ -435,7 +437,7 @@
   </footer>
 
   <script src="js/base.js?v=3"></script>
-  <script src="js/send-button.js?v=2"></script>
+  <script src="js/send-button.js?v=3"></script>
   <script src="js/saved.js?v=2"></script>
   <script src="js/header.js?v=11"></script>
   <script src="js/language.js?v=5"></script>

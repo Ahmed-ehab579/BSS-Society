@@ -487,47 +487,7 @@
   }
 }
 
-/* ---- Arrival: the page settles in once, then lower parts appear as they scroll into view ----- */
-
-@media (prefers-reduced-motion: no-preference) {
-  .book__cover,
-  .book__head,
-  .book__details > .book__section:first-of-type {
-    animation: book-rise var(--motion-expand) var(--motion-ease) both;
-  }
-
-  /* Only until it has settled: a held animation would keep the sticky cover on its own layer */
-  .book__cover {
-    animation-fill-mode: backwards;
-  }
-
-  .book__head {
-    animation-delay: 90ms;
-  }
-
-  .book__details > .book__section:first-of-type {
-    animation-delay: 180ms;
-  }
-
-  @keyframes book-rise {
-    from {
-      opacity: 0;
-      transform: translateY(14px);
-    }
-  }
-
-  /* js/book.js sets .will-reveal, so everything stays visible without JavaScript */
-  .will-reveal {
-    opacity: 0;
-    transform: translateY(14px);
-    transition: opacity var(--motion-expand) var(--motion-ease), transform var(--motion-expand) var(--motion-ease);
-  }
-
-  .will-reveal.is-revealed {
-    opacity: 1;
-    transform: none;
-  }
-}
+/* Arrival and scroll reveals: shared css/motion.css (data-reveal in book.html) */
 
 /* ---- Responsive ----------------------------------------------------------------------------- */
 

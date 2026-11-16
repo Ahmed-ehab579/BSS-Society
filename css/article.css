@@ -451,7 +451,7 @@
   display: grid;
   grid-template-rows: 1fr;
   transition: grid-template-rows var(--motion-slow) var(--motion-ease), opacity var(--motion-slow) var(--motion-ease),
-    margin-top 420ms var(--motion-ease), visibility 0s;
+    margin-top var(--motion-slow) var(--motion-ease), visibility 0s;
 }
 
 .audio-reveal__inner {
@@ -466,7 +466,7 @@
   opacity: 0;
   visibility: hidden;
   transition: grid-template-rows var(--motion-slow) var(--motion-ease), opacity var(--motion-base) var(--motion-ease),
-    margin-top 420ms var(--motion-ease), visibility 0s 420ms;
+    margin-top var(--motion-slow) var(--motion-ease), visibility 0s var(--motion-slow);
 }
 
 /* Reading column (760px incl. 32px side padding; topic cards run edge to edge) */

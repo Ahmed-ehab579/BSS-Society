@@ -17,10 +17,12 @@
   <link rel="stylesheet" href="css/saved-menu.css?v=14">
   <link rel="stylesheet" href="css/language.css?v=11">
   <link rel="stylesheet" href="css/intro.css?v=9">
-  <link rel="stylesheet" href="css/start-here.css?v=64">
+  <link rel="stylesheet" href="css/start-here.css?v=65">
   <link rel="stylesheet" href="css/topics.css?v=11">
-  <link rel="stylesheet" href="css/footer.css?v=5">
+  <link rel="stylesheet" href="css/footer.css?v=6">
   <link rel="stylesheet" href="css/carousel.css?v=6">
+  <link rel="stylesheet" href="css/motion.css?v=2">
+  <script src="js/motion.js?v=1"></script>
 </head>
 <body>
   <header class="site-header">
@@ -63,20 +65,20 @@
   <div class="menu-backdrop" aria-hidden="true"></div>
 
   <main class="page">
-    <section class="container intro" aria-labelledby="intro-heading">
-      <h1 class="text-h1 intro__heading start-title" id="intro-heading">Start with clarity and confidence</h1>
-      <p class="text-body-xl intro__text">You do not need to know everything to begin. Take one simple, thoughtful step, then continue at a pace that feels right for you.</p>
+    <section class="container intro" aria-labelledby="intro-heading" data-reveal-group>
+      <h1 class="text-h1 intro__heading start-title" data-reveal id="intro-heading">Start with clarity and confidence</h1>
+      <p class="text-body-xl intro__text" data-reveal>You do not need to know everything to begin. Take one simple, thoughtful step, then continue at a pace that feels right for you.</p>
     </section>
 
     <section class="container section journey-section" id="journey" aria-labelledby="journey-heading">
       <div class="section-panel">
-        <div class="section-intro journey-intro">
-          <div class="section-intro__heading-group">
+        <div class="section-intro journey-intro" data-reveal-group>
+          <div class="section-intro__heading-group" data-reveal>
             <p class="section-label">Your journey</p>
             <h2 class="text-h2 section-intro__heading" id="journey-heading">One step at a time</h2>
           </div>
           <div class="section-intro__supporting">
-            <p class="text-body-xl section-intro__text">Each step builds gently on the one before it, with clear, carefully reviewed reading and no pressure to rush.</p>
+            <p class="text-body-xl section-intro__text" data-reveal>Each step builds gently on the one before it, with clear, carefully reviewed reading and no pressure to rush.</p>
           </div>
         </div>
 
@@ -154,14 +156,14 @@
     <section class="container section topics-section" id="topics" aria-labelledby="topics-heading">
       <div class="section-panel">
         <div class="topics__content">
-          <div class="section-intro">
-            <div class="section-intro__heading-group">
+          <div class="section-intro" data-reveal-group>
+            <div class="section-intro__heading-group" data-reveal>
               <p class="section-label">Library</p>
               <h2 class="text-h2 section-intro__heading" id="topics-heading">Explore by topic.</h2>
             </div>
             <div class="section-intro__supporting">
-              <p class="text-body-xl section-intro__text">Choose a subject that matters to you. Explore clear, carefully reviewed resources without feeling overwhelmed.</p>
-              <a class="btn btn--large btn--primary section-cta" href="library.html">
+              <p class="text-body-xl section-intro__text" data-reveal>Choose a subject that matters to you. Explore clear, carefully reviewed resources without feeling overwhelmed.</p>
+              <a class="btn btn--large btn--primary section-cta" href="library.html" data-reveal>
                 Explore the library
                 <span class="btn__arrow-clip" aria-hidden="true">
                   <span class="btn__arrow-track">
@@ -173,7 +175,7 @@
             </div>
           </div>
 
-          <div class="carousel" data-carousel role="region" aria-roledescription="carousel" aria-label="Topics you might be interested in">
+          <div class="carousel" data-reveal data-carousel role="region" aria-roledescription="carousel" aria-label="Topics you might be interested in">
             <div class="carousel__controls">
               <button class="icon-btn icon-btn--prev" type="button" data-carousel-prev aria-label="Previous topic">
                 <img src="assets/icons/arrow-right.svg" width="28" height="28" alt="">
@@ -345,7 +347,7 @@
   <script src="js/progress.js?v=13"></script>
   <script src="js/journey.js?v=33"></script>
   <script src="js/carousel.js?v=7"></script>
-  <script src="js/send-button.js?v=2"></script>
+  <script src="js/send-button.js?v=3"></script>
   <script src="js/contact-dialog.js?v=1"></script>
   <script src="js/forms.js?v=4"></script>
   <script src="js/smooth-scroll.js?v=4"></script>

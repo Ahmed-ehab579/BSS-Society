@@ -99,21 +99,4 @@
       link.click();
     });
   });
-
-  // Soft reveal for what starts below the fold
-  const reveals = [...document.querySelectorAll("[data-reveal], .resources")];
-  if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add("is-revealed");
-        observer.unobserve(entry.target);
-      });
-    }, { rootMargin: "0px 0px -8% 0px" });
-
-    reveals.forEach((element) => {
-      element.classList.add("will-reveal");
-      observer.observe(element);
-    });
-  }
 })();
