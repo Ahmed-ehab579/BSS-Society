@@ -52,6 +52,13 @@
   transition: opacity 200ms linear;   /* smooths the steps between frames */
 }
 
+/* Fill hold (data-fill-hold, js/motion.js): the block stops in the middle of the screen while its text
+   fills; the spacer the script adds after it gives the scroll for that. Only with the script. */
+.is-held {
+  position: sticky;
+  top: var(--hold-top, 0px);
+}
+
 /* Press feedback: a quick, slight give under the finger or click; letting go glides back */
 .btn,
 .icon-btn {
