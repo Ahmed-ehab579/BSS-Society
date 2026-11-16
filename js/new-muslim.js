@@ -18,7 +18,7 @@
           <div class="path-step__intro">
             <span class="path-step__number" aria-hidden="true">${pad(step.id)}</span>
             <h3 class="path-step__title"><span class="visually-hidden">Step ${step.id}: </span>${escape(step.title)}</h3>
-            <p class="path-step__text">${escape(step.text)}</p>
+            <p class="path-step__text"><span class="text-wide">${escape(step.text)}</span><span class="text-phone">${escape(step.phoneText)}</span></p>
           </div>
           <div class="path-step__actions">
             <a class="btn btn--regular btn--primary path-step__start" href="new-muslim-step.html?step=${step.id}">
@@ -44,6 +44,7 @@
               <li class="topic" role="listitem" data-topic="${topic.id}">
                 <button class="topic__row" type="button" aria-expanded="false" aria-controls="topic-${topic.id}">
                   <span class="topic__title">${escape(topic.title)}</span>
+                  <span class="topic__done" hidden><svg class="topic__done-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M10 16.5l4.2 4.2L22.5 12" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Done</span>
                   <img class="topic__chevron" src="assets/icons/row-chevron.svg" width="24" height="24" alt="">
                 </button>
                 <div class="topic-preview" id="topic-${topic.id}" style="--span: ${step.topics.length + 1}" role="region" aria-label="${escape(topic.title)}">
@@ -63,6 +64,37 @@
   }
 
   list.innerHTML = STEPS.map(stepHtml).join("");
+
+  // Progress (js/done.js): shown on a step once something in it is done
+  const stepKeys = (step) => {
+    const items = step.topics.flatMap((topic) => topic.resources);
+    window.BSS.registerResources?.(items);
+    return [...new Set(items.map((item) => item.key).filter(Boolean))];   // a material in two topics counts once
+  };
+  function paintProgress() {
+    const done = window.BSS.done;
+    if (!done) return;
+    STEPS.forEach((step) => {
+      const card = list.querySelector(`[data-step="${step.id}"]`);
+      let ring = card.querySelector("[data-step-progress]");
+      if (!ring) {
+        card.querySelector(".path-step__header").insertAdjacentHTML("beforeend", done.ringHtml('data-step-progress'));
+        ring = card.querySelector("[data-step-progress]");
+      }
+      const keys = stepKeys(step);
+      done.paintRing(ring, done.count(keys), keys.length, "step");
+      // A topic is finished once all of its materials are done: it shows a Done pill
+      step.topics.forEach((topic) => {
+        const topicKeys = [...new Set(topic.resources.map((item) => item.key).filter(Boolean))];
+        const finished = topicKeys.length > 0 && done.count(topicKeys) === topicKeys.length;
+        const item = card.querySelector(`[data-topic="${topic.id}"]`);
+        item.classList.toggle("is-done", finished);
+        item.querySelector(".topic__done").hidden = !finished;
+      });
+    });
+  }
+  paintProgress();
+  window.BSS.done?.onChange(paintProgress);
 
   const stepEl = (step) => list.querySelector(`[data-step="${step.id}"]`);
 
@@ -146,6 +178,17 @@
 
   STEPS.forEach((step, index) => {
     const el = stepEl(step);
+
+    // The whole card header works like "Start step N" (the link stays the one keyboard and screen readers
+    // use). Its own buttons, selected text and modifier clicks (new tab) keep their usual behaviour.
+    const header = el.querySelector(".path-step__header");
+    const start = el.querySelector(".path-step__start");
+    header.addEventListener("click", (event) => {
+      if (event.target.closest("a, button")) return;
+      if (String(window.getSelection())) return;
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
+      start.click();
+    });
 
     el.querySelector("[data-toggle]").addEventListener("click", () => {
       const open = !el.classList.contains("is-open");

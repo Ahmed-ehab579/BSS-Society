@@ -16,6 +16,11 @@
 
 /* ---- What you'll learn ------------------------------------------------------------------------- */
 /* In the shaded section panel, like the topic panel below and the homepage sections */
+/* A solid card surface instead of the shared panel's fade (the system's card colour) */
+.learn .section-panel {
+  background: var(--surface-card);
+}
+
 /* Panel title in the H4 style; the gap below scales down with it */
 .learn__heading {
   margin-bottom: var(--scale-800);
@@ -39,7 +44,7 @@
   align-items: center;
   gap: var(--scale-200);
   padding: var(--scale-200) var(--scale-500) var(--scale-200) var(--scale-300);
-  border: var(--scale-12) solid var(--color-neutral-400);
+  border: var(--scale-12) solid var(--border);
   border-radius: var(--radius-pill);
   background: var(--surface-action-outline);   /* the panel is already Surface/Cards */
   color: var(--color-heading);
@@ -66,14 +71,15 @@
 
 .topic-tab {
   position: relative;   /* keeps the hidden topic title inside the tab (and the scrolling row on phones) */
-  padding: var(--scale-200) var(--scale-600);
-  border: var(--scale-12) solid var(--color-neutral-400);
+  min-height: 44px;
+  padding: var(--scale-200) var(--scale-500);
+  border: var(--scale-12) solid var(--border);
   border-radius: var(--radius-pill);
   background: var(--surface-action-outline);
   color: var(--color-text-body);
   font-family: inherit;
-  font-size: var(--body-l-size);
-  line-height: var(--body-l-line);
+  font-size: var(--body-m-size);
+  line-height: var(--body-m-line);
   white-space: nowrap;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -110,22 +116,22 @@
 
 .topic-panel__head {
   display: flex;
-  align-items: flex-end;
+  align-items: center;                 /* the progress ring sits beside the topic text */
   justify-content: space-between;
   gap: var(--scale-900);
 }
 
 .topic-panel__intro {
-  max-width: 706px;
+  max-width: 565px;                    /* 20% narrower than 706px; the short description fits two lines */
   min-width: 0;
 }
 
 .topic-panel__number {
   display: block;
   color: var(--color-step-number);
-  font-size: 82px;
+  font-size: var(--display-m-size);    /* Display M (82, phone 60), light: the same as the path page's step numbers */
   line-height: 82px;
-  font-weight: 300;
+  font-weight: var(--display-l-weight);
   letter-spacing: -4.1px;
 }
 
@@ -145,98 +151,75 @@
   line-height: var(--body-l-line);
 }
 
-/* Arrows: the homepage icon button, on the light outline surface (the panel is already Surface/Cards) */
-.topic-panel__controls {
-  display: flex;
-  flex-shrink: 0;
-  gap: var(--scale-400);
+/* Card type (Figma 1012:3539): an outlined pill above the title instead of a badge on the photo */
+.topic-panel__track .resource-card__badge {
+  display: none;
 }
 
-.topic-panel__controls .icon-btn {
-  background: var(--surface-action-outline);
-  transition: background-color var(--motion-duration-hover) var(--motion-ease),
-    opacity var(--motion-duration-hover) var(--motion-ease);
+.topic-panel__track .resource-card__type {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  gap: var(--scale-100);
+  height: 22px;
+  margin-bottom: calc(var(--scale-200) - var(--scale-300));   /* 8px to the title */
+  padding: 0 10px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  outline: var(--scale-12) solid #676767;   /* a centre stroke: half inside, half outside the edge */
+  outline-offset: -0.25px;
+  background: rgba(255, 255, 255, 0.5);   /* white at 50% */
+  color: var(--color-card-heading);
+  font-size: var(--label-s-size);
+  line-height: var(--label-s-line);
+  font-weight: 500;
+  white-space: nowrap;
 }
 
-.icon-btn--prev img {
-  transform: scaleX(-1);
+.topic-panel__track .resource-card__type img {
+  width: auto;
+  height: 10px;
 }
 
-.topic-panel__controls .icon-btn:disabled {
-  opacity: 0.4;
-  cursor: default;
-}
-
-@media (hover: hover) {
-  .topic-panel__controls .icon-btn:not(:disabled):hover {
-    background: var(--surface-cards-hovered);
-  }
-}
-
-/* One row of Library cards that scrolls sideways (swipe, trackpad or the arrows) and snaps to a card.
-   The row runs to the panel's edges, so cards slide out at the edge instead of being cut inside the
-   padding; the vertical padding keeps the cards' hover lift and shadow from being clipped. */
+/* The materials: the Library's card grid, four a row, so the cards match the Library's */
 .topic-panel__track {
-  display: flex;
-  gap: var(--scale-600);
-  margin: var(--scale-800) calc(-1 * var(--panel-pad)) calc(-1 * var(--scale-400));
-  padding: var(--scale-200) var(--panel-pad) var(--scale-400);
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  scroll-padding-inline: var(--panel-pad);
-  scrollbar-width: none;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--scale-900);
+  margin: var(--scale-1100) 0 0;      /* 64px below the topic header (was 32) */
+  padding: 0;
   list-style: none;
 }
 
-.topic-panel__track::-webkit-scrollbar {
-  display: none;
+@media (min-width: 768px) {
+  .topic-panel__track .resource-card__frame {
+    height: 220px;
+  }
+
+  .topic-panel__track .resource-card__title {
+    font-size: var(--h6-size);
+    line-height: var(--h6-line);
+  }
+
+  .topic-panel__track .resource-card__play {
+    --play-size: 96px;
+  }
+
+  .topic-panel__track .resource-card__listen {
+    --listen-size: 62px;
+  }
 }
 
-.topic-panel__track > .resource-card {
-  flex: 0 0 283px;      /* the Library card width */
-  scroll-snap-align: start;
+@media (max-width: 1279px) {
+  .topic-panel__track {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
-/* Pagination dots: phones only (desktop has the arrows). The active dot stretches into a pill;
-   width and colour ease between dots as the row scrolls. */
-.topic-panel__dots {
-  display: none;
-  justify-content: center;
-  gap: 6px;
-  margin-top: var(--scale-400);
-}
-
-.topic-panel__dot {
-  position: relative;
-  width: 8px;
-  height: 24px;              /* 8px dot inside a 24px tall touch area */
-  padding: 0;
-  border: 0;
-  background: none;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  transition: width var(--motion-duration-hover) var(--motion-ease);
-}
-
-.topic-panel__dot::before {
-  content: "";
-  position: absolute;
-  top: 8px;
-  right: 0;
-  left: 0;
-  height: 8px;
-  border-radius: var(--radius-pill);
-  background: var(--color-neutral-300);
-  transition: background-color var(--motion-duration-hover) var(--motion-ease);
-}
-
-.topic-panel__dot.is-active {
-  width: 24px;
-}
-
-.topic-panel__dot.is-active::before {
-  background: var(--color-text-on-light);
+@media (max-width: 999px) {
+  .topic-panel__track {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 /* ---- Responsive ------------------------------------------------------------------------------- */
@@ -244,15 +227,11 @@
 @media (max-width: 767px) {
   .step-heading {
     margin-bottom: var(--scale-800);
-    font-size: 40px;          /* the page's section title on phones (the phone page title is 36px) */
-    line-height: 48px;
     letter-spacing: -0.8px;
   }
 
   .learn__heading {
     margin-bottom: var(--scale-600);
-    font-size: var(--h5-size);
-    line-height: var(--h5-line);
     letter-spacing: normal;
   }
 
@@ -286,23 +265,15 @@
     display: none;
   }
 
-  .topic-tab {
-    min-height: 44px;
-    padding: var(--scale-200) var(--scale-500);
-    font-size: var(--body-m-size);
-    line-height: var(--body-m-line);
-  }
 
   .topic-panel__number {
-    font-size: 64px;
+    font-size: var(--display-m-size);
     line-height: 60px;
     letter-spacing: -2.8px;
   }
 
   .topic-panel__title {
     margin-top: var(--scale-300);
-    font-size: var(--h5-size);
-    line-height: var(--h5-line);
     letter-spacing: -0.4px;
   }
 
@@ -315,99 +286,37 @@
     --panel-pad: var(--scale-600);
   }
 
-  /* Swipe instead of arrows; the next card peeks in to show there is more */
-  .topic-panel__controls {
-    display: none;
-  }
-
-  .topic-panel__dots {
-    display: flex;
-  }
-
+  /* Phones: the Library's one-a-row cards */
   .topic-panel__track {
-    gap: var(--scale-400);
-    margin-top: var(--scale-600);
-  }
-
-  /* Compact cards on phones: 204px wide, shorter media, smaller type and a 40px button */
-  .topic-panel__track > .resource-card {
-    flex-basis: min(204px, 66%);
-    border-radius: var(--scale-500);
-  }
-
-  .topic-panel__track .resource-card__media {
-    padding: 10px 10px 0;
+    grid-template-columns: min(280px, 100%);
+    justify-content: center;
+    gap: var(--scale-600);
+    margin-top: var(--scale-1000);    /* 48px below the topic header on phones (was 24) */
   }
 
   .topic-panel__track .resource-card__frame {
-    height: 160px;
-    border-radius: 10px;
+    height: auto;
+    aspect-ratio: 4 / 3;
   }
 
   .topic-panel__track .resource-card__play {
-    --play-size: 84px;
+    --play-size: 96px;
   }
 
   .topic-panel__track .resource-card__listen {
-    --listen-size: 56px;
-  }
-
-  .topic-panel__track .resource-card__badge {
-    top: var(--scale-200);
-    right: var(--scale-200);
-    padding: 1px 8px;
-    font-size: 11px;
-    line-height: 16px;
-  }
-
-  .topic-panel__track .resource-card__badge img {
-    height: 10px;
-  }
-
-  .topic-panel__track .resource-card__body {
-    gap: var(--scale-500);
-    padding: var(--scale-500) 10px 10px;   /* the photo's inset, so text lines up with it */
-  }
-
-  .topic-panel__track .resource-card__text {
-    gap: var(--scale-200);
+    --listen-size: 62px;
   }
 
   .topic-panel__track .resource-card__title {
-    font-size: 17px;
-    line-height: 24px;
+    font-size: var(--h6-size);
+    line-height: var(--h6-line);
     font-weight: var(--h6-weight);
-  }
-
-  .topic-panel__track .resource-card__desc {
-    font-size: 13px;
-    line-height: 20px;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-  }
-
-  .topic-panel__track .resource-card__action {
-    height: 40px;
-    padding: var(--scale-200) var(--scale-400);
-    font-size: var(--label-m-size);
-    line-height: var(--label-m-line);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .topic-tab,
-  .topic-panel__dot,
-  .topic-panel__dot::before,
-  .topic-panel__controls .icon-btn {
+  .topic-tab {
     transition: none;
-  }
-}
-
-/* Step titles are short: keep the default heading width so they break onto two lines */
-@media (min-width: 1100px) {
-  .intro--top .step-title {
-    flex-basis: 558px;
-    max-width: 558px;
   }
 }
 
@@ -428,5 +337,228 @@
 @media (max-width: 1099px) {
   .step-intro {
     width: auto;
+  }
+}
+
+/* Back to the path, above the page title: 40px under the header, 16px over the title */
+.step-back {
+  display: flex;                                 /* hugs the link: no extra line-box space under it */
+  max-width: calc(1305px + 2 * var(--gutter));   /* the intro's edges */
+  margin-top: calc(-1 * var(--scale-600));
+  margin-bottom: var(--scale-600);               /* every back link: 24px to the content (phone 16) */
+}
+
+@media (max-width: 767px) {
+  .step-back {
+    margin-top: calc(-1 * var(--scale-200));     /* 24px under the header on phones */
+    margin-bottom: var(--scale-400);
+  }
+}
+
+/* Step titles on two lines ("Begin with the / essentials"): 520px holds every step's first line */
+@media (min-width: 1100px) {
+  .intro__heading.step-title {
+    flex-basis: 520px;
+    max-width: 520px;
+  }
+}
+
+/* Phones: the topic's material cards take the Library cards' default surface (#e1ddd1) */
+@media (max-width: 767px) {
+  .topic-panel__track .resource-card {
+    --surface-resource-card: #e1ddd1;
+  }
+}
+
+/* Desktop and tablet: the same default surface as on phones (#e1ddd1) */
+@media (min-width: 768px) {
+  .topic-panel__track .resource-card {
+    --surface-resource-card: #e1ddd1;
+  }
+}
+
+/* Desktop: hover one step darker (#d2cdc0) so it still shows against the #e1ddd1 default */
+@media (min-width: 768px) and (hover: hover) {
+  .topic-panel__track .resource-card:hover {
+    background: var(--surface-card-pressed);
+  }
+}
+
+/* Phones: "What you'll learn" — the tick in the done green (a green-100 disc behind the green-700 tick),
+   centred in its pill, and no lone word on a wrapped item's second line */
+@media (max-width: 767px) {
+  .learn__item {
+    text-wrap: pretty;   /* one line when it fits; if it wraps, never one word alone on line 2 */
+  }
+
+  .learn__item img {
+    box-sizing: border-box;
+    width: 20px;
+    height: 20px;
+    padding: 3px;
+    border-radius: var(--radius-round);
+    background: var(--green-100);
+  }
+}
+
+/* Phones: the "What you'll learn" panel gets the step cards' edge (0.5px #5b5b5b) */
+@media (max-width: 767px) {
+  .learn .section-panel {
+    border: var(--scale-12) solid #5b5b5b;
+  }
+}
+
+/* The layout switch is for phones only (js/new-muslim-step.js); desktop keeps the row of cards */
+.topic-panel__views {
+  display: none;
+}
+
+/* Phones: the materials exactly as in the Library (css/library.css .resource-grid), with its switch:
+   cards one a row, or a list. 48px under the topic header to the switch, 24px on to the cards. */
+@media (max-width: 767px) {
+  .topic-panel__views {
+    display: flex;
+    margin-top: var(--scale-1000);
+  }
+
+  .topic-panel__views + .resource-grid {
+    margin-top: var(--scale-600);
+  }
+
+  /* This panel's inner width is 16px narrower than the Library's: reach 8px each side so the cards
+     come out the same size as there */
+  .topic-panel__views,
+  #topic-resources.resource-grid {
+    margin-inline: calc(-1 * var(--scale-200));
+  }
+
+  /* The type badge sits under the photo in the card layout, so the done check keeps the right corner */
+  #topic-resources.resource-grid[data-layout="one"] .resource-card__done {
+    right: var(--scale-300);
+    left: auto;
+  }
+}
+
+/* Phones: the topic header exactly like the New Muslim path card's (Figma: Path step card, phone):
+   the number (76px) and the ring share the top row, the title 8px under them, the text 8px under that */
+@media (max-width: 767px) {
+  .topic-panel__head {
+    display: grid;
+    grid-template-areas:
+      "number progress"
+      "title title"
+      "text text";
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    column-gap: var(--scale-400);
+    row-gap: 0;
+  }
+
+  .topic-panel__intro {
+    display: contents;
+  }
+
+  .topic-panel__number {
+    grid-area: number;
+    font-size: 76px;
+    line-height: 68px;
+    letter-spacing: -3.8px;
+  }
+
+  .topic-panel__title {
+    grid-area: title;
+    margin-top: var(--scale-200);
+    font-size: var(--h3-size);         /* 26/34 on phones */
+    line-height: var(--h3-line);
+    letter-spacing: -0.4px;
+  }
+
+  .topic-panel__text {
+    grid-area: text;
+    max-width: 252px;
+    margin-top: var(--scale-200);
+    font-size: var(--body-s-size);
+    line-height: var(--body-s-line);
+  }
+
+  .topic-panel__head > .progress-ring {
+    grid-area: progress;
+    justify-self: end;
+    gap: var(--scale-100);
+  }
+
+  .topic-panel__head .progress-ring__dial,
+  .topic-panel__head .progress-ring svg:not(.progress-ring__check) {
+    width: 61px;
+    height: 61px;
+  }
+
+  .topic-panel__head .progress-ring__count,
+  .topic-panel__head .progress-ring__count.is-long {
+    font-size: var(--body-m-size);
+    line-height: var(--body-m-line);
+    font-weight: 400;
+  }
+}
+
+/* Phones only: the longer topic line and the path's full name on the back link (js/new-muslim-step.js) */
+.topic-panel__text .text-phone,
+.step-back .text-phone {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  /* The topic line at full width, three lines (a longer version of the desktop text) */
+  .topic-panel__text {
+    max-width: none;
+  }
+
+  .topic-panel__text .text-wide,
+  .step-back .text-wide {
+    display: none;
+  }
+
+  .topic-panel__text .text-phone,
+  .step-back .text-phone {
+    display: inline;
+  }
+
+  /* The Cards/List switch on the right, its edge in line with the topic header above */
+  .topic-panel__views {
+    justify-content: flex-end;
+    margin-inline: 0;
+  }
+
+  /* Topic pills: the done check before the word, larger; the selected pill's edge darker */
+  .topic-tab {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .topic-tab__done {
+    order: -1;
+    width: 20px;
+    height: 20px;
+    margin: 0 6px 0 -4px;
+  }
+
+  .topic-tab[aria-selected="true"] {
+    border-color: #5b5b5b;
+  }
+
+  /* List view: the Done badge in the card's top right corner, off the small photo, a size smaller */
+  #topic-resources[data-layout="list"] > .resource-card > .resource-card__done {
+    top: var(--scale-300);
+    right: var(--scale-300);
+    left: auto;
+    height: 28px;
+    padding: 0 var(--scale-300) 0 2px;
+    font-size: var(--body-s-size);
+    line-height: 1;
+  }
+
+  #topic-resources[data-layout="list"] > .resource-card > .resource-card__done svg {
+    width: 24px;
+    height: 24px;
   }
 }

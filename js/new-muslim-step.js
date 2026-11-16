@@ -15,9 +15,7 @@
     topicTitle: document.querySelector("[data-topic-title]"),
     topicText: document.querySelector("[data-topic-text]"),
     track: document.querySelector("[data-resources]"),
-    dots: document.querySelector("[data-dots]"),
-    prev: document.querySelector('[data-scroll="-1"]'),
-    next: document.querySelector('[data-scroll="1"]'),
+    progress: document.querySelector("[data-topic-progress]"),
   };
   if (!els.tabs) return;
 
@@ -36,14 +34,8 @@
   els.title.textContent = step.title;
   els.intro.textContent = step.intro;
 
-  // Save this step (js/saved-menu.js)
-  const saveButton = document.querySelector("[data-save]");
-  if (saveButton && window.BSS?.saveButton) {
-    window.BSS.saveButton(saveButton, () => ({
-      key: `new-muslim-step-${step.id}`, path: "new-muslim", type: "step", label: `Step ${step.id}`,
-      title: step.title, image: step.topics[0].image, url: `new-muslim-step.html?step=${step.id}`,
-    }));
-  }
+  // Every topic's materials get their keys now, so progress can be counted for topics not yet shown
+  step.topics.forEach((topic) => window.BSS.registerResources(topic.resources));
   els.outcomes.innerHTML = step.outcomes.map((text) => `
     <li class="learn__item">
       <img src="assets/icons/check.svg" width="24" height="24" alt="">${escape(text)}
@@ -86,16 +78,93 @@
     const topic = step.topics[index];
     els.number.textContent = pad(index + 1);
     els.topicTitle.textContent = topic.title;
-    els.topicText.textContent = topic.text;
+    // desktop: two lines (the path page has the longer text); phones: a three-line version at full width
+    els.topicText.innerHTML = `<span class="text-wide">${escape(topic.short || topic.text)}</span><span class="text-phone">${escape(topic.phoneText)}</span>`;
     els.track.innerHTML = topic.resources.map(cardHtml).join("");
-    els.track.scrollLeft = 0;
-    updateArrows();
+    placeDoneBadges();
+    paintProgress();
   }
+
+  // ---- Progress (js/done.js): a check on each finished topic's tab, "x of n done" for the open topic --
+
+  const TAB_CHECK = '<svg class="topic-tab__done" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  function paintProgress() {
+    const done = window.BSS.done;
+    if (!done) return;
+    step.topics.forEach((topic, i) => {
+      const keys = [...new Set(topic.resources.map((item) => item.key))];
+      const complete = keys.length > 0 && done.count(keys) === keys.length;
+      const tab = tabs[i];
+      const mark = tab.querySelector(".topic-tab__done");
+      if (complete && !mark) tab.insertAdjacentHTML("beforeend", TAB_CHECK + '<span class="visually-hidden topic-tab__done-text"> (done)</span>');
+      if (!complete && mark) {
+        mark.remove();
+        tab.querySelector(".topic-tab__done-text")?.remove();
+      }
+    });
+    const keys = [...new Set(step.topics[topicIndex].resources.map((item) => item.key))];
+    if (!els.progress.firstElementChild) els.progress.outerHTML = done.ringHtml("data-topic-progress");
+    els.progress = document.querySelector("[data-topic-progress]");
+    done.paintRing(els.progress, done.count(keys), keys.length, "topic");
+  }
+
+  window.BSS.done?.onChange(paintProgress);
+
+  // ---- Phones: the materials in the Library's layouts, cards (one a row) or a list --------------
+  // The track takes the Library's grid class on phones only (css/library.css); desktop keeps its row.
+  const phoneView = matchMedia("(max-width: 767px)");
+  const VIEW_KEY = "bss.step.view.v1";
+  const viewButtons = [...document.querySelectorAll("[data-step-views] [data-view]")];
+  let view = "one";
+  try {
+    const saved = window.localStorage.getItem(VIEW_KEY);
+    if (saved === "one" || saved === "list") view = saved;
+  } catch (error) { /* storage blocked: keep the default */ }
+
+  function applyLayout() {
+    const track = els.track;
+    const phone = phoneView.matches;
+    track.classList.toggle("topic-panel__track", !phone);
+    track.classList.toggle("resource-grid", phone);
+    if (phone) track.dataset.layout = view; else delete track.dataset.layout;
+    placeDoneBadges();
+    viewButtons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.view === view)));
+  }
+
+  // Phones, list view: the Done badge leaves the small photo for the card's top right corner
+  // (css/new-muslim-step.css); anywhere else it stays on the photo
+  function placeDoneBadges() {
+    const inCard = phoneView.matches && view === "list";
+    els.track.querySelectorAll(".resource-card").forEach((card) => {
+      const badge = card.querySelector(".resource-card__done");
+      const home = inCard ? card : card.querySelector(".resource-card__frame");
+      if (badge && home && badge.parentElement !== home) home.append(badge);
+    });
+  }
+
+  viewButtons.forEach((button) => button.addEventListener("click", () => {
+    if (button.dataset.view === view) return;
+    view = button.dataset.view;
+    try { window.localStorage.setItem(VIEW_KEY, view); } catch (error) { /* not remembered: fine */ }
+    if (document.startViewTransition && !reducedMotion.matches) {
+      const cards = [...els.track.children];
+      cards.forEach((card, index) => { card.style.viewTransitionName = `step-resource-${index}`; });
+      document.startViewTransition(applyLayout).finished.finally(() => cards.forEach((card) => card.style.removeProperty("view-transition-name")));
+    } else {
+      applyLayout();
+    }
+  }));
+  phoneView.addEventListener("change", applyLayout);
+  applyLayout();
 
   // Topic change: the old content fades out quickly, the panel eases to its new height and the new
   // content fades up, the cards following one another by a few milliseconds. A newer click cancels
   // an unfinished change.
   const parts = () => [els.panel.querySelector(".topic-panel__intro"), ...els.track.children];
+  // Timing from the shared motion tokens (css/tokens.css)
+  const token = (name, fallback) => getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
+  const ms = (name, fallback) => parseFloat(token(name, fallback)) || parseFloat(fallback);
   let swapId = 0;
   function swapAnimated(render) {
     const id = ++swapId;
@@ -103,18 +172,18 @@
     const from = els.panel.getBoundingClientRect().height;
     const fadeOut = parts().map((el) => el.animate(
       [{ opacity: 1, transform: "none" }, { opacity: 0, transform: "translateY(-4px)" }],
-      { duration: 140, easing: "ease-in", fill: "forwards" }));
+      { duration: ms("--motion-fast", "150ms"), easing: "ease-in", fill: "forwards" }));
     Promise.all(fadeOut.map((animation) => animation.finished)).then(() => {
       if (id !== swapId) return;
       fadeOut.forEach((animation) => animation.cancel());
       render();
       const to = els.panel.getBoundingClientRect().height;
       if (Math.abs(to - from) > 1) {
-        els.panel.animate([{ height: `${from}px` }, { height: `${to}px` }], { duration: 320, easing: "cubic-bezier(0.2, 0, 0, 1)" });
+        els.panel.animate([{ height: `${from}px` }, { height: `${to}px` }], { duration: ms("--motion-slow", "360ms"), easing: token("--motion-ease", "ease") });
       }
       parts().forEach((el, i) => el.animate(
         [{ opacity: 0, transform: "translateY(8px)" }, { opacity: 1, transform: "none" }],
-        { duration: 320, delay: i === 0 ? 0 : 40 + i * 30, easing: "cubic-bezier(0.2, 0, 0, 1)", fill: "backwards" }));
+        { duration: ms("--motion-slow", "360ms"), delay: i === 0 ? 0 : 40 + i * 30, easing: token("--motion-ease", "ease"), fill: "backwards" }));
     }).catch(() => { /* cancelled by a newer change */ });
   }
 
@@ -130,65 +199,6 @@
     const target = move === -Infinity ? 0 : move === Infinity ? last : (topicIndex + move + tabs.length) % tabs.length;
     showTopic(target, { focusTab: true, reveal: true, animate: true });
   });
-
-  // ---- Resource row: scrolls by one card; the arrows switch off at either end ----------------------
-
-  function cardStep() {
-    const card = els.track.firstElementChild;
-    if (!card) return 0;
-    return card.getBoundingClientRect().width + parseFloat(getComputedStyle(els.track).columnGap || 0);
-  }
-
-  function updateArrows() {
-    const max = els.track.scrollWidth - els.track.clientWidth;
-    els.prev.disabled = els.track.scrollLeft <= 1;
-    els.next.disabled = els.track.scrollLeft >= max - 1;
-    updateDots();
-  }
-
-  // Dots (phones): one per stop the row can actually snap to. Cards near the end share the last stop
-  // (the row can't scroll further), so a wide screen gets fewer dots than cards. The active dot is
-  // the stop nearest to the current scroll. A visual aid for touch; keyboard users have the cards.
-  let stops = [];
-  function snapStops() {
-    const max = els.track.scrollWidth - els.track.clientWidth;
-    const pad = parseFloat(getComputedStyle(els.track).scrollPaddingLeft) || 0;
-    const origin = els.track.getBoundingClientRect().left - els.track.scrollLeft + pad;
-    const positions = [...els.track.children].map((card) =>
-      Math.max(0, Math.min(max, Math.round(card.getBoundingClientRect().left - origin))));
-    return positions.filter((position, i) => i === 0 || position - positions[i - 1] > 2);
-  }
-
-  function updateDots() {
-    if (getComputedStyle(els.dots).display === "none") return;
-    const next = snapStops();
-    if (next.length !== stops.length || next.some((position, i) => position !== stops[i])) {
-      stops = next;
-      els.dots.innerHTML = stops.length < 2 ? "" : stops.map((position, i) => `
-        <button class="topic-panel__dot" type="button" tabindex="-1" aria-label="Show position ${i + 1} of ${stops.length}"></button>`).join("");
-    }
-    const left = els.track.scrollLeft;
-    const active = stops.reduce((best, position, i) => (Math.abs(position - left) < Math.abs(stops[best] - left) ? i : best), 0);
-    [...els.dots.children].forEach((dot, i) => {
-      dot.classList.toggle("is-active", i === active);
-      if (i === active) dot.setAttribute("aria-current", "true");
-      else dot.removeAttribute("aria-current");
-    });
-  }
-
-  els.dots.addEventListener("click", (event) => {
-    const dot = event.target.closest(".topic-panel__dot");
-    if (!dot) return;
-    const left = stops[[...els.dots.children].indexOf(dot)];
-    els.track.scrollTo({ left, behavior: reducedMotion.matches ? "auto" : "smooth" });
-  });
-
-  [els.prev, els.next].forEach((button) => button.addEventListener("click", () => {
-    els.track.scrollBy({ left: Number(button.dataset.scroll) * cardStep(), behavior: reducedMotion.matches ? "auto" : "smooth" });
-  }));
-
-  els.track.addEventListener("scroll", updateArrows, { passive: true });
-  window.addEventListener("resize", updateArrows);
 
   showTopic(topicIndex);
 })();

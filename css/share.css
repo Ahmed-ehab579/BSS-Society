@@ -1,0 +1,361 @@
+/* Share panel (js/share.js): a small panel under the Share button on desktop, a bottom sheet on phones.
+   Copy link first (the most used option), then the places people share to. */
+.share {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow: visible;
+}
+
+.share::backdrop {
+  background: transparent;
+}
+
+.share__panel {
+  position: fixed;
+  top: var(--share-top, 50%);
+  left: var(--share-left, 50%);
+  display: flex;
+  flex-direction: column;
+  gap: var(--scale-500);
+  width: 400px;
+  padding: var(--scale-500);
+  border: var(--border-md) solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-lg);
+  color: var(--text);
+  opacity: 0;
+  transform: translateY(-8px) scale(0.97);
+  transform-origin: top right;
+  transition: opacity var(--motion-panel-out) var(--motion-ease), transform var(--motion-panel-out) var(--motion-ease);
+}
+
+.share.is-open .share__panel {
+  opacity: 1;
+  transform: none;
+  transition: opacity var(--motion-panel-in) var(--motion-ease-fade), transform var(--motion-panel-in) var(--motion-ease-glide);
+}
+
+.share__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: calc(-1 * var(--scale-200)) calc(-1 * var(--scale-200)) calc(-1 * var(--scale-200)) 0;
+}
+
+.share__title {
+  margin: 0;
+  color: var(--text-strong);
+  font-size: var(--h6-size);
+  line-height: var(--h6-line);
+  font-weight: var(--h6-weight);
+}
+
+.share__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-round);
+  background: none;
+  color: var(--text);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--motion-fast) var(--motion-ease);
+}
+
+.share__close svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* The link and its Copy button, like a field with the action inside */
+.share__link {
+  display: flex;
+  align-items: center;
+  gap: var(--scale-200);
+  height: 48px;
+  padding: var(--scale-100) var(--scale-100) var(--scale-100) var(--scale-400);
+  border: var(--border-md) solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--surface-page);
+}
+
+.share__url {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--text-body);
+  font-size: var(--body-s-size);
+  line-height: var(--body-s-line);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.share__copy {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--scale-200);
+  height: 38px;
+  padding: 0 var(--scale-400) 0 var(--scale-300);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--surface-dark);
+  color: var(--text-on-dark);
+  font-family: inherit;
+  font-size: var(--label-m-size);
+  line-height: var(--label-m-line);
+  font-weight: var(--label-weight);
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--motion-base) var(--motion-ease), color var(--motion-base) var(--motion-ease);
+}
+
+.share__copy-icon,
+.share__copy-icon svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+
+/* Copied: the system's done green for a moment */
+.share__copy.is-copied {
+  background: var(--green-100);
+  color: var(--green-900);
+}
+
+.share__copy:active {
+  background: var(--surface-dark-pressed);
+}
+
+/* Share targets: round icon tiles with a label underneath */
+.share__targets {
+  display: grid;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;              /* one row on desktop */
+  gap: var(--scale-200);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.share__target {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--scale-200);
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text);
+  font-family: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.share__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-round);
+  background: var(--surface-card);
+  color: var(--text-strong);
+  transition: background-color var(--motion-base) var(--motion-ease), transform var(--motion-base) var(--motion-ease);
+}
+
+.share__icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.share__label {
+  color: var(--text-body);
+  font-size: var(--body-xs-size);
+  line-height: var(--body-xs-line);
+  white-space: nowrap;
+}
+
+.share__close:focus-visible,
+.share__copy:focus-visible,
+.share__target:focus-visible {
+  outline: var(--border-lg) solid var(--border-strong);
+  outline-offset: 3px;
+}
+
+.share__target:focus-visible {
+  border-radius: var(--radius-sm);
+}
+
+@media (hover: hover) {
+  .share__close:hover {
+    background: var(--surface-card);
+  }
+
+  .share__copy:not(.is-copied):hover {
+    background: var(--surface-dark-pressed);
+  }
+
+  .share__target:hover .share__icon {
+    background: var(--surface-card-hover);
+    transform: translateY(-2px);
+  }
+
+  .share__target:hover .share__label {
+    color: var(--text-strong);
+  }
+}
+
+.share__target:active .share__icon {
+  background: var(--surface-card-pressed);
+}
+
+/* Phones: a sheet that slides up from the bottom over a dimmed page */
+@media (max-width: 767px) {
+  .share {
+    background: var(--surface-overlay);
+    opacity: 0;
+    transition: opacity var(--motion-sheet-out) var(--motion-ease);
+  }
+
+  .share.is-open {
+    opacity: 1;
+    transition: opacity var(--motion-sheet-in) var(--motion-ease);
+  }
+
+  .share__panel {
+    top: auto;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: auto;
+    padding: var(--scale-500) var(--scale-500) calc(var(--scale-600) + env(safe-area-inset-bottom));
+    border: 0;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    opacity: 1;
+    transform: translateY(100%);
+    transition: transform var(--motion-sheet-out) var(--motion-ease-expand);
+  }
+
+  .share.is-open .share__panel {
+    transform: none;
+    transition: transform var(--motion-sheet-in) var(--motion-ease-sheet);
+  }
+
+  /* A grab handle, as on native sheets */
+  .share__panel::before {
+    content: "";
+    align-self: center;
+    width: 36px;
+    height: 4px;
+    margin: calc(-1 * var(--scale-300)) 0 calc(-1 * var(--scale-200));
+    border-radius: var(--radius-pill);
+    background: var(--border);
+  }
+
+  .share__targets {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--scale-500) var(--scale-200);
+  }
+
+  .share__icon {
+    width: 56px;
+    height: 56px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .share,
+  .share__panel,
+  .share__icon,
+  .share__copy {
+    transition: none;
+  }
+}
+
+/* Phones: one header for every slide-up panel (as on the Saved and language sheets): the close button
+   alone in the top-right corner, the title (H4) on its own row 8px below it, 14px to the content */
+@media (max-width: 767px) {
+  .share__head {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: var(--scale-200);
+    padding-top: var(--scale-300);
+    padding-right: var(--scale-300);
+    padding-bottom: 14px;
+  }
+
+  .share__close {
+    order: -1;
+    align-self: flex-end;
+    width: 44px;
+    height: 44px;
+    margin: 0;
+  }
+
+  .share__title {
+    margin: 0;
+    font-size: var(--h4-size);
+    line-height: var(--h4-line);
+    font-weight: var(--h4-weight);
+  }
+
+  /* The panel's own padding does the spacing here: the grabber floats, the header sits 12px from the top */
+  .share__panel {
+    padding-top: var(--scale-300);
+  }
+
+  .share__panel::before {
+    position: absolute;
+    top: var(--scale-200);
+    left: calc(50% - 18px);
+    margin: 0;
+  }
+
+  .share__head {
+    margin: 0 calc(-1 * var(--scale-200)) -6px 0;
+    padding: 0;
+  }
+}
+
+/* Phones: larger share icons (28px in 60px tiles, as on native share sheets) with a slightly larger
+   label; the link row loses its outline, a soft filled field around the link and Copy instead */
+@media (max-width: 767px) {
+  .share__icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .share__icon svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .share__label {
+    font-size: var(--body-s-size);
+    line-height: var(--body-s-line);
+  }
+
+  .share__link {
+    border: 0;
+    background: var(--surface-card);
+  }
+}

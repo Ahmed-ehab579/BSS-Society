@@ -216,7 +216,7 @@
   margin: 0 -10px 0 var(--scale-200);   /* the icon, not its tap area, lines up with the page edge */
   padding: 0;
   border: 0;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: none;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -247,7 +247,7 @@
   margin: 0 0 0 var(--scale-200);
   padding: 0;
   border: 0;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: none;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -275,7 +275,7 @@
   border-radius: var(--radius-pill);
   background: var(--color-text-on-light);
   color: var(--color-page-bg);
-  font-size: 10px;
+  font-size: 10px;  /* count inside the saved badge */
   line-height: 14px;
   font-weight: 600;
   text-align: center;
@@ -287,7 +287,7 @@
 }
 
 .saved-toggle__count.is-bumping {
-  animation: saved-count-bump 320ms var(--motion-ease);
+  animation: saved-count-bump var(--motion-slow) var(--motion-ease);
 }
 
 @keyframes saved-count-bump {
@@ -340,6 +340,7 @@
     margin-right: -6px;
     padding: 0;
     border: 0;
+    border-radius: var(--radius-round);
     background: none;
     color: var(--color-text-on-light);
     cursor: pointer;
@@ -361,8 +362,8 @@
     height: 2px;
     border-radius: 1px;
     background: currentColor;
-    transition: transform var(--motion-duration) var(--motion-ease),
-      opacity var(--motion-duration) var(--motion-ease);
+    transition: transform var(--motion-slow) var(--motion-ease),
+      opacity var(--motion-slow) var(--motion-ease);
   }
 
   .menu-icon__bar:nth-child(1) { transform: translateY(-7px); }
@@ -384,20 +385,37 @@
     background: var(--color-page-bg);
     border-top: var(--border-md) solid rgba(59, 59, 59, 0.12);
     opacity: 0;
-    transform: translateY(-8px);
+    transform: translateY(-12px);
     visibility: hidden;
-    transition: opacity var(--motion-duration) var(--motion-ease),
-      transform var(--motion-duration) var(--motion-ease),
-      visibility 0s linear var(--motion-duration);
+    transition: opacity var(--motion-panel-out) var(--motion-ease),
+      transform var(--motion-panel-out) var(--motion-ease),
+      visibility 0s linear var(--motion-panel-out);
   }
 
   .site-header.is-menu-open .site-nav {
     opacity: 1;
     transform: none;
     visibility: visible;
-    transition: opacity var(--motion-duration) var(--motion-ease),
-      transform var(--motion-duration) var(--motion-ease),
+    transition: opacity var(--motion-panel-in) var(--motion-ease-fade),
+      transform var(--motion-panel-in) var(--motion-ease-glide),
       visibility 0s;
+  }
+
+  /* Opening, the links follow one another in, a few hundredths of a second apart */
+  .site-header.is-menu-open .site-nav__links > *,
+  .site-header.is-menu-open .site-nav__cta {
+    animation: motion-fade var(--motion-panel-in) var(--motion-ease-fade) backwards,
+      menu-item-rise var(--motion-panel-in) var(--motion-ease-glide) backwards;
+  }
+
+  .site-header.is-menu-open .site-nav__links > :nth-child(2) { animation-delay: 40ms; }
+  .site-header.is-menu-open .site-nav__links > :nth-child(3) { animation-delay: 80ms; }
+  .site-header.is-menu-open .site-nav__links > :nth-child(4) { animation-delay: 120ms; }
+  .site-header.is-menu-open .site-nav__links > :nth-child(5) { animation-delay: 160ms; }
+  .site-header.is-menu-open .site-nav__cta { animation-delay: 200ms; }
+
+  @keyframes menu-item-rise {
+    from { translate: 0 -6px; }
   }
 
   .site-nav__links {
@@ -414,7 +432,7 @@
 
   /* No underline in the dropdown: the active link is simply bold */
   .site-nav__link.is-active {
-    font-weight: 700;
+    font-weight: 600;
   }
 
   /* Contact Us: full width, large button sizing, same outline style */
@@ -434,14 +452,14 @@
     background: var(--backdrop);
     opacity: 0;
     visibility: hidden;
-    transition: opacity var(--motion-duration) var(--motion-ease),
-      visibility 0s linear var(--motion-duration);
+    transition: opacity var(--motion-panel-out) var(--motion-ease),
+      visibility 0s linear var(--motion-panel-out);
   }
 
   .menu-backdrop.is-visible {
     opacity: 1;
     visibility: visible;
-    transition: opacity var(--motion-duration) var(--motion-ease), visibility 0s;
+    transition: opacity var(--motion-panel-in) var(--motion-ease), visibility 0s;
   }
 }
 
@@ -454,5 +472,10 @@
   .menu-icon__bar,
   .menu-backdrop {
     transition: none !important;
+  }
+
+  .site-nav__links > *,
+  .site-nav__cta {
+    animation: none !important;
   }
 }

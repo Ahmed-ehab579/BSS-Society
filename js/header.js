@@ -80,8 +80,12 @@
   const isThisPage = (link) =>
     link.origin === location.origin && pagePath(link.pathname) === pagePath(location.pathname);
   // The link for this page, or for pages with no link of their own the section their markup marks
-  // active (New muslim on the step pages, Start here on articles).
-  const activeLink = navLinks.find(isThisPage) || navLinks.find((link) => link.classList.contains("is-active")) || null;
+  // active (New Muslim on the step pages, Start here on articles).
+  // A material or article opened from the New Muslim path belongs to New Muslim, not the Library / Start here
+  const fromPath = new URLSearchParams(location.search).get("from") === "new-muslim";
+  const pathLink = fromPath ? navLinks.find((link) => link.getAttribute("href") === "new-muslim.html") : null;
+  if (pathLink) navLinks.forEach((link) => { if (link !== pathLink) link.removeAttribute("aria-current"); });
+  const activeLink = pathLink || navLinks.find(isThisPage) || navLinks.find((link) => link.classList.contains("is-active")) || null;
 
   navLinks.forEach((link) => link.classList.toggle("is-active", link === activeLink));
   if (activeLink && !activeLink.hasAttribute("aria-current")) activeLink.setAttribute("aria-current", "page");

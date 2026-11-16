@@ -48,7 +48,7 @@
   const canHover = window.matchMedia("(hover: hover)");
   const wideScreen = window.matchMedia("(min-width: 768px)");
   const DROPDOWN_GAP = 8;         // px between the icon and the dropdown
-  const DROPDOWN_CLOSE = 150;     // ms, matches --motion-duration-link in css/language.css
+  const DROPDOWN_CLOSE = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--motion-panel-out")) || 240;   // ms, the dropdown's closing transition (css/tokens.css)
   const CROSS = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
 
   // Case, accents and Arabic or Hindi marks don't matter: "espanol" finds Español

@@ -26,8 +26,8 @@
   max-width: 1153px;
   margin: var(--scale-600) auto 0;
   padding: var(--scale-300) var(--scale-500);
-  border: var(--border-md) solid var(--color-neutral-300);
-  border-radius: var(--scale-300);
+  border: var(--border-md) solid var(--border);
+  border-radius: var(--radius-sm);
   background: var(--surface-action-outline);
   font-size: var(--body-s-size);
   line-height: var(--body-s-line);
@@ -40,16 +40,20 @@
 
 /* Journey */
 .journey {
-  --line-muted: #b8b8b8;               /* dashed connector between locked cards */
-  --line-active: #5c5c5c;              /* connector once both cards are available */
+  --line-muted: var(--border);               /* dashed connector between locked cards */
+  --line-active: var(--text-body);              /* connector once both cards are available */
   --pin-done-ring: #c5d5b2;            /* Figma 970:2563 "Done": completed articles */
   --pin-done-dot: #6e8e49;
   --pin-turn-dot: #88b653;             /* Figma 970:2563 "Start here": the card whose turn it is, also "Continue" (pulses) */
-  --pin-idle-ring: #dbdbdb;            /* locked indicator: locked, unlocked early, or in progress but not its turn */
+  --pin-idle-ring: var(--border-subtle);            /* locked indicator: locked, unlocked early, or in progress but not its turn */
   --pin-turn-ring: var(--surface-cards);        /* Figma 970:2563 "Start here" ring */
-  --pin-idle-dot: #9f9f9f;
-  --card-stroke-active: #7d7d7d;       /* available card stroke */
-  --card-stroke-locked: #929292;       /* locked card stroke */
+  --pin-idle-dot: var(--text-muted);
+  --card-stroke-active: var(--color-neutral-400);   /* available card stroke: #8e8e8e, the system grey closest to the original #7d7d7d */
+  --card-stroke-locked: var(--border);       /* locked card stroke */
+  /* Card greens in every state: the original journey tones, kept by request (scoped to this section) */
+  --surface-action-outline-pressed: #94b47d;                        /* active card fill */
+  --surface-cards-completed-overlay: rgba(206, 217, 199, 0.76);     /* completed card wash */
+  --color-completed: #93a787;                                       /* completed check */
   --card-width: 275.56px;
   position: relative;
   max-width: 1153px;
@@ -94,7 +98,7 @@
   stroke-dasharray: 10 9;
   vector-effect: non-scaling-stroke;
   shape-rendering: geometricPrecision;  /* even anti-aliasing, so near-vertical runs don't snap to darker pixels */
-  transition: stroke var(--card-duration, 600ms) var(--card-ease, ease),
+  transition: stroke var(--card-duration, var(--motion-expand)) var(--card-ease, var(--motion-ease)),
     stroke-width var(--card-duration, 600ms) var(--card-ease, ease);
 }
 
@@ -142,7 +146,7 @@
   width: 52.61px;
   height: 52.61px;
   margin-bottom: 23.5px;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: var(--pin-idle-ring);
   isolation: isolate;                  /* keeps the pulse waves behind the dot */
   transition: background-color var(--motion-duration-hover) var(--motion-ease);
@@ -155,7 +159,7 @@
   margin: auto;
   width: 23.31px;
   height: 23.31px;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: var(--pin-idle-dot);
   transition: background-color var(--motion-duration-hover) var(--motion-ease);
 }
@@ -196,7 +200,7 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: var(--pin-turn-dot);
   opacity: 0;
   pointer-events: none;
@@ -238,7 +242,7 @@
   min-height: 428.65px;
   overflow: hidden;
   border: 0.5px solid var(--color-benefit-border);
-  border-radius: 21.312px;
+  border-radius: var(--radius-lg);
   background: var(--surface-cards);
   color: var(--color-card-text);
   transition: background-color var(--card-duration) var(--card-ease),
@@ -252,10 +256,10 @@
 }
 
 .journey-card__number {
-  font-size: 81.407px;
+  font-size: var(--display-size);
   line-height: 1;
-  font-weight: 300;
-  color: rgba(37, 37, 37, 0.35);
+  font-weight: 400;
+  color: var(--display-color);
   margin-bottom: var(--body-gap);
 }
 
@@ -302,7 +306,7 @@
   font-size: var(--body-s-size);
   line-height: 1.7;
   font-weight: 500;
-  color: #686868;                     /* subtitle colour on every card state */
+  color: var(--text-body);                     /* subtitle colour on every card state */
 }
 
 /* Reading button: only on keyboard focus (desktop). Never on touch screens or phones. */
@@ -313,7 +317,7 @@
   width: 44px;
   height: 44px;
   margin: 12px 0 0 auto;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: var(--surface-action-primary);
 }
 
@@ -324,7 +328,7 @@
 
 /* Elevation: the card whose turn it is sits above the flat ones */
 a.journey-card {
-  --card-shadow: 0 1px 2px rgba(37, 37, 37, 0.08), 0 8px 16px -4px rgba(37, 37, 37, 0.14), 0 20px 36px -12px rgba(37, 37, 37, 0.18);
+  --card-shadow: var(--shadow-lg);
   gap: 21px;                         /* always the expanded size: description visible, default colour */
   border-color: var(--card-stroke-active);
   transition: background-color var(--card-duration) var(--card-ease);
@@ -407,7 +411,7 @@ a.journey-card:focus-visible .journey-card__go {
   --icon-pad: 25px;                    /* panel padding above the icon */
   --icon-gap: 28px;                    /* icon to message */
   --icon-scale: 1.25;
-  --panel-gap: 50px;                   /* message to buttons */
+  --panel-gap: 80px;                   /* message to buttons: icon and message sit higher, by request */
   --spacer-top: var(--icon-pad);       /* replaced by the measured value */
   --icon-hover-top: calc(var(--spacer-top) + var(--icon-h) * (var(--icon-scale) - 1) / 2);
 }
@@ -467,8 +471,8 @@ a.journey-card:focus-visible .journey-card__go {
   padding: 25px 13px;
   /* Opaque card colour underneath (Figma "Component 59") plus the 89% overlay on top */
   background:
-    linear-gradient(var(--surface-cards-locked-overlay, rgba(232, 229, 220, 0.89)), var(--surface-cards-locked-overlay, rgba(232, 229, 220, 0.89))),
-    var(--surface-cards, #e8e5dc);
+    linear-gradient(var(--surface-cards-locked-overlay, var(--surface-cards-locked-overlay)), var(--surface-cards-locked-overlay, var(--surface-cards-locked-overlay))),
+    var(--surface-cards, var(--surface-card));
   color: var(--color-text);
   opacity: 0;
   pointer-events: none;
@@ -486,14 +490,14 @@ a.journey-card:focus-visible .journey-card__go {
 
 .journey-card__locked-title {
   max-width: 218px;
-  font-size: 21.75px;
+  font-size: var(--h6-size);
   line-height: 1.5;
   font-weight: 600;
 }
 
 .journey-card__locked-text {
   max-width: 187px;
-  font-size: 15.75px;
+  font-size: var(--body-m-size);
   line-height: 1.5;
   font-weight: 400;
 }
@@ -511,8 +515,6 @@ a.journey-card:focus-visible .journey-card__go {
 }
 
 .journey-card__locked-actions .btn--secondary {
-  height: 44px;
-  padding: var(--scale-300) var(--scale-400);
   background: transparent;
 }
 
@@ -664,7 +666,7 @@ a.journey-card:focus-visible .journey-card__go {
   gap: 4px;
   padding: 7px 14px;
   border: 1px solid var(--border-color-on-dark);
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--surface-action-primary);
   color: var(--color-text-on-dark);
   font-size: var(--label-m-size);
@@ -741,11 +743,11 @@ a.journey-card:focus-visible .journey-card__go {
   }
 
   .journey-card__number {
-    font-size: 67.35px;
+    font-size: var(--display-size);
   }
 
   .journey-card__title {
-    font-size: 22.12px;
+    font-size: var(--h6-size);
   }
 
   .journey-card__media {
@@ -775,11 +777,12 @@ a.journey-card:focus-visible .journey-card__go {
   }
 
   .journey-card__locked-title {
-    font-size: 18px;
+    font-size: var(--body-l-size);
+    text-wrap: balance;                /* even lines at every phone width: no word left alone on line 2 */
   }
 
   .journey-card__locked-text {
-    font-size: 14px;
+    font-size: var(--body-s-size);
   }
 
   .journey-card.is-locked {
@@ -803,14 +806,23 @@ a.journey-card:focus-visible .journey-card__go {
     padding: calc(6px + 3px) calc(var(--scale-200) + 3px);
   }
 
-  /* Section CTA keeps the regular mobile size and pressed feedback (as on the homepage) */
-  .topics-section .section-cta {
-    height: 48px;
-    padding: var(--scale-300) var(--scale-600);
-  }
-
+  /* Section CTA: the same large button as the homepage sections (56px), with its pressed feedback */
   .topics-section .section-cta:active .btn__arrow-track {
     transform: none;
+  }
+
+  /* The open (active) step card: a slightly darker surface on phones (#e1ddd1); locked cards keep theirs */
+  .journey-card:not(.is-locked) {
+    --surface-cards: #e1ddd1;
+  }
+
+  /* Step card titles: even lines, never one word alone on the last line */
+  .journey-card__title {
+    text-wrap: balance;
+    color: var(--color-card-heading);  /* card headings use the heading colour (#272727), as on every other card */
+    font-size: var(--h5-size);          /* H5 (20/28 on phones), H5 weight (500) */
+    line-height: var(--h5-line);
+    font-weight: var(--h5-weight);
   }
 }
 
@@ -818,7 +830,7 @@ a.journey-card:focus-visible .journey-card__go {
   /* No movement; keep short cross-fades so state changes stay readable */
   .journey-card,
   a.journey-card {
-    --card-duration: 200ms;
+    --card-duration: var(--motion-base);
     transition: none;
   }
 
@@ -829,5 +841,13 @@ a.journey-card:focus-visible .journey-card__go {
   .journey__segment,
   .journey-badge {
     transition: none;
+  }
+}
+
+/* Page title: narrower than the 700px default so it breaks as "Start with clarity / and confidence" */
+@media (min-width: 1100px) {
+  .intro__heading.start-title {
+    flex-basis: 560px;
+    max-width: 560px;
   }
 }

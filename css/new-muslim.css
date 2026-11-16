@@ -20,7 +20,7 @@
 /* ---- Step card ---------------------------------------------------------------------------- */
 
 .path-step {
-  border: var(--scale-12) solid var(--color-neutral-400);
+  border: var(--scale-12) solid var(--border);
   border-radius: var(--radius-step);
   background: var(--surface-cards);
   transition: background-color var(--motion-duration-hover) var(--motion-ease);
@@ -30,11 +30,22 @@
   background: var(--surface-cards-hovered-neutral);
 }
 
+/* Hover: a closed step darkens one step on the card scale (card → card hover), the colour it keeps once open */
+@media (hover: hover) {
+  .path-step:not(.is-open):hover {
+    background: var(--surface-card-hover);
+  }
+}
+
 /* Number, title and text on the left; buttons bottom right */
 .path-step__header {
+  cursor: pointer;                     /* the whole header opens the step (js/new-muslim.js) */
   display: grid;
-  grid-template-areas: "intro actions";
+  grid-template-areas:
+    "intro progress"
+    "intro actions";
   grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto 1fr;
   column-gap: var(--scale-900);
   margin: 0 var(--scale-900);
   padding: var(--scale-900) 0 var(--scale-800);
@@ -54,9 +65,9 @@
 .path-step__number {
   display: block;
   color: var(--color-step-number);
-  font-size: 92px;
+  font-size: var(--display-m-size);      /* Display M (82, phone 60), light: between Display and Display L, by request */
   line-height: 82px;
-  font-weight: 300;
+  font-weight: var(--display-l-weight);
   letter-spacing: -4.1px;
 }
 
@@ -95,6 +106,15 @@
 
 .path-step.is-open .path-step__chevron {
   transform: rotate(180deg);
+}
+
+/* Step progress (js/done.js): exactly the step pages' ring (one component, one look), placed top right;
+   the buttons stay bottom right */
+.path-step__header > .progress-ring {
+  grid-area: progress;
+  justify-self: end;
+  align-self: start;
+  margin-top: 10px;                    /* the ring's top lines up with the top of the "01" digits */
 }
 
 /* ---- Topics: rows on the left, the selected topic's preview on the right ------------------- */
@@ -138,7 +158,7 @@
 .path-step.is-open .path-step__body {
   opacity: 1;
   transform: none;
-  transition: opacity var(--motion-duration-expand) var(--motion-ease-expand) 80ms,
+  transition: opacity var(--motion-duration-expand) var(--motion-ease-expand) var(--motion-fast),
     transform var(--motion-duration-expand) var(--motion-ease-expand);
 }
 
@@ -165,17 +185,28 @@
   align-items: center;
   gap: var(--scale-300);
   width: 100%;
-  padding: 26px 0 28px;
+  padding: var(--scale-500) var(--scale-400);   /* even 20px top and bottom; 16px sides so the selected fill has room */
   border: 0;
-  border-bottom: var(--border-md) solid var(--color-neutral-300);
-  background: none;
+  border-bottom: var(--border-md) solid var(--border);
+  border-radius: 0;
+  background: transparent;
   color: var(--color-text-body);
   font-family: inherit;
   text-align: left;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  transition: color var(--motion-duration) var(--motion-ease),
-    border-color var(--motion-duration-hover) var(--motion-ease);
+  transition: color var(--motion-duration-hover) var(--motion-ease),
+    background-color var(--motion-duration-hover) var(--motion-ease),
+    border-color var(--motion-duration-hover) var(--motion-ease),
+    border-radius var(--motion-duration-hover) var(--motion-ease);
+}
+
+/* Selected topic: one step darker than the open card (#dedace → #d2cdc0), rounded; its divider fades out */
+.topic.is-selected .topic__row {
+  border-bottom-color: transparent;
+  border-radius: var(--radius-sm);
+  background: var(--surface-card-pressed);
+  color: var(--color-heading);
 }
 
 .topic:last-child .topic__row {
@@ -185,9 +216,10 @@
 .topic__title {
   flex: 1;
   min-width: 0;
-  font-size: var(--h5-size);
-  line-height: var(--h5-line);
+  font-size: var(--body-xl-size);    /* Body XL: 20/32, phone 18/29 (was the 26px H5), by request */
+  line-height: var(--body-xl-line);
   font-weight: var(--body-weight);
+  transition: font-weight var(--motion-duration-hover) var(--motion-ease);
 }
 
 .topic.is-selected .topic__title {
@@ -205,7 +237,7 @@
 .topic__row:focus-visible {
   outline: 2px solid var(--color-neutral-400);
   outline-offset: 2px;
-  border-radius: var(--scale-100);
+  border-radius: var(--radius-xs);
 }
 
 /* Desktop: all previews share the right column and cross-fade when the topic changes */
@@ -226,7 +258,7 @@
   opacity: 1;
   visibility: visible;
   transform: none;
-  transition: opacity var(--motion-duration-hover) var(--motion-ease) 60ms,
+  transition: opacity var(--motion-duration-hover) var(--motion-ease) var(--motion-fast),
     transform var(--motion-duration-hover) var(--motion-ease) 60ms, visibility 0s;
 }
 
@@ -239,17 +271,17 @@
   display: flex;
   flex-direction: column;
   gap: var(--scale-500);
-  padding: var(--scale-600);
-  border: var(--scale-12) solid var(--color-neutral-400);
-  border-radius: 18px;
-  background: var(--surface-preview);
+  padding: var(--scale-400);   /* 16px all round (was 24), by request */
+  border: var(--scale-12) solid var(--border);
+  border-radius: var(--radius-lg);
+  background: #f1efe6;                 /* Figma Surface/Preview, phones and desktop (the token stays #f9f7f1 for About) */
 }
 
 .topic-preview__image {
   width: 100%;
   height: 170px;
-  border: var(--scale-12) solid var(--color-neutral-400);
-  border-radius: 10px;
+  border: var(--scale-12) solid var(--border);
+  border-radius: var(--radius-sm);
   object-fit: cover;
 }
 
@@ -309,9 +341,6 @@
 
 .callout__action {
   gap: var(--scale-200);
-  height: 52px;
-  padding: 0 var(--scale-600);
-  font-size: var(--label-l-size);
 }
 
 /* ---- Responsive ------------------------------------------------------------------------------- */
@@ -376,23 +405,29 @@
   .path-step__header {
     grid-template-areas:
       "intro"
+      "progress"
       "actions";
     grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
     row-gap: var(--scale-600);
     margin: 0 var(--scale-500);
     padding: var(--scale-600) 0;
   }
 
+  /* Phones: the same ring, under the text */
+  .path-step__header > .progress-ring {
+    justify-self: start;
+    margin-top: 0;
+  }
+
   .path-step__number {
-    font-size: 64px;
+    font-size: var(--display-l-size);   /* 64px on phones, as in the earlier version (was Display M, 60) */
     line-height: 60px;
     letter-spacing: -2.8px;
   }
 
   .path-step__title {
     margin-top: var(--scale-300);
-    font-size: var(--h5-size);
-    line-height: var(--h5-line);
     letter-spacing: -0.4px;
   }
 
@@ -416,31 +451,25 @@
   }
 
   .topic__row {
-    padding: var(--scale-400) 0;
+    padding: var(--scale-400);
   }
 
-  .topic__title {
-    font-size: var(--body-l-size);
-    line-height: 26px;
-  }
 
-  /* 16px inset (20px at the bottom to balance the text's line spacing); the image to text gap stays
-     below the padding so the content reads as one group; the image radius is the card radius minus the
-     padding, so the corners run parallel */
+  /* Preview card on phones: a tight 12px inset, 16px between the image and the text */
   .topic-preview__card {
     gap: var(--scale-400);   /* clearly larger than the space between text lines */
-    padding: var(--scale-400) var(--scale-400) var(--scale-500);
-    border-radius: var(--scale-600);
+    padding: var(--scale-300);   /* 12px all round on phones (was 16 / 20), by request */
+    border-radius: var(--radius-lg);
   }
 
   .topic-preview__image {
     height: auto;
     aspect-ratio: 16 / 10;   /* keeps the same proportions on every phone width */
-    border-radius: var(--scale-200);
+    border-radius: var(--radius-sm);
   }
 
   .topic-preview__text {
-    font-size: 15px;
+    font-size: var(--body-m-size);
     line-height: 25px;
   }
 
@@ -451,10 +480,6 @@
     padding: var(--scale-600);
   }
 
-  .callout__heading {
-    font-size: 30px;
-    line-height: 38px;
-  }
 
   .callout__body {
     font-size: var(--body-m-size);
@@ -476,9 +501,463 @@
   .path-step__body,
   .path-step.is-open .path-step__body,
   .topic__row,
+  .topic__title,
   .topic__chevron,
   .topic-preview,
   .topic.is-selected .topic-preview {
     transition: none;
+  }
+}
+
+/* Phones: the ring sits top right, level with the step number (number left, ring right), as on desktop.
+   The intro's parts join the header grid so the title and text can run under the ring's column. */
+@media (max-width: 767px) {
+  .path-step__header {
+    grid-template-areas:
+      "number progress"
+      "title progress"
+      "text text"
+      "actions actions";
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto 1fr auto auto;
+    column-gap: var(--scale-400);
+    row-gap: 0;
+  }
+
+  .path-step__intro {
+    display: contents;
+  }
+
+  .path-step__number {
+    grid-area: number;
+  }
+
+  .path-step__title {
+    grid-area: title;
+    align-self: start;
+  }
+
+  .path-step__text {
+    grid-area: text;
+  }
+
+  .path-step__header > .progress-ring {
+    justify-self: end;
+    align-self: start;
+    margin-top: 0;
+  }
+
+  .path-step__actions {
+    margin-top: var(--scale-600);
+  }
+}
+
+/* Phones: the step ring 20% smaller (76px → 61px); the count keeps its size */
+@media (max-width: 767px) {
+  .path-step__header .progress-ring__dial,
+  .path-step__header .progress-ring svg:not(.progress-ring__check) {
+    width: 61px;
+    height: 61px;
+  }
+}
+
+/* Phones: the title on its own full-width row under the number and ring (one line when it fits),
+   8px under the ring's caption; the count inside the ring in the H6 style (18/26, 600), centred */
+@media (max-width: 767px) {
+  .path-step__header {
+    grid-template-areas:
+      "number progress"
+      "title title"
+      "text text"
+      "actions actions";
+    grid-template-rows: auto auto auto auto;
+  }
+
+  .path-step__title {
+    margin-top: var(--scale-200);   /* 8px under the ring's caption */
+  }
+
+  .path-step__header .progress-ring__count,
+  .path-step__header .progress-ring__count.is-long {
+    font-size: var(--h6-size);
+    font-weight: 500;   /* a step lighter than H6's 600 */
+  }
+}
+
+/* Phones: the step number one step up the display scale, Display (72px, the size above 64) */
+@media (max-width: 767px) {
+  .path-step__number {
+    font-size: 72px;
+    line-height: 64px;
+    letter-spacing: -3.4px;
+  }
+}
+
+/* Phones: the open topic is one card. Its highlight (#d2cdc0) wraps the title row and the preview,
+   which sits inside it, inset 12px, 12px under the title. Corners nest: 24 outside = 12 inside + 12 inset. */
+@media (max-width: 767px) {
+  .topic {
+    display: block;
+    border-radius: var(--radius-lg);
+    transition: background-color var(--motion-duration-hover) var(--motion-ease);
+  }
+
+  .topic.is-selected {
+    background: var(--surface-card-pressed);
+  }
+
+  .topic.is-selected .topic__row {
+    padding-bottom: var(--scale-300);   /* 12px from the title to the card */
+    background: transparent;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  }
+
+  .topic-preview__card {
+    margin: 0 var(--scale-300) var(--scale-300);   /* 12px inset */
+    border-radius: var(--radius-sm);
+  }
+}
+
+/* Phones: the open topic's title a step heavier (600, was 500) */
+@media (max-width: 767px) {
+  .topic.is-selected .topic__title {
+    font-weight: 600;
+  }
+}
+
+/* Phones: topic titles one step up, H5 size (20/28, was Body XL 18/29), on every topic so opening one
+   doesn't shift the list; 16px from the open title to its preview card */
+@media (max-width: 767px) {
+  .topic__title {
+    font-size: var(--h5-size);
+    line-height: var(--h5-line);
+  }
+
+  .topic.is-selected .topic__row {
+    padding-bottom: var(--scale-400);
+  }
+}
+
+/* Phones: the preview text set in from the card's sides (20px, the photo keeps its 12px inset) */
+@media (max-width: 767px) {
+  .topic-preview__text {
+    padding-inline: var(--scale-200);
+  }
+}
+
+/* Phones: topic titles 22/30 (between H5 20 and H4 26: at 26 even "Who is God in Islam?" wrapped);
+   no lone word on a second line; 20px from the open title to its card */
+@media (max-width: 767px) {
+  .topic__title {
+    font-size: 22px;
+    line-height: 30px;
+    text-wrap: pretty;
+  }
+
+  .topic.is-selected .topic__row {
+    padding-bottom: var(--scale-500);
+  }
+}
+
+/* Phones: the step number one more step up the display scale, Display M (82px, as on desktop) */
+@media (max-width: 767px) {
+  .path-step__number {
+    font-size: 82px;
+    line-height: 72px;
+    letter-spacing: -4.1px;
+  }
+}
+
+/* Phones: "Discover the content" / "Hide the content" shows no hover or pressed state; the chevron and
+   the label already say what the tap did */
+@media (max-width: 767px) {
+  .path-step__toggle,
+  .path-step__toggle:hover,
+  .path-step__toggle:active,
+  .path-step__toggle:focus:not(:focus-visible) {
+    background: transparent;
+    border-color: var(--border-color-on-light);
+    color: var(--color-text-on-light);
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Desktop and tablet (Figma: Path step card): the number and the ring share the top row; the title and
+   text sit under them on the left, the buttons bottom right, level with the end of the text */
+@media (min-width: 768px) {
+  .path-step__header {
+    grid-template-areas:
+      "number progress"
+      "title actions"
+      "text actions";
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto auto auto;
+    column-gap: var(--scale-400);
+    row-gap: 0;
+  }
+
+  .path-step__intro {
+    display: contents;
+  }
+
+  .path-step__number {
+    grid-area: number;
+  }
+
+  .path-step__title {
+    grid-area: title;
+  }
+
+  .path-step__text {
+    grid-area: text;
+  }
+
+  .path-step__header > .progress-ring {
+    grid-area: progress;
+    justify-self: end;
+    align-self: start;
+    margin-top: 0;
+    gap: 0;
+  }
+
+  .path-step__actions {
+    grid-area: actions;
+    align-self: end;
+  }
+}
+
+/* Finished topics carry a Done pill (js/new-muslim.js): beside the title on desktop, above it on phones */
+.topic__done {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  padding: 0 var(--scale-300);
+  border: 0.3px solid #878787;
+  border-radius: var(--radius-pill);
+  background: #c6e0ad;                 /* the Done green (Figma: Path step card) */
+  color: var(--color-heading);
+  font-size: var(--body-s-size);
+  line-height: var(--body-s-line);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.topic__done[hidden] {
+  display: none;
+}
+
+.topic__title + .topic__done {
+  margin-left: calc(var(--scale-200) - var(--scale-300));   /* 6px from the title (the row keeps 12) */
+}
+
+/* Phones (Figma: Path step card): ring count 16/26, 4px to its caption; the step text a little narrower;
+   no arrow on Start step; topic titles 18/30; the open topic a framed card with the preview set inside */
+@media (max-width: 767px) {
+  .path-step__header > .progress-ring {
+    gap: var(--scale-100);
+  }
+
+  .path-step__header .progress-ring__count,
+  .path-step__header .progress-ring__count.is-long {
+    font-size: var(--body-m-size);
+    line-height: var(--body-m-line);
+    font-weight: 400;
+  }
+
+  .path-step__text {
+    max-width: 252px;
+  }
+
+  .path-step__start .btn__arrow-clip {
+    display: none;
+  }
+
+  .topic__row {
+    display: grid;
+    grid-template-areas:
+      "done ."
+      "title chevron";
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: var(--scale-300);
+    row-gap: var(--scale-100);
+    padding: var(--scale-400) 7px var(--scale-400) var(--scale-400);
+  }
+
+  .topic__row:not(:has(.topic__done:not([hidden]))) {
+    grid-template-areas: "title chevron";
+  }
+
+  .topic__title {
+    grid-area: title;
+    font-size: 18px;
+    line-height: 30px;
+    font-weight: 500;
+  }
+
+  .topic__done {
+    grid-area: done;
+    justify-self: start;
+  }
+
+  .topic__title + .topic__done {
+    margin-left: 0;
+  }
+
+  .topic__chevron {
+    grid-area: chevron;
+  }
+
+  .topic.is-selected {
+    padding: 10px 7px;
+    box-shadow: inset 0 0 0 0.3px #5d5d5d;
+  }
+
+  .topic.is-selected .topic__row {
+    padding: var(--scale-400) 2px 13px 7px;
+  }
+
+  .topic.is-selected .topic__title {
+    font-weight: 600;
+  }
+
+  .topic-preview__card {
+    gap: var(--scale-400);
+    margin: 0 5px var(--scale-300);
+    padding: var(--scale-400) var(--scale-300);
+    border-radius: var(--radius-md);
+  }
+
+  .topic-preview__text {
+    font-size: var(--body-s-size);
+    line-height: var(--body-s-line);
+  }
+}
+
+/* Phones: no divider under the topic just above the open one; the open card's own edge separates them */
+@media (max-width: 767px) {
+  .topic:has(+ .topic.is-selected) .topic__row {
+    border-bottom-color: transparent;
+  }
+}
+
+/* Phones: preview text 15/24; the card 15% narrower than before (it was inset 5px each side), centred */
+@media (max-width: 767px) {
+  .topic-preview__text {
+    font-size: 15px;
+    line-height: 24px;
+  }
+
+  .topic-preview__card {
+    width: calc((100% - 10px) * 0.85);
+    margin: 0 auto var(--scale-300);
+  }
+}
+
+/* Phones: the step number 76px, by request */
+@media (max-width: 767px) {
+  .path-step__number {
+    font-size: 76px;
+    line-height: 68px;
+    letter-spacing: -3.8px;
+  }
+}
+
+/* Phones: a closed step card's edge darker (#bbbbbb → #5b5b5b, two steps past neutral-400), by request */
+@media (max-width: 767px) {
+  .path-step:not(.is-open) {
+    border-color: #5b5b5b;
+  }
+}
+
+/* Phones only: a longer step line (js/new-muslim-data.js) and a tick in the Done badge */
+.path-step__text .text-phone,
+.topic__done-icon {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  /* The step line at full width, three lines */
+  .path-step__text {
+    max-width: none;
+  }
+
+  .path-step__text .text-wide {
+    display: none;
+  }
+
+  .path-step__text .text-phone {
+    display: inline;
+  }
+
+  /* Topics: titles 20px from the list's edge, chevrons 12px; the open topic's frame keeps 12px each side
+     and its preview card starts in line with the title */
+  .topic__row {
+    padding-right: var(--scale-300);
+    padding-left: var(--scale-500);
+  }
+
+  .topic.is-selected {
+    padding: 10px var(--scale-300);
+  }
+
+  .topic.is-selected .topic__row {
+    padding: var(--scale-400) 0 13px var(--scale-200);
+  }
+
+  .topic-preview__card {
+    width: auto;
+    margin: 0 0 var(--scale-300) var(--scale-200);
+  }
+
+  /* The Done badge as on the step page's cards (css/done.css .resource-card__done), 12px above the title */
+  .topic__row {
+    row-gap: var(--scale-300);
+  }
+
+  .topic__done {
+    gap: 2px;
+    height: 33px;
+    padding: 0 var(--scale-400) 0 var(--scale-100);
+    border: 0;
+    background: var(--green-100);
+    color: var(--green-900);
+    font-size: var(--label-m-size);
+    line-height: var(--label-m-line);
+    font-weight: var(--label-weight);
+  }
+
+  .topic__done-icon {
+    display: block;
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    color: var(--green-700);
+  }
+}
+
+/* Phones: topic titles a step larger (20/28, was 18/30); the open topic's frame 12px each side, its title,
+   chevron and preview card all set 12px in, so both sides match (closed rows the same, nothing shifts) */
+@media (max-width: 767px) {
+  .topic__title {
+    font-size: var(--h5-size);
+    line-height: var(--h5-line);
+  }
+
+  .topic__row {
+    padding-left: var(--scale-300);
+  }
+
+  .topic.is-selected .topic__row {
+    padding-left: 0;
+  }
+
+  .topic-preview__card {
+    margin-left: 0;
+  }
+
+  /* Done badge: a thin darker edge, as on the cards */
+  .topic__done {
+    border: 0.3px solid #5b5b5b;
   }
 }

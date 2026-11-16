@@ -50,9 +50,9 @@
 .hero__media {
   position: relative;
   height: 656px;
-  border-radius: 30px;
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.21);
+  box-shadow: var(--shadow-media);
 }
 
 .hero__media img {
@@ -106,10 +106,6 @@
     gap: var(--scale-900);
   }
 
-  .hero__heading {
-    font-size: 36px;
-    line-height: 52px;
-  }
 
   .hero__break {
     display: inline;
@@ -130,16 +126,13 @@
   .hero__actions .btn {
     flex: 1 1 0;
     min-width: max-content;
-    height: 52px;
     padding-inline: var(--scale-400);
-    font-size: 15px;
-    line-height: 22px;
   }
 
   .hero__media {
     height: 360px;
     aspect-ratio: auto;
-    border-radius: 16px;
+    border-radius: var(--radius-md);
   }
 
   .hero__media img {
@@ -190,19 +183,19 @@
 
 .about__text {
   color: var(--color-text-muted);
+  font-weight: 400;   /* regular, on phones and desktop */
+}
+
+/* The words fill to #474747 as the paragraph scrolls up (js/motion.js); without the script, the same colour */
+.about .about__text,
+.about .about__text * {
+  color: #474747;
 }
 
 .about__em {
   color: var(--tone);
 }
 
-/* The primary button that closes each section: a step above the Large button */
-.section-cta {
-  height: 60px;
-  padding: var(--scale-400) var(--scale-800);
-  font-size: 18px;
-  line-height: 26px;
-}
 
 /* Start Here (panel styles: .section-panel) */
 .start__content {
@@ -290,29 +283,21 @@
 
   .about__heading,
   .start__heading {
-    font-size: 32px;
-    line-height: 40px;
     letter-spacing: -0.64px;
   }
 
-  .about__text {
-    font-size: var(--body-xl-size);
-    line-height: var(--body-xl-line);
+  /* Two words on the second line, as on desktop: "A clear place to / explore Islam" */
+  .about__heading {
+    max-width: 300px;
   }
+
 
   .about__intro .btn,
   .start__intro .btn {
     width: 100%;
   }
 
-  /* Section CTAs: a smaller step of the desktop size, and pressed feedback */
-  .section-cta {
-    height: 52px;
-    padding: var(--scale-300) var(--scale-800);
-    font-size: var(--label-l-size);
-    line-height: var(--label-l-line);
-  }
-
+  /* Section CTAs: pressed feedback on touch */
   .section-cta:active .btn__arrow-track {
     transform: none;
   }
@@ -325,13 +310,20 @@
 
   .start__cards .guide-card {
     flex: none;
-    width: auto;
+    width: 80%;                        /* 20% narrower than the column, centred */
     max-width: none;
-    border-radius: 16px;
+    align-self: center;
+    border-radius: var(--radius-md);
+    --surface-cards: #e1ddd1;          /* default surface on phones, as the Library cards */
   }
 
   .start__cards .guide-card__text {
     max-width: none;
+  }
+
+  /* A shorter photo: the card 15% shorter (574px to 488px at 390px wide) */
+  .start__cards .guide-card__media {
+    height: 202px;
   }
 }
 
@@ -388,7 +380,7 @@
   flex: 0 0 300px;
   height: 417px;
   overflow: hidden;
-  border-radius: 26.957px;
+  border-radius: var(--radius-lg);
   color: var(--color-text-on-dark);
   user-select: none;
   -webkit-user-select: none;
@@ -464,7 +456,7 @@
 .topic-card__cta-label {
   flex: none;
   width: 64px;
-  font-size: 18px;
+  font-size: var(--body-l-size);
   line-height: 20.5px;
   font-weight: var(--h5-weight);
   white-space: nowrap;
@@ -532,7 +524,7 @@
   grid-column: 2;
   grid-row: 1 / 3;
   overflow: hidden;
-  border-radius: 28.895px;
+  border-radius: var(--radius-lg);
 }
 
 .new-muslim__photo img {
@@ -596,8 +588,10 @@
 }
 
 @media (max-width: 767px) {
-  .library__content {
-    gap: var(--scale-1000);
+  .start__content,
+  .library__content,
+  .new-muslim__content {
+    gap: var(--scale-900);              /* button to cards: 40px in every section */
   }
 
   .carousel {
@@ -605,13 +599,14 @@
   }
 
   .carousel__track {
-    gap: var(--scale-400);
+    gap: var(--scale-500);             /* as on the Start here page */
   }
 
-  /* One main card plus a preview of the next */
+  /* The Start here topic cards' size (260px, 287:406), the next card peeking in */
   .topic-card {
-    flex-basis: calc(100% - 56px);
-    border-radius: 16px;
+    flex-basis: 260px;
+    aspect-ratio: 287 / 406;
+    border-radius: var(--radius-md);
   }
 
   .topic-card {
@@ -627,14 +622,10 @@
     gap: var(--scale-300);
   }
 
-  .topic-card__title {
-    font-size: var(--h5-size);
-    line-height: var(--h5-line);
-  }
 
   .new-muslim__photo,
   .benefit-card {
-    border-radius: 16px;
+    border-radius: var(--radius-md);
   }
 }
 
@@ -651,5 +642,17 @@
   .topic-card__cta,
   .topic-card__cta-label {
     transition: none;
+  }
+}
+
+/* Desktop and tablet: the guide card changes first made on phones (2026-11-14):
+   default surface #e1ddd1 and a shorter photo, the card 15% shorter (610px to 519px) */
+@media (min-width: 768px) {
+  .start__cards .guide-card {
+    --surface-cards: #e1ddd1;
+  }
+
+  .start__cards .guide-card__media {
+    height: 197px;
   }
 }

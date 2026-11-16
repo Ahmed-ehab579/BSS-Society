@@ -29,6 +29,11 @@
     crumb.textContent = back.parent;
     document.querySelector("[data-topic-label]").textContent = back.current;
     document.body.classList.add("is-standalone-article");
+    // From the New Muslim path: "Mark as done" at the end, where Start here has "Mark as read" (js/done.js)
+    const key = params.get("key");
+    if (from === "new-muslim" && key && window.BSS?.done) {
+      document.querySelector("[data-completion]").insertAdjacentHTML("afterend", window.BSS.done.blockHtml(key));
+    }
   }
   const topicId = P && P.topic(requested) ? requested : 1;
 
@@ -37,13 +42,53 @@
 
   // Save this article (js/saved-menu.js): it belongs to the Start here path wherever it was opened from
   const saveButton = document.querySelector("[data-save]");
-  if (saveButton && window.BSS?.saveButton) {
-    window.BSS.saveButton(saveButton, () => ({
-      key: `article-${topicId}`, path: "start-here", type: "article", label: `Topic 0${topicId}`,
-      title: document.querySelector(".article-hero__title").textContent.trim(),
-      image: document.querySelector(".article-hero__image").getAttribute("src"),
-      url: `article.html?topic=${topicId}`,
+  const articleEntry = () => ({
+    key: `article-${topicId}`, path: "start-here", type: "article", label: `Topic 0${topicId}`,
+    title: document.querySelector(".article-hero__title").textContent.trim(),
+    image: document.querySelector(".article-hero__image").getAttribute("src"),
+    url: `article.html?topic=${topicId}`,
+  });
+  if (saveButton && window.BSS?.saveButton) window.BSS.saveButton(saveButton, articleEntry);
+
+  // From the New Muslim path, phones: Share, Save and Done as icon buttons in a row under the photo, as on
+  // the path's material pages (css/article.css hides the Save pill and the breadcrumb there)
+  const doneKey = params.get("key");
+  if (from === "new-muslim" && doneKey && window.BSS?.done) {
+    document.body.classList.add("is-path-article");
+    document.querySelector(".article-hero").insertAdjacentHTML("afterend", `<div class="article-tools">
+      <button class="book__icon-btn" type="button" data-article-share aria-label="Share" aria-haspopup="dialog" aria-expanded="false">
+        <img src="assets/icons/share.svg" width="14.4" height="16" alt="">
+      </button>
+      <button class="book__icon-btn" type="button" data-book-save aria-pressed="false" aria-label="Save this article">
+        <img src="assets/icons/bookmark.svg" width="11.55" height="14.85" alt="" data-icon="off">
+        <img src="assets/icons/bookmark-filled.svg" width="11.55" height="14.85" alt="" data-icon="on">
+      </button>
+      <button class="book__icon-btn book__done-btn" type="button" data-article-done aria-pressed="false" aria-label="Mark as done">
+        <svg class="done-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true">
+          <path class="done-icon__tick" d="M4.5 12.5l4.8 4.8L19.5 7" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>`);
+    const tools = document.querySelector(".article-tools");
+    const shareButton = tools.querySelector("[data-article-share]");
+    shareButton.addEventListener("click", () => window.BSS.share?.open(shareButton, {
+      title: document.querySelector(".article-hero__title").textContent.trim(), url: location.href,
     }));
+    if (window.BSS.saveButton) window.BSS.saveButton(tools.querySelector("[data-book-save]"), articleEntry);
+    const doneButton = tools.querySelector("[data-article-done]");
+    const showDone = () => doneButton.setAttribute("aria-pressed", String(window.BSS.done.has(doneKey)));
+    doneButton.addEventListener("click", () => {
+      const marking = !window.BSS.done.has(doneKey);
+      window.BSS.done.set(doneKey, marking);
+      showDone();
+      doneButton.classList.remove("is-popping");
+      if (marking) {
+        doneButton.getBoundingClientRect();   // restart the pop on quick repeat presses
+        doneButton.classList.add("is-popping");
+      }
+    });
+    showDone();
+    window.BSS.done.onChange(showDone);
   }
 
   /* ---- Reading progress bar: 0% when the text reaches the top, 100% at the end of the last section ---- */

@@ -5,21 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Library — Best Speech Society</title>
   <link rel="icon" type="image/svg+xml" href="assets/icons/brand-symbol.svg">
+  <script src="js/frame-top.js"></script>
+  <script src="js/fresh.js?v=1"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300..700&display=swap">
-  <link rel="stylesheet" href="css/tokens.css?v=37">
-  <link rel="stylesheet" href="css/base.css?v=7">
-  <link rel="stylesheet" href="css/header.css?v=14">
-  <link rel="stylesheet" href="css/saved-menu.css?v=6">
-  <link rel="stylesheet" href="css/language.css?v=5">
-  <link rel="stylesheet" href="css/intro.css?v=6">
-  <link rel="stylesheet" href="css/resource-card.css?v=8">
-  <link rel="stylesheet" href="css/book.css?v=13">
-  <link rel="stylesheet" href="css/carousel.css?v=3">
-  <link rel="stylesheet" href="css/preview.css?v=20">
-  <link rel="stylesheet" href="css/library.css?v=30">
-  <link rel="stylesheet" href="css/footer.css?v=3">
+  <link rel="stylesheet" href="css/tokens.css?v=54">
+  <link rel="stylesheet" href="css/base.css?v=19">
+  <link rel="stylesheet" href="css/contact-dialog.css?v=4">
+  <link rel="stylesheet" href="css/header.css?v=16">
+  <link rel="stylesheet" href="css/saved-menu.css?v=15">
+  <link rel="stylesheet" href="css/language.css?v=12">
+  <link rel="stylesheet" href="css/intro.css?v=9">
+  <link rel="stylesheet" href="css/resource-card.css?v=9">
+  <link rel="stylesheet" href="css/book.css?v=20">
+  <link rel="stylesheet" href="css/carousel.css?v=6">
+  <link rel="stylesheet" href="css/preview.css?v=41">
+  <link rel="stylesheet" href="css/share.css?v=5">
+  <link rel="stylesheet" href="css/library.css?v=51">
+  <link rel="stylesheet" href="css/footer.css?v=6">
+  <link rel="stylesheet" href="css/motion.css?v=4">
+  <script src="js/motion.js?v=2"></script>
 </head>
 <body>
   <header class="site-header">
@@ -35,12 +41,12 @@
       <nav class="site-nav" id="site-nav" aria-label="Main">
         <ul class="site-nav__links">
           <li><a class="site-nav__link" href="index.html" data-label="Home">Home</a></li>
-          <li><a class="site-nav__link" href="about.html" data-label="About Us">About Us</a></li>
+          <li><a class="site-nav__link" href="about.html" data-label="About us">About us</a></li>
           <li><a class="site-nav__link" href="start-here.html" data-label="Start here">Start here</a></li>
           <li><a class="site-nav__link is-active" href="library.html" data-label="Library" aria-current="page">Library</a></li>
-          <li><a class="site-nav__link" href="new-muslim.html" data-label="New muslim">New muslim</a></li>
+          <li><a class="site-nav__link" href="new-muslim.html" data-label="New Muslim">New Muslim</a></li>
         </ul>
-        <a class="btn btn--small btn--secondary site-nav__cta site-nav__cta--menu" href="index.html#contact">Contact Us</a>
+        <a class="btn btn--small btn--secondary site-nav__cta site-nav__cta--menu" href="index.html#contact">Contact us</a>
       </nav>
       <button class="saved-toggle" type="button" aria-label="Saved" aria-haspopup="dialog" aria-expanded="false" data-saved-toggle>
         <img src="assets/icons/saved.svg" width="24" height="24" alt="">
@@ -56,21 +62,21 @@
           <span class="menu-icon__bar"></span>
         </span>
       </button>
-      <a class="btn btn--small btn--secondary site-nav__cta site-nav__cta--bar" href="index.html#contact">Contact Us</a>
+      <a class="btn btn--small btn--secondary site-nav__cta site-nav__cta--bar" href="index.html#contact">Contact us</a>
     </div>
   </header>
   <div class="menu-backdrop" aria-hidden="true"></div>
 
   <main class="page">
-    <section class="container intro intro--top" aria-labelledby="intro-heading">
-      <h1 class="text-h1 intro__heading" id="intro-heading">Explore the library</h1>
-      <p class="text-body-xl intro__text">Find carefully selected books, articles, videos, and audio resources to help you learn about Islam with clarity, depth, and confidence at your own pace.</p>
+    <section class="container intro intro--top" aria-labelledby="intro-heading" data-reveal-group>
+      <h1 class="text-h1 intro__heading" id="intro-heading" data-reveal>Explore the library</h1>
+      <p class="text-body-xl intro__text" data-reveal>Find carefully selected books, articles, videos, and audio resources to help you learn about Islam with clarity, depth, and confidence at your own pace.</p>
     </section>
 
     <!-- No id on this section: the header would treat it as an in-page section and drop the Library underline -->
     <section class="container section library-section" aria-labelledby="resources-heading">
       <div class="section-panel library-panel">
-        <h2 class="text-h2 library-panel__heading" id="resources-heading">Select a topic you’re interested in</h2>
+        <h2 class="text-h2 library-panel__heading" data-reveal id="resources-heading">Find the right resource for you</h2>
 
         <!-- Filters and search. Rendered by js/library.js from the FILTERS list; the state is kept in the URL. -->
         <div class="library-tools" data-library-tools>
@@ -148,7 +154,7 @@
           <div class="results-empty" data-results-empty hidden>
             <p class="results-empty__title">No resources match these filters</p>
             <p class="results-empty__text" data-empty-text>Try another topic or format, or clear the filters to see the whole library.</p>
-            <button class="btn btn--small btn--secondary" type="button" data-clear-all>Clear all filters</button>
+            <button class="btn btn--regular btn--secondary" type="button" data-clear-all>Clear all filters</button>
           </div>
 
           <div class="results__more" data-results-more>
@@ -168,7 +174,7 @@
     <div class="filter-sheet__header">
       <h2 class="filter-sheet__title" id="sort-sheet-title">Sort by</h2>
       <button class="filter-sheet__close" type="button" aria-label="Close sort options" data-sort-sheet-close>
-        <img src="assets/icons/filter-remove.svg" width="12" height="12" alt="">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
       </button>
     </div>
     <fieldset class="sort-sheet__options">
@@ -184,13 +190,13 @@
     <div class="filter-sheet__header">
       <h2 class="filter-sheet__title" id="filter-sheet-title">Filters</h2>
       <button class="filter-sheet__close" type="button" aria-label="Close filters" data-sheet-close>
-        <img src="assets/icons/filter-remove.svg" width="12" height="12" alt="">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
       </button>
     </div>
     <div class="filter-sheet__body" data-sheet-body></div>
     <div class="filter-sheet__footer">
-      <button class="btn btn--small btn--secondary" type="button" data-clear-all>Clear all</button>
-      <button class="btn btn--small btn--primary" type="button" data-sheet-close data-sheet-apply>Show results</button>
+      <button class="btn btn--regular btn--secondary" type="button" data-clear-all>Clear all</button>
+      <button class="btn btn--regular btn--primary" type="button" data-sheet-close data-sheet-apply>Show results</button>
     </div>
   </dialog>
 
@@ -226,7 +232,7 @@
             <ul class="footer-col__list">
               <li><a class="footer-link" href="start-here.html"><span class="footer-link__label">Start here</span></a></li>
               <li><a class="footer-link" href="library.html"><span class="footer-link__label">Library</span></a></li>
-              <li><a class="footer-link" href="new-muslim.html"><span class="footer-link__label">New muslim path</span></a></li>
+              <li><a class="footer-link" href="new-muslim.html"><span class="footer-link__label">New Muslim path</span></a></li>
               <li><a class="footer-link" href="about.html"><span class="footer-link__label">About us</span></a></li>
               <li><a class="footer-link" href="index.html"><span class="footer-link__label">Home</span></a></li>
             </ul>
@@ -255,17 +261,20 @@
     </div>
   </footer>
 
-  <script src="js/base.js"></script>
-  <script src="js/saved.js?v=1"></script>
-  <script src="js/header.js?v=9"></script>
-  <script src="js/language.js?v=5"></script>
-  <script src="js/saved-menu.js?v=8"></script>
+  <script src="js/base.js?v=3"></script>
+  <script src="js/saved.js?v=3"></script>
+  <script src="js/header.js?v=11"></script>
+  <script src="js/language.js?v=6"></script>
+  <script src="js/saved-menu.js?v=10"></script>
   <script src="js/download-fill.js"></script>
-  <script src="js/resource-card.js?v=8"></script>
+  <script src="js/resource-card.js?v=11"></script>
   <script src="js/library.js?v=13"></script>
-  <script src="js/carousel.js?v=6"></script>
-  <script src="js/preview.js?v=13"></script>
-  <script src="js/forms.js?v=3"></script>
+  <script src="js/carousel.js?v=7"></script>
+  <script src="js/share.js?v=2"></script>
+  <script src="js/preview.js?v=22"></script>
+  <script src="js/send-button.js?v=3"></script>
+  <script src="js/contact-dialog.js?v=2"></script>
+  <script src="js/forms.js?v=4"></script>
   <script src="js/smooth-scroll.js?v=4"></script>
   <script src="js/skeleton.js"></script>
 </body>

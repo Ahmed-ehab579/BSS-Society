@@ -54,6 +54,14 @@ a {
 }
 
 /* Type styles */
+/* Display (hero): the home page hero title */
+.text-display {
+  font-size: var(--display-hero-size);
+  line-height: var(--display-hero-line);
+  font-weight: var(--display-hero-weight);
+  text-transform: uppercase;
+}
+
 .text-h1 {
   font-size: var(--h1-size);
   line-height: var(--h1-line);
@@ -143,7 +151,7 @@ a {
   gap: var(--scale-200);
   flex-shrink: 0;
   overflow: hidden;
-  border-radius: var(--scale-1000);
+  border-radius: var(--radius-pill);
   font-family: inherit;
   font-weight: var(--label-weight);
   white-space: nowrap;
@@ -203,12 +211,12 @@ a {
    on the left of "Sent" */
 .btn.is-swapping {
   color: transparent;
-  transition: color 160ms var(--motion-ease);
+  transition: color var(--motion-fast) var(--motion-ease);
 }
 
 .btn.is-swapping > * {
   opacity: 0;
-  transition: opacity 160ms var(--motion-ease);
+  transition: opacity var(--motion-fast) var(--motion-ease);
 }
 
 .btn.is-sent {
@@ -216,7 +224,7 @@ a {
 }
 
 .btn.is-sent > span {
-  transition: opacity 240ms var(--motion-ease);
+  transition: opacity var(--motion-base) var(--motion-ease);
 }
 
 .btn__sent-check {
@@ -226,7 +234,7 @@ a {
 .btn__sent-check path {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
-  animation: btn-sent-check 420ms 120ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: btn-sent-check var(--motion-slow) var(--motion-fast) cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 @keyframes btn-sent-check {
@@ -247,13 +255,13 @@ a {
 
 /* Secondary on dark (Regular): 16px side padding, Label M, stroke inside */
 .btn--secondary-on-dark {
-  height: 44px;
-  padding: var(--scale-300) var(--scale-400);
+  height: 48px;
+  padding: var(--scale-300) var(--scale-600);
   background: transparent;
   color: var(--color-text-on-dark);
   border: var(--border-md) solid var(--border-color-on-dark);
-  font-size: var(--label-m-size);
-  line-height: var(--label-m-line);
+  font-size: var(--label-l-size);
+  line-height: var(--label-l-line);
   transition-duration: var(--motion-duration-hover);
 }
 
@@ -278,7 +286,7 @@ a {
   display: flex;
   flex-direction: column;
   gap: 11px;
-  transition: transform 300ms ease;
+  transition: transform var(--motion-slow) var(--motion-ease);
 }
 
 .btn__arrow-track img {
@@ -304,6 +312,22 @@ a {
   }
 }
 
+/* On-dark outline buttons: the white arrow turns the same dark grey as the label (#3b3b3b) when the
+   button fills with green on hover or press */
+.btn--secondary-on-dark img {
+  transition: filter var(--motion-duration-hover) var(--motion-ease);
+}
+
+@media (hover: hover) {
+  .btn--secondary-on-dark:hover img {
+    filter: brightness(0) invert(0.23);
+  }
+}
+
+.btn--secondary-on-dark:active img {
+  filter: brightness(0) invert(0.23);
+}
+
 .btn--primary:active {
   background: var(--surface-action-primary-pressed);
 }
@@ -320,6 +344,37 @@ a {
   transition-duration: var(--motion-duration-link);
 }
 
+/* Back link: one design on every page (article, book, material). Text and arrow move together. */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--scale-200);
+  color: var(--text);
+  font-size: var(--body-l-size);       /* 18px (phone 16): a little larger than other labels, easy to find */
+  line-height: var(--body-l-line);
+  font-weight: 500;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.back-link img {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  transition: transform var(--motion-slow) var(--motion-ease);
+}
+
+.back-link:focus-visible {
+  outline: var(--border-lg) solid var(--border-strong);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) {
+  .back-link:hover img {
+    transform: translateX(-3px);
+  }
+}
+
 /* Actions / Icon Button (40 × 40) */
 .icon-btn {
   display: inline-flex;
@@ -330,7 +385,7 @@ a {
   flex-shrink: 0;
   padding: 0;
   border: 0;
-  border-radius: var(--scale-200);
+  border-radius: var(--radius-sm);
   background: var(--surface-cards);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -362,7 +417,7 @@ a {
   max-width: 1305px;
   margin-inline: auto;
   padding: var(--scale-1000);
-  border-radius: 30px;
+  border-radius: var(--radius-lg);
   background: linear-gradient(to bottom, var(--surface-cards), rgba(255, 255, 255, 0));
 }
 
@@ -420,12 +475,15 @@ a {
 @media (max-width: 767px) {
   .section-panel {
     padding: var(--scale-600);
-    border-radius: 16px;
+    border-radius: var(--radius-md);
+  }
+
+  /* Phones: the title and the text under it read as one group */
+  .section-intro {
+    gap: var(--scale-300);
   }
 
   .section-intro__heading {
-    font-size: 32px;
-    line-height: 40px;
     letter-spacing: -0.64px;
   }
 
@@ -460,7 +518,7 @@ a {
   width: 8.965px;
   height: 8.965px;
   flex-shrink: 0;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: var(--color-section-dot);
 }
 
@@ -471,7 +529,7 @@ a {
   flex-direction: column;
   width: 315px;
   overflow: hidden;
-  border-radius: 29.235px;
+  border-radius: var(--radius-lg);
   background: var(--surface-cards);
   color: var(--color-card-heading);
   -webkit-tap-highlight-color: transparent;
@@ -527,6 +585,19 @@ a {
   background: var(--surface-cards-hovered);
 }
 
+/* Phones: no green flash on tap (a quiet neutral press instead), and the card hugs its text: the
+   desktop's fixed text height left a big empty gap above the photo */
+@media (max-width: 767px) {
+  .guide-card:active {
+    background: var(--surface-card-hover);
+  }
+
+  .guide-card__content {
+    min-height: 0;
+    padding: var(--scale-600) var(--scale-500) var(--scale-1000);   /* 48px from the text to the photo */
+  }
+}
+
 /* Form fields (Contact form). Figma strokes are inside, so the border is
    taken out of the padding. Focus and error states are not defined in
    Figma; they reuse the site focus outline and the error tokens. */
@@ -549,25 +620,25 @@ a {
 
 .field__input {
   width: 100%;
-  height: 44.433px;
+  height: 48px;
   margin: 0;
-  padding: 10.237px 15.664px;
-  border: 0.979px solid var(--color-field-border);
-  border-radius: var(--scale-200);
+  padding: var(--scale-300) var(--scale-400);
+  border: var(--border-md) solid var(--color-field-border);
+  border-radius: var(--radius-sm);
   background: var(--color-field-bg);
   color: var(--color-text-on-light);
   font-family: inherit;
-  font-size: var(--body-s-size);
-  line-height: var(--body-s-line);
+  font-size: var(--body-m-size);   /* 16px: smaller makes iPhones zoom in on focus */
+  line-height: var(--body-m-line);
   font-weight: var(--body-weight);
 }
 
 textarea.field__input {
   display: block;
-  height: 106.195px;
-  min-height: 106.195px;
-  padding-top: 11.748px;
-  border-radius: var(--scale-400);
+  height: 112px;
+  min-height: 112px;
+  padding-top: var(--scale-300);
+  border-radius: var(--radius-sm);
   resize: vertical;
 }
 
@@ -614,7 +685,7 @@ textarea.field__input {
 }
 
 .is-fading-in {
-  animation: skeleton-fade 320ms var(--motion-ease);
+  animation: skeleton-fade var(--motion-slow) var(--motion-ease);
 }
 
 @keyframes skeleton-shimmer {

@@ -23,7 +23,7 @@
   flex-direction: column;
   gap: var(--scale-600);
   padding-bottom: var(--scale-800);
-  border-bottom: var(--scale-12) solid var(--color-neutral-400);
+  border-bottom: var(--scale-12) solid var(--border);
 }
 
 /* Labels sit in one column so the filters and the search field start on the same line */
@@ -42,7 +42,7 @@
   font-size: var(--label-m-size);
   line-height: var(--label-m-line);
   font-weight: var(--label-weight);
-  letter-spacing: var(--label-s-tracking);
+  letter-spacing: var(--label-uppercase-tracking);
   text-transform: uppercase;
   white-space: nowrap;
 }
@@ -68,7 +68,7 @@
   display: flex;
   align-items: center;
   gap: var(--scale-100);
-  height: 50px;
+  height: 44px;
   padding: 0 var(--scale-400);
   border: var(--border-md) solid var(--color-field-border);
   border-radius: var(--radius-pill);
@@ -90,7 +90,7 @@
   align-items: center;
   height: 32px;
   padding: 0 var(--scale-400);
-  border: var(--scale-12) solid var(--color-neutral-300);
+  border: var(--scale-12) solid var(--border);
   border-radius: var(--radius-pill);
   background: var(--surface-cards);
   color: var(--color-text-on-light);
@@ -132,7 +132,7 @@
   height: 24px;
   padding: 0;
   border: 0;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: transparent;
   transform: translateY(-50%);
   cursor: pointer;
@@ -170,13 +170,39 @@
   margin: 0;
   padding: var(--scale-200);
   border: var(--border-md) solid var(--border-color-control);
-  border-radius: var(--scale-400);
+  border-radius: var(--radius-md);
   background: var(--color-field-bg);
   box-shadow: var(--shadow-menu);
+  /* Opens and closes smoothly: fades in while dropping 6px into place (by request) */
+  transform-origin: top left;
+  transition:
+    opacity var(--motion-slow) var(--motion-ease),
+    transform var(--motion-slow) var(--motion-ease),
+    display var(--motion-slow) allow-discrete;
+}
+
+.filter__menu--end {
+  transform-origin: top right;
 }
 
 .filter__menu[hidden] {
   display: none;
+  pointer-events: none;   /* a closing menu never catches clicks while it fades */
+  opacity: 0;
+  transform: translateY(-6px) scale(0.98);
+}
+
+@starting-style {
+  .filter__menu:not([hidden]) {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .filter__menu {
+    transition: none;
+  }
 }
 
 .filter-option {
@@ -186,7 +212,7 @@
   justify-content: space-between;
   gap: var(--scale-400);
   padding: var(--scale-200) var(--scale-300);
-  border-radius: var(--scale-200);
+  border-radius: var(--radius-sm);
   color: var(--color-text-on-light);
   font-size: var(--label-m-size);
   line-height: var(--label-m-line);
@@ -202,13 +228,23 @@
   pointer-events: none;
 }
 
+/* The label fills the row, so the check mark sits at the far right */
+.filter-option__label {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--scale-400);
+}
+
 /* Check mark on the selected option */
 .filter-option__label::after {
   content: "";
   display: inline-block;
+  flex-shrink: 0;
   width: 5px;
   height: 10px;
-  margin-left: var(--scale-400);
+  margin-left: auto;
   border: solid var(--color-type-icon);
   border-width: 0 2px 2px 0;
   transform: translateY(-2px) rotate(45deg);
@@ -233,7 +269,7 @@
 }
 
 .filter-clear-all {
-  height: 50px;
+  height: 44px;
   padding: 0 var(--scale-200);
   border: 0;
   background: none;
@@ -251,7 +287,7 @@
 .filter-clear-all:focus-visible {
   outline: 2px solid var(--border-color-on-light);
   outline-offset: 2px;
-  border-radius: var(--scale-100);
+  border-radius: var(--radius-xs);
 }
 
 /* Search: 529px wide at rest, full width while focused or holding text */
@@ -318,7 +354,7 @@
   height: 28px;
   padding: 0;
   border: 0;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: transparent;
   cursor: pointer;
 }
@@ -420,7 +456,7 @@
   display: flex;
   padding: var(--scale-100);
   border: var(--border-md) solid var(--border-color-control);
-  border-radius: var(--scale-200);
+  border-radius: var(--radius-pill);
   background: var(--color-field-bg);
 }
 
@@ -428,11 +464,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   padding: 0;
   border: 0;
-  border-radius: 6px;
+  border-radius: var(--radius-round);
   background: transparent;
   cursor: pointer;
   opacity: 0.75;
@@ -463,15 +499,15 @@
   display: flex;
   align-items: center;
   gap: var(--scale-100);
-  height: 40px;
-  padding: 0 var(--scale-300);
+  height: 44px;
+  padding: 0 var(--scale-400);
   border: var(--border-md) solid var(--border-color-control);
-  border-radius: var(--scale-300);
+  border-radius: var(--radius-pill);
   background: var(--color-field-bg);
   color: var(--color-text-subtle);
   font-family: inherit;
-  font-size: var(--label-s-size);
-  line-height: var(--label-s-line);
+  font-size: var(--label-m-size);
+  line-height: var(--label-m-line);
   font-weight: 500;
   white-space: nowrap;
   cursor: pointer;
@@ -584,14 +620,14 @@
   display: inline-flex;
   align-items: center;
   gap: var(--scale-200);
-  height: 40px;
+  height: 44px;
   padding: 0 var(--scale-800);
-  border: var(--scale-12) solid var(--color-neutral-300);
+  border: var(--scale-12) solid var(--border);
   border-radius: var(--radius-pill);
   background: var(--surface-cards);
   color: var(--color-card-heading);
   font-family: inherit;
-  font-size: var(--label-s-size);
+  font-size: var(--label-m-size);
   line-height: var(--label-s-line);
   font-weight: var(--label-weight);
   cursor: pointer;
@@ -713,12 +749,12 @@
   align-items: center;
   justify-content: center;
   width: 40px;
-  height: 40px;
+  height: 44px;
   margin-right: calc(-1 * var(--scale-200));
   padding: 0;
   border: 0;
-  border-radius: 50%;
-  background: var(--surface-cards);
+  border-radius: var(--radius-round);
+  background: none;
   cursor: pointer;
 }
 
@@ -794,12 +830,11 @@
   grid-template-columns: 1fr 2fr;
   gap: var(--scale-300);
   padding: var(--scale-400) var(--scale-600) calc(var(--scale-400) + env(safe-area-inset-bottom));
-  border-top: var(--scale-12) solid var(--color-neutral-300);
+  border-top: var(--scale-12) solid var(--border);
 }
 
 .filter-sheet__footer .btn {
   width: 100%;
-  height: 48px;
 }
 
 /* ---- List layout: a small picture on the left; type, title, two lines of text and a compact action on
@@ -812,10 +847,10 @@
 
 .resource-grid[data-layout="list"] .resource-card__action {
   gap: var(--scale-100);
-  height: 36px;
-  padding: 0 var(--scale-200);
-  font-size: 13px;
-  line-height: 18px;
+  height: 40px;
+  padding: 0 var(--scale-400);
+  font-size: var(--label-m-size);
+  line-height: var(--label-m-line);
 }
 
 .resource-grid[data-layout="list"] .resource-card__download {
@@ -825,7 +860,7 @@
 /* List: small thumbnail on the left; type, title, short text and a compact action on the right */
 .resource-grid[data-layout="list"] .resource-card {
   flex-direction: row;
-  border-radius: var(--scale-400);
+  border-radius: var(--radius-md);
 }
 
 /* List: a little taller, with more room around the text for easier reading */
@@ -838,7 +873,7 @@
 .resource-grid[data-layout="list"] .resource-card__frame {
   height: 100%;
   min-height: 144px;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
 }
 
 .resource-grid[data-layout="list"] .resource-card__badge {
@@ -879,13 +914,13 @@
 }
 
 .resource-grid[data-layout="list"] .resource-card__title {
-  font-size: 17px;
+  font-size: var(--body-m-size);
   line-height: 24px;
   font-weight: 500;
 }
 
 .resource-grid[data-layout="list"] .resource-card__desc {
-  font-size: 13px;
+  font-size: var(--body-s-size);
   line-height: 20px;
   -webkit-line-clamp: 2;
   line-clamp: 2;
@@ -906,15 +941,15 @@
   .resource-grid[data-layout="list"] .resource-card__action {
     width: auto;
     min-width: 148px;
-    height: 44px;
-    padding: 0 var(--scale-500);
+    height: 48px;
+    padding: 0 var(--scale-600);
     font-size: var(--label-l-size);
     line-height: var(--label-l-line);
   }
 
   .resource-grid[data-layout="list"] .resource-card__download {
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
   }
 }
 
@@ -940,14 +975,20 @@
   }
 
   .library-panel__heading {
-    font-size: 32px;
-    line-height: 40px;
     letter-spacing: -0.64px;
+    max-width: 300px;                  /* "Find the right / resource for you", as on desktop */
+    font-weight: 500;
   }
 
   .library-tools {
     gap: var(--scale-400);
     padding-bottom: var(--scale-600);
+    border-bottom-color: #636363;      /* darker on phones: Neutral 400 (#8e8e8e) 30% darker */
+  }
+
+  /* Library cards: a slightly darker default surface on phones (#e1ddd1), as on the active Start here card */
+  .resource-grid .resource-card {
+    --surface-resource-card: #e1ddd1;
   }
 
   /* Phones: search on top, full width; the desktop pills are replaced by the Filters button */
@@ -1069,7 +1110,7 @@
     gap: var(--scale-200);
     height: 36px;
     padding: 0 var(--scale-300) 0 var(--scale-400);
-    border: var(--scale-12) solid var(--color-neutral-300);
+    border: var(--scale-12) solid var(--border);
     border-radius: var(--radius-pill);
     background: var(--surface-cards-hovered);
     color: var(--color-text-on-light);
@@ -1097,10 +1138,6 @@
     gap: var(--scale-500);
   }
 
-  .results__heading {
-    font-size: var(--h5-size);
-    line-height: var(--h5-line);
-  }
 
   /* Layout switch on the left, sort on the right */
   .results__controls {
@@ -1152,10 +1189,49 @@
     --listen-size: 62px;
   }
 
+  .resource-grid[data-layout="one"] .resource-card__body {
+    padding-top: 22px;               /* photo to title: 30% less than 32px */
+  }
+
+  /* Card type: an outlined pill above the title instead of the badge on the photo, as on the New Muslim topic cards */
+  .resource-grid[data-layout="one"] .resource-card__badge {
+    display: none;
+  }
+
+  .resource-grid[data-layout="one"] .resource-card__type {
+    display: inline-flex;
+    align-self: flex-start;
+    align-items: center;
+    gap: var(--scale-100);
+    height: 22px;
+    margin-bottom: calc(var(--scale-200) - var(--scale-300));   /* 8px to the title */
+    padding: 0 10px;
+    border: 0;
+    border-radius: var(--radius-pill);
+    outline: var(--scale-12) solid #676767;   /* a centre stroke: half inside, half outside the edge */
+    outline-offset: -0.25px;
+    background: rgba(255, 255, 255, 0.5);   /* white at 50% */
+    color: var(--color-card-heading);
+    font-size: var(--label-s-size);
+    line-height: var(--label-s-line);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .resource-grid[data-layout="one"] .resource-card__type img {
+    width: auto;
+    height: 10px;
+  }
+
   .resource-grid[data-layout="one"] .resource-card__title {
-    font-size: var(--h6-size);
-    line-height: var(--h6-line);
+    font-size: var(--h5-size);        /* a step up from H6: 20/28 on phones */
+    line-height: var(--h5-line);
     font-weight: var(--h6-weight);   /* 600 */
+  }
+
+  .resource-grid[data-layout="list"] .resource-card__title {
+    font-size: var(--body-xl-size);   /* a step up from Body M: 18/29 on phones */
+    line-height: var(--body-xl-line);
   }
 
   /* Pressed feedback instead of hover on touch */
@@ -1181,5 +1257,90 @@
 
   .filter-sheet[open] {
     animation: none;
+  }
+}
+
+/* Phones: one header for every slide-up panel (as on the Saved and language sheets): the close button
+   alone in the top-right corner, the title (H4) on its own row 8px below it, 14px to the content */
+@media (max-width: 767px) {
+  .filter-sheet__header {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: var(--scale-200);
+    padding-top: var(--scale-300);
+    padding-right: var(--scale-300);
+    padding-bottom: 14px;
+  }
+
+  .filter-sheet__close {
+    order: -1;
+    align-self: flex-end;
+    width: 44px;
+    height: 44px;
+    margin: 0;
+  }
+
+  .filter-sheet__title {
+    margin: 0;
+    font-size: var(--h4-size);
+    line-height: var(--h4-line);
+    font-weight: var(--h4-weight);
+  }
+}
+
+/* Desktop and tablet: the card changes first made on phones (2026-11-14) */
+@media (min-width: 768px) {
+  /* Default surface #e1ddd1 */
+  .resource-grid .resource-card {
+    --surface-resource-card: #e1ddd1;
+  }
+
+  /* Photo to the type pill: 22px (30% less than 32px) */
+  .resource-grid[data-layout="one"] .resource-card__body {
+    padding-top: 22px;
+  }
+
+  /* Card type: an outlined pill above the title instead of the badge on the photo, as on the New Muslim topic cards */
+  .resource-grid[data-layout="one"] .resource-card__badge {
+    display: none;
+  }
+
+  .resource-grid[data-layout="one"] .resource-card__type {
+    display: inline-flex;
+    align-self: flex-start;
+    align-items: center;
+    gap: var(--scale-100);
+    height: 22px;
+    margin-bottom: calc(var(--scale-200) - var(--scale-300));   /* 8px to the title */
+    padding: 0 10px;
+    border: 0;
+    border-radius: var(--radius-pill);
+    outline: var(--scale-12) solid #676767;   /* a centre stroke: half inside, half outside the edge */
+    outline-offset: -0.25px;
+    background: rgba(255, 255, 255, 0.5);   /* white at 50% */
+    color: var(--color-card-heading);
+    font-size: var(--label-s-size);
+    line-height: var(--label-s-line);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .resource-grid[data-layout="one"] .resource-card__type img {
+    width: auto;
+    height: 10px;
+  }
+
+  /* List titles 18px, as on phones (Body L on desktop) */
+  .resource-grid[data-layout="list"] .resource-card__title {
+    font-size: var(--body-l-size);
+    line-height: var(--body-l-line);
+  }
+}
+
+/* Desktop: hover one step darker (#d2cdc0) so it still shows against the #e1ddd1 default */
+@media (min-width: 768px) and (hover: hover) {
+  .resource-grid .resource-card:hover {
+    background: var(--surface-card-pressed);
   }
 }

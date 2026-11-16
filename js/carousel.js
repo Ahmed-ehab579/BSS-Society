@@ -1,7 +1,8 @@
 // Moving card rows. One card leads for a few seconds while its dot fills, then the row glides on to the
 // next. After one full round it comes to rest on the first card and the button offers Replay, so nothing
-// moves forever. Pausing, the dots, the arrows, swiping or keyboard focus hand control to the visitor,
-// and a swipe carries on from the finger at the speed it left, slowing into place.
+// moves forever. Pausing, the dots, the arrows or keyboard focus hand control to the visitor. Dragging
+// (mouse, finger or pen) only holds the row while it is held: on release the card settles, carrying on
+// at the speed it left, and a playing row starts counting again from that card.
 // The slide set is cloned once so the row loops without a visible jump; clones are hidden from screen
 // readers and keyboard focus.
 function startCarousel(root) {
@@ -227,9 +228,10 @@ function startCarousel(root) {
       drag.time = e.timeStamp;
       drag.speed = 0;
       anim = null;
-      takeOver();
+      waited = 0;                       // the dot starts over once the row is let go
       viewport.setPointerCapture(drag.id);
       root.classList.add("is-dragging");
+      window.getSelection()?.removeAllRanges();   // a mouse drag must not leave text selected
       return;
     }
     const next = drag.start - (e.clientX - drag.x);

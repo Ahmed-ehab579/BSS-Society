@@ -40,7 +40,10 @@
     return !message;
   }
 
-  document.querySelectorAll("form[data-validate]").forEach((form) => {
+  // Forms added later (the contact dialog, js/contact-dialog.js) are bound with BSSForms.bind(form)
+  function bind(form) {
+    if (form.dataset.bound) return;
+    form.dataset.bound = "true";
     const inputs = [...form.querySelectorAll("input, textarea")].filter((el) => el.willValidate);
     const status = form.querySelector(".form-status");
     let submitted = false;
@@ -75,5 +78,8 @@
       if (send && !window.BSSSend?.isSent(send)) window.BSSSend?.play(send, "Sent");
       if (status) status.textContent = CONNECTED ? "" : NOT_CONNECTED;
     });
-  });
+  }
+
+  window.BSSForms = { bind };
+  document.querySelectorAll("form[data-validate]").forEach(bind);
 })();

@@ -35,8 +35,10 @@
     button.style.minWidth = saved.minWidth;
     if (reduceMotion.matches) return;
     // The label fades back in rather than snapping
-    button.animate([{ color: "transparent" }, {}], { duration: 200, easing: "ease-out" });
-    [...button.children].forEach((child) => child.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200, easing: "ease-out" }));
+    const root = getComputedStyle(document.documentElement);
+    const timing = { duration: parseFloat(root.getPropertyValue("--motion-base")) || 220, easing: root.getPropertyValue("--motion-ease").trim() || "ease-out" };
+    button.animate([{ color: "transparent" }, {}], timing);
+    [...button.children].forEach((child) => child.animate([{ opacity: 0 }, { opacity: 1 }], timing));
   }
 
   window.BSSSend = { play, reset, isSent: (button) => original.has(button) };

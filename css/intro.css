@@ -24,14 +24,14 @@
   color: var(--color-heading);
 }
 
-/* Desktop hero heading: 53/78, wrapper 558px (shrinks with the container) */
+/* Desktop page title: H1 (51/60), up to 700px wide (shrinks with the container) */
 @media (min-width: 1100px) {
   .intro__heading {
-    flex: 0 1 558px;
+    flex: 0 1 700px;
     min-width: 0;
-    max-width: 558px;
-    font-size: 53px;
-    line-height: 78px;
+    max-width: 700px;
+    font-size: var(--h1-size);
+    line-height: var(--h1-line);
   }
 }
 
@@ -51,8 +51,8 @@
 /* Longer titles may use the room the text column leaves (two lines instead of three) */
 @media (min-width: 1100px) {
   .intro--top .intro__heading {
-    flex-basis: 720px;
-    max-width: 720px;
+    flex-basis: 700px;
+    max-width: 700px;
   }
 }
 
@@ -82,8 +82,4 @@
     padding-top: calc(var(--header-height) + var(--scale-800));
   }
 
-  .intro__heading {
-    font-size: 36px;
-    line-height: 52px;
-  }
 }

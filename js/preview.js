@@ -57,11 +57,29 @@
   const root = document.documentElement;
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const escape = (text) => String(text).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
-  const backLabel = location.pathname.includes("library") ? "Back to library" : "Back";
+  // The overlay's way back names the page underneath, like the site's other back links
+  const backLabel = location.pathname.includes("library") ? "Back to the library"
+    : location.pathname.includes("new-muslim-step") ? `Back to step ${Number(new URLSearchParams(location.search).get("step")) || 1}`
+    : location.pathname.includes("article") ? "Back to the article"
+    : "Back";
   const page = document.querySelector("[data-material-page]");   // material.html: the page itself
   const phone = window.matchMedia("(max-width: 767px)");
   const FROM = location.pathname.includes("new-muslim") ? "new-muslim" : location.pathname.includes("article") ? "article" : "library";
-  const pageAddress = (item) => `material.html?id=${item.key}&from=${FROM}`;
+  // From a New Muslim step, the step and topic travel along so the material page can lead back to them
+  const stepPlace = () => {
+    const params = new URLSearchParams(location.search);
+    return ["step", "topic"].filter((name) => params.get(name)).map((name) => `&${name}=${encodeURIComponent(params.get(name))}`).join("");
+  };
+  const pageAddress = (item) => `material.html?id=${item.key}&from=${FROM}${FROM === "new-muslim" ? stepPlace() : ""}`;
+  // Opened from the New Muslim path: the material can be marked as done (js/done.js)
+  const IN_PATH = FROM === "new-muslim" || new URLSearchParams(location.search).get("from") === "new-muslim";
+  // Mark as done: a third icon button beside Share and Save, behaving like Save (a toggle with the same
+  // states, a pop and a short note). Outline check → green check once done.
+  const DONE_BUTTON = `<button class="book__icon-btn book__done-btn" type="button" data-preview-done aria-pressed="false" aria-label="Mark as done">
+            <svg class="done-icon" viewBox="0 0 24 24" width="24" height="24" fill="none" aria-hidden="true">
+              <path class="done-icon__tick" d="M4.5 12.5l4.8 4.8L19.5 7" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>`;
 
   const dialog = document.createElement("dialog");
   dialog.className = "preview";
@@ -121,13 +139,14 @@
         <h2 class="book__title" id="preview-title" dir="${item.dir || "auto"}">${escape(item.title)}</h2>
         <p class="book__author">By ${escape(item.author || AUTHOR)}</p>
         <div class="book__actions">
-          <button class="book__icon-btn" type="button" data-preview-share aria-label="Share">
+          <button class="book__icon-btn" type="button" data-preview-share aria-label="Share" aria-haspopup="dialog" aria-expanded="false">
             <img src="assets/icons/share.svg" width="14.4" height="16" alt="">
           </button>
           <button class="book__icon-btn" type="button" data-book-save data-preview-save aria-pressed="false" aria-label="Save">
             <img src="assets/icons/bookmark.svg" width="11.55" height="14.85" alt="" data-icon="off">
             <img src="assets/icons/bookmark-filled.svg" width="11.55" height="14.85" alt="" data-icon="on">
           </button>
+          ${IN_PATH && BSS.done ? DONE_BUTTON : ""}
           <p class="book__note" role="status"></p>
         </div>
       </header>
@@ -138,6 +157,7 @@
       </section>
       ${extra}
       <div class="book__cta">${cta}<p class="book__unavailable" role="status"></p></div>
+      ${IN_PATH && BSS.done ? BSS.done.blockHtml(item.key) : ""}
     </div>`;
   }
 
@@ -548,14 +568,11 @@
     noteTimer = setTimeout(() => note.classList.remove("is-visible"), NOTE_TIME);
   }
 
+  // Share: the share panel (js/share.js) with Copy link and the places people share to
   async function share(button) {
-    if (navigator.share) {
-      try {
-        await navigator.share({ title: current.title, url: location.href });
-        return;
-      } catch (error) {
-        if (error.name === "AbortError") return;   // closing the share sheet is not a failure
-      }
+    if (BSS.share) {
+      BSS.share.open(button, { title: current.title, url: location.href });
+      return;
     }
     try {
       await navigator.clipboard.writeText(location.href);
@@ -572,6 +589,25 @@
     key: item.key, path: SAVE_PATH, type: item.format, title: item.title,
     image: item.image, url: `material.html?id=${item.key}&from=${SAVE_PATH === "start-here" ? "article" : SAVE_PATH}`,
   });
+
+  // Mark as done (js/done.js): New Muslim path only
+  function showDone() {
+    const button = scroller.querySelector("[data-preview-done]");
+    if (button && current) button.setAttribute("aria-pressed", String(BSS.done.has(current.key)));
+  }
+
+  function toggleDone(button) {
+    const marking = !BSS.done.has(current.key);
+    const stored = BSS.done.set(current.key, marking);
+    showDone();
+    button.classList.remove("is-popping");
+    button.getBoundingClientRect();   // restart the animation on quick repeat presses
+    if (marking) button.classList.add("is-popping");
+    if (!stored) say("Couldn’t save on this device", button);
+    else say(marking ? "Marked as done" : "Marked as not done", button);
+  }
+
+  BSS.done?.onChange(showDone);   // also when marked in another tab
 
   function toggleSave(button) {
     if (!BSS.saved.has(current.key)) BSS.savedFly?.(button);   // over the overlay, it fades into the header behind
@@ -602,10 +638,10 @@
       <h${level} class="preview__related-heading" id="${id}">${heading}</h${level}>
       <div class="carousel" data-carousel role="region" aria-roledescription="carousel" aria-label="Related materials">
         <div class="carousel__controls">
-          <button class="icon-btn icon-btn--prev" type="button" data-carousel-prev aria-label="Previous material">
+          <button class="icon-btn icon-btn--prev" type="button" data-carousel-prev aria-label="Previous resource">
             <img src="assets/icons/arrow-right.svg" width="28" height="28" alt="">
           </button>
-          <button class="icon-btn" type="button" data-carousel-next aria-label="Next material">
+          <button class="icon-btn" type="button" data-carousel-next aria-label="Next resource">
             <img src="assets/icons/arrow-right.svg" width="28" height="28" alt="">
           </button>
         </div>
@@ -637,9 +673,13 @@
     current = item;
     host.classList.remove("preview--book", "preview--audio", "preview--video");
     host.classList.add(`preview--${item.format}`);
-    scroller.innerHTML = { book: bookHtml, audio: audioHtml, video: videoHtml }[item.format](item, type) + relatedHtml(item);
+    // Phones, a material page opened from the New Muslim path: no related materials, the path leads on
+    const noRelated = page && phone.matches && new URLSearchParams(location.search).get("from") === "new-muslim";
+    host.classList.toggle("preview--path", Boolean(noRelated));   // its own layout too (css/preview.css)
+    scroller.innerHTML = { book: bookHtml, audio: audioHtml, video: videoHtml }[item.format](item, type) + (noRelated ? "" : relatedHtml(item));
     scroller.scrollTop = 0;
     scroller.querySelector("[data-preview-save]").setAttribute("aria-pressed", String(BSS.saved.has(item.key)));
+    showDone();
     BSS.saved.refresh(saveEntry(item));
     setUpPlayer(item);
     setUpVideo(item);
@@ -726,6 +766,7 @@
     if (target.closest("[data-preview-close]")) leave();
     else if (target.closest("[data-preview-share]")) share(target.closest("button"));
     else if (target.closest("[data-preview-save]")) toggleSave(target.closest("button"));
+    else if (target.closest("[data-preview-done]")) toggleDone(target.closest("button"));
     else if (target.closest("[data-preview-missing]")) showNote(MISSING[target.closest("[data-preview-missing]").dataset.previewMissing]);
     else if (target.closest("[data-video-play]") && !youtubeId(sourceFor(current, "youtube"))) showNote(MISSING.youtube);
     else if (target.closest("a.download-fill") && !window.BSSDownload.play(target.closest("a"))) event.preventDefault();
@@ -741,7 +782,7 @@
     const from = event.target.closest("button");
     if (!event.target.closest("[data-preview-download]")) {
       // From one material page to another the address is replaced, so "Back to library" stays one step
-      if (page) location.replace(`material.html?id=${item.key}&from=${new URLSearchParams(location.search).get("from") || "library"}`);
+      if (page) location.replace(`material.html?id=${item.key}&from=${new URLSearchParams(location.search).get("from") || "library"}${stepPlace()}`);
       else if (phone.matches) location.href = pageAddress(item);
       else open(item, { from });
       return;
@@ -769,13 +810,21 @@
     const back = document.querySelector("[data-material-back]");
     const from = params.get("from");
     const fromNewMuslim = from === "new-muslim";
-    if (from === "new-muslim" || from === "article") {
-      back.querySelector("span").textContent = "Back";
+    // From a New Muslim step: back to that step's topic ("Back to Topic 2"), the page it was opened from
+    const stepNumber = Number(params.get("step")) || 0;
+    const topicNumber = Number(params.get("topic")) || 0;
+    if (fromNewMuslim && stepNumber) {
+      back.querySelector("span").textContent = topicNumber ? `Back to Topic ${topicNumber}` : `Back to step ${stepNumber}`;
+      back.href = `new-muslim-step.html?step=${stepNumber}${topicNumber ? `&topic=${topicNumber}` : ""}`;
+    } else if (from === "new-muslim" || from === "article") {
+      back.querySelector("span").textContent = fromNewMuslim ? "Back to New Muslim" : "Back to the article";
       back.href = fromNewMuslim ? "new-muslim.html" : "article.html";
     }
     let cameFromSite = false;
     try {
-      cameFromSite = new URL(document.referrer).origin === location.origin;
+      const referrer = new URL(document.referrer);
+      cameFromSite = referrer.origin === location.origin
+        && (!fromNewMuslim || !stepNumber || referrer.pathname.includes("new-muslim-step"));
     } catch (error) {}
     back.addEventListener("click", (event) => {
       if (!cameFromSite || history.length < 2) return;
@@ -783,7 +832,7 @@
       history.back();   // keeps the Library's filters and scroll position
     });
     if (!item) {
-      page.innerHTML = `<p class="material-missing">This material isn’t available. <a href="library.html">Browse the library</a></p>`;
+      page.innerHTML = `<p class="material-missing">This material isn’t available. <a href="library.html">Explore the library</a></p>`;
       return;
     }
     document.title = `${item.title} — Best Speech Society`;

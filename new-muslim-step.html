@@ -5,22 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Begin with the essentials — New Muslim — Best Speech Society</title>
   <link rel="icon" type="image/svg+xml" href="assets/icons/brand-symbol.svg">
+  <script src="js/frame-top.js"></script>
+  <script src="js/fresh.js?v=1"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300..700&display=swap">
-  <link rel="stylesheet" href="css/tokens.css?v=37">
-  <link rel="stylesheet" href="css/base.css?v=7">
-  <link rel="stylesheet" href="css/header.css?v=14">
-  <link rel="stylesheet" href="css/saved-menu.css?v=6">
-  <link rel="stylesheet" href="css/language.css?v=5">
-  <link rel="stylesheet" href="css/intro.css?v=6">
-  <link rel="stylesheet" href="css/resource-card.css?v=8">
-  <link rel="stylesheet" href="css/contact.css">
-  <link rel="stylesheet" href="css/book.css?v=13">
-  <link rel="stylesheet" href="css/carousel.css?v=3">
-  <link rel="stylesheet" href="css/preview.css?v=20">
-  <link rel="stylesheet" href="css/new-muslim-step.css?v=16">
-  <link rel="stylesheet" href="css/footer.css?v=3">
+  <link rel="stylesheet" href="css/tokens.css?v=54">
+  <link rel="stylesheet" href="css/base.css?v=19">
+  <link rel="stylesheet" href="css/contact-dialog.css?v=4">
+  <link rel="stylesheet" href="css/header.css?v=16">
+  <link rel="stylesheet" href="css/saved-menu.css?v=15">
+  <link rel="stylesheet" href="css/language.css?v=12">
+  <link rel="stylesheet" href="css/intro.css?v=9">
+  <link rel="stylesheet" href="css/resource-card.css?v=9">
+  <link rel="stylesheet" href="css/contact.css?v=2">
+  <link rel="stylesheet" href="css/book.css?v=20">
+  <link rel="stylesheet" href="css/carousel.css?v=6">
+  <link rel="stylesheet" href="css/preview.css?v=41">
+  <link rel="stylesheet" href="css/share.css?v=5">
+  <link rel="stylesheet" href="css/done.css?v=23">
+  <link rel="stylesheet" href="css/library.css?v=51">
+  <link rel="stylesheet" href="css/new-muslim-step.css?v=48">
+  <link rel="stylesheet" href="css/footer.css?v=6">
+  <link rel="stylesheet" href="css/motion.css?v=4">
+  <script src="js/motion.js?v=2"></script>
 </head>
 <body>
   <header class="site-header">
@@ -36,12 +44,12 @@
       <nav class="site-nav" id="site-nav" aria-label="Main">
         <ul class="site-nav__links">
           <li><a class="site-nav__link" href="index.html" data-label="Home">Home</a></li>
-          <li><a class="site-nav__link" href="about.html" data-label="About Us">About Us</a></li>
+          <li><a class="site-nav__link" href="about.html" data-label="About us">About us</a></li>
           <li><a class="site-nav__link" href="start-here.html" data-label="Start here">Start here</a></li>
           <li><a class="site-nav__link" href="library.html" data-label="Library">Library</a></li>
-          <li><a class="site-nav__link is-active" href="new-muslim.html" data-label="New muslim" aria-current="true">New muslim</a></li>
+          <li><a class="site-nav__link is-active" href="new-muslim.html" data-label="New Muslim" aria-current="true">New Muslim</a></li>
         </ul>
-        <a class="btn btn--small btn--secondary site-nav__cta site-nav__cta--menu" href="index.html#contact">Contact Us</a>
+        <a class="btn btn--small btn--secondary site-nav__cta site-nav__cta--menu" href="#contact">Contact us</a>
       </nav>
       <button class="saved-toggle" type="button" aria-label="Saved" aria-haspopup="dialog" aria-expanded="false" data-saved-toggle>
         <img src="assets/icons/saved.svg" width="24" height="24" alt="">
@@ -57,37 +65,37 @@
           <span class="menu-icon__bar"></span>
         </span>
       </button>
-      <a class="btn btn--small btn--secondary site-nav__cta site-nav__cta--bar" href="index.html#contact">Contact Us</a>
+      <a class="btn btn--small btn--secondary site-nav__cta site-nav__cta--bar" href="#contact">Contact us</a>
     </div>
   </header>
   <div class="menu-backdrop" aria-hidden="true"></div>
 
   <main class="page">
+    <!-- Back to the path page: names where it goes, like the other pages' back links -->
+    <div class="container step-back">
+      <a class="back-link" href="new-muslim.html">
+        <img src="assets/icons/arrow-left.svg" width="24" height="24" alt="">
+        <span><span class="text-wide">Back to New Muslim</span><span class="text-phone">Back to New Muslim path</span></span>
+      </a>
+    </div>
     <!-- Filled from js/new-muslim-data.js by js/new-muslim-step.js (?step=1 to 4) -->
-    <section class="container intro intro--top" aria-labelledby="intro-heading">
-      <h1 class="text-h1 intro__heading step-title" id="intro-heading" data-step-title>Begin with the essentials</h1>
-      <div class="step-intro">
+    <section class="container intro intro--top" aria-labelledby="intro-heading" data-reveal-group>
+      <h1 class="text-h1 intro__heading step-title" data-reveal id="intro-heading" data-step-title>Begin with the essentials</h1>
+      <div class="step-intro" data-reveal>
         <p class="text-body-xl intro__text" data-step-intro></p>
-        <button class="save-btn" type="button" aria-pressed="false" aria-label="Save this step" data-save>
-          <span class="save-btn__icon" aria-hidden="true">
-            <img src="assets/icons/bookmark.svg" width="11.55" height="14.85" alt="" data-icon="off">
-            <img src="assets/icons/bookmark-filled.svg" width="11.55" height="14.85" alt="" data-icon="on">
-          </span>
-          <span data-save-text>Save</span>
-        </button>
       </div>
     </section>
 
     <!-- Sections inside main have no id: the header would treat them as in-page sections and drop the nav underline -->
     <section class="container section learn" aria-labelledby="learn-heading">
       <div class="section-panel">
-        <h2 class="step-heading learn__heading" id="learn-heading">What you’ll learn</h2>
+        <h2 class="step-heading learn__heading" data-reveal id="learn-heading">What you’ll learn</h2>
         <ul class="learn__list" role="list" data-outcomes></ul>
       </div>
     </section>
 
     <section class="container section suggested" aria-labelledby="suggested-heading">
-      <h2 class="text-h2 step-heading" id="suggested-heading">Let’s start</h2>
+      <h2 class="text-h2 step-heading" id="suggested-heading" data-reveal>Let’s start</h2>
 
       <div class="topic-tabs" role="tablist" aria-label="Topics in this step" data-tabs></div>
 
@@ -98,33 +106,38 @@
             <h3 class="topic-panel__title" data-topic-title></h3>
             <p class="topic-panel__text" data-topic-text></p>
           </div>
-          <div class="topic-panel__controls">
-            <button class="icon-btn icon-btn--prev" type="button" aria-label="Previous resources" aria-controls="topic-resources" data-scroll="-1">
-              <img src="assets/icons/arrow-right.svg" width="28" height="28" alt="">
+          <!-- Topic progress (Figma 1137:4795): drawn by js/done.js (BSS.done.ringHtml) -->
+          <div data-topic-progress></div>
+        </div>
+        <!-- Phones: the Library's layout switch, cards (one a row) or a list (js/new-muslim-step.js) -->
+        <div class="topic-panel__views" data-step-views>
+          <div class="view-toggle" role="group" aria-label="Layout">
+            <button class="view-toggle__btn" type="button" aria-pressed="true" data-view="one" aria-label="Cards">
+              <img class="view-toggle__icon--phone" src="assets/icons/view-single.svg" width="14.6981" height="14.6981" alt="">
+              <img class="view-toggle__icon--wide" src="assets/icons/view-grid.svg" width="14.6981" height="14.6981" alt="">
             </button>
-            <button class="icon-btn" type="button" aria-label="Next resources" aria-controls="topic-resources" data-scroll="1">
-              <img src="assets/icons/arrow-right.svg" width="28" height="28" alt="">
+            <button class="view-toggle__btn" type="button" aria-pressed="false" data-view="list" aria-label="List">
+              <img src="assets/icons/view-list.svg" width="14.6981" height="14.6981" alt="">
             </button>
           </div>
         </div>
         <ul class="topic-panel__track" id="topic-resources" role="list" aria-label="Suggested resources" data-resources></ul>
-        <div class="topic-panel__dots" data-dots></div>
       </div>
     </section>
 
-    <section class="container section contact contact--light" aria-labelledby="contact-heading">
+    <section class="container section contact contact--light" id="contact" aria-labelledby="contact-heading">
       <div class="contact__panel">
         <div class="contact__content">
           <div class="contact__intro">
-            <div class="contact__heading-group">
-              <p class="section-label">Contact us</p>
-              <h2 class="text-h2 contact__heading" id="contact-heading">You do not have to find every answer alone.</h2>
-              <p class="text-body-xl contact__text">Send a private question to our academic and pastoral team, with no judgement.</p>
+            <div class="contact__heading-group" data-reveal-group>
+              <p class="section-label" data-reveal>Contact us</p>
+              <h2 class="text-h2 contact__heading" data-reveal id="contact-heading">You do not have to find every answer alone.</h2>
+              <p class="text-body-xl contact__text" data-reveal>Send a private question to our academic and pastoral team, with no judgement.</p>
             </div>
           </div>
 
           <!-- Not connected to a service yet: validation only, nothing is sent. -->
-          <form class="contact-form" data-validate novalidate>
+          <form class="contact-form" data-reveal data-validate novalidate>
             <div class="contact-form__row">
               <div class="field">
                 <label class="field__label" for="contact-name">Name</label>
@@ -193,7 +206,7 @@
             <ul class="footer-col__list">
               <li><a class="footer-link" href="start-here.html"><span class="footer-link__label">Start here</span></a></li>
               <li><a class="footer-link" href="library.html"><span class="footer-link__label">Library</span></a></li>
-              <li><a class="footer-link" href="new-muslim.html"><span class="footer-link__label">New muslim path</span></a></li>
+              <li><a class="footer-link" href="new-muslim.html"><span class="footer-link__label">New Muslim path</span></a></li>
               <li><a class="footer-link" href="about.html"><span class="footer-link__label">About us</span></a></li>
               <li><a class="footer-link" href="index.html"><span class="footer-link__label">Home</span></a></li>
             </ul>
@@ -222,19 +235,22 @@
     </div>
   </footer>
 
-  <script src="js/base.js"></script>
-  <script src="js/send-button.js?v=2"></script>
-  <script src="js/saved.js?v=1"></script>
-  <script src="js/header.js?v=9"></script>
-  <script src="js/language.js?v=5"></script>
-  <script src="js/saved-menu.js?v=8"></script>
-  <script src="js/new-muslim-data.js"></script>
+  <script src="js/base.js?v=3"></script>
+  <script src="js/send-button.js?v=3"></script>
+  <script src="js/saved.js?v=3"></script>
+  <script src="js/header.js?v=11"></script>
+  <script src="js/language.js?v=6"></script>
+  <script src="js/saved-menu.js?v=10"></script>
+  <script src="js/new-muslim-data.js?v=4"></script>
   <script src="js/download-fill.js"></script>
-  <script src="js/resource-card.js?v=8"></script>
-  <script src="js/new-muslim-step.js?v=7"></script>
-  <script src="js/carousel.js?v=6"></script>
-  <script src="js/preview.js?v=13"></script>
-  <script src="js/forms.js?v=3"></script>
+  <script src="js/resource-card.js?v=11"></script>
+  <script src="js/done.js?v=4"></script>
+  <script src="js/new-muslim-step.js?v=15"></script>
+  <script src="js/carousel.js?v=7"></script>
+  <script src="js/share.js?v=2"></script>
+  <script src="js/preview.js?v=22"></script>
+  <script src="js/contact-dialog.js?v=2"></script>
+  <script src="js/forms.js?v=4"></script>
   <script src="js/smooth-scroll.js?v=4"></script>
   <script src="js/skeleton.js"></script>
 </body>

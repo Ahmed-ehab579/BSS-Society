@@ -6,37 +6,26 @@
 // entry = { key, path: "start-here" | "new-muslim" | "library", type, title, label, image, url, savedAt }
 (function () {
   const KEY = "bss.saved.v2";
-  const OLD_KEY = "bss.saved.v1";   // v1 was a plain list of keys from the book page and the previews
+  const OLD_KEY = "bss.saved.v1";   // v1 was a plain list of keys from the old book page, now removed
   const PATHS = {
     "start-here": "Start here",
-    "new-muslim": "New muslim",
+    "new-muslim": "New Muslim",
     library: "Library",
-  };
-
-  // The one book page so far, so its v1 save can still be listed
-  const KNOWN = {
-    "beginners-journey": { type: "book", title: "A Beginner’s Journey into Understanding Islam", image: "assets/images/book-beginners-journey.jpg", url: "book.html" },
   };
 
   let memory = [];
   let saveFailed = false;
   const listeners = new Set();
 
-  const valid = (entry) => entry && typeof entry.key === "string" && PATHS[entry.path];
+  // Saves from the old book page (book.html, removed) are dropped: that page no longer exists
+  const valid = (entry) => entry && typeof entry.key === "string" && PATHS[entry.path] && entry.url !== "book.html";
 
+  // v1 saves all came from the old book page, which is gone: clear them away
   function migrate() {
     try {
-      const old = JSON.parse(window.localStorage.getItem(OLD_KEY));
-      if (!Array.isArray(old)) return null;
-      const now = Date.now();
-      const list = old.filter((key) => typeof key === "string")
-        .map((key, index) => ({ key, path: "library", type: "book", title: "", ...KNOWN[key], savedAt: now - index }));
-      window.localStorage.setItem(KEY, JSON.stringify(list));
       window.localStorage.removeItem(OLD_KEY);
-      return list;
-    } catch (error) {
-      return null;
-    }
+    } catch (error) { /* storage blocked: nothing to clear */ }
+    return null;
   }
 
   function read() {

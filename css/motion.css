@@ -1,0 +1,139 @@
+/* Motion (approved rules, 2026-11-16): soft arrivals, small distances, opacity and position only.
+   js/motion.js adds .motion-ready to <html> (never with reduced motion or without JavaScript), so
+   nothing is ever hidden unless the script is there to reveal it.
+
+   Mark-up:
+   - data-reveal                 one item eases in (fades and rises) when it reaches the screen
+   - data-reveal="media"         the same, and its photo settles from 1.04 to 1
+   - data-reveal-group           wraps items revealed together, 70ms apart (at most 4 steps) */
+
+.motion-ready [data-reveal]:not(.is-revealed) {
+  opacity: 0;
+}
+
+.motion-ready [data-reveal].is-revealed {
+  /* The fade and the rise run on their own curves: the item drifts up while it gently clears */
+  animation: motion-fade var(--motion-reveal) var(--motion-ease-fade) backwards,
+    motion-rise var(--motion-reveal) var(--motion-ease-glide) backwards;
+  animation-delay: calc(var(--reveal-i, 0) * var(--motion-stagger));
+}
+
+.motion-ready [data-reveal="media"].is-revealed img {
+  animation: motion-settle var(--motion-settle) var(--motion-ease-glide) backwards;
+  animation-delay: calc(var(--reveal-i, 0) * var(--motion-stagger));
+}
+
+/* A photo that arrives late keeps the skeleton's fade as well as the settle */
+.motion-ready [data-reveal="media"].is-revealed img.is-fading-in {
+  animation: motion-settle var(--motion-settle) var(--motion-ease-glide) backwards,
+    skeleton-fade var(--motion-slow) var(--motion-ease);
+}
+
+@keyframes motion-fade {
+  from { opacity: 0; }
+}
+
+@keyframes motion-rise {
+  from { translate: 0 var(--motion-rise); }
+}
+
+@keyframes motion-settle {
+  from { scale: 1.04; }
+}
+
+/* Scroll fill (data-scroll-fill, js/motion.js): every word ends in the full text colour; until then
+   the script holds it faint. Without the script (or with reduced motion) the paragraph keeps its own colours. */
+.is-filling,
+.is-filling * {
+  color: var(--text-strong);
+}
+
+.fill-word {
+  transition: opacity 120ms linear;   /* smooths the steps between scroll events */
+}
+
+/* Press feedback: a quick, slight give under the finger or click; letting go glides back */
+.btn,
+.icon-btn {
+  transition: background-color var(--motion-duration) var(--motion-ease),
+    color var(--motion-duration) var(--motion-ease),
+    border-color var(--motion-duration) var(--motion-ease),
+    scale var(--motion-slow) var(--motion-ease-glide);
+}
+
+.guide-card {
+  transition: background-color var(--motion-duration-hover) var(--motion-ease),
+    scale var(--motion-slow) var(--motion-ease-glide);
+}
+
+.btn:active,
+.icon-btn:active,
+.guide-card:active {
+  scale: var(--motion-press);
+  transition-duration: var(--motion-duration-link);
+}
+
+/* Buttons whose press area covers their whole card (an ::after laid over the card) keep their size:
+   shrinking them would shrink that area under the pointer, and the click would be lost */
+.btn.resource-card__action:active,
+.journey-card__done-panel .btn--primary:active {
+  scale: none;
+}
+
+/* Header icons and panel close buttons: a soft round shade and a small give when pressed (phones have
+   no hover, so this is their only feedback); letting go, both ease back */
+.saved-toggle,
+.language-toggle,
+.menu-toggle,
+.saved-sheet__close,
+.language-sheet__close,
+.contact-dialog__close,
+.share__close,
+.support-sheet__close {
+  transition: background-color var(--motion-duration-hover) var(--motion-ease),
+    scale var(--motion-slow) var(--motion-ease-glide);
+}
+
+.saved-toggle:active,
+.language-toggle:active,
+.menu-toggle:active,
+.saved-sheet__close:active,
+.language-sheet__close:active,
+.contact-dialog__close:active,
+.share__close:active,
+.support-sheet__close:active {
+  background: var(--surface-cards);
+  scale: var(--motion-press-icon);
+  transition-duration: var(--motion-duration-link);
+}
+
+/* Pages fade into each other (browsers without support simply change page as before) */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 250ms;
+  animation-timing-function: var(--motion-ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn:active,
+  .icon-btn:active,
+  .guide-card:active,
+  .saved-toggle:active,
+  .language-toggle:active,
+  .menu-toggle:active,
+  .saved-sheet__close:active,
+  .language-sheet__close:active,
+  .contact-dialog__close:active,
+  .share__close:active,
+  .support-sheet__close:active {
+    scale: none;
+  }
+
+  @view-transition {
+    navigation: none;
+  }
+}

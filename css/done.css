@@ -1,0 +1,428 @@
+/* New Muslim path, "Mark as done" (js/done.js). The card follows the article's "Finished this topic?"
+   card; done shows in the system's done greens. */
+.done-card {
+  display: flex;
+  align-items: center;
+  gap: var(--scale-500);
+  margin-top: var(--scale-800);
+  padding: var(--scale-600);
+  border: var(--border-md) solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  transition: background-color var(--motion-slow) var(--motion-ease), border-color var(--motion-slow) var(--motion-ease);
+}
+
+.done-card__icon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  color: var(--color-neutral-300);
+  transition: color var(--motion-slow) var(--motion-ease);
+}
+
+.done-card__copy {
+  flex: 1;
+  min-width: 0;
+}
+
+.done-card__title {
+  margin: 0;
+  color: var(--text-strong);
+  font-size: var(--h6-size);
+  line-height: var(--h6-line);
+  font-weight: var(--h6-weight);
+}
+
+.done-card__text {
+  margin: var(--scale-100) 0 0;
+  color: var(--text-body);
+  font-size: var(--body-s-size);
+  line-height: var(--body-s-line);
+}
+
+.done-card [hidden] {
+  display: none;                       /* the button's own display must not bring it back */
+}
+
+.done-card__actions {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  align-items: stretch;
+}
+
+.done-card__undo {
+  padding: var(--scale-200) var(--scale-100);
+  border: 0;
+  background: none;
+  color: var(--text-body);
+  font-family: inherit;
+  font-size: var(--label-m-size);
+  line-height: var(--label-m-line);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.done-card__undo:focus-visible {
+  outline: var(--border-lg) solid var(--border-strong);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs);
+}
+
+@media (hover: hover) {
+  .done-card__undo:hover {
+    color: var(--text-strong);
+  }
+}
+
+/* Done: green wash, green check */
+.done-card.is-done {
+  border-color: var(--green-300);
+  background: var(--green-100);
+}
+
+.done-card.is-done .done-card__icon {
+  color: var(--color-completed);
+}
+
+.done-card.is-done .done-card__title {
+  color: var(--green-900);
+}
+
+/* The tick draws in when marked (not on page load) */
+.done-card.is-celebrating .done-card__tick {
+  stroke-dasharray: 1;
+  animation: done-tick var(--motion-slow) var(--motion-fast) var(--motion-ease) both;
+}
+
+.done-card.is-celebrating .done-card__icon {
+  animation: done-pop var(--motion-slow) var(--motion-ease);
+}
+
+@keyframes done-tick {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes done-pop {
+  50% { transform: scale(1.12); }
+}
+
+/* ---- The green check on a done material's card (Figma 1012:3539: a solid circle on the photo, 36px) --- */
+.resource-card__done {
+  position: absolute;
+  top: var(--scale-300);
+  left: var(--scale-300);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 33px;
+  padding: 0 var(--scale-400) 0 var(--scale-100);
+  border-radius: var(--radius-pill);
+  background: var(--green-100);        /* light green pill, green tick, darker word, no shadow */
+  color: var(--green-900);
+  font-size: var(--label-m-size);
+  line-height: var(--label-m-line);
+  font-weight: var(--label-weight);
+  animation: done-badge-in var(--motion-slow) var(--motion-ease);
+}
+
+.resource-card__done[hidden] {
+  display: none;
+}
+
+.resource-card__done svg {
+  flex-shrink: 0;
+  color: var(--green-700);
+  width: 30px;
+  height: 30px;
+}
+
+/* New Muslim step cards: the type badge moves under the photo, so the check takes its corner */
+.topic-panel__track .resource-card__done {
+  right: var(--scale-300);
+  left: auto;
+}
+
+@keyframes done-badge-in {
+  from { opacity: 0; transform: scale(0.6); }
+}
+
+/* ---- Progress on the step page (topic tabs and panel) and the path page (steps) ------------------- */
+.topic-tab__done {
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  margin-left: var(--scale-200);
+  vertical-align: -2px;
+  color: var(--green-700);
+}
+
+/* Progress ring (Figma 1137:4795), shared by the step page (each topic) and the path page (each step):
+   an open ring with rounded ends, the gap at the bottom, "done/total" inside and what is left under it.
+   js/done.js (BSS.done.paintRing) sets --ring-value: degrees of the 300° arc. */
+.progress-ring {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--scale-200);
+}
+
+.progress-ring__dial {
+  position: relative;
+  width: 76px;
+  height: 76px;
+}
+
+.progress-ring svg:not(.progress-ring__check) {
+  display: block;
+  width: 76px;
+  height: 76px;
+  overflow: visible;
+  transform: rotate(120deg);           /* the arc starts bottom left and runs clockwise */
+}
+
+.progress-ring circle {
+  fill: none;
+  stroke-width: 5.7;
+  stroke-linecap: round;               /* rounded ends on the track and on the progress */
+}
+
+.progress-ring__track {
+  stroke: var(--color-neutral-200);
+  stroke-dasharray: 300 360;
+}
+
+.progress-ring__value {
+  stroke: #82a65e;                     /* the ring green (Figma: Path step card), between green-500 and green-700 */
+  stroke-dasharray: var(--ring-value, 0) 360;
+  transition: stroke-dasharray var(--motion-slow) var(--motion-ease);
+}
+
+/* Nothing done yet: no dot of progress at the start of the arc */
+.progress-ring.is-empty .progress-ring__value {
+  stroke: none;
+}
+
+.progress-ring__count {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 2px;
+  color: var(--text-strong);
+  font-size: var(--h6-size);
+  line-height: 1;
+  font-weight: var(--h6-weight);
+}
+
+/* Longer counts ("2/13") step down, so every count fills the ring the same way as "2/5" */
+.progress-ring__count.is-long {
+  font-size: var(--body-m-size);
+}
+
+.progress-ring__caption {
+  margin: 0;
+  color: var(--text-body);
+  font-size: var(--body-s-size);
+  line-height: var(--body-s-line);
+  white-space: nowrap;
+}
+
+/* Finished (Figma: Path step card, Progress=Complete): the ring closes into a full green circle, a check
+   replaces the count, and the caption keeps the count ("13/13") */
+.progress-ring__check {
+  display: none;
+}
+
+.progress-ring.is-complete .progress-ring__track {
+  stroke: #82a65e;
+  stroke-dasharray: none;
+}
+
+.progress-ring.is-complete .progress-ring__value,
+.progress-ring.is-complete .progress-ring__count {
+  display: none;
+}
+
+.progress-ring.is-complete .progress-ring__check {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  width: 59%;                          /* 36px in the 61px ring */
+  height: 59%;
+  transform: translate(-50%, -50%);
+  overflow: visible;
+}
+
+.progress-ring__check path {
+  fill: none;
+  stroke: #5f7b43;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.progress-ring.is-complete .progress-ring__caption {
+  font-weight: 500;
+}
+
+@media (max-width: 767px) {
+  .done-card {
+    flex-wrap: wrap;
+    gap: var(--scale-400);
+    padding: var(--scale-500);
+  }
+
+  .done-card__icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .done-card__actions {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .done-card,
+  .done-card__icon,
+  .progress-ring__value {
+    transition: none;
+  }
+
+  .done-card.is-celebrating .done-card__tick,
+  .done-card.is-celebrating .done-card__icon,
+  .resource-card__done {
+    animation: none;
+  }
+}
+
+/* In the article: lined up with the article's own "Finished this topic?" card */
+.article .done-card {
+  margin-inline: var(--scale-800);
+}
+
+@media (max-width: 767px) {
+  .article .done-card {
+    margin-inline: 0;
+  }
+}
+
+/* ---- Mark as done in a material's header: a third icon button beside Share and Save (js/preview.js) --
+   Same button, same states (hover, pressed, focus) as its neighbours. A plain tick: dark grey, then
+   dark green on a light green button once done; marking it pops the button and draws the tick in. */
+.done-icon {
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+
+.done-icon__tick {
+  stroke: var(--text-strong);
+  transition: stroke var(--motion-base) var(--motion-ease);
+}
+
+.book__done-btn[aria-pressed="true"] {
+  background: var(--green-100);
+}
+
+.book__done-btn[aria-pressed="true"] .done-icon__tick {
+  stroke: var(--green-700);
+}
+
+@media (hover: hover) {
+  .book__done-btn[aria-pressed="true"]:hover {
+    background: var(--green-300);
+  }
+}
+
+.book__done-btn.is-popping {
+  animation: done-btn-pop var(--motion-slow) var(--motion-ease);
+}
+
+.book__done-btn.is-popping .done-icon__tick {
+  stroke-dasharray: 24;
+  animation: done-btn-tick var(--motion-slow) var(--motion-ease) both;
+}
+
+@keyframes done-btn-pop {
+  45% { transform: scale(1.12); }
+}
+
+@keyframes done-btn-tick {
+  from { stroke-dashoffset: 24; }
+  to { stroke-dashoffset: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .done-icon__tick {
+    transition: none;
+  }
+
+  .book__done-btn.is-popping,
+  .book__done-btn.is-popping .done-icon__tick {
+    animation: none;
+  }
+}
+
+/* Phones, a material page: "Mark as done" at the end of the page, after the summary and the buttons */
+@media (max-width: 767px) {
+  .book__details > .done-card {
+    order: 3;
+  }
+}
+
+/* Phones: the Done badge on cards gets a thin darker edge */
+@media (max-width: 767px) {
+  .resource-card__done {
+    border: 0.3px solid #5b5b5b;
+  }
+}
+
+/* Phones: "Mark as done" at the sizes of the article's "Finished this topic?" (css/article.css):
+   title H5 20/28, text 16/24, 6px between them */
+@media (max-width: 767px) {
+  .done-card__title {
+    font-size: var(--h5-size);
+    line-height: var(--h5-line);
+  }
+
+  .done-card__text {
+    margin-top: 6px;
+    font-size: var(--body-m-size);
+    line-height: 24px;
+  }
+}
+
+/* Phones: the "Mark as done" check twice as large (80px, was 40) */
+@media (max-width: 767px) {
+  .done-card__icon {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+/* Phones: "Mark as done" centred, like the article's "Finished this topic?": the check, then the title
+   and text, then the button, all on the card's centre line */
+@media (max-width: 767px) {
+  .done-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .done-card__copy {
+    width: 100%;
+  }
+
+  .done-card__undo {
+    align-self: center;
+  }
+}

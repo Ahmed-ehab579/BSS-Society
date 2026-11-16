@@ -128,9 +128,9 @@
 .support-sheet__title {
   margin: 0;
   color: var(--color-heading);
-  font-size: 32px;
-  line-height: var(--h5-line);
-  font-weight: var(--h5-weight);
+  font-size: var(--h4-size);
+  line-height: 38px;
+  font-weight: var(--h4-weight);
 }
 
 .support-sheet__close {
@@ -141,7 +141,7 @@
   height: 44px;
   padding: 0;
   border: 0;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: none;
   color: var(--color-text-on-light);
   cursor: pointer;
@@ -169,7 +169,7 @@
 #contact-dialog .support-sheet__intro {
   max-width: none;
   padding: 0 max(0px, calc(100% - 400px)) var(--scale-200) 0;   /* text 400 px wide, rule full width */
-  border-bottom: 0.3px solid #6c6c6c;
+  border-bottom: 0.3px solid var(--border);
 }
 
 .partner-form .support-sheet__intro {
@@ -179,7 +179,7 @@
 .support-sheet__alt {
   margin: 0;
   padding-top: 6px;
-  border-top: 0.3px solid #7a7a7a;
+  border-top: 0.3px solid var(--border);
   color: var(--color-text-body);
   font-size: var(--body-s-size);
   line-height: var(--body-s-line);
@@ -199,8 +199,8 @@
   flex-direction: column;
   margin: 0;
   padding: 0;
-  border: var(--border-md) solid var(--color-neutral-100);
-  border-radius: var(--scale-400);
+  border: var(--border-md) solid var(--border-subtle);
+  border-radius: var(--radius-md);
   background: var(--surface-cards);
   list-style: none;
 }
@@ -219,7 +219,7 @@
   position: absolute;
   inset: var(--scale-100) calc(-1 * var(--border-md));
   z-index: -1;
-  border-radius: var(--scale-300);
+  border-radius: var(--radius-sm);
   background: transparent;
   transition: background-color var(--motion-duration-hover) var(--motion-ease),
     box-shadow var(--motion-duration-hover) var(--motion-ease);
@@ -230,7 +230,7 @@
 }
 
 .contact-channel + .contact-channel {
-  border-top: var(--border-md) solid var(--color-neutral-100);
+  border-top: var(--border-md) solid var(--border-subtle);
 }
 
 .contact-channel__main {
@@ -278,7 +278,7 @@
   border-radius: var(--radius-pill);
   background: var(--surface-cards-hovered);
   color: var(--color-completed-text);
-  font-size: 11px;
+  font-size: var(--body-xs-size);
   line-height: 16px;
   font-weight: 600;
 }
@@ -310,12 +310,12 @@
   height: 36px;
   margin-right: var(--scale-400);
   padding: 0 var(--scale-300);
-  border: var(--border-md) solid var(--color-neutral-300);
+  border: var(--border-md) solid var(--border);
   border-radius: var(--radius-pill);
   background: none;
   color: var(--color-text-on-light);
   font-family: inherit;
-  font-size: 13px;
+  font-size: var(--body-s-size);
   line-height: 18px;
   font-weight: 600;
   cursor: pointer;
@@ -341,13 +341,13 @@
 
 .contact-channel__copy.is-copied::before {
   transform: none;
-  transition: transform 450ms cubic-bezier(0.4, 0, 0.2, 1),
+  transition: transform var(--motion-slow) cubic-bezier(0.4, 0, 0.2, 1),
     background-color var(--motion-duration-hover) var(--motion-ease);
 }
 
 .contact-channel__copy.is-resetting::before {
   opacity: 0;
-  transition: opacity 300ms var(--motion-ease);
+  transition: opacity var(--motion-slow) var(--motion-ease);
 }
 
 /* ---- Help us reach further: the partner form -------------------------------------------------------- */
@@ -390,7 +390,7 @@
   height: 48px;
   padding: 0;   /* each half fills its side, so a hover colours the whole empty half */
   overflow: hidden;
-  border: var(--border-md) solid var(--color-neutral-300);
+  border: var(--border-md) solid var(--border);
   border-radius: var(--radius-pill);
   background: var(--surface-action-outline);
 }
@@ -449,7 +449,7 @@
   gap: 6px;
   height: 38px;
   padding: 0 var(--scale-400);
-  border: var(--border-md) solid var(--color-neutral-300);
+  border: var(--border-md) solid var(--border);
   border-radius: var(--radius-pill);
   background: var(--surface-action-outline);
   color: var(--color-text-on-light);
@@ -542,7 +542,7 @@
 .partner-form__row + .field { margin-bottom: 36px; }
 
 .partner-form .field__input {
-  border-width: var(--scale-12);
+  border-width: var(--border-md);
 }
 
 .partner-form .field[hidden] {
@@ -633,7 +633,7 @@
 
 @media (hover: hover) {
   .support-sheet__close:hover {
-    background: var(--surface-cards-hovered-neutral);
+    background: var(--surface-card);
   }
 
   .contact-channel:hover::before {
@@ -666,7 +666,7 @@
     max-width: none;
     max-height: 92vh;
     max-height: 92dvh;
-    border-radius: var(--scale-600) var(--scale-600) 0 0;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
     box-shadow: none;
     opacity: 1;
     transform: translateY(100%);
@@ -695,10 +695,6 @@
     background: var(--color-neutral-300);
   }
 
-  .support-sheet__title {
-    font-size: var(--h5-size);   /* 32 on desktop; 26 keeps "Help us reach further" on one line */
-    line-height: var(--h5-line);
-  }
 
   .support-sheet__body {
     gap: var(--scale-500);
@@ -741,5 +737,35 @@
   .partner-form .field__error,
   .partner-form__status {
     animation: none !important;
+  }
+}
+
+/* Phones: one header for every slide-up panel (as on the Saved and language sheets): the close button
+   alone in the top-right corner, the title (H4) on its own row 8px below it, 14px to the content */
+@media (max-width: 767px) {
+  .support-sheet__head,
+  #partner-dialog .support-sheet__head {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: var(--scale-200);
+    padding-top: var(--scale-300);
+    padding-right: var(--scale-300);
+    padding-bottom: 14px;
+  }
+
+  .support-sheet__close {
+    order: -1;
+    align-self: flex-end;
+    width: 44px;
+    height: 44px;
+    margin: 0;
+  }
+
+  .support-sheet__title {
+    margin: 0;
+    font-size: var(--h4-size);
+    line-height: var(--h4-line);
+    font-weight: var(--h4-weight);
   }
 }

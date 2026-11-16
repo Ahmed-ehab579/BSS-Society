@@ -1,0 +1,243 @@
+/* Contact dialog (js/contact-dialog.js): the contact form over any page that doesn't have it.
+   Desktop: a centred panel over a dimmed page. Phones: a sheet that slides up, nearly full height.
+   Same fields, buttons and type as the home page's contact form. */
+.contact-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: var(--scale-600);
+  border: 0;
+  background: var(--surface-overlay);
+  opacity: 0;
+  transition: opacity var(--motion-panel-out) var(--motion-ease);
+}
+
+.contact-dialog[open] {
+  display: flex;
+}
+
+.contact-dialog::backdrop {
+  background: transparent;   /* the dialog itself dims the page, so it can fade */
+}
+
+.contact-dialog.is-open {
+  opacity: 1;
+  transition: opacity var(--motion-panel-in) var(--motion-ease);
+}
+
+:root.is-contact-open {
+  overflow: hidden;
+}
+
+.contact-dialog__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--scale-800);
+  width: 100%;
+  max-width: 640px;
+  max-height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--scale-900);
+  border-radius: var(--radius-lg);
+  background: var(--surface-page);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(16px) scale(0.97);
+  transition: transform var(--motion-panel-out) var(--motion-ease);
+}
+
+.contact-dialog.is-open .contact-dialog__panel {
+  transform: none;
+  transition: transform var(--motion-panel-in) var(--motion-ease-glide);
+}
+
+/* Opening, the dialog itself takes the focus (not the close button), so no focus ring shows on a tap */
+.contact-dialog__panel:focus {
+  outline: none;
+}
+
+/* The panel's scrollbar, as in the material preview: a thin soft grey bar with rounded ends on a clear
+   track, kept inside the panel and clear of its rounded corners, instead of the system's bar on the edge */
+.contact-dialog__panel::-webkit-scrollbar {
+  width: 14px;
+}
+
+.contact-dialog__panel::-webkit-scrollbar-track {
+  margin-block: var(--scale-600);
+  background: transparent;
+}
+
+.contact-dialog__panel::-webkit-scrollbar-thumb {
+  border: 5px solid transparent;
+  border-radius: var(--radius-pill);
+  background: rgba(59, 59, 59, 0.28) padding-box;
+}
+
+.contact-dialog__panel::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(59, 59, 59, 0.45);
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .contact-dialog__panel {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(59, 59, 59, 0.28) transparent;
+  }
+}
+
+.contact-dialog__close {
+  position: absolute;
+  top: var(--scale-300);
+  right: var(--scale-300);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-round);
+  background: none;
+  color: var(--text);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--motion-fast) var(--motion-ease);
+}
+
+.contact-dialog__close:focus-visible {
+  outline: 2px solid var(--border-color-on-light);   /* the same keyboard ring as the other panels' close */
+  outline-offset: -2px;
+}
+
+@media (hover: hover) {
+  .contact-dialog__close:hover {
+    background: var(--surface-card);
+  }
+}
+
+.contact-dialog__intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--scale-300);
+  padding-right: var(--scale-900);    /* clear of the close button */
+}
+
+.contact-dialog__title {
+  margin: 0;
+  color: var(--text-strong);
+  font-size: var(--h4-size);
+  line-height: var(--h4-line);
+  font-weight: var(--h4-weight);
+}
+
+.contact-dialog__text {
+  margin: 0;
+  color: var(--text-body);
+  font-size: var(--body-m-size);
+  line-height: var(--body-m-line);
+}
+
+.contact-dialog__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--scale-600);
+}
+
+.contact-dialog__row {
+  display: flex;
+  gap: var(--scale-500);
+}
+
+.contact-dialog__row .field {
+  flex: 1 1 0;
+}
+
+.contact-dialog__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--scale-300);
+  margin-top: var(--scale-200);
+}
+
+.contact-dialog__actions .btn {
+  width: 100%;
+}
+
+.contact-dialog .form-status {
+  margin: 0;
+  color: var(--text-body);
+}
+
+.contact-dialog .form-status:empty {
+  display: none;
+}
+
+/* Phones: a sheet from the bottom, nearly full height, the page peeking above it */
+@media (max-width: 767px) {
+  .contact-dialog {
+    align-items: flex-end;
+    padding: var(--scale-600) 0 0;
+    transition-duration: var(--motion-sheet-out);
+  }
+
+  .contact-dialog.is-open {
+    transition-duration: var(--motion-sheet-in);
+  }
+
+  .contact-dialog__panel {
+    max-width: none;
+    height: 100%;
+    gap: var(--scale-600);
+    padding: var(--scale-800) var(--scale-500) calc(var(--scale-600) + env(safe-area-inset-bottom));
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    transform: translateY(100%);
+    transition: transform var(--motion-sheet-out) var(--motion-ease-expand);
+  }
+
+  .contact-dialog.is-open .contact-dialog__panel {
+    transition: transform var(--motion-sheet-in) var(--motion-ease-sheet);
+  }
+
+  .contact-dialog__title {
+    font-size: var(--h5-size);
+    line-height: var(--h5-line);
+  }
+
+  .contact-dialog__row {
+    flex-direction: column;
+    gap: var(--scale-600);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-dialog,
+  .contact-dialog__panel {
+    transition: none;
+  }
+}
+
+/* Phones: the same header as the other slide-up panels: close alone in the top-right corner, the intro
+   starting 8px below it, the title in H4 */
+@media (max-width: 767px) {
+  .contact-dialog__panel {
+    padding-top: calc(var(--scale-300) + 44px + var(--scale-200));
+  }
+
+  .contact-dialog__intro {
+    padding-right: 0;
+  }
+
+  .contact-dialog__title {
+    font-size: var(--h4-size);
+    line-height: var(--h4-line);
+    font-weight: var(--h4-weight);
+  }
+}

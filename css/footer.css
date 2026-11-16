@@ -82,11 +82,11 @@
 .newsletter__input {
   width: 365px;
   min-width: 0;
-  height: 44px;
+  height: 48px;
   margin: 0;
-  padding: 11px 11px 11px 16px;
+  padding: var(--scale-300) var(--scale-400);
   border: var(--border-md) solid var(--color-text-on-dark);
-  border-radius: 30px;
+  border-radius: var(--radius-sm);
   background: transparent;
   color: var(--color-text-on-dark);
   font-family: inherit;
@@ -191,7 +191,7 @@
   height: var(--border-md);
   background: var(--color-text-on-dark);
   opacity: 0;
-  transition: opacity var(--motion-duration-link) ease-out;
+  transition: opacity var(--motion-duration-link) var(--motion-ease);
 }
 
 .footer-link[href]:focus-visible {

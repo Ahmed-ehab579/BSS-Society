@@ -42,7 +42,7 @@
 @media (min-width: 1100px) and (max-width: 1319px) {
   .about-title {
     flex-basis: auto;
-    font-size: clamp(42px, 3.8vw, 53px);
+    font-size: var(--h1-size);
     line-height: 1.47;
   }
 
@@ -58,7 +58,7 @@
   display: flex;
   min-height: 743px;
   overflow: hidden;
-  border-radius: var(--scale-500);
+  border-radius: var(--radius-lg);
 }
 
 .who__media {
@@ -68,7 +68,7 @@
   bottom: 0;
   width: 58%;
   overflow: hidden;
-  border-radius: 0 var(--scale-500) var(--scale-500) 0;
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
   -webkit-mask-image: linear-gradient(to right, transparent, #000 30%);   /* no visible left edge */
   mask-image: linear-gradient(to right, transparent, #000 30%);
 }
@@ -140,9 +140,9 @@
 .stat__value {
   order: -1;
   margin: 0 0 var(--scale-100);
-  font-size: 62px;
+  font-size: var(--display-hero-size);   /* 61px (phone 36), kept as approved when H1 moved to 51px */
   line-height: 1;
-  font-weight: 300;
+  font-weight: 400;
   letter-spacing: -1.25px;
 }
 
@@ -152,11 +152,11 @@
 }
 
 .stat__plus {
-  font-size: 50px;
+  font-size: var(--h2-size);
 }
 
 .stat__label {
-  font-size: 14.5px;
+  font-size: var(--body-s-size);
   line-height: 1;
   letter-spacing: -0.46px;
 }
@@ -168,11 +168,11 @@
 
 .stat__note {
   margin: 18px 0 0;
-  font-size: 13px;
+  font-size: var(--body-s-size);
   line-height: 1.5;
   font-weight: 500;
   letter-spacing: 0.47px;
-  text-transform: capitalize;
+  text-transform: none;   /* sentence case, like every other label */
   white-space: nowrap;   /* the lines are set by hand in the HTML */
 }
 
@@ -356,9 +356,9 @@
   flex-shrink: 0;
   width: 91px;
   color: var(--color-section-dot);
-  font-size: 93px;
+  font-size: var(--display-l-size);
   line-height: 1;
-  font-weight: 300;
+  font-weight: var(--display-l-weight);
   text-align: center;
 }
 
@@ -373,7 +373,7 @@
   max-width: 320px;
   margin: 0;
   color: var(--color-heading);
-  font-size: 33px;
+  font-size: var(--h4-size);
   line-height: 1.5;
   font-weight: 500;
 }
@@ -407,7 +407,7 @@
   overflow: hidden;
   padding: 38px 21px 32px;
   border: var(--scale-12) solid var(--color-benefit-border);
-  border-radius: 21px;
+  border-radius: var(--radius-lg);
   background: var(--surface-cards);
 }
 
@@ -472,7 +472,7 @@
   max-width: 190px;
   margin: 0;
   color: var(--color-heading);
-  font-size: 29px;
+  font-size: var(--h4-size);
   line-height: 1.46;
   font-weight: 500;
 }
@@ -566,9 +566,9 @@
     margin-block: var(--counter-offset);
     overflow: hidden;
     color: var(--color-section-dot);
-    font-size: 96px;
+    font-size: var(--display-size);
     line-height: 1;
-    font-weight: 300;
+    font-weight: 400;
     letter-spacing: -3px;
     --counter-offset: 200px;        /* about half a card: it rests level with the first and last cards */
   }
@@ -591,7 +591,7 @@
     padding: 0;
     overflow: hidden;
     border: 0.3px solid var(--color-brand-500);
-    border-radius: var(--scale-500);
+    border-radius: var(--radius-lg);
     background: var(--surface-preview);
     transition: background-color var(--motion-duration-art) var(--motion-ease-expand),
       box-shadow var(--motion-duration-art) var(--motion-ease-expand);
@@ -670,7 +670,7 @@
     position: static;
     width: 100%;
     aspect-ratio: 4 / 3;
-    border-radius: var(--scale-500);
+    border-radius: var(--radius-lg);
     -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent);   /* fades toward the text */
     mask-image: linear-gradient(to bottom, #000 62%, transparent);
   }
@@ -695,13 +695,11 @@
   .about-intro__heading,
   .who__heading,
   .support__heading {
-    font-size: 32px;
-    line-height: 40px;
     letter-spacing: -0.64px;
   }
 
   .who__media {
-    border-radius: 16px;
+    border-radius: var(--radius-md);
   }
 
   .who__content {
@@ -715,13 +713,10 @@
 
   /* Figma 2178:2863: same layout, scaled to the phone. Small text stays at a readable size. */
   .stat__value {
-    font-size: 44px;
+    font-size: var(--display-size);    /* phones: one step up the scale, 36 → Display 56 */
     letter-spacing: -0.88px;
   }
 
-  .stat__plus {
-    font-size: 35px;
-  }
 
   .stat__label {
     font-size: var(--body-xs-size);
@@ -731,7 +726,7 @@
   /* Two lines here, three on narrower phones */
   .stat__note {
     margin: var(--scale-300) 0 0;
-    font-size: 11px;
+    font-size: var(--body-xs-size);
     letter-spacing: 0.2px;
   }
 
@@ -753,7 +748,7 @@
   }
 
   .benefit-card {
-    border-radius: 16px;
+    border-radius: var(--radius-md);
   }
 
   /* Stacking cards: the whole section stops 20px from the top of the screen, and the cards rise over
@@ -800,7 +795,7 @@
   }
 
   .journey__counter {
-    font-size: 72px;
+    font-size: var(--display-size);
     letter-spacing: -2.5px;
     --counter-offset: 225px;
   }
@@ -808,12 +803,9 @@
   .apart-card {
     min-height: 300px;
     padding: var(--scale-800) var(--scale-500) var(--scale-600);
-    border-radius: 16px;
+    border-radius: var(--radius-md);
   }
 
-  .apart-card__title {
-    font-size: var(--h5-size);
-  }
 
   .apart-card__text {
     font-size: var(--body-m-size);
@@ -832,10 +824,7 @@
   .support__actions .btn {
     flex: 1 1 0;
     min-width: max-content;
-    height: 52px;
     padding-inline: var(--scale-400);
-    font-size: 15px;
-    line-height: 22px;
   }
 }
 
@@ -847,5 +836,23 @@
   .journey-step__number,
   .journey__counter-strip {
     transition: none;
+  }
+}
+
+/* Our commitment: narrower side padding so each card title sits on one line (by request) */
+@media (min-width: 1200px) {
+  .commitment .benefit-card {
+    padding-left: var(--scale-400);
+    padding-right: var(--scale-400);
+  }
+
+  .commitment .benefit-card__content {
+    left: var(--scale-400);
+    right: var(--scale-400);
+    padding-left: 0;
+  }
+
+  .commitment .benefit-card__title {
+    max-width: none;
   }
 }

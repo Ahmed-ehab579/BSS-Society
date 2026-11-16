@@ -1,7 +1,7 @@
 /* Material preview overlay (js/preview.js): book, audio book and video, in the book details layout
    (css/book.css). 90% of the screen on desktop; a full-screen sheet on phones. */
 .preview {
-  --book-radius: 20px;
+  --book-radius: var(--radius-lg);
   --preview-gutter: var(--scale-1100);   /* the bar, the details and the related row share one edge */
   position: fixed;
   inset: 0;
@@ -33,7 +33,7 @@
   inset: 0;
   background: var(--backdrop);
   opacity: 0;
-  transition: opacity 240ms var(--motion-ease);
+  transition: opacity var(--motion-base) var(--motion-ease);
 }
 
 .preview.is-open .preview__backdrop {
@@ -50,12 +50,12 @@
   height: 90vh;
   height: 90dvh;
   overflow: hidden;
-  border-radius: var(--scale-600);
+  border-radius: var(--radius-lg);
   background: var(--color-page-bg);
   box-shadow: var(--shadow-menu);
   opacity: 0;
   transform: translateY(20px) scale(0.985);
-  transition: opacity 240ms var(--motion-ease), transform 240ms var(--motion-ease);
+  transition: opacity var(--motion-base) var(--motion-ease), transform var(--motion-base) var(--motion-ease);
 }
 
 .preview__sheet:focus {
@@ -75,7 +75,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 64px;
+  align-items: flex-start;
+  height: 94px;                        /* back link 40px from the top; the close button keeps its place */
   padding-inline: calc(var(--preview-gutter) - var(--scale-200));
 }
 
@@ -85,10 +86,11 @@
   justify-content: center;
   width: 44px;
   height: 44px;
+  margin-top: 10px;                    /* same spot as before the back link moved down */
   margin-right: calc(var(--scale-300) + var(--scale-200) - var(--preview-gutter));   /* 12px from the corner */
   padding: 0;
   border: 0;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: none;
   color: var(--color-text-on-light);
   cursor: pointer;
@@ -101,6 +103,7 @@
   align-items: center;
   gap: var(--scale-200);
   height: 44px;
+  margin-top: var(--scale-900);        /* 40px from the top of the sheet */
   padding: 0 var(--scale-400) 0 var(--scale-200);
   border: 0;
   border-radius: var(--radius-pill);
@@ -136,6 +139,34 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
+}
+
+/* The scrollbar: a thin soft grey bar with rounded ends on a clear track, inset from the sheet's
+   rounded corners (the help panel's style), instead of the system's dark bar */
+.preview__scroll::-webkit-scrollbar {
+  width: 14px;
+}
+
+.preview__scroll::-webkit-scrollbar-track {
+  margin-block: var(--scale-600);
+  background: transparent;
+}
+
+.preview__scroll::-webkit-scrollbar-thumb {
+  border: 5px solid transparent;
+  border-radius: var(--radius-pill);
+  background: rgba(59, 59, 59, 0.28) padding-box;
+}
+
+.preview__scroll::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(59, 59, 59, 0.45);
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .preview__scroll {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(59, 59, 59, 0.28) transparent;
+  }
 }
 
 .preview .book {
@@ -179,9 +210,13 @@
   content: " · ";
 }
 
+.preview .book__head {
+  column-gap: var(--scale-600);        /* 24px between a long title and the share and save buttons */
+}
+
 .preview .book__title {
-  font-size: var(--h4-size);
-  line-height: 42px;
+  font-size: var(--h3-size);           /* H3: 35px (phone 26), a few px up from H4, by request */
+  line-height: var(--h3-line);
   letter-spacing: -0.6px;
 }
 
@@ -220,13 +255,13 @@
   gap: var(--scale-800);
   margin: 0 var(--preview-gutter) var(--scale-1000);
   padding: var(--scale-900) var(--related-padding);
-  border-radius: 20px;
+  border-radius: var(--radius-lg);
   background: var(--surface-cards);
 }
 
 .preview__related-heading {
   padding-bottom: var(--scale-500);
-  border-bottom: var(--border-md) solid var(--color-neutral-200);
+  border-bottom: var(--border-md) solid var(--border-subtle);
   font-size: var(--h5-size);
   line-height: var(--h5-line);
   font-weight: var(--label-weight);
@@ -249,7 +284,7 @@
 
 .preview__related .icon-btn {
   width: 32px;
-  height: 32px;
+  height: 40px;
   background: var(--surface-action-outline);
 }
 
@@ -298,11 +333,11 @@
 
 /* Photos sit a little lower here, and their play and listen icons are 20% smaller */
 .preview__related .resource-card__frame--photo {
-  box-shadow: 0 4.5px 7.2px rgba(0, 0, 0, 0.28);
+  box-shadow: var(--shadow-media);
 }
 
 .preview__related .resource-card__frame--book {
-  box-shadow: 0 1.8px 4.5px 0.9px rgba(0, 0, 0, 0.11);
+  box-shadow: var(--shadow-media);
 }
 
 .preview__related .resource-card__play {
@@ -403,7 +438,7 @@
   height: 14px;
   margin-top: -5px;
   border: 0;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: var(--surface-action-primary);
   -webkit-appearance: none;
   appearance: none;
@@ -414,7 +449,7 @@
   width: 14px;
   height: 14px;
   border: 0;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: var(--surface-action-primary);
 }
 
@@ -448,7 +483,7 @@
   justify-content: center;
   padding: 0;
   border: 0;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   font-family: inherit;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -517,9 +552,9 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  font-size: 9px;
+  font-size: 9px;   /* number inside the skip icon */
   line-height: 1;
-  font-weight: 700;
+  font-weight: 600;
   transform: translate(-50%, -32%);
 }
 
@@ -549,7 +584,7 @@
 }
 
 .tracks li + li {
-  border-top: var(--scale-12) solid var(--color-neutral-200);
+  border-top: var(--scale-12) solid var(--border-subtle);
 }
 
 .tracks__row {
@@ -561,7 +596,7 @@
   min-height: 48px;
   padding: var(--scale-100) var(--scale-200);
   border: 0;
-  border-radius: var(--scale-200);
+  border-radius: var(--radius-sm);
   background: none;
   color: var(--color-text-on-light);
   font-family: inherit;
@@ -654,7 +689,7 @@
 
 /* Video: the picture leads, and YouTube only loads on play */
 .preview--video .book {
-  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);   /* a narrower picture gives the title room, clear of the share and save buttons */
   gap: var(--scale-1000);
 }
 
@@ -724,7 +759,7 @@
   height: 48px;
   border: 3px solid rgba(255, 255, 255, 0.35);
   border-top-color: var(--color-text-on-dark);
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   animation: preview-spin 800ms linear infinite;
 }
 
@@ -876,15 +911,19 @@
     border-radius: 0;
     box-shadow: none;
     transform: none;
-    transition: opacity 200ms var(--motion-ease);
+    transition: opacity var(--motion-base) var(--motion-ease);
   }
 
   .preview.is-open .preview__sheet {
-    transition: opacity 200ms var(--motion-ease);
+    transition: opacity var(--motion-base) var(--motion-ease);
   }
 
   .preview__bar {
-    height: 56px;
+    height: 74px;
+  }
+
+  .preview__back {
+    margin-top: var(--scale-600);      /* 24px from the top */
   }
 
   /* A page goes back; it doesn't close */
@@ -913,8 +952,6 @@
 
   .preview .book__title {
     margin: var(--scale-200) 0 0;
-    font-size: var(--h5-size);
-    line-height: var(--h5-line);
     font-weight: var(--h6-weight);
     letter-spacing: -0.4px;
   }
@@ -966,7 +1003,7 @@
     flex-direction: row-reverse;
     margin-top: var(--scale-800);
     padding-bottom: var(--scale-600);
-    border-bottom: var(--scale-12) solid var(--color-neutral-200);
+    border-bottom: var(--scale-12) solid var(--border-subtle);
   }
 
   .preview .book__section {
@@ -1006,7 +1043,7 @@
 
   .preview--video .book__head {
     padding-bottom: var(--scale-600);
-    border-bottom: var(--scale-12) solid var(--color-neutral-200);
+    border-bottom: var(--scale-12) solid var(--border-subtle);
   }
 
   /* A 30% shade keeps the white play icon readable on any photo */
@@ -1024,14 +1061,10 @@
     gap: var(--scale-800);
     margin: 72px var(--preview-gutter) calc(var(--scale-400) + env(safe-area-inset-bottom));
     padding: var(--scale-900) var(--scale-400);
-    border-top: var(--border-md) solid var(--color-neutral-100);
-    border-radius: 20px;
+    border-top: var(--border-md) solid var(--border-subtle);
+    border-radius: var(--radius-lg);
   }
 
-  .preview__related-heading {
-    font-size: var(--h6-size);
-    line-height: var(--h6-line);
-  }
 
   .preview__related .carousel {
     gap: var(--scale-600);
@@ -1108,5 +1141,121 @@
 
   .tracks__bars b {
     animation: none;
+  }
+}
+
+/* Phones: the related cards' default surface is #e1ddd1, as on the Library and New Muslim cards */
+@media (max-width: 767px) {
+  .preview__related .resource-card {
+    --surface-resource-card: #e1ddd1;
+  }
+}
+
+/* Phones: the Related materials heading in the H4 text style, with no padding under it */
+@media (max-width: 767px) {
+  .preview__related-heading {
+    padding-bottom: 0;
+    font-size: var(--h4-size);
+    line-height: var(--h4-line);
+    font-weight: var(--h4-weight);
+  }
+}
+
+/* Phones, a material page opened from the New Muslim path (js/preview.js .preview--path): under the
+   photo or player, a full-width row with Share, Save and Done on the right; then the title; then the
+   author, smaller and close under it. The type and topic tag stays above the title. */
+@media (max-width: 767px) {
+  .preview.preview--path .book__head {
+    grid-template-areas:
+      "actions"
+      "tag"
+      "title"
+      "author";
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0;
+  }
+
+  .preview.preview--path .book__actions {
+    grid-area: actions;
+    justify-self: end;
+  }
+
+  .preview.preview--path .book__tag {
+    grid-area: tag;
+    justify-self: start;
+    margin-top: var(--scale-400);   /* 16px under the icon row */
+  }
+
+  .preview.preview--path .book__title {
+    grid-area: title;
+    margin-top: var(--scale-200);   /* 8px under the tag */
+  }
+
+  .preview.preview--path .book__author {
+    grid-area: author;
+    margin-top: var(--scale-100);
+    font-size: var(--body-s-size);
+    line-height: var(--body-s-line);
+  }
+}
+
+/* Phones, path material pages: the icon row 16px under the photo or player it belongs to (was 32) */
+@media (max-width: 767px) {
+  .preview.preview--path .book {
+    row-gap: var(--scale-400);
+  }
+}
+
+/* Phones, path material pages: the tag, title and author move up beside the icon row (icons top right);
+   a long title wraps in its own column, always 16px clear of the icons */
+@media (max-width: 767px) {
+  .preview.preview--path .book__head {
+    grid-template-areas:
+      "tag actions"
+      "title actions"
+      "author author";
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto 1fr auto;
+    column-gap: var(--scale-400);
+  }
+
+  .preview.preview--path .book__actions {
+    align-self: start;
+  }
+
+  .preview.preview--path .book__tag {
+    align-self: start;
+    margin-top: 0;
+  }
+}
+
+/* Phones, path material pages: the tag beside the icons, 15px lower (it sat too high); the title and
+   author below at full width */
+@media (max-width: 767px) {
+  .preview.preview--path .book__head {
+    grid-template-areas:
+      "tag actions"
+      "title title"
+      "author author";
+    grid-template-rows: auto auto auto;
+  }
+
+  .preview.preview--path .book__tag {
+    margin-top: 15px;
+  }
+
+  .preview.preview--path .book__title {
+    margin-top: var(--scale-300);   /* 12px under the icon row */
+  }
+}
+
+/* Phones, path material pages: the tag 4px closer to the title, and tag, title and author 3px lower */
+@media (max-width: 767px) {
+  .preview.preview--path .book__tag {
+    margin-top: 22px;
+  }
+
+  .preview.preview--path .book__title {
+    margin-top: 15px;   /* 16px from the tag (was 20) */
   }
 }

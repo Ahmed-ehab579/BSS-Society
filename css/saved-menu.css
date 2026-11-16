@@ -51,7 +51,7 @@
   max-height: 85vh;
   max-height: 85dvh;
   overflow: hidden;
-  border-radius: var(--scale-600) var(--scale-600) 0 0;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   background: var(--color-page-bg);
   transform: translateY(100%);
   transition: transform var(--motion-duration-sheet-out) var(--motion-ease-expand);
@@ -73,9 +73,10 @@
 .saved-sheet__head {
   display: flex;
   flex-shrink: 0;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--scale-600) var(--scale-200) var(--scale-200) var(--scale-500);
+  flex-direction: column;              /* the close button sits alone in the top-right corner, the title below */
+  align-items: flex-start;
+  gap: var(--scale-200);
+  padding: var(--scale-300) var(--scale-300) calc(var(--scale-200) + 6px) var(--scale-500);   /* 14px under the title */
   cursor: grab;
   touch-action: none;   /* the header drags the sheet instead of scrolling */
 }
@@ -97,12 +98,14 @@
 .saved-sheet__title {
   margin: 0;
   color: var(--color-heading);
-  font-size: 22px;
-  line-height: 30px;
+  font-size: var(--h5-size);           /* H5 (phone 20/28), as on the language sheet */
+  line-height: var(--h5-line);
   font-weight: var(--h5-weight);
 }
 
 .saved-sheet__close {
+  order: -1;
+  align-self: flex-end;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -110,7 +113,7 @@
   height: 44px;
   padding: 0;
   border: 0;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: none;
   color: var(--color-text-on-light);
   cursor: pointer;
@@ -123,7 +126,7 @@
   display: flex;
   flex-shrink: 0;
   gap: var(--scale-200);
-  padding: var(--scale-100) var(--scale-500) var(--scale-300);
+  padding: var(--scale-100) var(--scale-500) var(--scale-400);   /* 16px under the chips */
   overflow-x: auto;
   scrollbar-width: none;
 }
@@ -143,12 +146,12 @@
   gap: 6px;
   height: 34px;
   padding: 0 var(--scale-300);
-  border: var(--border-md) solid var(--color-neutral-300);
+  border: var(--border-md) solid var(--border);
   border-radius: var(--radius-pill);
   background: var(--surface-action-outline);
   color: var(--color-text-on-light);
   font-family: inherit;
-  font-size: 13px;
+  font-size: var(--body-s-size);
   line-height: 18px;
   font-weight: 500;
   white-space: nowrap;
@@ -194,7 +197,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  border-bottom: var(--scale-12) solid var(--color-neutral-200);
+  border-bottom: var(--scale-12) solid var(--border-subtle);
 }
 
 .saved-row:last-child {
@@ -209,7 +212,7 @@
   min-width: 0;
   min-height: 72px;
   padding: var(--scale-200) var(--scale-300);
-  border-radius: var(--scale-300);
+  border-radius: var(--radius-sm);
   color: var(--color-text-on-light);
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
@@ -222,7 +225,7 @@
   width: 52px;
   height: 52px;
   overflow: hidden;
-  border-radius: var(--scale-200);
+  border-radius: var(--radius-sm);
   background: var(--surface-media);
 }
 
@@ -269,7 +272,7 @@
   display: -webkit-box;
   overflow: hidden;
   color: var(--color-heading);
-  font-size: 15px;
+  font-size: var(--body-m-size);
   line-height: 21px;
   font-weight: 500;
   -webkit-line-clamp: 2;
@@ -286,16 +289,76 @@
   margin-right: var(--scale-100);
   padding: 0;
   border: 0;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: none;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   transition: background-color var(--motion-duration-hover) var(--motion-ease);
 }
 
+.saved-row__remove {
+  position: relative;
+}
+
 .saved-row__remove img {
   width: 13px;
   height: auto;
+  transition: opacity var(--motion-fast) var(--motion-ease);
+}
+
+/* Hover or keyboard focus says what a press will do: the filled bookmark empties and a short label
+   "Remove from saved" appears beside it (the pattern of YouTube, Medium and Pocket) */
+.saved-row__icon-remove {
+  position: absolute;
+  opacity: 0;
+}
+
+.saved-row__remove::after {
+  content: attr(data-tip);
+  position: absolute;
+  top: 50%;
+  right: calc(100% + var(--scale-100));
+  padding: var(--scale-100) var(--scale-300);
+  border-radius: var(--radius-sm);
+  background: var(--surface-dark);
+  color: var(--text-on-dark);
+  font-size: var(--label-s-size);
+  line-height: var(--label-s-line);
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(4px, -50%);
+  transition: opacity var(--motion-fast) var(--motion-ease), transform var(--motion-fast) var(--motion-ease);
+}
+
+.saved-row__remove:focus-visible .saved-row__icon-saved {
+  opacity: 0;
+}
+
+.saved-row__remove:focus-visible .saved-row__icon-remove,
+.saved-row__remove:focus-visible::after {
+  opacity: 1;
+}
+
+.saved-row__remove:focus-visible::after {
+  transform: translate(0, -50%);
+}
+
+@media (hover: hover) {
+  .saved-row__remove:hover .saved-row__icon-saved {
+    opacity: 0;
+  }
+
+  .saved-row__remove:hover .saved-row__icon-remove,
+  .saved-row__remove:hover::after {
+    opacity: 1;
+  }
+
+  .saved-row__remove:hover::after {
+    transform: translate(0, -50%);
+    transition-delay: 150ms;           /* a passing cursor doesn't flash the label */
+  }
 }
 
 /* Removed: the row keeps its place for a few seconds with Undo */
@@ -329,7 +392,7 @@
   background: none;
   color: var(--color-text-on-light);
   font-family: inherit;
-  font-size: 13px;
+  font-size: var(--body-s-size);
   line-height: 18px;
   font-weight: 600;
   cursor: pointer;
@@ -390,7 +453,7 @@
   flex-shrink: 0;
   margin: 0;
   padding: var(--scale-300) var(--scale-500) calc(var(--scale-400) + env(safe-area-inset-bottom));
-  border-top: var(--scale-12) solid var(--color-neutral-200);
+  border-top: var(--scale-12) solid var(--border-subtle);
   color: var(--color-text-muted);
   font-size: var(--body-xs-size);
   line-height: var(--body-xs-line);
@@ -445,32 +508,33 @@
   width: 100%;
   max-height: min(560px, calc(100vh - var(--dropdown-top, 0px) - var(--scale-400)));
   margin: 0;
-  border: var(--border-md) solid var(--color-neutral-100);
-  border-radius: var(--scale-400);
+  border: var(--border-md) solid var(--border-subtle);
+  border-radius: var(--radius-md);
   box-shadow: var(--shadow-menu);
   opacity: 0;
-  transform: translateY(-6px);
+  transform: translateY(-8px) scale(0.97);
   transform-origin: top right;
-  transition: opacity var(--motion-duration-link) var(--motion-ease),
-    transform var(--motion-duration-link) var(--motion-ease);
+  transition: opacity var(--motion-panel-out) var(--motion-ease),
+    transform var(--motion-panel-out) var(--motion-ease);
 }
 
 .saved-dialog.is-dropdown.is-open .saved-sheet {
   opacity: 1;
   transform: none;
-  transition: opacity var(--motion-duration) var(--motion-ease),
-    transform var(--motion-duration) var(--motion-ease);
+  transition: opacity var(--motion-panel-in) var(--motion-ease-fade),
+    transform var(--motion-panel-in) var(--motion-ease-glide);
 }
 
 .is-dropdown .saved-sheet__head {
-  padding: var(--scale-400) var(--scale-400) var(--scale-200);
+  padding: var(--scale-400) var(--scale-400) calc(var(--scale-200) + 6px);   /* 14px under the title */
   cursor: auto;
   touch-action: auto;
 }
 
 .is-dropdown .saved-sheet__title {
-  font-size: 20px;
-  line-height: 28px;
+  font-size: var(--h6-size);
+  line-height: var(--h6-line);
+  font-weight: var(--h6-weight);
 }
 
 .is-dropdown .saved-filters {
@@ -555,7 +619,7 @@
 }
 
 .save-btn.is-popping .save-btn__icon {
-  animation: save-pop 360ms var(--motion-ease);
+  animation: save-pop var(--motion-slow) var(--motion-ease);
 }
 
 @keyframes save-pop {
@@ -588,11 +652,11 @@
   gap: var(--scale-300);
   max-width: calc(100vw - 24px);
   padding: 10px 10px 10px var(--scale-400);
-  border-radius: var(--scale-300);
+  border-radius: var(--radius-sm);
   background: var(--surface-action-primary);
   box-shadow: var(--shadow-menu);
   color: var(--color-text-on-dark);
-  font-size: 13px;
+  font-size: var(--body-s-size);
   line-height: 18px;
   font-weight: 500;
   opacity: 0;
@@ -637,7 +701,7 @@
   background: none;
   color: var(--color-text-on-dark);
   font-family: inherit;
-  font-size: 13px;
+  font-size: var(--body-s-size);
   line-height: 18px;
   font-weight: 600;
   cursor: pointer;
@@ -688,9 +752,9 @@
   justify-content: center;
   width: 34px;
   height: 34px;
-  border-radius: 50%;
+  border-radius: var(--radius-round);
   background: var(--surface-action-primary);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.22);
+  box-shadow: var(--shadow-media);
   color: var(--color-text-on-dark);
   opacity: 0;
 }
@@ -702,10 +766,19 @@
 
 /* The header icon catches it */
 .saved-toggle.is-landing img {
-  animation: saved-land 420ms var(--motion-ease);
+  animation: saved-land var(--motion-slow) var(--motion-ease);
 }
 
 @keyframes saved-land {
   35% { transform: scale(1.28) translateY(1px); }
   70% { transform: scale(0.94); }
+}
+
+/* Phones: the sheet title one step larger (H4, 26/34) */
+@media (max-width: 767px) {
+  .saved-sheet__title {
+    font-size: var(--h4-size);
+    line-height: var(--h4-line);
+    font-weight: var(--h4-weight);
+  }
 }
