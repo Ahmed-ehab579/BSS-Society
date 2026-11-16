@@ -189,6 +189,13 @@
   color: var(--tone);
 }
 
+/* Phones: the About paragraph in regular weight (400) */
+@media (max-width: 767px) {
+  .about__text {
+    font-weight: 400;
+  }
+}
+
 
 /* Start Here (panel styles: .section-panel) */
 .start__content {
