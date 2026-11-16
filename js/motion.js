@@ -29,14 +29,17 @@
     window.addEventListener("beforeprint", () => items.forEach((item) => item.classList.add("is-revealed")));
   }
 
-  // Scroll fill (data-scroll-fill): the words start faint and fill in, one after another, as the
-  // paragraph moves up the screen. One way only: once filled, a word stays filled, so scrolling back up
-  // changes nothing. The fill follows the scroll at its own calm pace, so a quick scroll still fills
-  // the text gradually instead of all at once.
+  // Scroll fill (data-scroll-fill): the words start faint and fill in, one after another, as the page
+  // scrolls. One way only: once filled, a word stays filled, so scrolling back up changes nothing.
+  // Hold (data-fill-hold on a parent): that block stops in the middle of the screen while its text fills,
+  // and the page moves on once the fill is done, so the text can be read where it is. The fill follows
+  // the scroll at its own calm pace, so a quick scroll still fills the words one after another.
   const FAINT = 0.2;      // a word's opacity before it fills
   const EDGE = 10;        // how many words are part-filled at once: a soft front, not a hard line
-  const CATCH_UP = 2.2;   // how quickly the fill closes the gap to the scroll, per second
-  const MIN_TIME = 2.6;   // seconds, the least the whole paragraph takes to fill, however fast the scroll
+  const CATCH_UP = 3.5;   // how quickly the fill closes the gap to the scroll, per second
+  const MIN_TIME = 1.6;   // seconds, the least the whole paragraph takes to fill, however fast the scroll
+  const HOLD = 0.9;       // scroll held for the fill, in screen heights
+  const DONE_AT = 0.8;    // the fill completes at this share of the hold; the rest shows the full text
 
   function setupFill(block) {
     const words = [];
@@ -59,6 +62,30 @@
     });
     block.classList.add("is-filling");
 
+    // The held block, and a spacer after it that gives the scroll to hold it for
+    const held = block.closest("[data-fill-hold]");
+    const space = held ? document.createElement("div") : null;
+    if (held) {
+      space.className = "fill-hold__space";
+      space.setAttribute("aria-hidden", "true");
+      held.after(space);
+    }
+    let holdTop = 0;     // where the held block stops, from the top of the screen
+    let holdLength = 0;  // how much scroll it is held for (0: not held)
+
+    function layout() {
+      if (!held) return;
+      const vh = window.innerHeight;
+      const height = held.offsetHeight;
+      // Too tall to sit in the screen with room around it: no hold, the text fills as it passes
+      const fits = height < vh * 0.86;
+      holdLength = fits ? Math.round(vh * HOLD) : 0;
+      holdTop = fits ? Math.max(16, Math.round((vh - height) / 2)) : 0;
+      held.classList.toggle("is-held", fits);
+      held.style.setProperty("--hold-top", `${holdTop}px`);
+      space.style.height = `${holdLength}px`;
+    }
+
     const total = words.length + EDGE;
     let target = 0;     // how far the scroll has asked the fill to go (never goes back)
     let shown = 0;      // how far the fill has got
@@ -73,11 +100,19 @@
     }
 
     function measure() {
-      const rect = block.getBoundingClientRect();
       const vh = window.innerHeight;
-      // Starts as the paragraph's top passes 90% down the screen, done as its bottom reaches 35% from the top
-      const progress = Math.min(1, Math.max(0, (vh * 0.9 - rect.top) / (rect.height + vh * 0.55)));
-      target = Math.max(target, progress * total);
+      let progress;
+      if (holdLength) {
+        // From the block's top passing 90% down the screen, through the block arriving in the middle,
+        // to DONE_AT of the hold. The space after the block keeps moving while the block is held.
+        const arrived = space.getBoundingClientRect().top - held.offsetHeight;   // the block's top, unheld
+        const travelled = vh * 0.9 - arrived;
+        progress = travelled / (vh * 0.9 - holdTop + holdLength * DONE_AT);
+      } else {
+        const rect = block.getBoundingClientRect();
+        progress = (vh * 0.9 - rect.top) / (rect.height + vh * 0.55);
+      }
+      target = Math.max(target, Math.min(1, Math.max(0, progress)) * total);
     }
 
     function step(now) {
@@ -91,16 +126,17 @@
     }
 
     function request() {
-      if (shown >= total) {   // fully filled: nothing more to do
-        window.removeEventListener("scroll", request);
-        window.removeEventListener("resize", request);
-        return;
-      }
       measure();
       if (!frame && target > shown) frame = requestAnimationFrame(step);
     }
     window.addEventListener("scroll", request, { passive: true });
-    window.addEventListener("resize", request);
+    // Phones fire resize when the address bar hides: only a real width change lays the hold out again
+    let width = window.innerWidth;
+    window.addEventListener("resize", () => {
+      if (window.innerWidth !== width) { width = window.innerWidth; layout(); }
+      request();
+    });
+    layout();
     draw();
     request();
   }
