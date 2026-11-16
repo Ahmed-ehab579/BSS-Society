@@ -32,7 +32,8 @@
   // Scroll fill (data-scroll-fill): the words start faint and fill in, one after another, as the page
   // scrolls. One way only: once filled, a word stays filled, so scrolling back up changes nothing.
   // Hold (data-fill-hold on a parent): that block stops in the middle of the screen while its text fills,
-  // and the page moves on once the fill is done, so the text can be read where it is. The fill follows
+  // and the page moves on once the fill is done, so the text can be read where it is. Once filled and
+  // scrolled past, the hold is gone for this visit: scrolling back up meets an ordinary section. The fill follows
   // the scroll at its own calm pace, so a quick scroll still fills the words one after another.
   const FAINT = 0.2;      // a word's opacity before it fills
   const EDGE = 10;        // how many words are part-filled at once: a soft front, not a hard line
@@ -122,17 +123,37 @@
       shown += Math.min(gap * (1 - Math.exp(-CATCH_UP * dt)) + 0.4 * dt, gap, (total / MIN_TIME) * dt);
       draw();
       if (target - shown > 0.01) frame = requestAnimationFrame(step);
-      else { shown = target; draw(); frame = null; last = 0; }
+      else { shown = target; draw(); frame = null; last = 0; if (shown >= total) request(); }
+    }
+
+    // Filled and scrolled past: take the hold away while the page is still, so nothing jumps. The space it
+    // used sits above the screen, so the page is moved up by exactly what was removed.
+    let released = false;
+    let idle = null;
+    function release() {
+      idle = null;
+      if (released || !holdLength || shown < total || held.getBoundingClientRect().bottom > 0) return;
+      released = true;
+      const anchor = space.nextElementSibling || held.parentElement.nextElementSibling;
+      const before = anchor ? anchor.getBoundingClientRect().top : 0;
+      held.classList.remove("is-held");
+      space.remove();
+      holdLength = 0;
+      if (anchor) window.scrollBy({ top: anchor.getBoundingClientRect().top - before, behavior: "instant" });
     }
 
     function request() {
+      if (released) return;
       measure();
       if (!frame && target > shown) frame = requestAnimationFrame(step);
+      clearTimeout(idle);
+      if (holdLength && target >= total) idle = setTimeout(release, 200);
     }
     window.addEventListener("scroll", request, { passive: true });
     // Phones fire resize when the address bar hides: only a real width change lays the hold out again
     let width = window.innerWidth;
     window.addEventListener("resize", () => {
+      if (released) return;
       if (window.innerWidth !== width) { width = window.innerWidth; layout(); }
       request();
     });
