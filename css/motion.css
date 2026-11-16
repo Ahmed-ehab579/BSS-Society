@@ -49,7 +49,7 @@
 }
 
 .fill-word {
-  transition: opacity 120ms linear;   /* smooths the steps between scroll events */
+  transition: opacity 200ms linear;   /* smooths the steps between frames */
 }
 
 /* Press feedback: a quick, slight give under the finger or click; letting go glides back */
