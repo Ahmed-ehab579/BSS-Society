@@ -183,17 +183,11 @@
 
 .about__text {
   color: var(--color-text-muted);
+  font-weight: 400;   /* regular, on phones and desktop */
 }
 
 .about__em {
   color: var(--tone);
-}
-
-/* Phones: the About paragraph in regular weight (400) */
-@media (max-width: 767px) {
-  .about__text {
-    font-weight: 400;
-  }
 }
 
 
