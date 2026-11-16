@@ -17,7 +17,7 @@
   border: 0;
   background: var(--surface-overlay);
   opacity: 0;
-  transition: opacity var(--motion-base) var(--motion-ease);
+  transition: opacity var(--motion-panel-out) var(--motion-ease);
 }
 
 .contact-dialog[open] {
@@ -30,6 +30,7 @@
 
 .contact-dialog.is-open {
   opacity: 1;
+  transition: opacity var(--motion-panel-in) var(--motion-ease);
 }
 
 :root.is-contact-open {
@@ -50,12 +51,18 @@
   border-radius: var(--radius-lg);
   background: var(--surface-page);
   box-shadow: var(--shadow-lg);
-  transform: translateY(12px) scale(0.98);
-  transition: transform var(--motion-base) var(--motion-ease);
+  transform: translateY(16px) scale(0.97);
+  transition: transform var(--motion-panel-out) var(--motion-ease);
 }
 
 .contact-dialog.is-open .contact-dialog__panel {
   transform: none;
+  transition: transform var(--motion-panel-in) var(--motion-ease-glide);
+}
+
+/* Opening, the dialog itself takes the focus (not the close button), so no focus ring shows on a tap */
+.contact-dialog__panel:focus {
+  outline: none;
 }
 
 /* The panel's scrollbar, as in the material preview: a thin soft grey bar with rounded ends on a clear
@@ -106,8 +113,8 @@
 }
 
 .contact-dialog__close:focus-visible {
-  outline: var(--border-lg) solid var(--border-strong);
-  outline-offset: 2px;
+  outline: 2px solid var(--border-color-on-light);   /* the same keyboard ring as the other panels' close */
+  outline-offset: -2px;
 }
 
 @media (hover: hover) {
@@ -178,7 +185,11 @@
   .contact-dialog {
     align-items: flex-end;
     padding: var(--scale-600) 0 0;
-    transition-duration: var(--motion-slow);
+    transition-duration: var(--motion-sheet-out);
+  }
+
+  .contact-dialog.is-open {
+    transition-duration: var(--motion-sheet-in);
   }
 
   .contact-dialog__panel {
@@ -188,7 +199,11 @@
     padding: var(--scale-800) var(--scale-500) calc(var(--scale-600) + env(safe-area-inset-bottom));
     border-radius: var(--radius-lg) var(--radius-lg) 0 0;
     transform: translateY(100%);
-    transition: transform var(--motion-slow) var(--motion-ease-sheet);
+    transition: transform var(--motion-sheet-out) var(--motion-ease-expand);
+  }
+
+  .contact-dialog.is-open .contact-dialog__panel {
+    transition: transform var(--motion-sheet-in) var(--motion-ease-sheet);
   }
 
   .contact-dialog__title {

@@ -112,7 +112,7 @@
     };
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) done();
-    else setTimeout(done, PHONE.matches ? 360 : 220);
+    else setTimeout(done, parseFloat(getComputedStyle(document.documentElement).getPropertyValue(PHONE.matches ? "--motion-sheet-out" : "--motion-panel-out")) || 320);
   }
 
   function resetCopy() {

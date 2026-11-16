@@ -81,6 +81,11 @@
   --motion-ease-fade: cubic-bezier(0.25, 0.1, 0.25, 1);   /* the fade: clears gently alongside the rise, so nothing pops */
   --motion-rise: 40px;                                    /* how far revealed content travels (28px phones) */
   --motion-press: 0.98;                                   /* buttons and cards when pressed */
+  --motion-press-icon: 0.92;                              /* small round icon buttons when pressed */
+  --motion-panel-in: 420ms;                               /* dropdowns, menus and dialogs opening */
+  --motion-panel-out: 240ms;                              /* ...and closing (leaving is quicker than arriving) */
+  --motion-sheet-in: 560ms;                               /* phone sheets sliding up */
+  --motion-sheet-out: 320ms;                              /* ...and sliding away */
 
   /* Icon sizes */
   --icon-sm: 16px;
@@ -224,8 +229,8 @@
   --motion-duration-hover: var(--motion-slow);
   --motion-duration-expand: var(--motion-expand);
   --motion-duration-art: var(--motion-expand);
-  --motion-duration-sheet: var(--motion-slow);
-  --motion-duration-sheet-out: var(--motion-base);
+  --motion-duration-sheet: var(--motion-sheet-in);
+  --motion-duration-sheet-out: var(--motion-sheet-out);
   --motion-duration-link: var(--motion-fast);
 }
 

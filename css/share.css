@@ -33,14 +33,15 @@
   box-shadow: var(--shadow-lg);
   color: var(--text);
   opacity: 0;
-  transform: translateY(-6px) scale(0.98);
+  transform: translateY(-8px) scale(0.97);
   transform-origin: top right;
-  transition: opacity var(--motion-base) var(--motion-ease), transform var(--motion-base) var(--motion-ease);
+  transition: opacity var(--motion-panel-out) var(--motion-ease), transform var(--motion-panel-out) var(--motion-ease);
 }
 
 .share.is-open .share__panel {
   opacity: 1;
   transform: none;
+  transition: opacity var(--motion-panel-in) var(--motion-ease-fade), transform var(--motion-panel-in) var(--motion-ease-glide);
 }
 
 .share__head {
@@ -230,11 +231,12 @@
   .share {
     background: var(--surface-overlay);
     opacity: 0;
-    transition: opacity var(--motion-slow) var(--motion-ease);
+    transition: opacity var(--motion-sheet-out) var(--motion-ease);
   }
 
   .share.is-open {
     opacity: 1;
+    transition: opacity var(--motion-sheet-in) var(--motion-ease);
   }
 
   .share__panel {
@@ -248,11 +250,12 @@
     border-radius: var(--radius-lg) var(--radius-lg) 0 0;
     opacity: 1;
     transform: translateY(100%);
-    transition: transform var(--motion-slow) var(--motion-ease-sheet);
+    transition: transform var(--motion-sheet-out) var(--motion-ease-expand);
   }
 
   .share.is-open .share__panel {
     transform: none;
+    transition: transform var(--motion-sheet-in) var(--motion-ease-sheet);
   }
 
   /* A grab handle, as on native sheets */

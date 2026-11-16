@@ -393,17 +393,17 @@ html.is-sheet-open {
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-menu);
   opacity: 0;
-  transform: translateY(-6px);
+  transform: translateY(-8px) scale(0.97);
   transform-origin: top right;
-  transition: opacity var(--motion-duration-link) var(--motion-ease),
-    transform var(--motion-duration-link) var(--motion-ease);
+  transition: opacity var(--motion-panel-out) var(--motion-ease),
+    transform var(--motion-panel-out) var(--motion-ease);
 }
 
 .language-dialog.is-dropdown.is-open .language-sheet {
   opacity: 1;
   transform: none;
-  transition: opacity var(--motion-duration) var(--motion-ease),
-    transform var(--motion-duration) var(--motion-ease);
+  transition: opacity var(--motion-panel-in) var(--motion-ease-fade),
+    transform var(--motion-panel-in) var(--motion-ease-glide);
 }
 
 .is-dropdown .language-search {

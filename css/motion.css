@@ -41,6 +41,17 @@
   from { scale: 1.04; }
 }
 
+/* Scroll fill (data-scroll-fill, js/motion.js): every word ends in the full text colour; until then
+   the script holds it faint. Without the script (or with reduced motion) the paragraph keeps its own colours. */
+.is-filling,
+.is-filling * {
+  color: var(--text-strong);
+}
+
+.fill-word {
+  transition: opacity 120ms linear;   /* smooths the steps between scroll events */
+}
+
 /* Press feedback: a quick, slight give under the finger or click; letting go glides back */
 .btn,
 .icon-btn {
@@ -62,6 +73,33 @@
   transition-duration: var(--motion-duration-link);
 }
 
+/* Header icons and panel close buttons: a soft round shade and a small give when pressed (phones have
+   no hover, so this is their only feedback); letting go, both ease back */
+.saved-toggle,
+.language-toggle,
+.menu-toggle,
+.saved-sheet__close,
+.language-sheet__close,
+.contact-dialog__close,
+.share__close,
+.support-sheet__close {
+  transition: background-color var(--motion-duration-hover) var(--motion-ease),
+    scale var(--motion-slow) var(--motion-ease-glide);
+}
+
+.saved-toggle:active,
+.language-toggle:active,
+.menu-toggle:active,
+.saved-sheet__close:active,
+.language-sheet__close:active,
+.contact-dialog__close:active,
+.share__close:active,
+.support-sheet__close:active {
+  background: var(--surface-cards);
+  scale: var(--motion-press-icon);
+  transition-duration: var(--motion-duration-link);
+}
+
 /* Pages fade into each other (browsers without support simply change page as before) */
 @view-transition {
   navigation: auto;
@@ -76,7 +114,15 @@
 @media (prefers-reduced-motion: reduce) {
   .btn:active,
   .icon-btn:active,
-  .guide-card:active {
+  .guide-card:active,
+  .saved-toggle:active,
+  .language-toggle:active,
+  .menu-toggle:active,
+  .saved-sheet__close:active,
+  .language-sheet__close:active,
+  .contact-dialog__close:active,
+  .share__close:active,
+  .support-sheet__close:active {
     scale: none;
   }
 

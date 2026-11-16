@@ -11,7 +11,7 @@
   const DISMISS_DISTANCE = 110;    // px dragged down that closes the sheet
   const DISMISS_SPEED = 0.6;       // px per ms: a quick flick closes it from any distance
   const DROPDOWN_GAP = 8;          // px between the icon and the dropdown
-  const DROPDOWN_CLOSE = 150;      // ms, matches the dropdown's closing transition
+  const DROPDOWN_CLOSE = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--motion-panel-out")) || 240;   // ms, the dropdown's closing transition (css/tokens.css)
   const TYPES = { book: "Book", audio: "Audio book", video: "Video", article: "Article", step: "" };   // a step says "Step 2" in its label
   const COVERS = ["book", "audio"];   // shown whole on a light board, like the Library cards
   const PATH_PAGES = { "start-here": "start-here.html", "new-muslim": "new-muslim.html", library: "library.html" };

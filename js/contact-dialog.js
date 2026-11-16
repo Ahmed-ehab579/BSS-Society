@@ -18,7 +18,7 @@
     dialog.className = "contact-dialog";
     dialog.setAttribute("aria-labelledby", "contact-modal-title");
     dialog.innerHTML = `
-      <div class="contact-dialog__panel">
+      <div class="contact-dialog__panel" tabindex="-1">
         <button class="contact-dialog__close" type="button" aria-label="Close" data-contact-close>
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </button>
@@ -72,9 +72,10 @@
     document.documentElement.classList.add("is-contact-open");
     dialog.showModal();
     requestAnimationFrame(() => dialog.classList.add("is-open"));
-    // Desktop: straight into the first field. Phones keep the dialog's own focus (the close button), so
-    // the keyboard doesn't jump up before the visitor has seen the form.
+    // Desktop: straight into the first field. Phones focus the panel itself (no ring on the close
+    // button), so the keyboard doesn't jump up before the visitor has seen the form.
     if (!phone.matches) dialog.querySelector("#contact-modal-name").focus({ preventScroll: true });
+    else dialog.querySelector(".contact-dialog__panel").focus({ preventScroll: true });
   }
 
   function close() {
@@ -91,7 +92,7 @@
       target?.focus({ preventScroll: true });
     };
     if (reduceMotion.matches) done();
-    else setTimeout(done, phone.matches ? 360 : 220);
+    else setTimeout(done, parseFloat(getComputedStyle(document.documentElement).getPropertyValue(phone.matches ? "--motion-sheet-out" : "--motion-panel-out")) || 320);
   }
 
   // Runs before js/header.js: on a page without the form, a Contact link opens the dialog instead of
