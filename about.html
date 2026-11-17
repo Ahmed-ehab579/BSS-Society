@@ -3,10 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f2eb">
   <title>About us — Best Speech Society</title>
   <link rel="icon" type="image/svg+xml" href="assets/icons/brand-symbol.svg">
   <script src="js/frame-top.js"></script>
   <script src="js/fresh.js?v=1"></script>
+  <script src="js/theme.js?v=1"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300..700&display=swap">
@@ -22,6 +24,7 @@
   <link rel="stylesheet" href="css/footer.css?v=6">
   <link rel="stylesheet" href="css/support.css?v=15">
   <link rel="stylesheet" href="css/motion.css?v=6">
+  <link rel="stylesheet" href="css/theme.css?v=2">
   <script src="js/motion.js?v=5"></script>
 </head>
 <body>
@@ -48,6 +51,24 @@
       <button class="saved-toggle" type="button" aria-label="Saved" aria-haspopup="dialog" aria-expanded="false" data-saved-toggle>
         <img src="assets/icons/saved.svg" width="24" height="24" alt="">
         <span class="saved-toggle__count" data-saved-count hidden></span>
+      </button>
+      <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to dark mode" data-theme-toggle>
+        <svg class="theme-toggle__icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+          <defs>
+            <mask id="theme-toggle-outside" maskUnits="userSpaceOnUse" x="-4" y="-4" width="32" height="32">
+              <rect x="-4" y="-4" width="32" height="32" fill="#fff" stroke="none"/>
+              <circle class="theme-toggle__cut" cx="17" cy="7" r="6" fill="#000" stroke="none"/>
+            </mask>
+            <mask id="theme-toggle-inside" maskUnits="userSpaceOnUse" x="-4" y="-4" width="32" height="32">
+              <circle class="theme-toggle__core" cx="12" cy="12" r="8" fill="#fff" stroke="none"/>
+            </mask>
+          </defs>
+          <circle class="theme-toggle__core" cx="12" cy="12" r="8" mask="url(#theme-toggle-outside)"/>
+          <circle class="theme-toggle__cut" cx="17" cy="7" r="6" mask="url(#theme-toggle-inside)"/>
+          <g class="theme-toggle__rays">
+            <path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.28 5.28l1.77 1.77M16.95 16.95l1.77 1.77M5.28 18.72l1.77-1.77M16.95 7.05l1.77-1.77"/>
+          </g>
+        </svg>
       </button>
       <button class="language-toggle" type="button" aria-label="Change language" aria-haspopup="dialog" aria-expanded="false">
         <img src="assets/icons/globe.svg" width="24" height="24" alt="">
