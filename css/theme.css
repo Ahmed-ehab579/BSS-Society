@@ -105,6 +105,15 @@ html[data-theme="dark"] .hero__media::after {
   display: none;
 }
 
+/* Article hero: the photo bright and vivid, as the homepage hero, with no dark layer over it */
+html[data-theme="dark"] .article-hero::before {
+  display: none;
+}
+
+html[data-theme="dark"] .page .article-hero img.article-hero__image:not([src$=".svg"]) {
+  filter: saturate(1.08) contrast(1.03);
+}
+
 /* The footer meets the page with a fine line instead of a change of shade */
 html[data-theme="dark"] .site-footer {
   border-top: 1px solid var(--border-subtle);
