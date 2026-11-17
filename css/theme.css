@@ -96,6 +96,15 @@ html[data-theme="dark"] .page img:not([src$=".svg"]) {
   filter: brightness(0.88) saturate(0.95);
 }
 
+/* Homepage hero: the one photo that stays fully bright and vivid in dark, with no darkening overlay */
+html[data-theme="dark"] .page .hero__media img:not([src$=".svg"]) {
+  filter: saturate(1.08) contrast(1.03);
+}
+
+html[data-theme="dark"] .hero__media::after {
+  display: none;
+}
+
 /* The footer meets the page with a fine line instead of a change of shade */
 html[data-theme="dark"] .site-footer {
   border-top: 1px solid var(--border-subtle);
