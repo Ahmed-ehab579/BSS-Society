@@ -105,9 +105,25 @@ html[data-theme="dark"] .hero__media::after {
   display: none;
 }
 
-/* Article hero: the photo bright and vivid, as the homepage hero, with no dark layer over it */
+/* Article hero: the photo bright and vivid, as the homepage hero. Instead of a dark layer over the whole
+   photo, a soft scrim only where the text sits (bottom, and a little toward the left on wide screens).
+   Eased stops (many small steps, not one straight fade) so the shade has no visible edge. */
 html[data-theme="dark"] .article-hero::before {
-  display: none;
+  background:
+    linear-gradient(to top,
+      rgba(0, 0, 0, 0.74) 0%, rgba(0, 0, 0, 0.62) 14%, rgba(0, 0, 0, 0.46) 28%,
+      rgba(0, 0, 0, 0.3) 42%, rgba(0, 0, 0, 0.16) 55%, rgba(0, 0, 0, 0.06) 66%, rgba(0, 0, 0, 0) 76%),
+    linear-gradient(to right,
+      rgba(0, 0, 0, 0.42) 0%, rgba(0, 0, 0, 0.3) 28%, rgba(0, 0, 0, 0.15) 48%, rgba(0, 0, 0, 0.05) 62%, rgba(0, 0, 0, 0) 72%);
+}
+
+@media (max-width: 767px) {
+  /* Phones: the text runs the full width at the bottom, so the shade rises from the bottom only */
+  html[data-theme="dark"] .article-hero::before {
+    background: linear-gradient(to top,
+      rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.68) 16%, rgba(0, 0, 0, 0.5) 32%,
+      rgba(0, 0, 0, 0.32) 46%, rgba(0, 0, 0, 0.16) 58%, rgba(0, 0, 0, 0.05) 70%, rgba(0, 0, 0, 0) 80%);
+  }
 }
 
 html[data-theme="dark"] .page .article-hero img.article-hero__image:not([src$=".svg"]) {
