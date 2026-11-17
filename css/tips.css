@@ -1,0 +1,162 @@
+/* First-visit tips (js/tips.js): option D, "Charcoal with green", approved 2026-11-17.
+   Dark bubble, white text, step dots and a green "Got it". In dark mode the bubble turns light. */
+.tip {
+  --tip-bg: var(--surface-dark, #3b3b3b);
+  --tip-text: #ffffff;
+  --tip-muted: #c6c6c6;
+  --tip-dot: #5f5f5f;
+  --tip-dot-on: #95b97b;
+  --tip-ok-bg: #95b97b;
+  --tip-ok-text: #41473c;
+  --tip-ok-hover: #aac795;
+
+  position: fixed;
+  z-index: 140;                      /* over the header (100), under previews (150, which hold their own tips) */
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  display: grid;
+  gap: 6px;
+  padding: 14px 16px;
+  border-radius: var(--radius-md, 16px);
+  background: var(--tip-bg);
+  color: var(--tip-text);
+  box-shadow: var(--shadow-lg, 0 8px 24px rgba(0, 0, 0, 0.12));
+  font-family: var(--font-family);
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: left;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+:root[data-theme="dark"] .tip {
+  --tip-bg: #ecebe6;
+  --tip-text: #272727;
+  --tip-muted: #626262;
+  --tip-dot: #c6c6c6;
+  --tip-dot-on: #647b4e;
+  --tip-ok-bg: #647b4e;
+  --tip-ok-text: #ffffff;
+  --tip-ok-hover: #56693f;
+}
+
+.tip.is-above { transform: translateY(-4px); }
+.tip.is-shown { opacity: 1; transform: none; }
+
+.tip__arrow {
+  position: absolute;
+  top: -6px;
+  left: calc(var(--tip-arrow-x, 24px) - 6px);
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  background: var(--tip-bg);
+  transform: rotate(45deg);
+}
+
+.tip.is-above .tip__arrow { top: auto; bottom: -6px; }
+
+.tip__title,
+.tip__text { margin: 0; }
+
+.tip__title {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.tip__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.tip__meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--tip-muted);
+  font-size: 12px;
+}
+
+.tip__dots { display: flex; gap: 5px; }
+.tip__dots i { width: 7px; height: 7px; border-radius: 50%; background: var(--tip-dot); }
+.tip__dots i.is-on { background: var(--tip-dot-on); }
+
+.tip__skip,
+.tip__ok {
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tip__skip {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--tip-muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.tip__ok {
+  min-height: 32px;
+  padding: 6px 16px;
+  border: 0;
+  border-radius: var(--radius-pill, 999px);
+  background: var(--tip-ok-bg);
+  color: var(--tip-ok-text);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: background-color 0.15s ease;
+}
+
+@media (hover: hover) {
+  .tip__ok:hover { background: var(--tip-ok-hover); }
+  .tip__skip:hover { color: var(--tip-text); }
+}
+
+.tip__ok:focus-visible,
+.tip__skip:focus-visible {
+  outline: 2px solid var(--tip-dot-on);
+  outline-offset: 2px;
+}
+
+/* Phones: full width with 16px margins (set by js/tips.js), a larger tap target */
+@media (max-width: 767px) {
+  .tip { font-size: 14px; }
+  .tip__ok { min-height: 44px; padding: 10px 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tip, .tip.is-above { transition: none; transform: none; }
+}
+
+/* "Show tips again" in the footer: a button styled as a footer link */
+.footer-link--button {
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: var(--body-s-size);
+  line-height: var(--body-s-line);
+  cursor: pointer;
+  text-align: left;
+}
+
+.footer-link--button:focus-visible {
+  outline: 2px solid var(--color-text-on-dark);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.footer-link--button:focus-visible .footer-link__label::after,
+.footer-link--button:active .footer-link__label::after { opacity: 1; }
+
+@media (hover: hover) {
+  .footer-link--button:hover .footer-link__label::after { opacity: 1; }
+}
