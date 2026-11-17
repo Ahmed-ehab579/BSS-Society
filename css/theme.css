@@ -1,0 +1,225 @@
+/* Dark theme (homepage trial) and the sun / moon switch.
+   The light page is warm parchment, charcoal and sage. The dark page keeps that soul: no pure black,
+   a deep olive night where every surface carries a little of the sage, parchment-coloured text instead of
+   white, and the sage itself a touch lighter so it still glows on the dark. Most of the page changes
+   through the tokens alone; the rules below cover the few places that hold a colour of their own. */
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* Surfaces: page → raised → card → card hover → card pressed, each a step lighter */
+  --surface-page: #151713;
+  --surface-raised: #1b1e19;
+  --surface-card: #21251f;
+  --surface-card-hover: #292e26;
+  --surface-card-pressed: #31372d;
+  --surface-dark: #353b31;            /* dark chips keep white text */
+  --surface-dark-pressed: #2a2f27;
+  --surface-footer: #0f110e;          /* the footer sinks below the page, as it does in light */
+  --surface-banner: #2a2e27;
+  --surface-overlay: rgba(0, 0, 0, 0.6);
+  --surface-form-panel: rgba(27, 30, 25, 0.9);
+  --surface-cards-locked-overlay: rgba(33, 37, 31, 0.89);
+  --surface-cards-completed-overlay: rgba(38, 48, 31, 0.76);
+  --surface-badge: rgba(27, 30, 25, 0.88);
+
+  /* Text: warm parchment, never pure white */
+  --text-strong: #ede9df;
+  --text: #dcd8cd;
+  --text-body: #aba89e;
+  --text-muted: #85837a;
+  --text-wordmark: #ede9df;
+  --display-color: rgba(237, 233, 223, 0.28);
+
+  /* Borders */
+  --border-strong: #cfcbbf;
+  --border: #474b42;
+  --border-subtle: #2c3029;
+
+  /* Sage: fills go deep, marks and text go light */
+  --green-100: #28321f;               /* hover / selected fill */
+  --green-300: #3d4d32;               /* outline-button hover */
+  --green-500: #a3c48b;               /* dots, pins, done */
+  --green-700: #b5d39f;               /* icons and text in green */
+  --green-900: #dbe9cf;               /* text on green fills */
+  --color-card-art: rgba(237, 233, 223, 0.05);
+  --color-card-art-active: rgba(163, 196, 139, 0.16);
+
+  /* Shadows read as depth, not grey haze */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 10px 22px -10px rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Primary buttons turn over: parchment with dark text, the strongest thing on the page as in light */
+html[data-theme="dark"] .btn--primary {
+  background: var(--text-strong);
+  color: var(--surface-page);
+}
+
+html[data-theme="dark"] .btn--primary:active {
+  background: #d4cfc2;
+}
+
+html[data-theme="dark"] .btn--primary img {
+  filter: brightness(0) invert(0.08);
+}
+
+/* Line icons drawn in charcoal: drawn in parchment instead */
+html[data-theme="dark"] .saved-toggle img,
+html[data-theme="dark"] .language-toggle img,
+html[data-theme="dark"] .benefit-card img,
+html[data-theme="dark"] .carousel__toggle img,
+html[data-theme="dark"] .carousel__nav img,
+html[data-theme="dark"] .carousel button img[src*="arrow-right"] {
+  filter: brightness(0) invert(0.9);
+}
+
+/* The logo: the dark strokes of the symbol become light (the footer version of the same symbol) */
+html[data-theme="dark"] .site-header .brand__symbol {
+  content: url("../assets/icons/brand-symbol-footer.svg");
+}
+
+/* Text with its own colour */
+html[data-theme="dark"] .about .about__text,
+html[data-theme="dark"] .about .about__text * {
+  color: #d9d5ca;
+}
+
+/* The Start Here cards hold their own light surface (#e1ddd1) on every screen: one step above the panel */
+html[data-theme="dark"] .start__cards .guide-card {
+  --surface-cards: var(--surface-card-hover);
+}
+
+/* Photos dim a little so they sit in the dark page instead of glaring out of it */
+html[data-theme="dark"] .page img:not([src$=".svg"]) {
+  filter: brightness(0.88) saturate(0.95);
+}
+
+/* The footer meets the page with a fine line instead of a change of shade */
+html[data-theme="dark"] .site-footer {
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* ===================== The switch ===================== */
+.theme-toggle {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-round);
+  background: none;
+  color: var(--text);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--motion-duration-hover) var(--motion-ease);
+}
+
+@media (hover: hover) {
+  .theme-toggle:hover {
+    background: var(--surface-cards);
+  }
+}
+
+.theme-toggle:active .theme-toggle__icon {
+  scale: var(--motion-press-icon);
+}
+
+.theme-toggle:focus-visible {
+  outline: var(--border-lg) solid var(--text-strong);
+  outline-offset: 2px;
+}
+
+.theme-toggle__icon {
+  display: block;
+  width: 24px;
+  height: 24px;
+  overflow: visible;
+  rotate: 90deg;                      /* the sun looks the same turned; the turn shows as the moon arrives */
+  transition: scale var(--motion-duration) var(--motion-ease),
+    rotate 700ms var(--motion-ease-expand);
+}
+
+/* Sun (light): a small disc with its rays out; the shadow circle waits outside, top right */
+.theme-toggle__core {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(0.5);
+  vector-effect: non-scaling-stroke;
+  transition: transform 600ms var(--motion-ease-expand) 120ms;
+}
+
+.theme-toggle__cut {
+  transform: translate(8px, -8px);
+  vector-effect: non-scaling-stroke;
+  transition: transform 600ms var(--motion-ease-expand) 120ms;
+}
+
+.theme-toggle__rays {
+  transform-box: view-box;
+  transform-origin: 12px 12px;
+  transition: transform 500ms var(--motion-ease-expand) 260ms,
+    opacity 360ms var(--motion-ease) 260ms;
+}
+
+/* Moon (dark): the rays turn and fold in, the disc grows and the shadow slides across it */
+[data-theme="dark"] .theme-toggle__icon {
+  rotate: 0deg;
+}
+
+[data-theme="dark"] .theme-toggle__core {
+  transform: scale(1);
+  transition-delay: 160ms;
+}
+
+[data-theme="dark"] .theme-toggle__cut {
+  transform: translate(0, 0);
+  transition-delay: 160ms;
+}
+
+[data-theme="dark"] .theme-toggle__rays {
+  transform: rotate(90deg) scale(0.4);
+  opacity: 0;
+  transition-delay: 0ms;
+}
+
+/* The circle that spreads the new theme over the page (js/theme.js): no cross-fade underneath it */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* While the circle spreads, the switch itself keeps animating above it */
+.is-theme-switching .theme-toggle__icon {
+  view-transition-name: theme-toggle-icon;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle__icon,
+  .theme-toggle__core,
+  .theme-toggle__cut,
+  .theme-toggle__rays {
+    transition: none;
+  }
+}
+
+/* Header placement: between Saved and the world icon. Phones: in the icon group beside the menu. */
+@media (max-width: 899px) {
+  .theme-toggle {
+    order: 1;
+  }
+}
+
+::view-transition-old(theme-toggle-icon) {
+  display: none;
+}
+
+::view-transition-new(theme-toggle-icon) {
+  animation: none;
+}
