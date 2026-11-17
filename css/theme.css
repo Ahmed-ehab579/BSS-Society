@@ -118,7 +118,7 @@ html[data-theme="dark"] img:is(
   [src*="icons/arrow-right"], [src*="icons/arrow-left"], [src*="icons/arrow-down"], [src*="icons/topic-arrow-"],
   [src*="icons/about-"], [src*="icons/badge-"], [src*="icons/bookmark"], [src*="icons/chevron-"],
   [src*="icons/contact-"], [src*="icons/filter"], [src*="icons/help-question"], [src*="icons/load-more"],
-  [src*="icons/lock"], [src*="icons/media-"], [src*="icons/pause"], [src*="icons/play"],
+  [src*="icons/lock"], [src*="icons/media-"]:not([src*="media-play-lg"]):not([src*="media-audio-book"]), [src*="icons/pause"], [src*="icons/play"],
   [src*="icons/resource-play"], [src*="icons/row-chevron"], [src*="icons/search"], [src*="icons/share"],
   [src*="icons/soundcloud"], [src*="icons/sort-chevron"], [src*="icons/view-"], [src*="icons/check-list"],
   [src*="icons/download"], [src*="icons/book.svg"]
@@ -201,6 +201,20 @@ html[data-theme="dark"] .article-listen__icon {
 /* Phone sheet grabbers */
 html[data-theme="dark"] :is(.language-sheet__grabber, .saved-sheet__grabber) {
   background: var(--border);
+}
+
+/* Material preview on desktop: a raised layer, clearly above the page. A deeper backdrop, a lighter
+   sheet (in the dark, higher means lighter) and a fine light edge. */
+@media (min-width: 768px) {
+  html[data-theme="dark"] .preview__backdrop {
+    background: rgba(0, 0, 0, 0.72);
+  }
+
+  html[data-theme="dark"] .preview__sheet {
+    --color-page-bg: #1e221c;
+    background: var(--color-page-bg);
+    box-shadow: 0 0 0 1px rgba(237, 233, 223, 0.09), 0 24px 60px rgba(0, 0, 0, 0.6);
+  }
 }
 
 /* ===================== The switch ===================== */
