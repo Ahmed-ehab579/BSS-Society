@@ -101,6 +101,99 @@ html[data-theme="dark"] .site-footer {
   border-top: 1px solid var(--border-subtle);
 }
 
+/* ===================== Other pages ===================== */
+
+/* Line and solid icons drawn in charcoal (as <img>): drawn in parchment instead */
+html[data-theme="dark"] img:is(
+  [src*="icons/saved"], [src*="icons/globe"], [src*="icons/benefit-"], [src*="icons/carousel-"],
+  [src*="icons/arrow-right"], [src*="icons/arrow-left"], [src*="icons/arrow-down"], [src*="icons/topic-arrow-"],
+  [src*="icons/about-"], [src*="icons/badge-"], [src*="icons/bookmark"], [src*="icons/chevron-"],
+  [src*="icons/contact-"], [src*="icons/filter"], [src*="icons/help-question"], [src*="icons/load-more"],
+  [src*="icons/lock"], [src*="icons/media-"], [src*="icons/pause"], [src*="icons/play"],
+  [src*="icons/resource-play"], [src*="icons/row-chevron"], [src*="icons/search"], [src*="icons/share"],
+  [src*="icons/soundcloud"], [src*="icons/sort-chevron"], [src*="icons/view-"], [src*="icons/check-list"],
+  [src*="icons/download"], [src*="icons/book.svg"]
+) {
+  filter: brightness(0) invert(0.9);
+}
+
+/* Icons drawn in sage: the lighter sage of the dark page */
+html[data-theme="dark"] img:is([src*="icons/type-"], [src*="icons/check.svg"]) {
+  filter: brightness(1.85) saturate(0.85);
+}
+
+/* Cards that hold their own light surface (#e1ddd1, #f1efe6) */
+html[data-theme="dark"] :is(.resource-grid, .topic-panel__track, .preview__related) .resource-card {
+  --surface-resource-card: var(--surface-card);
+}
+
+html[data-theme="dark"] .journey-card:not(.is-locked) {
+  --surface-cards: var(--surface-card);
+}
+
+html[data-theme="dark"] .topic-preview__card {
+  background: var(--surface-raised);
+}
+
+html[data-theme="dark"] .preview .book__cover {
+  background: var(--surface-raised);
+}
+
+/* Type pills on photos and cards (white at 50%): dark glass */
+html[data-theme="dark"] :is(.topic-panel__track, .resource-grid[data-layout="one"]) .resource-card__type {
+  outline-color: var(--border);
+  background: rgba(21, 23, 19, 0.6);
+}
+
+/* Done pills and the journey greens: deep sage fills, light sage marks */
+html[data-theme="dark"] .topic__done {
+  border-color: var(--green-300);
+  background: var(--green-300);
+}
+
+html[data-theme="dark"] .journey {
+  --pin-done-ring: #3d4d32;
+  --pin-done-dot: #a3c48b;
+  --pin-turn-dot: #a9d07a;
+  --surface-action-outline-pressed: #4a6339;
+  --surface-cards-completed-overlay: rgba(38, 48, 31, 0.76);
+  --color-completed: #a3c48b;
+}
+
+/* Fine grey strokes drawn for the light page */
+html[data-theme="dark"] :is(.path-step:not(.is-open), .topic-tab[aria-selected="true"], .learn .section-panel, .topic__done, .resource-card__done) {
+  border-color: var(--border);
+}
+
+html[data-theme="dark"] .topic.is-selected {
+  box-shadow: inset 0 0 0 0.3px var(--border);
+}
+
+html[data-theme="dark"] .library-tools {
+  border-bottom-color: var(--border);
+}
+
+/* About: the panel fade ends in the dark page, not in parchment */
+html[data-theme="dark"] .who__panel::after {
+  background: linear-gradient(267.3deg, rgba(21, 23, 19, 0) 19.7%, var(--color-page-bg) 41%);
+}
+
+/* Scrollbars inside dialogs and panels */
+html[data-theme="dark"] :is(.contact-dialog, .preview, .support) * {
+  scrollbar-color: rgba(237, 233, 223, 0.25) transparent;
+}
+
+/* Article listen button: a parchment disc with a dark play mark */
+html[data-theme="dark"] .article-listen__icon {
+  background: var(--text-strong);
+  color: var(--surface-page);
+}
+
+/* Phone sheet grabbers */
+html[data-theme="dark"] :is(.language-sheet__grabber, .saved-sheet__grabber) {
+  background: var(--border);
+}
+
 /* ===================== The switch ===================== */
 .theme-toggle {
   display: flex;
@@ -222,4 +315,9 @@ html[data-theme="dark"] .site-footer {
 
 ::view-transition-new(theme-toggle-icon) {
   animation: none;
+}
+
+/* Arrows inside primary buttons stay dark on the parchment button (after the icon rule above) */
+html[data-theme="dark"] .btn--primary img {
+  filter: brightness(0) invert(0.08);
 }
