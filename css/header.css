@@ -53,14 +53,16 @@
   position: absolute;
 }
 
+/* Refined lockup (logo package v1.0): both lines share one ink-left edge,
+   and "Society" sits on the base of the symbol */
 .brand__line--1 {
-  top: 39.59%;
-  left: 23.2%;
+  top: 37.27%;
+  left: 22.6%;
 }
 
 .brand__line--2 {
-  top: 66.22%;
-  left: 22.45%;
+  top: 63.9%;
+  left: 22.81%;
 }
 
 .brand:focus-visible {
